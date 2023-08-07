@@ -736,9 +736,7 @@ $result = $conn->query($sql);
             }
         } else{
             ?>
-            <tr>
-                <td colspan="12">No attendance found...</td>
-            </tr>
+            
 
         <?php
         }
