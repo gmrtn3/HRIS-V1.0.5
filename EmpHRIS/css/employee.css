@@ -1,0 +1,38 @@
+/* Attendance */
+
+.attendance-container{
+    width: 1500px;
+    height: 800px;
+    position: absolute;
+    right: 60px;
+    bottom: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    /* margin-top: 100px;
+    margin-left: 320px; */
+}
+
+.attendance-date{
+    width: 100%;
+    display: flex;
+    margin-top: 20px;
+
+}
+
+.attendance-date button {
+    margin-left: 50px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(174, 93, 240);
+    width: 100px;
+    color: white;
+    letter-spacing: 1px;
+    font-size: 18px;
+
+}
+
+.attendance-table{
+    width: 95%;
+    margin: auto;
+    margin-top: 30px;
+}

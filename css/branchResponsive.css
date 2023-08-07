@@ -1,0 +1,186 @@
+@media(max-width: 1350px){
+    html{
+        background-color: #f4f4f4 !important;
+        overflow: scroll;
+    }
+    
+    
+    .dashboard-content{
+    background-color: #f4f4f4 !important;
+    }
+    
+    .sidebar{
+    background-color: #f4f4f4 !important;
+    }
+    /* heder-user*/   
+    .header-user{
+    width: 400px;
+    margin-right: -50px;
+    transition: ease-in-out 1s;
+    }
+    
+    .header-notif{
+    margin-right: 30px;
+    transition: ease-in-out 1s;
+    }
+    .header-head{
+    margin-right: 25px;
+    transition: ease-in-out 1s;
+    
+    }
+    .header-head img{
+    height: 50px;
+    transition: ease-in-out 1s;
+    }
+    .header-type h1{
+    font-size: 20px;
+    transition: ease-in-out 1s;
+    }
+    .header-type p{
+    font-size: 16px;
+    }
+    .card{
+        width: 950px !important;
+        left: 85px !important;
+        bottom: 9px !important;
+        height: 820px !important;
+        transition: ease-in-out 1s;
+    }
+    }
+
+    
+@media only screen and (max-width: 767px) {
+    html{
+        overflow-x: hidden !important;
+        background-color: #f4f4f4 !important;
+        width: 100% !important;
+        
+        }
+        body{
+        overflow-y: hidden !important;
+        background-color: #f4f4f4 !important;
+        width: 100% !important;
+        }
+        #upper-nav{
+        background-color: black !important; 
+        width: 414px !important;
+        height: 75px;
+        position: fixed !important;
+        }
+        
+        .navbar-menu-wrapper{
+        background-color: black !important;
+        width: 200px !important;
+        height: 60px !important;
+        position: fixed !important;
+        
+        margin-left: 170px !important;
+        
+        
+        }
+       #sidebarToggle{
+            background-color: black !important;
+            z-index: 200;
+            margin-right: 20px !important;
+        }
+    
+        .responsive-bars-btn span{
+            
+            z-index: 200;
+        }
+        
+        .navbar-brand-wrapper{
+        background-color: black !important;
+        position: absolute !important;
+        width: 80px !important;
+        box-shadow: none;
+        height: 60px !important;
+        z-index: 100;
+        }
+        
+        .navbar-brand-wrapper img{
+        height: 40px !important;
+        width: 50px !important;
+        margin-left: -20px !important;
+        }
+        
+        .sidebar{
+        position: fixed !important;
+        left: 0;
+        width: 18% !important;
+        margin-top: 0 !important;
+        height: 100% !important;
+        display: none !important;
+        transition: ease-in-out 1s !important;
+        
+        }
+        
+        #sidebar.active-sidebar {
+        display: block !important;
+        } 
+        
+        
+        .navbar-toggler{
+        display: none !important;
+        }
+        
+        .responsive-bars-btn{
+        display: block !important;
+        margin-right: 90px !important;
+        border: none !important;
+        
+        }
+
+        #sub-menu{
+           margin-left: -5%;
+        }
+        
+        .responsive-bars-btn span{
+        color: white !important;
+        font-size: 18px !important;
+        }
+        
+        .header-user{
+        width: 290px;
+        transition: ease-in-out 1s;
+        background-color: black !important;
+        
+        }
+        .header-notif span{
+        font-size: 20px !important;
+        margin-right: -10px;
+        margin-left: 30px !important;
+        }
+        .header-head img{
+        height: 40px !important;
+        }
+        .header-type h1{
+        font-size: 19px !important;
+        }
+        .header-type p{
+        font-size: 14px !important;
+        margin-top: -25px !important;
+        }
+        .header-dropdown{
+        margin-left: 30px !important;
+        }
+        .header-dropdown-menu{
+        width: 130px !important;
+        margin-left: -55px !important;
+        
+        }
+        
+        .nav-title,.menu-arrow{
+        display: none !important;
+        }
+        
+        .nav-item{
+        margin-bottom: 15px !important;
+        }
+        
+        .collapse{
+        width: 250px !important;
+        position: fixed !important;
+        left: 85px !important;
+        }
+}

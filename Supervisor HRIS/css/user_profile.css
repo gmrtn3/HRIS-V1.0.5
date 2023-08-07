@@ -1,0 +1,208 @@
+.main-panel{
+    margin-left: 18.7%; 
+    position: absolute; 
+    top: 8.5%;
+}
+
+h2{
+    font-size: 23px; 
+    font-weight: bold;
+    
+}
+
+.card{
+    width:1500px; 
+    height: 800px; 
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17); 
+}
+
+.card-body{
+    border-radius: 25px;
+    
+}
+
+.col-12{
+    padding-top: 39.5px;
+}
+
+    .emp_header{
+    height: 60%;
+    position: relative;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 6px;
+    padding-top: 15px;
+    }
+
+.setting_profile{
+    display: flex;
+    flex-direction: row;
+}
+
+.profile_first_cont{
+    width: 70%;
+ 
+}
+
+.edit_profile_text {
+    text-align: center;
+    margin-top: 5px;
+    background-color: #F4F5F7;
+    border-radius: 6px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.edit_profile_text h3 {
+    padding: 15px;
+}
+
+.comp_text {
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.input_fname {
+    width: 50%;
+    margin-left: 15px;
+}
+
+.input_lname {
+    width: 50%;
+    margin-left: 15px;
+}
+
+.input_email {
+    width: 50%;
+    margin-left: 15px;
+}
+
+.first-flex{
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+}
+
+.file_guidance{
+    margin-top: 2px;
+}
+
+.profile_second_cont{
+    width: 30%;
+
+}
+
+.employee_head_profile img{
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    margin-left: 25%;
+    border: rgb(0, 0, 0) 1px solid;
+}
+
+.emp_photo_upload {
+    margin-left: 25%;
+    margin-top: 23px;
+}
+
+.emp_update_btn{
+    margin-left: 15px;
+    margin-top: 9px;
+}
+
+.bootsrow {
+    margin-top: 40px;
+    margin-left: 1px;
+    width: 100%;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 6px;
+    padding-top: 15px;
+    padding-bottom: 45px;
+}
+
+
+.Text_change_password {
+    text-align: center;
+    margin-top: 5px;
+    background-color: #F4F5F7;
+    border-radius: 6px;
+    margin-left: 10px;
+    width: 98.7%;
+}
+
+.Text_change_password h3{
+    padding: 10px;
+}
+
+
+.text_col {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+
+
+.new_pass{
+    width: 60%;
+    padding: 20px;
+}
+
+.confirm_pass{
+    width: 60%;
+    padding: 20px;
+}
+
+.button_section{
+    width: 10%;
+}
+
+.custom_btn{
+    border: none;
+    margin-top: 30px;
+    width: 100px;
+    padding: 20px;
+}
+
+.passwordcontent{
+    position: relative;
+}
+
+.passwordcontent #eye{
+    font-size:  1.3em !important;
+    position: absolute !important;
+    bottom: 0.1em !important;
+    right: 42% !important;
+    cursor: pointer !important;
+    transform: translateY(-50%);
+    top: 70%;
+}
+
+.passwordcontent{
+    position: relative;
+    
+}
+
+.passwordcontent #confirm-eye{
+    font-size: 1.3em !important;
+    position: absolute !important;
+    bottom: 0.1em !important;
+    right: 42% !important;
+    cursor: pointer !important;
+    transform: translateY(-50%);
+    top: 70%;
+}
+
+.validmessage {
+    position: absolute;
+}
+
+.errormessage{
+    position: relative;
+    float: right;
+    display: none;
+}
+  

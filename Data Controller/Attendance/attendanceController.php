@@ -1,0 +1,1970 @@
+<?php
+
+// Load the database configuration file
+$server = "localhost";
+$user = "root";
+$pass ="";
+$database = "hris_db";
+
+$db = mysqli_connect($server, $user, $pass, $database);
+
+
+if(isset($_POST['importSubmit'])){
+    
+    // Allowed mime types
+    $csvMimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 
+    'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain');
+    
+    // Validate whether selected file is a CSV file
+    if(!empty($_FILES['file']['name']) && in_array($_FILES['file']['type'], $csvMimes)){
+        
+        // If the file is uploaded
+        if(is_uploaded_file($_FILES['file']['tmp_name'])){
+            
+            // Open uploaded CSV file with read-only mode
+            $csvFile = fopen($_FILES['file']['tmp_name'], 'r');
+            
+            // Skip the first line
+            fgetcsv($csvFile);
+            
+            // Parse data from CSV file line by line
+            while(($line = fgetcsv($csvFile)) !== FALSE){
+                // Get row data
+                $status   = $line[0];
+                $empid  = $line[1];
+                $date = $line[2];
+                $time_in = $line[3];
+                $time_out = $line[4];
+                $late = '';
+                $early_out = '';
+                $overtime = '';  
+                $total_work = '';
+                $total_rest = '';
+
+                
+                  // Check if empid exists in the employee_tb
+                $empQuery = "SELECT * FROM employee_tb WHERE empid = '$empid'";
+                $empResult = $db->query($empQuery);
+                if(mysqli_num_rows($empResult) < 1) {
+                    echo '<script>alert("Error: Unable to insert data for non-existing Employee ID because the Employee ID does not exist in the database.")</script>';
+                    echo "<script>window.location.href = '../../attendance';</script>";
+                    exit;
+                }else  {
+                
+
+    
+                $conn = mysqli_connect("localhost", "root", "", "hris_db");
+                $sql = "SELECT * FROM empschedule_tb WHERE empid = $empid";
+                $resulta = mysqli_query($conn, $sql);
+                if(mysqli_num_rows($resulta) > 0){
+                    $row1 = mysqli_fetch_assoc($resulta);
+
+                    
+
+                    $stmt = "SELECT 
+                    DATE_SUB(DATE(NOW()), INTERVAL WEEKDAY(NOW()) DAY) AS monday_date,
+                    DATE_ADD(DATE(NOW()), INTERVAL (1 - WEEKDAY(NOW())) DAY) AS tuesday_date,
+                    DATE_ADD(DATE(NOW()), INTERVAL (2 - WEEKDAY(NOW())) DAY) AS wednesday_date,
+                    DATE_ADD(DATE(NOW()), INTERVAL (3 - WEEKDAY(NOW())) DAY) AS thursday_date,
+                    DATE_ADD(DATE(NOW()), INTERVAL (4 - WEEKDAY(NOW())) DAY) AS friday_date,
+                    DATE_ADD(DATE(NOW()), INTERVAL (5 - WEEKDAY(NOW())) DAY) AS saturday_date,
+                    DATE_ADD(DATE(NOW()), INTERVAL (6 - WEEKDAY(NOW())) DAY) AS sunday_date,
+                    mon_timein,
+                    mon_timeout,
+                    tues_timein,
+                    tues_timeout,
+                    wed_timein,
+                    wed_timeout,
+                    thurs_timein,
+                    thurs_timeout,
+                    fri_timein,
+                    fri_timeout,
+                    sat_timein,
+                    sat_timeout,
+                    sun_timein,
+                    sun_timeout,
+                    grace_period,
+                    sched_ot
+                FROM schedule_tb
+                WHERE schedule_name = '".$row1['schedule_name']."'";
+        
+
+        
+        
+
+        
+
+                } else{
+                    echo '<script> alert("Employee has no schedule!"); </script>';
+                    header("Location: ../../attendance.php?noSchedule");
+                    exit;
+                }
+
+                $result = mysqli_query($conn, $stmt);
+                while($time = mysqli_fetch_assoc($result)){
+
+                $grace_period = $time['grace_period'];  
+                
+                $sched_ot = $time['sched_ot'];
+
+                  
+                
+                // $monday  = $time['monday_date'];
+                // $tuesday = $time['tuesday_date'];
+
+                $monday = date('l', strtotime(strtr($time['monday_date'], '/', '-')));
+                
+
+                $monday_timein = $time['mon_timein'];
+                $monday_timeout = $time['mon_timeout'];
+                
+                
+                $tuesday = date('l', strtotime(strtr($time['tuesday_date'], '/', '-'))); 
+              
+                
+
+                $tuesday_timein = $time['tues_timein'];
+                $tuesday_timeout = $time['tues_timeout'];
+
+                $wednesday = date('l', strtotime(strtr($time['wednesday_date'], '/', '-')));  
+               
+
+                $wednesday_timein = $time['wed_timein'];
+                $wednesday_timeout = $time['wed_timeout'];
+
+                $thursday = date('l', strtotime(strtr($time['thursday_date'], '/', '-')));   
+              
+
+                $thursday_timein = $time['thurs_timein'];
+                $thursday_timeout = $time['thurs_timeout'];
+
+                $friday = date('l', strtotime(strtr($time['friday_date'], '/', '-')));     
+              
+
+                $friday_timein = $time['fri_timein'];
+                $friday_timeout = $time['fri_timeout'];
+
+                $saturday = date('l', strtotime(strtr($time['saturday_date'], '/', '-')));    
+              
+
+                $saturday_timein = $time['sat_timein'];
+                $saturday_timeout = $time['sat_timeout'];
+
+                $sunday = date('l', strtotime(strtr($time['sunday_date'], '/', '-')));    
+              
+
+                $sunday_timein = $time['sun_timein'];
+                $sunday_timeout = $time['sun_timeout'];
+
+                $currentTimestamp = time();
+
+                // Get the current day of the week
+                $currentDayOfWeek = date('l', $currentTimestamp);
+                
+                // Now $currentDayOfWeek holds the full textual representation of the current day of the week (e.g., "Monday", "Tuesday", etc.).
+                
+                // To display it, you can simply echo the value:
+                // echo "Today is " . $currentDayOfWeek;
+
+                // echo " gsada ".$mondays;
+                // if ($day_of_weekss == "Monday") {
+                //     // Check if the employee is late
+                //     $grace_period_total = new DateTime($time['mon_timein']);
+                //     $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+                    
+                //     if ($grace_period_minutes > 0) {
+                //         $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                //         $grace_period_total->add($grace_period_interval);
+                //     }
+                    
+                //     $time_in_datetime = new DateTime($time_in);
+                    
+                    // if ($grace_period_minutes > 0 && $grace_period_total < $time_in_datetime) {
+                    //     // Calculate the amount of late
+
+                    //     // $late = $time_in_datetime->diff($grace_period_total)->format('%H:%I:%S');
+                    //     $late = $time_in_datetime->format('%H:%I:%S');
+                    // } else {
+                    //     // Calculate the amount of late as difference between time_in and mon_timein
+                    //     $monday_time_in_datetime = new DateTime($time['mon_timein']);
+                    //     $late = $time_in_datetime->diff($monday_time_in_datetime)->format('%H:%I:%S');
+                    // }
+                    // if ($grace_period_total < $time_in_datetime) { //if may late
+                        // Calculate the amount of late
+                        //$late = $time_in_datetime->diff($grace_period_total)->format('%H:%I:%S');
+
+                    //     $day_timeIN_db = new DateTime($time['mon_timein']);
+                    //     if($day_timeIN_db === "" || $day_timeIN_db === NULL){
+                    //         $late = "00:00:00";
+                    //     }else{
+                    //         $late = $time_in_datetime->diff($day_timeIN_db)->format('%H:%I:%S');
+                    //     }
+                        
+                    // }
+                    
+
+                    // Calculate the total work hours
+                  
+                    // if ($time_out) {
+                    //     // Convert time_in and time_out to DateTime objects
+                    //     $time_in_datetime = new DateTime($time_in);
+                    //     $time_out_datetime = new DateTime($time_out);
+                    
+                    //     // Check if the employee's time_in is past the scheduled time_in
+                    //     $actual_time_in = max($time_in_datetime, new DateTime($time['mon_timein']));
+                    
+                    //     // Check if the time_out is before the scheduled time_out
+                    //     $actual_time_out = min($time_out_datetime, new DateTime($time['mon_timeout']));
+                    
+                    //     // Calculate the total work hours
+                    //     $interval = $actual_time_out->diff($actual_time_in);
+                    //     $total_work = $interval->format('%H:%I:%S');
+                    
+                    //     // Subtract lunch break (1 hour) from the total work duration if necessary
+                    //     if (
+                    //         $actual_time_in < $actual_time_out &&
+                    //         $actual_time_in->format('H:i') < '12:00' &&
+                    //         $actual_time_out->format('H:i') > '13:00'
+                    //     ) {
+                    //         $total_work_datetime = new DateTime($total_work);
+                    //         $total_work_datetime->sub(new DateInterval('PT1H'));
+                    //         $total_work = $total_work_datetime->format('H:i:s');
+                    //     }
+                    
+                    //     // Add the grace period to the total work duration if applicable
+                    //     $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+                    //     if ($actual_time_in > new DateTime($time['mon_timein'])) { // Check if actual time_in is greater than scheduled time_in
+                    //         $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                    //         $total_work_datetime = new DateTime($total_work);
+                    //         $total_work_datetime->add($grace_period_interval);
+                    //         $total_work = $total_work_datetime->format('H:i:s');
+                    //     }
+                    // } else {
+                    //     $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
+                    // }
+                    
+                    
+                    
+                    
+                    
+                    // if ($time_out > $time['mon_timeout']) {
+                    //     // Calculate overtime
+                    //     $total_work_time = new DateTime($total_work);
+                    //     $scheduled_times = new DateTime('08:00:00');
+                    //     $intervals = $total_work_time->diff($scheduled_times);
+                    //     $overtime = $intervals->format('%h:%i:%s');
+                    // } else {
+                    //     $overtime = '00:00:00';
+                    // }
+
+                    // if($time_out < $time['mon_timeout']){
+                    //     $time_out_datetime = new DateTime('08:00:00');
+                    //     $scheduled_outs = new DateTime($total_work);
+                    //     $early_interval = $scheduled_outs->diff($time_out_datetime);
+                    //     $early_out = $early_interval->format('%h:%i:%s');
+                    // } else { 
+                    //     $early_out = '00:00:00';
+                    // }
+
+                    // if($time_in < '00:00:00'){
+                    //     $early_out = '00:00:00';
+                    //     $total_work = '00:00:00';
+                    //     $total_rest = '08:00:00';
+                    // }
+
+                    if ($currentDayOfWeek == $monday) {
+                        echo "it is monday hehe";
+                        // Check if the employee is late
+                        $grace_period_total = new DateTime($time['mon_timein']);
+                        $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+                        
+                        if ($grace_period_minutes > 0) {
+                            $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                            $grace_period_total->add($grace_period_interval);
+                        }
+                        
+                        // Get the minutes from mon_timein and grace_period
+                        $mon_timein_minutes = (int)date('i', strtotime($time['mon_timein']));
+                        $grace_period_minutes = isset($time['grace_period']) ? (int)$time['grace_period'] : 0;
+
+                        // Convert time_in to DateTime object
+                        $time_in_datetime = new DateTime($time_in);
+
+                        // Calculate the late time
+                        $late_minutes = (int)$time_in_datetime->format('i') - $grace_period_minutes;
+
+                        if ($late_minutes >= 0) {
+                            // Calculate the amount of late
+                            $late = (new DateTime($time_in))->diff(new DateTime($time['mon_timein']))->format('%H:%I:%S');
+                        } else {
+                            // Set the late time to 00:00:00
+                            $late = '00:00:00';
+                        }                  
+
+                        
+                        if ($time_out) {
+                            // Convert time_in and time_out to DateTime objects
+                            $time_in_datetime = new DateTime($time_in);
+                            $time_out_datetime = new DateTime($time_out);
+                        
+                            // Check if the employee's time_in is past the scheduled time_in
+                            $actual_time_in = max($time_in_datetime, new DateTime($time['mon_timein']));
+                        
+                            // Check if the time_in minutes are less than the grace_period
+                            $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0;
+                            $minutes_in_time_in = intval($actual_time_in->format('i'));
+
+                                $sched_ot_total = new DateTime($time['mon_timeout']);
+                                $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+    
+                                if ($sched_ot_time > 0) {
+                                    $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                                    $sched_ot_total->add($sched_ot_interval);
+                                }
+                            
+                            if ($minutes_in_time_in <= $grace_period_minutes) {
+                                // Calculate the total work hours from the scheduled time_in to time_out
+                                $interval = $time_out_datetime->diff(new DateTime($time['mon_timein']));
+                                $late = '00:00:00';
+                                // var_dump($time_out_datetime);
+                                
+                            } else {
+                                // Calculate the total work hours from actual time_in to time_out
+                                $interval = $time_out_datetime->diff($time_in_datetime); 
+                            }
+
+                            if ($time_out >= $time['mon_timeout']) {
+                                // Calculate overtime
+                                $total_work_time = new DateTime($total_work);
+                                $mon_timein = new DateTime($time['mon_timein']);
+                                $sched_ot_total = new DateTime($time['mon_timeout']);
+                                $mon_timeout = new DateTime($time['mon_timeout']);
+                                
+                                $time_in_datetime = new DateTime($time_in);
+                                // $time_out_datetime = new DateTime($time_out);
+    
+    
+                                $time_out_obj = DateTime::createFromFormat('H:i', $time_out);
+                                
+                                $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+    
+                                if ($sched_ot_time > 0) {
+                                    $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                                    $sched_ot_total->add($sched_ot_interval);
+                                }
+
+    
+                                // Get the minutes from $time_out
+                                
+    
+                                if ($time_out_obj >  $sched_ot_total) {
+                                    // $total_hehe = $sched_ot_minutes + $time_out_minutes;
+                                    if($minutes_in_time_in <= $grace_period_minutes){
+                                        $interval = $mon_timein->diff($time_out_datetime); 
+    
+                                        $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                        $total_work_datetime->sub(new DateInterval('PT1H'));
+                                        $total_work = $total_work_datetime->format('H:i:s');
+         
+                                        // Subtract 1 hour (3600 seconds) for lunch break
+                                         // $time_out_datetime->sub(new DateInterval('PT1H'));
+         
+                                         $get_overtime = $mon_timeout->diff($time_out_datetime);
+         
+                                         // Format the overtime as 'H:i:s'
+                                         $overtime = $get_overtime->format('%H:%I:%S');
+                                        //  var_dump($total_work ,'eto yung sa may late pero pasok sa grace period then nag ot');
+                                    }else{
+                                   $interval = $time_in_datetime->diff($time_out_datetime); 
+    
+                                   $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                   $total_work_datetime->sub(new DateInterval('PT1H'));
+                                   $total_work = $total_work_datetime->format('H:i:s');
+    
+                                   // Subtract 1 hour (3600 seconds) for lunch break
+                                    // $time_out_datetime->sub(new DateInterval('PT1H'));
+    
+                                    $get_overtime = $mon_timeout->diff($time_out_datetime);
+    
+                                    // Format the overtime as 'H:i:s'
+                                    $overtime = $get_overtime->format('%H:%I:%S');
+
+                                    // var_dump($total_work, 'eto yung sa may late pero hindi pasok sa grace period then nag ot');
+                                   
+                                    }
+                                }else{
+                                     // Calculate the interval between $mon_timein and $mon_timeout
+                                $scheduled_interval = $mon_timein->diff($mon_timeout);
+    
+                                // Convert the interval to a timestamp
+                                $scheduled_timestamp = $mon_timein->getTimestamp() + $scheduled_interval->format('%s');
+    
+                                // Subtract one hour (3600 seconds) for the lunch break
+                                $scheduled_timestamp -= 3600;
+    
+                                // Create a new DateTime object with the updated timestamp
+                                $scheduled_time = new DateTime();
+                                $scheduled_time->setTimestamp($scheduled_timestamp);
+    
+                                // Format the scheduled time as a string
+                                $total_work = $scheduled_time->format('H:i');
+                                $overtime = '00:00:00';
+                                   
+                                // var_dump($total_work, 'hehe');
+                                } 
+                                              
+                            } else {
+                                $overtime = '00:00:00';
+                            }
+
+                            // if($time_in_datetime >= $  )
+                        
+                            // Subtract lunch break (1 hour) from the total work duration
+                            $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                            $total_work_datetime->sub(new DateInterval('PT1H'));
+                            $total_work = $total_work_datetime->format('H:i:s');
+
+                           
+                            $get_sched_ot = $time['sched_ot'];
+                            $get_mon_timeout = $time['mon_timeout'];
+                            $get_mon_timein = $time['mon_timein'];
+
+                            $convert_mon_timeout = new DateTime($get_mon_timeout);
+                            $convert_time_in = new DateTime($time_in);
+
+
+                            // Convert $get_sched_ot to minutes
+                            $sched_ot_minutes = (int) $get_sched_ot;
+                                                    
+                            // Convert $get_mon_timeout to a DateTime object
+                            $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_mon_timeout);
+                                                    
+                            // Add $sched_ot_minutes to $mon_timeout_datetime
+                            $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                                    
+                            // Format the resulting time as 'H:i'
+                            $result_sched_ot = $mon_timeout_datetime->format('H:i');
+
+                           
+                               
+
+                            if ($minutes_in_time_in <= $grace_period_minutes && $time_out <= $result_sched_ot ){
+                                
+                                $convert_mon_timeout = new DateTime($get_mon_timeout);
+                                $convert_time_in = new DateTime($get_mon_timein);
+                                
+                                $total_work_interval = $convert_time_in->diff($convert_mon_timeout);
+                                
+                                // Create a new DateInterval representing one hour
+                                $one_hour_interval = new DateInterval('PT1H');
+                                
+                                // Subtract one hour from the $convert_mon_timeout DateTime object
+                                $convert_mon_timeout->sub($one_hour_interval);
+                                
+                                // Calculate the updated total work time interval after subtracting an hour
+                                $total_work_interval = $convert_time_in->diff($convert_mon_timeout);
+                                
+                                $total_work = $total_work_interval->format('%H:%I:%S');
+                                $overtime = '00:00:00';
+                                
+                                // echo $total_work;
+                                
+                                    
+                            }else{
+                                echo "<script> alert('Theres an error to your csv file.); </script>";
+                            }
+
+                        } else {
+                            $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
+                        }
+
+                        if($time_out < $time['mon_timeout']){
+                            $time_out_datetime = new DateTime('08:00:00');
+                            $scheduled_outs = new DateTime($total_work);
+                            $early_interval = $scheduled_outs->diff($time_out_datetime);
+                            $early_out = $early_interval->format('%h:%i:%s');
+                        } else { 
+                            $early_out = '00:00:00';
+                        }
+    
+                        if($time_in < '00:00:00'){
+                            $early_out = '00:00:00';
+                            $total_work = '00:00:00';
+                            $total_rest = '08:00:00';
+                        }
+                        
+
+                }elseif($currentDayOfWeek == $tuesday){
+                    // echo "it is tuesday";
+                        // Check if the employee is late
+                        $grace_period_total = new DateTime($time['tues_timein']);
+                        $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+                        
+                        if ($grace_period_minutes > 0) {
+                            $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                            $grace_period_total->add($grace_period_interval);
+                        }
+                        
+                        // Get the minutes from tues_timein and grace_period
+                        $tues_timein_minutes = (int)date('i', strtotime($time['tues_timein']));
+                        $grace_period_minutes = isset($time['grace_period']) ? (int)$time['grace_period'] : 0;
+
+                        // Convert time_in to DateTime object
+                        $time_in_datetime = new DateTime($time_in);
+
+                        // Calculate the late time
+                        $late_minutes = (int)$time_in_datetime->format('i') - $grace_period_minutes;
+
+                        if ($late_minutes >= 0) {
+                            // Calculate the amount of late
+                            $late = (new DateTime($time_in))->diff(new DateTime($time['tues_timein']))->format('%H:%I:%S');
+                        } else {
+                            // Set the late time to 00:00:00
+                            $late = '00:00:00';
+                        }                  
+                        
+
+                        if ($time_out) {
+                            // Convert time_in and time_out to DateTime objects
+                            $time_in_datetime = new DateTime($time_in);
+                            $time_out_datetime = new DateTime($time_out);
+                        
+                            // Check if the employee's time_in is past the scheduled time_in
+                            $actual_time_in = max($time_in_datetime, new DateTime($time['tues_timein']));
+                        
+                            // Check if the time_in minutes are less than the grace_period
+                            $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0;
+                            $minutes_in_time_in = intval($actual_time_in->format('i'));
+
+                                $sched_ot_total = new DateTime($time['tues_timeout']);
+                                $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+    
+                                if ($sched_ot_time > 0) {
+                                    $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                                    $sched_ot_total->add($sched_ot_interval);
+                                }
+                            
+                            if ($minutes_in_time_in <= $grace_period_minutes) {
+                                // Calculate the total work hours from the scheduled time_in to time_out
+                                $interval = $time_out_datetime->diff(new DateTime($time['tues_timein']));
+                                $late = '00:00:00';
+                                // var_dump($time_out_datetime);
+                                
+                            } else {
+                                // Calculate the total work hours from actual time_in to time_out
+                                $interval = $time_out_datetime->diff($time_in_datetime); 
+                            }
+
+                            if ($time_out >= $time['tues_timeout']) {
+                                // Calculate overtime
+                                $total_work_time = new DateTime($total_work);
+                                $tues_timein = new DateTime($time['tues_timein']);
+                                $sched_ot_total = new DateTime($time['tues_timeout']);
+                                $tues_timeout = new DateTime($time['tues_timeout']);
+                                
+                                $time_in_datetime = new DateTime($time_in);
+                                // $time_out_datetime = new DateTime($time_out);
+    
+    
+                                $time_out_obj = DateTime::createFromFormat('H:i', $time_out);
+                                
+                                $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+    
+                                if ($sched_ot_time > 0) {
+                                    $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                                    $sched_ot_total->add($sched_ot_interval);
+                                }
+
+    
+                                // Get the minutes from $time_out
+                                
+    
+                                if ($time_out_obj >  $sched_ot_total) {
+                                    // $total_hehe = $sched_ot_minutes + $time_out_minutes;
+                                    if($minutes_in_time_in <= $grace_period_minutes){
+                                        $interval = $tues_timein->diff($time_out_datetime); 
+    
+                                        $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                        $total_work_datetime->sub(new DateInterval('PT1H'));
+                                        $total_work = $total_work_datetime->format('H:i:s');
+         
+                                        // Subtract 1 hour (3600 seconds) for lunch break
+                                         // $time_out_datetime->sub(new DateInterval('PT1H'));
+         
+                                         $get_overtime = $tues_timeout->diff($time_out_datetime);
+         
+                                         // Format the overtime as 'H:i:s'
+                                         $overtime = $get_overtime->format('%H:%I:%S');
+                                        //  var_dump($total_work ,'eto yung sa may late pero pasok sa grace period then nag ot');
+                                    }else{
+                                   $interval = $time_in_datetime->diff($time_out_datetime); 
+    
+                                   $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                   $total_work_datetime->sub(new DateInterval('PT1H'));
+                                   $total_work = $total_work_datetime->format('H:i:s');
+    
+                                   // Subtract 1 hour (3600 seconds) for lunch break
+                                    // $time_out_datetime->sub(new DateInterval('PT1H'));
+    
+                                    $get_overtime = $tues_timeout->diff($time_out_datetime);
+    
+                                    // Format the overtime as 'H:i:s'
+                                    $overtime = $get_overtime->format('%H:%I:%S');
+
+                                    // var_dump($total_work, 'eto yung sa may late pero hindi pasok sa grace period then nag ot');
+                                   
+                                    }
+                                }else{
+                                     // Calculate the interval between $mon_timein and $tues_timeout
+                                $scheduled_interval = $tues_timein->diff($tues_timeout);
+    
+                                // Convert the interval to a timestamp
+                                $scheduled_timestamp = $tues_timein->getTimestamp() + $scheduled_interval->format('%s');
+    
+                                // Subtract one hour (3600 seconds) for the lunch break
+                                $scheduled_timestamp -= 3600;
+    
+                                // Create a new DateTime object with the updated timestamp
+                                $scheduled_time = new DateTime();
+                                $scheduled_time->setTimestamp($scheduled_timestamp);
+    
+                                // Format the scheduled time as a string
+                                $total_work = $scheduled_time->format('H:i');
+                                $overtime = '00:00:00';
+                                   
+                                // var_dump($total_work, 'hehe');
+                                } 
+                                              
+                            } else {
+                                $overtime = '00:00:00';
+                            }
+
+                            // if($time_in_datetime >= $  )
+                        
+                            // Subtract lunch break (1 hour) from the total work duration
+                            $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                            $total_work_datetime->sub(new DateInterval('PT1H'));
+                            $total_work = $total_work_datetime->format('H:i:s');
+
+                           
+                            $get_sched_ot = $time['sched_ot'];
+                            $get_tues_timeout = $time['tues_timeout'];
+                            $get_tues_timein = $time['tues_timein'];
+
+                            $convert_tues_timeout = new DateTime($get_tues_timeout);
+                            $convert_time_in = new DateTime($time_in);
+
+
+                            // Convert $get_sched_ot to minutes
+                            $sched_ot_minutes = (int) $get_sched_ot;
+                                                    
+                            // Convert $get_tues_timeout to a DateTime object
+                            $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_tues_timeout);
+                                                    
+                            // Add $sched_ot_minutes to $mon_timeout_datetime
+                            $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                                    
+                            // Format the resulting time as 'H:i'
+                            $result_sched_ot = $mon_timeout_datetime->format('H:i');
+
+                           
+                               
+
+                            if ($minutes_in_time_in <= $grace_period_minutes && $time_out <= $result_sched_ot ){
+
+                                // if($time_out < $get_tues_timeout){
+                                //     $convert_tues_timeout = new DateTime($get_tues_timeout);
+                                // $convert_time_in = new DateTime($time_in);
+                                
+                                // $total_work_interval = $convert_time_in->diff($convert_tues_timeout);
+                                
+                                // // Create a new DateInterval representing one hour
+                                // $one_hour_interval = new DateInterval('PT1H');
+                                
+                                // // Subtract one hour from the $convert_mon_timeout DateTime object
+                                // $convert_tues_timeout->sub($one_hour_interval);
+                                
+                                // // Calculate the updated total work time interval after subtracting an hour
+                                // $total_work_interval = $convert_time_in->diff($convert_tues_timeout);
+                                
+                                // $total_work = $total_work_interval->format('%H:%I:%S');
+                                // $overtime = '00:00:00';
+                                // }else{
+                                
+                                $convert_tues_timeout = new DateTime($get_tues_timeout);
+                                $convert_time_in = new DateTime($get_tues_timein);
+                                
+                                $total_work_interval = $convert_time_in->diff($convert_tues_timeout);
+                                
+                                // Create a new DateInterval representing one hour
+                                $one_hour_interval = new DateInterval('PT1H');
+                                
+                                // Subtract one hour from the $convert_mon_timeout DateTime object
+                                $convert_tues_timeout->sub($one_hour_interval);
+                                
+                                // Calculate the updated total work time interval after subtracting an hour
+                                $total_work_interval = $convert_time_in->diff($convert_tues_timeout);
+                                
+                                $total_work = $total_work_interval->format('%H:%I:%S');
+                                $overtime = '00:00:00';
+                                // }
+                                
+                                // echo $total_work;
+                                
+                                    
+                            }else{
+                                echo "<script> alert('Theres an error to your csv file.); </script>";
+                            }
+
+                        } else {
+                            $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
+                        }
+
+    
+                        if($time_out < $time['tues_timeout']){
+                            $time_out_datetime = new DateTime('08:00:00');
+                            $scheduled_outs = new DateTime($total_work);
+                            $early_interval = $scheduled_outs->diff($time_out_datetime);
+                            $early_out = $early_interval->format('%h:%i:%s');
+                        } else { 
+                            $early_out = '00:00:00';
+                        }
+    
+                        if($time_in < '00:00:00'){
+                            $early_out = '00:00:00';
+                            $total_work = '00:00:00';
+                            $total_rest = '08:00:00';
+                        }
+                }elseif($currentDayOfWeek == $wednesday){
+                     // Check if the employee is late
+                     echo "it is wednesday";
+                     $grace_period_total = new DateTime($time['wed_timein']);
+                     $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+                     
+                     if ($grace_period_minutes > 0) {
+                         $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                         $grace_period_total->add($grace_period_interval);
+                     }
+                     
+                     // Get the minutes from wed_timein and grace_period
+                     $wed_timein_minutes = (int)date('i', strtotime($time['wed_timein']));
+                     $grace_period_minutes = isset($time['grace_period']) ? (int)$time['grace_period'] : 0;
+
+                     // Convert time_in to DateTime object
+                     $time_in_datetime = new DateTime($time_in);
+
+                     // Calculate the late time
+                     $late_minutes = (int)$time_in_datetime->format('i') - $grace_period_minutes;
+
+                     if ($late_minutes >= 0) {
+                         // Calculate the amount of late
+                         $late = (new DateTime($time_in))->diff(new DateTime($time['wed_timein']))->format('%H:%I:%S');
+                     } else {
+                         // Set the late time to 00:00:00
+                         $late = '00:00:00';
+                     }                  
+                     
+
+                     if ($time_out) {
+                         // Convert time_in and time_out to DateTime objects
+                         $time_in_datetime = new DateTime($time_in);
+                         $time_out_datetime = new DateTime($time_out);
+                     
+                         // Check if the employee's time_in is past the scheduled time_in
+                         $actual_time_in = max($time_in_datetime, new DateTime($time['wed_timein']));
+                     
+                         // Check if the time_in minutes are less than the grace_period
+                         $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0;
+                         $minutes_in_time_in = intval($actual_time_in->format('i'));
+
+                             $sched_ot_total = new DateTime($time['wed_timeout']);
+                             $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+ 
+                             if ($sched_ot_time > 0) {
+                                 $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                                 $sched_ot_total->add($sched_ot_interval);
+                             }
+                         
+                         if ($minutes_in_time_in <= $grace_period_minutes) {
+                             // Calculate the total work hours from the scheduled time_in to time_out
+                             $interval = $time_out_datetime->diff(new DateTime($time['wed_timein']));
+                             $late = '00:00:00';
+                             // var_dump($time_out_datetime);
+                             
+                         } else {
+                             // Calculate the total work hours from actual time_in to time_out
+                             $interval = $time_out_datetime->diff($time_in_datetime); 
+                         }
+
+                         if ($time_out >= $time['wed_timeout']) {
+                             // Calculate overtime
+                             $total_work_time = new DateTime($total_work);
+                             $wed_timein = new DateTime($time['wed_timein']);
+                             $sched_ot_total = new DateTime($time['wed_timeout']);
+                             $wed_timeout = new DateTime($time['wed_timeout']);
+                             
+                             $time_in_datetime = new DateTime($time_in);
+                             // $time_out_datetime = new DateTime($time_out);
+ 
+ 
+                             $time_out_obj = DateTime::createFromFormat('H:i', $time_out);
+                             
+                             $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+ 
+                             if ($sched_ot_time > 0) {
+                                 $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                                 $sched_ot_total->add($sched_ot_interval);
+                             }
+
+ 
+                             // Get the minutes from $time_out
+                             
+ 
+                             if ($time_out_obj >  $sched_ot_total) {
+                                 // $total_hehe = $sched_ot_minutes + $time_out_minutes;
+                                 if($minutes_in_time_in <= $grace_period_minutes){
+                                     $interval = $wed_timein->diff($time_out_datetime); 
+ 
+                                     $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                     $total_work_datetime->sub(new DateInterval('PT1H'));
+                                     $total_work = $total_work_datetime->format('H:i:s');
+      
+                                     // Subtract 1 hour (3600 seconds) for lunch break
+                                      // $time_out_datetime->sub(new DateInterval('PT1H'));
+      
+                                      $get_overtime = $wed_timeout->diff($time_out_datetime);
+      
+                                      // Format the overtime as 'H:i:s'
+                                      $overtime = $get_overtime->format('%H:%I:%S');
+                                     //  var_dump($total_work ,'eto yung sa may late pero pasok sa grace period then nag ot');
+                                     echo "hoho";
+                                 }else{
+                                $interval = $time_in_datetime->diff($time_out_datetime); 
+ 
+                                $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                $total_work_datetime->sub(new DateInterval('PT1H'));
+                                $total_work = $total_work_datetime->format('H:i:s');
+ 
+                                // Subtract 1 hour (3600 seconds) for lunch break
+                                 // $time_out_datetime->sub(new DateInterval('PT1H'));
+ 
+                                 $get_overtime = $wed_timeout->diff($time_out_datetime);
+ 
+                                 // Format the overtime as 'H:i:s'
+                                 $overtime = $get_overtime->format('%H:%I:%S');
+
+                                 // var_dump($total_work, 'eto yung sa may late pero hindi pasok sa grace period then nag ot');
+                                
+                                 }
+                             }else{
+                                  // Calculate the interval between $mon_timein and $wed_timeout
+                             $scheduled_interval = $wed_timein->diff($wed_timeout);
+ 
+                             // Convert the interval to a timestamp
+                             $scheduled_timestamp = $wed_timein->getTimestamp() + $scheduled_interval->format('%s');
+ 
+                             // Subtract one hour (3600 seconds) for the lunch break
+                             $scheduled_timestamp -= 3600;
+ 
+                             // Create a new DateTime object with the updated timestamp
+                             $scheduled_time = new DateTime();
+                             $scheduled_time->setTimestamp($scheduled_timestamp);
+ 
+                             // Format the scheduled time as a string
+                             $total_work = $scheduled_time->format('H:i');
+                             $overtime = '00:00:00';
+
+                             echo "haha";
+                                
+                             // var_dump($total_work, 'hehe');
+                             } 
+                                           
+                         } else {
+                             $overtime = '00:00:00';
+                         }
+
+                         // if($time_in_datetime >= $  )
+                     
+                         // Subtract lunch break (1 hour) from the total work duration
+                         $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                         $total_work_datetime->sub(new DateInterval('PT1H'));
+                         $total_work = $total_work_datetime->format('H:i:s');
+
+                        
+                         $get_sched_ot = $time['sched_ot'];
+                         $get_wed_timeout = $time['wed_timeout'];
+                         $get_wed_timein = $time['wed_timein'];
+
+                         $convert_wed_timeout = new DateTime($get_wed_timeout);
+                         $convert_time_in = new DateTime($time_in);
+
+                         $convert_time_out = new DateTime($time_out);
+
+
+                         // Convert $get_sched_ot to minutes
+                         $sched_ot_minutes = (int) $get_sched_ot;
+                                                 
+                         // Convert $get_wed_timeout to a DateTime object
+                         $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_wed_timeout);
+                                                 
+                         // Add $sched_ot_minutes to $mon_timeout_datetime
+                         $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                                 
+                         // Format the resulting time as 'H:i'
+                         $result_sched_ot = $mon_timeout_datetime->format('H:i');
+
+                        
+                            
+
+                         if ($minutes_in_time_in <= $grace_period_minutes && $time_out <= $result_sched_ot ){
+                             
+                             $convert_wed_timeout = new DateTime($get_wed_timeout);
+                             $convert_time_in = new DateTime($get_wed_timein);
+                             $convert_time_out = new DateTime($time_out);
+                             
+                             $total_work_interval = $convert_time_in->diff($convert_time_out);
+                             
+                             // Create a new DateInterval representing one hour
+                             $one_hour_interval = new DateInterval('PT1H');
+                             
+                             // Subtract one hour from the $convert_mon_timeout DateTime object
+                             $convert_wed_timeout->sub($one_hour_interval);
+                             
+                             // Calculate the updated total work time interval after subtracting an hour
+                             $total_work_interval = $convert_time_in->diff($convert_time_out);
+                             
+                             $total_work = $total_work_interval->format('%H:%I:%S');
+                             $overtime = '00:00:00';
+                             
+                             echo "hehe";
+                            //  echo $total_work;
+                             
+                                 
+                         }else{
+                             echo "<script> alert('Theres an error to your csv file.); </script>";
+                         }
+
+                     } else {
+                         $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
+                     }
+
+                      // Subtract lunch break (1 hour) from the total work duration
+                      $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                      $total_work_datetime->sub(new DateInterval('PT1H'));
+                      $total_work = $total_work_datetime->format('H:i:s');
+
+                     
+                      $get_sched_ot = $time['sched_ot'];
+                      $get_wed_timeout = $time['wed_timeout'];
+                      $get_wed_timein = $time['wed_timein'];
+
+                      $convert_wed_timeout = new DateTime($get_wed_timeout);
+                      $convert_time_in = new DateTime($time_in);
+
+                      $convert_time_out = new DateTime($time_out);
+
+
+                      // Convert $get_sched_ot to minutes
+                      $sched_ot_minutes = (int) $get_sched_ot;
+                                              
+                      // Convert $get_wed_timeout to a DateTime object
+                      $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_wed_timeout);
+                                              
+                      // Add $sched_ot_minutes to $mon_timeout_datetime
+                      $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                              
+                      // Format the resulting time as 'H:i'
+                      $result_sched_ot = $mon_timeout_datetime->format('H:i');
+
+ 
+                     if($time_out < $time['wed_timeout']){
+                        $get_timeout = $time['wed_timeout'];
+                         $time_out_datetime = new DateTime($get_timeout);
+                         $scheduled_outs = new DateTime($time_out);
+                         $early_interval = $scheduled_outs->diff($time_out_datetime);
+                         $early_out = $early_interval->format('%h:%i:%s');
+                         echo $total_work;
+                     } else { 
+                         $early_out = '00:00:00';
+                     }
+ 
+                     if($time_in < '00:00:00'){
+                         $early_out = '00:00:00';
+                         $total_work = '00:00:00';
+                         $total_rest = '08:00:00';
+                     }
+                }elseif($currentDayOfWeek == $thursday){
+                    echo "it is thursday";
+                       // Check if the employee is late
+                       $grace_period_total = new DateTime($time['thurs_timein']);
+                       $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+                       
+                       if ($grace_period_minutes > 0) {
+                           $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                           $grace_period_total->add($grace_period_interval);
+                       }
+                       
+                       // Get the minutes from thurs_timein and grace_period
+                       $thurs_timein_minutes = (int)date('i', strtotime($time['thurs_timein']));
+                       $grace_period_minutes = isset($time['grace_period']) ? (int)$time['grace_period'] : 0;
+  
+                       // Convert time_in to DateTime object
+                       $time_in_datetime = new DateTime($time_in);
+  
+                       // Calculate the late time
+                       $late_minutes = (int)$time_in_datetime->format('i') - $grace_period_minutes;
+  
+                       if ($late_minutes >= 0) {
+                           // Calculate the amount of late
+                           $late = (new DateTime($time_in))->diff(new DateTime($time['thurs_timein']))->format('%H:%I:%S');
+                       } else {
+                           // Set the late time to 00:00:00
+                           $late = '00:00:00';
+                       }                  
+                       
+  
+                       if ($time_out) {
+                           // Convert time_in and time_out to DateTime objects
+                           $time_in_datetime = new DateTime($time_in);
+                           $time_out_datetime = new DateTime($time_out);
+                       
+                           // Check if the employee's time_in is past the scheduled time_in
+                           $actual_time_in = max($time_in_datetime, new DateTime($time['thurs_timein']));
+                       
+                           // Check if the time_in minutes are less than the grace_period
+                           $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0;
+                           $minutes_in_time_in = intval($actual_time_in->format('i'));
+  
+                               $sched_ot_total = new DateTime($time['thurs_timeout']);
+                               $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+   
+                               if ($sched_ot_time > 0) {
+                                   $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                                   $sched_ot_total->add($sched_ot_interval);
+                               }
+                           
+                           if ($minutes_in_time_in <= $grace_period_minutes) {
+                               // Calculate the total work hours from the scheduled time_in to time_out
+                               $interval = $time_out_datetime->diff(new DateTime($time['thurs_timein']));
+                               $late = '00:00:00';
+                               // var_dump($time_out_datetime);
+                               
+                           } else {
+                               // Calculate the total work hours from actual time_in to time_out
+                               $interval = $time_out_datetime->diff($time_in_datetime); 
+                           }
+  
+                           if ($time_out >= $time['thurs_timeout']) {
+                               // Calculate overtime
+                               $total_work_time = new DateTime($total_work);
+                               $thurs_timein = new DateTime($time['thurs_timein']);
+                               $sched_ot_total = new DateTime($time['thurs_timeout']);
+                               $thurs_timeout = new DateTime($time['thurs_timeout']);
+                               
+                               $time_in_datetime = new DateTime($time_in);
+                               // $time_out_datetime = new DateTime($time_out);
+   
+   
+                               $time_out_obj = DateTime::createFromFormat('H:i', $time_out);
+                               
+                               $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+   
+                               if ($sched_ot_time > 0) {
+                                   $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                                   $sched_ot_total->add($sched_ot_interval);
+                               }
+  
+   
+                               // Get the minutes from $time_out
+                               
+   
+                               if ($time_out_obj >  $sched_ot_total) {
+                                   // $total_hehe = $sched_ot_minutes + $time_out_minutes;
+                                   if($minutes_in_time_in <= $grace_period_minutes){
+                                       $interval = $thurs_timein->diff($time_out_datetime); 
+   
+                                       $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                       $total_work_datetime->sub(new DateInterval('PT1H'));
+                                       $total_work = $total_work_datetime->format('H:i:s');
+        
+                                       // Subtract 1 hour (3600 seconds) for lunch break
+                                        // $time_out_datetime->sub(new DateInterval('PT1H'));
+        
+                                        $get_overtime = $thurs_timeout->diff($time_out_datetime);
+        
+                                        // Format the overtime as 'H:i:s'
+                                        $overtime = $get_overtime->format('%H:%I:%S');
+                                       //  var_dump($total_work ,'eto yung sa may late pero pasok sa grace period then nag ot');
+                                   }else{
+                                  $interval = $time_in_datetime->diff($time_out_datetime); 
+   
+                                  $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                  $total_work_datetime->sub(new DateInterval('PT1H'));
+                                  $total_work = $total_work_datetime->format('H:i:s');
+   
+                                  // Subtract 1 hour (3600 seconds) for lunch break
+                                   // $time_out_datetime->sub(new DateInterval('PT1H'));
+   
+                                   $get_overtime = $thurs_timeout->diff($time_out_datetime);
+   
+                                   // Format the overtime as 'H:i:s'
+                                   $overtime = $get_overtime->format('%H:%I:%S');
+  
+                                   // var_dump($total_work, 'eto yung sa may late pero hindi pasok sa grace period then nag ot');
+                                  
+                                   }
+                               }else{
+                                    // Calculate the interval between $mon_timein and $thurs_timeout
+                               $scheduled_interval = $thurs_timein->diff($thurs_timeout);
+   
+                               // Convert the interval to a timestamp
+                               $scheduled_timestamp = $thurs_timein->getTimestamp() + $scheduled_interval->format('%s');
+   
+                               // Subtract one hour (3600 seconds) for the lunch break
+                               $scheduled_timestamp -= 3600;
+   
+                               // Create a new DateTime object with the updated timestamp
+                               $scheduled_time = new DateTime();
+                               $scheduled_time->setTimestamp($scheduled_timestamp);
+   
+                               // Format the scheduled time as a string
+                               $total_work = $scheduled_time->format('H:i');
+                               $overtime = '00:00:00';
+                                  
+                               // var_dump($total_work, 'hehe');
+                               } 
+                                             
+                           } else {
+                               $overtime = '00:00:00';
+                           }
+  
+                           // if($time_in_datetime >= $  )
+                       
+                           // Subtract lunch break (1 hour) from the total work duration
+                           $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                           $total_work_datetime->sub(new DateInterval('PT1H'));
+                           $total_work = $total_work_datetime->format('H:i:s');
+  
+                          
+                           $get_sched_ot = $time['sched_ot'];
+                           $get_thurs_timeout = $time['thurs_timeout'];
+                           $get_thurs_timein = $time['thurs_timein'];
+  
+                           $convert_thurs_timeout = new DateTime($get_thurs_timeout);
+                           $convert_time_in = new DateTime($time_in);
+  
+  
+                           // Convert $get_sched_ot to minutes
+                           $sched_ot_minutes = (int) $get_sched_ot;
+                                                   
+                           // Convert $get_thurs_timeout to a DateTime object
+                           $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_thurs_timeout);
+                                                   
+                           // Add $sched_ot_minutes to $mon_timeout_datetime
+                           $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                                   
+                           // Format the resulting time as 'H:i'
+                           $result_sched_ot = $mon_timeout_datetime->format('H:i');
+  
+                          
+                              
+  
+                           if ($minutes_in_time_in <= $grace_period_minutes && $time_out <= $result_sched_ot ){
+                               
+                               $convert_thurs_timeout = new DateTime($get_thurs_timeout);
+                               $convert_time_in = new DateTime($get_thurs_timein);
+                               
+                               $total_work_interval = $convert_time_in->diff($convert_thurs_timeout);
+                               
+                               // Create a new DateInterval representing one hour
+                               $one_hour_interval = new DateInterval('PT1H');
+                               
+                               // Subtract one hour from the $convert_mon_timeout DateTime object
+                               $convert_thurs_timeout->sub($one_hour_interval);
+                               
+                               // Calculate the updated total work time interval after subtracting an hour
+                               $total_work_interval = $convert_time_in->diff($convert_thurs_timeout);
+                               
+                               $total_work = $total_work_interval->format('%H:%I:%S');
+                               $overtime = '00:00:00';
+                               
+                            //    echo $total_work;
+                               
+                                   
+                           }else{
+                               echo "<script> alert('Theres an error to your csv file.); </script>";
+                           }
+  
+                       } else {
+                           $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
+                       }
+  
+   
+                       if($time_out < $time['thurs_timeout']){
+                           $time_out_datetime = new DateTime('08:00:00');
+                           $scheduled_outs = new DateTime($total_work);
+                           $early_interval = $scheduled_outs->diff($time_out_datetime);
+                           $early_out = $early_interval->format('%h:%i:%s');
+                       } else { 
+                           $early_out = '00:00:00';
+                       }
+   
+                       if($time_in < '00:00:00'){
+                           $early_out = '00:00:00';
+                           $total_work = '00:00:00';
+                           $total_rest = '08:00:00';
+                       }
+            }elseif($currentDayOfWeek == $friday){
+                echo "it is friday";
+                // Check if the employee is late
+                $grace_period_total = new DateTime($time['fri_timein']);
+                $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+                
+                if ($grace_period_minutes > 0) {
+                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                    $grace_period_total->add($grace_period_interval);
+                }
+                
+                // Get the minutes from fri_timein and grace_period
+                $fri_timein = (int)date('i', strtotime($time['fri_timein']));
+                $grace_period_minutes = isset($time['grace_period']) ? (int)$time['grace_period'] : 0;
+
+                // Convert time_in to DateTime object
+                $time_in_datetime = new DateTime($time_in);
+
+                // Calculate the late time
+                $late_minutes = (int)$time_in_datetime->format('i') - $grace_period_minutes;
+
+                if ($late_minutes >= 0) {
+                    // Calculate the amount of late
+                    $late = (new DateTime($time_in))->diff(new DateTime($time['fri_timein']))->format('%H:%I:%S');
+                } else {
+                    // Set the late time to 00:00:00
+                    $late = '00:00:00';
+                }                  
+                
+
+                if ($time_out) {
+                    // Convert time_in and time_out to DateTime objects
+                    $time_in_datetime = new DateTime($time_in);
+                    $time_out_datetime = new DateTime($time_out);
+                
+                    // Check if the employee's time_in is past the scheduled time_in
+                    $actual_time_in = max($time_in_datetime, new DateTime($time['fri_timein']));
+                
+                    // Check if the time_in minutes are less than the grace_period
+                    $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0;
+                    $minutes_in_time_in = intval($actual_time_in->format('i'));
+
+                        $sched_ot_total = new DateTime($time['fri_timeout']);
+                        $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+
+                        if ($sched_ot_time > 0) {
+                            $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                            $sched_ot_total->add($sched_ot_interval);
+                        }
+                    
+                    if ($minutes_in_time_in <= $grace_period_minutes) {
+                        // Calculate the total work hours from the scheduled time_in to time_out
+                        $interval = $time_out_datetime->diff(new DateTime($time['fri_timein']));
+                        $late = '00:00:00';
+                        // var_dump($time_out_datetime);
+                        
+                    } else {
+                        // Calculate the total work hours from actual time_in to time_out
+                        $interval = $time_out_datetime->diff($time_in_datetime); 
+                    }
+
+                    if ($time_out >= $time['fri_timeout']) {
+                        // Calculate overtime
+                        $total_work_time = new DateTime($total_work);
+                        $fri_timein = new DateTime($time['fri_timein']);
+                        $sched_ot_total = new DateTime($time['fri_timeout']);
+                        $fri_timeout = new DateTime($time['fri_timeout']);
+                        
+                        $time_in_datetime = new DateTime($time_in);
+                        // $time_out_datetime = new DateTime($time_out);
+
+
+                        $time_out_obj = DateTime::createFromFormat('H:i', $time_out);
+                        
+                        $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+
+                        if ($sched_ot_time > 0) {
+                            $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                            $sched_ot_total->add($sched_ot_interval);
+                        }
+
+
+                        // Get the minutes from $time_out
+                        
+
+                        if ($time_out_obj >  $sched_ot_total) {
+                            // $total_hehe = $sched_ot_minutes + $time_out_minutes;
+                            if($minutes_in_time_in <= $grace_period_minutes){
+                                $interval = $fri_timein->diff($time_out_datetime); 
+
+                                $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                $total_work_datetime->sub(new DateInterval('PT1H'));
+                                $total_work = $total_work_datetime->format('H:i:s');
+ 
+                                // Subtract 1 hour (3600 seconds) for lunch break
+                                 // $time_out_datetime->sub(new DateInterval('PT1H'));
+ 
+                                 $get_overtime = $fri_timeout->diff($time_out_datetime);
+ 
+                                 // Format the overtime as 'H:i:s'
+                                 $overtime = $get_overtime->format('%H:%I:%S');
+                                //  var_dump($total_work ,'eto yung sa may late pero pasok sa grace period then nag ot');
+                            }else{
+                           $interval = $time_in_datetime->diff($time_out_datetime); 
+
+                           $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                           $total_work_datetime->sub(new DateInterval('PT1H'));
+                           $total_work = $total_work_datetime->format('H:i:s');
+
+                           // Subtract 1 hour (3600 seconds) for lunch break
+                            // $time_out_datetime->sub(new DateInterval('PT1H'));
+
+                            $get_overtime = $fri_timeout->diff($time_out_datetime);
+
+                            // Format the overtime as 'H:i:s'
+                            $overtime = $get_overtime->format('%H:%I:%S');
+
+                            // var_dump($total_work, 'eto yung sa may late pero hindi pasok sa grace period then nag ot');
+                           
+                            }
+                        }else{
+                             // Calculate the interval between $mon_timein and $fri_timeout
+                        $scheduled_interval = $fri_timein->diff($fri_timeout);
+
+                        // Convert the interval to a timestamp
+                        $scheduled_timestamp = $fri_timein->getTimestamp() + $scheduled_interval->format('%s');
+
+                        // Subtract one hour (3600 seconds) for the lunch break
+                        $scheduled_timestamp -= 3600;
+
+                        // Create a new DateTime object with the updated timestamp
+                        $scheduled_time = new DateTime();
+                        $scheduled_time->setTimestamp($scheduled_timestamp);
+
+                        // Format the scheduled time as a string
+                        $total_work = $scheduled_time->format('H:i');
+                        $overtime = '00:00:00';
+                           
+                        // var_dump($total_work, 'hehe');
+                        } 
+                                      
+                    } else {
+                        $overtime = '00:00:00';
+                    }
+
+                    // if($time_in_datetime >= $  )
+                
+                    // Subtract lunch break (1 hour) from the total work duration
+                    $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                    $total_work = $total_work_datetime->format('H:i:s');
+
+                   
+                    $get_sched_ot = $time['sched_ot'];
+                    $get_fri_timeout = $time['fri_timeout'];
+                    $get_fri_timein = $time['fri_timein'];
+
+                    $convert_fri_timeout = new DateTime($get_fri_timeout);
+                    $convert_time_in = new DateTime($time_in);
+
+
+                    // Convert $get_sched_ot to minutes
+                    $sched_ot_minutes = (int) $get_sched_ot;
+                                            
+                    // Convert $get_fri_timeout to a DateTime object
+                    $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_fri_timeout);
+                                            
+                    // Add $sched_ot_minutes to $mon_timeout_datetime
+                    $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                            
+                    // Format the resulting time as 'H:i'
+                    $result_sched_ot = $mon_timeout_datetime->format('H:i');
+
+                   
+                       
+
+                    if ($minutes_in_time_in <= $grace_period_minutes && $time_out <= $result_sched_ot ){
+                        
+                        $convert_fri_timeout = new DateTime($get_fri_timeout);
+                        $convert_time_in = new DateTime($get_fri_timein);
+                        
+                        $total_work_interval = $convert_time_in->diff($convert_fri_timeout);
+                        
+                        // Create a new DateInterval representing one hour
+                        $one_hour_interval = new DateInterval('PT1H');
+                        
+                        // Subtract one hour from the $convert_mon_timeout DateTime object
+                        $convert_fri_timeout->sub($one_hour_interval);
+                        
+                        // Calculate the updated total work time interval after subtracting an hour
+                        $total_work_interval = $convert_time_in->diff($convert_fri_timeout);
+                        
+                        $total_work = $total_work_interval->format('%H:%I:%S');
+                        $overtime = '00:00:00';
+                        
+                     //    echo $total_work;
+                        
+                            
+                    }else{
+                        echo "<script> alert('Theres an error to your csv file.); </script>";
+                    }
+
+                } else {
+                    $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
+                }
+
+
+                if($time_out < $time['fri_timeout']){
+                    $time_out_datetime = new DateTime('08:00:00');
+                    $scheduled_outs = new DateTime($total_work);
+                    $early_interval = $scheduled_outs->diff($time_out_datetime);
+                    $early_out = $early_interval->format('%h:%i:%s');
+                } else { 
+                    $early_out = '00:00:00';
+                }
+
+                if($time_in < '00:00:00'){
+                    $early_out = '00:00:00';
+                    $total_work = '00:00:00';
+                    $total_rest = '08:00:00';
+                }
+            }elseif($currentDayOfWeek == $saturday){
+                echo "it is saturday";
+                // Check if the employee is late
+                $grace_period_total = new DateTime($time['sat_timein']);
+                $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+                
+                if ($grace_period_minutes > 0) {
+                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                    $grace_period_total->add($grace_period_interval);
+                }
+                
+                // Get the minutes from sat_timein and grace_period
+                $sat_timein = (int)date('i', strtotime($time['sat_timein']));
+                $grace_period_minutes = isset($time['grace_period']) ? (int)$time['grace_period'] : 0;
+
+                // Convert time_in to DateTime object
+                $time_in_datetime = new DateTime($time_in);
+
+                // Calculate the late time
+                $late_minutes = (int)$time_in_datetime->format('i') - $grace_period_minutes;
+
+                if ($late_minutes >= 0) {
+                    // Calculate the amount of late
+                    $late = (new DateTime($time_in))->diff(new DateTime($time['sat_timein']))->format('%H:%I:%S');
+                } else {
+                    // Set the late time to 00:00:00
+                    $late = '00:00:00';
+                }                  
+                
+
+                if ($time_out) {
+                    // Convert time_in and time_out to DateTime objects
+                    $time_in_datetime = new DateTime($time_in);
+                    $time_out_datetime = new DateTime($time_out);
+                
+                    // Check if the employee's time_in is past the scheduled time_in
+                    $actual_time_in = max($time_in_datetime, new DateTime($time['sat_timein']));
+                
+                    // Check if the time_in minutes are less than the grace_period
+                    $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0;
+                    $minutes_in_time_in = intval($actual_time_in->format('i'));
+
+                        $sched_ot_total = new DateTime($time['sat_timeout']);
+                        $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+
+                        if ($sched_ot_time > 0) {
+                            $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                            $sched_ot_total->add($sched_ot_interval);
+                        }
+                    
+                    if ($minutes_in_time_in <= $grace_period_minutes) {
+                        // Calculate the total work hours from the scheduled time_in to time_out
+                        $interval = $time_out_datetime->diff(new DateTime($time['sat_timein']));
+                        $late = '00:00:00';
+                        // var_dump($time_out_datetime);
+                        
+                    } else {
+                        // Calculate the total work hours from actual time_in to time_out
+                        $interval = $time_out_datetime->diff($time_in_datetime); 
+                    }
+
+                    if ($time_out >= $time['sat_timeout']) {
+                        // Calculate overtime
+                        $total_work_time = new DateTime($total_work);
+                        $sat_timein = new DateTime($time['sat_timein']);
+                        $sched_ot_total = new DateTime($time['sat_timeout']);
+                        $sat_timeout = new DateTime($time['sat_timeout']);
+                        
+                        $time_in_datetime = new DateTime($time_in);
+                        // $time_out_datetime = new DateTime($time_out);
+
+
+                        $time_out_obj = DateTime::createFromFormat('H:i', $time_out);
+                        
+                        $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+
+                        if ($sched_ot_time > 0) {
+                            $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                            $sched_ot_total->add($sched_ot_interval);
+                        }
+
+
+                        // Get the minutes from $time_out
+                        
+
+                        if ($time_out_obj >  $sched_ot_total) {
+                            // $total_hehe = $sched_ot_minutes + $time_out_minutes;
+                            if($minutes_in_time_in <= $grace_period_minutes){
+                                $interval = $sat_timein->diff($time_out_datetime); 
+
+                                $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                $total_work_datetime->sub(new DateInterval('PT1H'));
+                                $total_work = $total_work_datetime->format('H:i:s');
+ 
+                                // Subtract 1 hour (3600 seconds) for lunch break
+                                 // $time_out_datetime->sub(new DateInterval('PT1H'));
+ 
+                                 $get_overtime = $sat_timeout->diff($time_out_datetime);
+ 
+                                 // Format the overtime as 'H:i:s'
+                                 $overtime = $get_overtime->format('%H:%I:%S');
+                                //  var_dump($total_work ,'eto yung sa may late pero pasok sa grace period then nag ot');
+                            }else{
+                           $interval = $time_in_datetime->diff($time_out_datetime); 
+
+                           $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                           $total_work_datetime->sub(new DateInterval('PT1H'));
+                           $total_work = $total_work_datetime->format('H:i:s');
+
+                           // Subtract 1 hour (3600 seconds) for lunch break
+                            // $time_out_datetime->sub(new DateInterval('PT1H'));
+
+                            $get_overtime = $sat_timeout->diff($time_out_datetime);
+
+                            // Format the overtime as 'H:i:s'
+                            $overtime = $get_overtime->format('%H:%I:%S');
+
+                            // var_dump($total_work, 'eto yung sa may late pero hindi pasok sa grace period then nag ot');
+                           
+                            }
+                        }else{
+                             // Calculate the interval between $mon_timein and $sat_timeout
+                        $scheduled_interval = $sat_timein->diff($sat_timeout);
+
+                        // Convert the interval to a timestamp
+                        $scheduled_timestamp = $sat_timein->getTimestamp() + $scheduled_interval->format('%s');
+
+                        // Subtract one hour (3600 seconds) for the lunch break
+                        $scheduled_timestamp -= 3600;
+
+                        // Create a new DateTime object with the updated timestamp
+                        $scheduled_time = new DateTime();
+                        $scheduled_time->setTimestamp($scheduled_timestamp);
+
+                        // Format the scheduled time as a string
+                        $total_work = $scheduled_time->format('H:i');
+                        $overtime = '00:00:00';
+                           
+                        // var_dump($total_work, 'hehe');
+                        } 
+                                      
+                    } else {
+                        $overtime = '00:00:00';
+                    }
+
+                    // if($time_in_datetime >= $  )
+                
+                    // Subtract lunch break (1 hour) from the total work duration
+                    $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                    $total_work = $total_work_datetime->format('H:i:s');
+
+                   
+                    $get_sched_ot = $time['sched_ot'];
+                    $get_sat_timeout = $time['sat_timeout'];
+                    $get_sat_timein = $time['sat_timein'];
+
+                    $convert_sat_timeout = new DateTime($get_sat_timeout);
+                    $convert_time_in = new DateTime($time_in);
+
+
+                    // Convert $get_sched_ot to minutes
+                    $sched_ot_minutes = (int) $get_sched_ot;
+                                            
+                    // Convert $get_sat_timeout to a DateTime object
+                    $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_sat_timeout);
+                                            
+                    // Add $sched_ot_minutes to $mon_timeout_datetime
+                    $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                            
+                    // Format the resulting time as 'H:i'
+                    $result_sched_ot = $mon_timeout_datetime->format('H:i');
+
+                   
+                       
+
+                    if ($minutes_in_time_in <= $grace_period_minutes && $time_out <= $result_sched_ot ){
+                        
+                        $convert_sat_timeout = new DateTime($get_sat_timeout);
+                        $convert_time_in = new DateTime($get_sat_timein);
+                        
+                        $total_work_interval = $convert_time_in->diff($convert_sat_timeout);
+                        
+                        // Create a new DateInterval representing one hour
+                        $one_hour_interval = new DateInterval('PT1H');
+                        
+                        // Subtract one hour from the $convert_mon_timeout DateTime object
+                        $convert_sat_timeout->sub($one_hour_interval);
+                        
+                        // Calculate the updated total work time interval after subtracting an hour
+                        $total_work_interval = $convert_time_in->diff($convert_sat_timeout);
+                        
+                        $total_work = $total_work_interval->format('%H:%I:%S');
+                        $overtime = '00:00:00';
+                        
+                     //    echo $total_work;
+                        
+                            
+                    }else{
+                        echo "<script> alert('Theres an error to your csv file.); </script>";
+                    }
+
+                } else {
+                    $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
+                }
+
+
+                if($time_out < $time['sat_timeout']){
+                    $time_out_datetime = new DateTime('08:00:00');
+                    $scheduled_outs = new DateTime($total_work);
+                    $early_interval = $scheduled_outs->diff($time_out_datetime);
+                    $early_out = $early_interval->format('%h:%i:%s');
+                } else { 
+                    $early_out = '00:00:00';
+                }
+
+                if($time_in < '00:00:00'){
+                    $early_out = '00:00:00';
+                    $total_work = '00:00:00';
+                    $total_rest = '08:00:00';
+                }
+             }elseif($currentDayOfWeek == $sunday){
+                echo "it is sunday";
+                // Check if the employee is late
+                $grace_period_total = new DateTime($time['sun_timein']);
+                $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+                
+                if ($grace_period_minutes > 0) {
+                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                    $grace_period_total->add($grace_period_interval);
+                }
+                
+                // Get the minutes from sun_timein and grace_period
+                $sun_timein = (int)date('i', strtotime($time['sun_timein']));
+                $grace_period_minutes = isset($time['grace_period']) ? (int)$time['grace_period'] : 0;
+
+                // Convert time_in to DateTime object
+                $time_in_datetime = new DateTime($time_in);
+
+                // Calculate the late time
+                $late_minutes = (int)$time_in_datetime->format('i') - $grace_period_minutes;
+
+                if ($late_minutes >= 0) {
+                    // Calculate the amount of late
+                    $late = (new DateTime($time_in))->diff(new DateTime($time['sun_timein']))->format('%H:%I:%S');
+                } else {
+                    // Set the late time to 00:00:00
+                    $late = '00:00:00';
+                }                  
+                
+
+                if ($time_out) {
+                    // Convert time_in and time_out to DateTime objects
+                    $time_in_datetime = new DateTime($time_in);
+                    $time_out_datetime = new DateTime($time_out);
+                
+                    // Check if the employee's time_in is past the scheduled time_in
+                    $actual_time_in = max($time_in_datetime, new DateTime($time['sun_timein']));
+                
+                    // Check if the time_in minutes are less than the grace_period
+                    $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0;
+                    $minutes_in_time_in = intval($actual_time_in->format('i'));
+
+                        $sched_ot_total = new DateTime($time['sun_timeout']);
+                        $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+
+                        if ($sched_ot_time > 0) {
+                            $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                            $sched_ot_total->add($sched_ot_interval);
+                        }
+                    
+                    if ($minutes_in_time_in <= $grace_period_minutes) {
+                        // Calculate the total work hours from the scheduled time_in to time_out
+                        $interval = $time_out_datetime->diff(new DateTime($time['sun_timein']));
+                        $late = '00:00:00';
+                        // var_dump($time_out_datetime);
+                        
+                    } else {
+                        // Calculate the total work hours from actual time_in to time_out
+                        $interval = $time_out_datetime->diff($time_in_datetime); 
+                    }
+
+                    if ($time_out >= $time['sun_timeout']) {
+                        // Calculate overtime
+                        $total_work_time = new DateTime($total_work);
+                        $sun_timein = new DateTime($time['sun_timein']);
+                        $sched_ot_total = new DateTime($time['sun_timeout']);
+                        $sun_timeout = new DateTime($time['sun_timeout']);
+                        
+                        $time_in_datetime = new DateTime($time_in);
+                        // $time_out_datetime = new DateTime($time_out);
+
+
+                        $time_out_obj = DateTime::createFromFormat('H:i', $time_out);
+                        
+                        $sched_ot_time = isset($time['sched_ot']) ? $time['sched_ot'] : 0; // Retrieve grace period from $time array or set to 0 if not available
+
+                        if ($sched_ot_time > 0) {
+                            $sched_ot_interval = new DateInterval('PT' . $sched_ot_time . 'M');
+                            $sched_ot_total->add($sched_ot_interval);
+                        }
+
+
+                        // Get the minutes from $time_out
+                        
+
+                        if ($time_out_obj >  $sched_ot_total) {
+                            // $total_hehe = $sched_ot_minutes + $time_out_minutes;
+                            if($minutes_in_time_in <= $grace_period_minutes){
+                                $interval = $sun_timein->diff($time_out_datetime); 
+
+                                $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                                $total_work_datetime->sub(new DateInterval('PT1H'));
+                                $total_work = $total_work_datetime->format('H:i:s');
+ 
+                                // Subtract 1 hour (3600 seconds) for lunch break
+                                 // $time_out_datetime->sub(new DateInterval('PT1H'));
+ 
+                                 $get_overtime = $sun_timeout->diff($time_out_datetime);
+ 
+                                 // Format the overtime as 'H:i:s'
+                                 $overtime = $get_overtime->format('%H:%I:%S');
+                                //  var_dump($total_work ,'eto yung sa may late pero pasok sa grace period then nag ot');
+                            }else{
+                           $interval = $time_in_datetime->diff($time_out_datetime); 
+
+                           $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                           $total_work_datetime->sub(new DateInterval('PT1H'));
+                           $total_work = $total_work_datetime->format('H:i:s');
+
+                           // Subtract 1 hour (3600 seconds) for lunch break
+                            // $time_out_datetime->sub(new DateInterval('PT1H'));
+
+                            $get_overtime = $sun_timeout->diff($time_out_datetime);
+
+                            // Format the overtime as 'H:i:s'
+                            $overtime = $get_overtime->format('%H:%I:%S');
+
+                            // var_dump($total_work, 'eto yung sa may late pero hindi pasok sa grace period then nag ot');
+                           
+                            }
+                        }else{
+                             // Calculate the interval between $mon_timein and $sun_timeout
+                        $scheduled_interval = $sun_timein->diff($sun_timeout);
+
+                        // Convert the interval to a timestamp
+                        $scheduled_timestamp = $sun_timein->getTimestamp() + $scheduled_interval->format('%s');
+
+                        // Subtract one hour (3600 seconds) for the lunch break
+                        $scheduled_timestamp -= 3600;
+
+                        // Create a new DateTime object with the updated timestamp
+                        $scheduled_time = new DateTime();
+                        $scheduled_time->setTimestamp($scheduled_timestamp);
+
+                        // Format the scheduled time as a string
+                        $total_work = $scheduled_time->format('H:i');
+                        $overtime = '00:00:00';
+                           
+                        // var_dump($total_work, 'hehe');
+                        } 
+                                      
+                    } else {
+                        $overtime = '00:00:00';
+                    }
+
+                    // if($time_in_datetime >= $  )
+                
+                    // Subtract lunch break (1 hour) from the total work duration
+                    $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                    $total_work = $total_work_datetime->format('H:i:s');
+
+                   
+                    $get_sched_ot = $time['sched_ot'];
+                    $get_sun_timeout = $time['sun_timeout'];
+                    $get_sun_timein = $time['sun_timein'];
+
+                    $convert_sun_timeout = new DateTime($get_sun_timeout);
+                    $convert_time_in = new DateTime($time_in);
+
+
+                    // Convert $get_sched_ot to minutes
+                    $sched_ot_minutes = (int) $get_sched_ot;
+                                            
+                    // Convert $get_sun_timeout to a DateTime object
+                    $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_sun_timeout);
+                                            
+                    // Add $sched_ot_minutes to $mon_timeout_datetime
+                    $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                            
+                    // Format the resulting time as 'H:i'
+                    $result_sched_ot = $mon_timeout_datetime->format('H:i');
+
+                   
+                       
+
+                    if ($minutes_in_time_in <= $grace_period_minutes && $time_out <= $result_sched_ot ){
+                        
+                        $convert_sun_timeout = new DateTime($get_sun_timeout);
+                        $convert_time_in = new DateTime($get_sun_timein);
+                        
+                        $total_work_interval = $convert_time_in->diff($convert_sun_timeout);
+                        
+                        // Create a new DateInterval representing one hour
+                        $one_hour_interval = new DateInterval('PT1H');
+                        
+                        // Subtract one hour from the $convert_mon_timeout DateTime object
+                        $convert_sun_timeout->sub($one_hour_interval);
+                        
+                        // Calculate the updated total work time interval after subtracting an hour
+                        $total_work_interval = $convert_time_in->diff($convert_sun_timeout);
+                        
+                        $total_work = $total_work_interval->format('%H:%I:%S');
+                        $overtime = '00:00:00';
+                        
+                     //    echo $total_work;
+                        
+                            
+                    }else{
+                        echo "<script> alert('Theres an error to your csv file.); </script>";
+                    }
+
+                } else {
+                    $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
+                }
+
+
+                if($time_out < $time['sun_timeout']){
+                    $time_out_datetime = new DateTime('08:00:00');
+                    $scheduled_outs = new DateTime($total_work);
+                    $early_interval = $scheduled_outs->diff($time_out_datetime);
+                    $early_out = $early_interval->format('%h:%i:%s');
+                } else { 
+                    $early_out = '00:00:00';
+                }
+
+                if($time_in < '00:00:00'){
+                    $early_out = '00:00:00';
+                    $total_work = '00:00:00';
+                    $total_rest = '08:00:00';
+                }
+                    
+        } 
+
+        // echo $tuesday_timeout , $time_out;
+        
+        // echo $time_out;
+        // echo "<br>";
+
+        // echo $thursday;
+
+        // if($currentDayOfWeek === $wednesday){
+        //     echo $thursday;
+        // } else{
+        //     echo $thursday;
+        // }
+               // Check if empid exists in the employee_tb
+                $empQuery = "SELECT * FROM employee_tb WHERE empid = '$empid'";
+                $empResult = $db->query($empQuery);
+                if(mysqli_num_rows($empResult) < 1) {
+                    echo '<script>alert("Error: Unable to insert data for non-existing Employee ID because the Employee ID does not exist in the database.")</script>';
+                    echo "<script>window.location.href = '../../attendance.php';</script>";
+                    exit;
+                } else {
+                    $empid = $line[1];
+                    $prevQuery = "SELECT id FROM attendances WHERE empid = '".$line[1]."'";
+                    $prevResult = $db->query($prevQuery);
+
+                
+                  // Split the empid and date values into separate arrays
+$empids = explode(",", $empid);
+$dates = explode(",", $date);
+
+// Iterate over each empid and date combination
+for ($i = 0; $i < count($empids); $i++) {
+    $currentEmpid = $empids[$i];
+    $currentDate = $dates[$i];
+
+    if ($prevResult->num_rows > 0) {
+        // Check if the record already exists for the empid and date combination
+        $recordQuery = "SELECT * FROM attendances WHERE empid = '".$currentEmpid."' AND date = '".$currentDate."'";
+        $recordResult = $db->query($recordQuery);
+
+        if ($recordResult->num_rows > 0) {
+            // Update the existing record
+            $db->query("
+                UPDATE attendances SET
+                status = '".$status."', time_in = '".$time_in."', time_out = '".$time_out."', late = '".$late."', early_out = '".$early_out."', overtime = '".$overtime."', total_work = '".$total_work."', total_rest = '".$total_rest."'
+                WHERE empid = '".$currentEmpid."' AND date = '".$currentDate."'
+            ");
+        } else {
+            // Insert a new record
+            $db->query("
+                INSERT INTO attendances (status, empid, date, time_in, time_out, late, early_out, overtime, total_work, total_rest)
+                VALUES ('".$status."', '".$currentEmpid."', '".$currentDate."', '".$time_in."', '".$time_out."','".$late."','".$early_out."','".$overtime."','".$total_work."','".$total_rest."')
+            ");
+            
+        }
+    } else {
+        // Insert new member data in the database
+        $db->query("
+            INSERT INTO attendances (status, empid, date, time_in, time_out, late, early_out, overtime, total_work, total_rest)
+            VALUES ('".$status."', '".$currentEmpid."', '".$currentDate."', '".$time_in."', '".$time_out."','".$late."','".$early_out."','".$overtime."','".$total_work."','".$total_rest."')
+        ");
+        
+    }
+}
+
+                    
+            }       
+        }              
+    }
+}
+
+            
+          // Close opened CSV file
+          fclose($csvFile);
+            
+}
+            }
+        }
+    
+
+     
+if (isset($_SESSION['alert_msg'])) {
+    echo '<script>alert("'.$_SESSION['alert_msg'].'");</script>';
+    unset($_SESSION['alert_msg']);
+}
+// Redirect to the listing page
+header("Location: ../../attendance.php");
+
+

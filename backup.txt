@@ -1,0 +1,257 @@
+<div class="empListForm-container">
+                     <form action="" method="POST">
+                         <div class="employeeList-modal" id="Modal">
+                                 <div class="employeeList-modal-content">
+                                     <div class="employeeList-info-container">
+                                         <div class="emp-title">
+                                             <h1>Edit Personal Information</h1>
+                                         </div>
+                                         <div class="emp-info-first-input">
+                                             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                             <div class="emp-info-fname">
+                                                     <label for="fname">First Name</label><br>
+                                                     <input type="text" name="fname" id="" placeholder="First Name" value="<?php echo $row['fname']; ?>">
+                                             </div>
+                                             <div class="emp-info-lname">
+                                                     <label for="lname">Last Name</label><br>
+                                                     <input type="text" name="lname" id="" placeholder="Last Name" value="<?php echo $row['lname'] ?> ">
+                                             </div> 
+                                             <div class="emp-info-empID">
+                                                     <label for="empid">Employee ID</label><br>
+                                                     <input type="text" name="empid" id="" placeholder="Employee ID" value="<?php echo $row['empid'] ?>" disabled>
+                                             </div>
+                                         </div>
+                                         <div class="emp-info-second-input">
+                                             <div class="emp-info-address">
+                                                     <label for="address">Complete Address</label><br>
+                                                     <input type="text" name="address" id="" placeholder="Complete Address" value="<?php echo $row['address'] ?>">
+                                             </div>
+                                             <div class="emp-info-contact">
+                                                     <label for="contact">Contact Number</label><br>
+                                                     <input type="text" name="contact" id="" placeholder="Contact Number" value="<?php echo $row['contact'] ?>">
+                                             </div>
+                                         </div>
+                                         <div class="emp-info-third-input">
+                                             <div class="emp-info-cstatus">
+                                                     <label for="cstatus">Civil Status</label><br>
+                                                     <select name="cstatus" id="" placeholdber="Select Status" value="<?php echo $row['cstatus'];?>" >
+                                                         <!-- <option selected="selected" class="selectTag" style="color: gray;">Select Status</option> -->
+                                                         <option value="Single" >Single</option>
+                                                         <option value="Married">Married</option>
+                                                         <option value="Other">Other</option>
+                                                     </select>
+                                             </div>
+                                             <div class="emp-info-gender">
+                                                     <label for="gender">Gender</label><br>
+                                                     <select name="gender" id="" placeholdber="Select Gender" value="<?php echo $row['gender'];?>">
+                                                         <!-- <option value="" selected="selected" class="selectTag" style="color: gray;">Select Gender</option> -->
+                                                         <option value="Male">Male</option>
+                                                         <option value="Female">Female</option>
+                                                         <option value="Other">Other</option>
+                                                     </select>
+                                             </div>
+                                             <div class="emp-info-dob">
+                                                     <label for="empdob">Date of Birth</label><br>
+                                                     <input type="date" name="empdob" id="empdob" placeholder="Select Date of Birth" value="<?php echo $row['empdob'] ?>">
+                                             </div>
+                                         </div>
+                                     </div> 
+                                       
+                                     <div class="employeeList-govern-container">
+                                         <div class="emp-title">
+                                             <h1>Government Information</h1>
+                                         </div>
+                                         <div class="emp-govern-first-input">
+                                             <div class="emp-govern-sss">
+                                                 <label for="empsss">SSS #</label><br>
+                                                 <input type="text" name="empsss" id="" placeholder="Input SSS#" value="<?php echo $row['empsss'] ?>">
+                                             </div>
+                                             <div class="emp-govern-TIN">
+                                                 <label for="emptin">TIN</label><br>
+                                                 <input type="text" name="emptin" id="" placeholder="Input TIN" value="<?php echo $row['emptin'] ?>">
+                                             </div>
+                                         </div>
+                                         <div class="emp-govern-second-input">
+                                             <div class="emp-govern-pagibig">
+                                                 <label for="emppagibig">Pagibig #</label><br>
+                                                 <input type="text" name="emppagibig" id="" placeholder="Input Pagibig #" value="<?php echo $row['emppagibig'] ?>">
+                                             </div>
+                                             <div class="emp-govern-TIN">
+                                                 <label for="empphilhealth">Philhealth #</label><br>
+                                                 <input type="text" name="empphilhealth" id="" placeholder="Input Philhealth #" value="<?php echo $row['empphilhealth'] ?>">
+                                             </div>
+                                         </div>
+                                     </div>
+             
+                                     <div class="employeeList-empDetail-container">
+
+                                         <div class="emp-title>
+                                             <h1>Employement Detail</h1>
+                                         </div>
+
+                                         <div class="emp-empDetail-first-input">
+
+                                         
+                                             <div class="emp-empDetail-branch">
+                                                
+                                                     <label for="empbranch">Branch</label><br>
+                                                     <input type="text" name="empbranch" id="" placeholder="Select Branch" value="<?php echo $row['empbranch'] ?>" disabled>
+                                             </div>
+             
+             
+                                             <div class="emp-empDetail-dept">
+                                                   <?php
+                                                    include 'config.php';
+
+                                                     $sql = "SELECT col_deptname FROM dept_tb";
+                                                     $results = mysqli_query($conn, $sql);
+             
+                                                     $options = "";
+                                                     while ($rows = mysqli_fetch_assoc($results)) {
+                                                         $options .= "<option value='".$rows['col_deptname']."'>" .$rows['col_deptname'].  "</option>";
+                                                     }
+                                                     ?>
+             
+                                                 <label for="depatment">Select Department</label><br>
+                                                     <select name="department_name" id="" value="<?php echo $row['col_deptname'];?>">
+                                                     <!-- <option value disabled selected>Select Department</option> -->
+                                                       <?php echo $options; ?>
+                                                     </select>
+                                             </div>
+
+                                             <div class="emp-empDetail-jposition">
+                                                 <label for="empposition">Job Position</label><br>
+                                                     <select name="empposition" id="" placeholder="Select Job Position" value="<?php echo $row['empposition'];?>">
+                                                         <!-- <option value="" selected="selected" class="selectTag" style="color: gray;">Select Department</option> -->
+                                                         <option value="Admin Staff">Admin Staff</option>
+                                                         <option value="Software Developer">Software dev</option>
+                                                         <option value="IT Sales Associate">IT Sales Associate</option>
+                                                     </select>
+                                             </div>
+                                         </div>
+
+                                         <div class="emp-empDetail-second-input">
+                                             <div class="emp-empDetail-bsalary">
+                                                     <label for="empbsalary">Basic Salary</label><br>
+                                                     <input type="text" name="empbsalary" id="" placeholder="Basic Salary" value="<?php if(isset($row['empbsalary'])){ echo $row['empbsalary'];} else{ echo 'No Data.'; } ?>">
+                                             </div>
+                                             <div class="emp-empDetail-drate">
+                                                     <label for="drate">Daily Rate</label><br>
+                                                     <input type="text" name="drate" id="" placeholder="Daily Rate" value="<?php echo $row['drate'] ?>">
+                                             </div>
+                                             <div class="emp-empDetail-approver">
+                                                 <label for="approver">Immediate Superior/Approver</label><br>
+                                                     <select name="approver" id="" placeholder="Select Superior/Approver" value="<?php echo $row['approver'] ?>">
+                                                         <!-- <option value="" selected="selected" class="selectTag" style="color: gray;">Select Superior/Approver</option> -->
+                                                         <option value="Cyrus Machete">Cyrus Machete</option>
+                                                         <option value="Regis Legaspi">Regin Legaspi</option>
+                                                     </select>
+                                             </div>
+                                         </div>
+                                         <div class="emp-empDetail-third-input">
+                                             <div class="emp-empDetail-dateHired">
+                                                     <label for="empdate_hired">Date Hired</label><br>
+                                                     <input type="date" name="empdate_hired" id="" placeholder="Date Hired" value="<?php echo $row['empdate_hired'] ?>">
+                                             </div>
+                                         </div>
+                                     </div>
+                                                     
+                                     
+                                     <div class="employeeList-allowance-container">
+                                         <div class="emp-title">
+                                             <h1>Allowances</h1>
+                                         </div>
+             
+                                         <div class="emp-allowance-first-input">
+                                             <div class="emp-allowance-transpo">
+                                                 <label for="emptranspo">Transportation</label><br>
+                                                 <input type="text" name="emptranspo" placeholder="0.00" value="<?php echo $row['emptranspo']; ?>">
+                                             </div>
+                                             <div class="emp-allowance-meal">
+                                                 <label for="empmeal">Meal Allowance</label><br>
+                                                 <input type="text" name="empmeal" placeholder="0.00" value="<?php echo $row['empmeal'] ?>">  
+                                             </div>
+                                             <div class="emp-allowance-internet">
+                                                 <label for="empinternet">Internet Allowance</label><br>
+                                                 <input type="text" name="empinternet" placeholder="0.00" value="<?php echo $row['empinternet'] ?>">  
+                                             </div>
+                                         </div>
+                                     </div>
+             
+                                     
+                                     <div class="employeeList-schedule-input">
+                                         <div class="emp-title">
+                                             <h1>Schedule</h1>
+                                         </div>
+             
+                                         <div class="emp-schedule-first-input">
+                                             <div class="emp-schedule-accessID">
+                                                 <label for="empschedule_type">Schedule Type</label><br>
+                                                 <select name="empschedule_type" id="" placeholder="Select Schedule Type" value="<?php echo $row['empschedule_type'] ?>">
+                                                         <option value="" selected="selected" class="selectTag" style="color: gray;">Select Schedule Type</option>
+                                                         <option value="Work From Home">Work From Home</option>
+                                                         <option value="Office Base">Office Base</option>
+                                                         <option value="Skeletal Base">Skeletal Base</option>
+                                                     </select>                                    
+                                             </div>
+                                             <div class="emp-schedule-startDate">
+                                                 <label for="empstart_date">Start Date</label><br>
+                                                 <input type="date" name="empstart_date" placeholder="Start Date" value="<?php echo $row['empstart_date'] ?>">  
+                                             </div>
+                                             <div class="emp-schedule-endDate">
+                                                 <label for="empend_date">End Date</label><br>
+                                                 <input type="date" name="empend_date" placeholder="End Date" value="<?php echo $row['empend_date'] ?>">  
+                                             </div>
+                                         </div>
+                                     </div>
+             
+                                     <div class="employeeList-empAccess-container">
+                                         <div class="emp-title">
+                                             <h1>Employee Access</h1>
+                                         </div>
+                                         <div class="emp-Access-first-input">
+                                             <div class="emp-Access-access_id">
+                                                     <label for="empaccess_id">Access ID</label><br>
+                                                     <input type="text" name="empaccess_id"  value="<?php echo $row['empaccess_id'] ?>">
+                                             </div>
+                                             <div class="emp-empAccess-username">
+                                                 <label for="username">Username</label><br>
+                                                 <input type="text" name="username" id="" placeholder="Username" value="<?php echo $row['username'] ?>">
+                                             </div>
+                                             <div class="emp-empAccess-role">
+                                                 <label for="role">Role</label><br>
+                                                 <select name="role" id="" placeholder="Select Schedule Type" value="<?php echo $row['role'] ?>">
+                                                         <!-- <option value="" selected="selected" class="selectTag" style="color: gray;">Select Role</option> -->
+                                                         <option value="Employee">Employee</option>
+                                                         <option value="Admin">Admin</option>
+                                                         <option value="Superadmin">Superadmin</option>
+                                                         
+                                                 </select>  
+                                             </div>
+                                         </div>
+                                         <div class="emp-Access-second-input">
+                                             <div class="emp-Access-email">
+                                                     <label for="email">Email</label><br>
+                                                     <input type="email" name="email" id="" placeholder="Email Address" value="<?php echo $row['email'] ?>">
+                                             </div>
+                                             <div class="emp-Access-password">
+                                                     <label for="password">Password</label><br>
+                                                     <input type="password" name="password" id="" placeholder="Password" value="<?php echo $row['password'] ?>">
+                                             </div>
+                                             <div class="emp-Access-cpassword">
+                                                 <label for="cpassword">Confirm Password</label><br>
+                                                     <input type="password" name="cpassword" id="" placeholder="Confirm Password" value="<?php echo $row['cpassword'] ?>">
+                                             </div>
+                                         </div>
+                                     </div>
+             
+                                 <div class="empList-save-btn">
+                                     <div>
+                                         <span class="closeModal" id="closeModal">Cancel</span>
+                                         <span class="modalSave"> <input class="submit" type="submit" name="update" value="Update"></span>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                 </form>
+                     </div>

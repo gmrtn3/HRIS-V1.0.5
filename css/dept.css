@@ -1,0 +1,25 @@
+.btn_dept{
+  text-decoration: none;
+  background: #7F7FDD url(../icons/add_leave.png) 
+  no-repeat 10px center;
+  border: none;
+  padding-left: 40px;
+  padding-right: 20px;
+  border-radius: 5px;
+  height: 30px;
+  font-size: 15px;
+  box-shadow: 1.5px 1.5px 9px #888888;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: small;
+  right: 0;
+  position: absolute;
+  transition: color 0.15s ease-in-out, background-color .30s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-right: 20px;
+}
+.btn_dept:hover{
+  background-color: #0cdd40;
+  color: #FFFFFF;
+  box-shadow: 10px 10px 8px #888888;
+ 
+}

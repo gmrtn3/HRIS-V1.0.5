@@ -1,0 +1,195 @@
+
+
+.btn-section {
+    background-color: #FFFFFF;
+    flex-direction: row;
+    display: flex;
+    margin-left: 78.7%;
+    margin-top: 10px;
+}
+
+.approve-btn {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px ;
+    border: none;
+    height: 35px;
+    width: 150px;
+    cursor: pointer;
+    background-color: #70C170;
+    color: white;
+}
+
+.approve-btn:hover {
+    background-color: #0cdd40;
+    color: #FFFFFF;
+    /* box-shadow: 10px 10px 8px #888888; */
+}
+
+.reject-btn {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: none;
+    background-color: #FF4747;
+    cursor: pointer;
+    height: 35px;
+    width: 160px;
+    color: white;   
+}
+
+.reject-btn:hover {
+    background-color: #ff0000;
+    color: #FFFFFF;
+    /* box-shadow: 10px 10px 8px #888888; */
+}
+
+
+.official_panel{
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    height: 90px;
+    background-color: #F2F2F2;
+    display: flex;
+    margin-top: 50px;
+    flex-direction: row;
+}
+  
+.child_panel{
+      border-top-left-radius: 7px;
+      background-color: #F2F2F2;
+      margin-right: 20px;
+}
+    
+p {
+      margin: 0;
+      
+}
+  
+.empo_date_text{
+    background-color: #F2F2F2;
+    margin-left: 30px;
+  }
+  
+.notif {
+    flex-direction: row;
+    display: flex;
+    background-color: #F2F2F2;
+}
+  
+.validation {
+    margin-left: 10px;
+    background-color: #F2F2F2;
+    color: red;
+    visibility: hidden;
+}
+  
+.select_custom{
+    background-color:#ffffff;
+    margin-left: 30px;
+    margin-top: 5px;
+    padding: 10px;
+    width: 330px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+  
+#date {
+        height: 18px;
+}
+  
+.btn_go {
+  /* background: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
+  radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%); */
+  background-color: rgb(63, 63, 63);
+  color: white;
+  border-radius: 5px;
+  width: 120px;
+  height: 40px;
+  margin-top: 25px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn_go:hover{
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+tr:hover td {
+    background-color: #ECECEC;
+  }
+
+  thead{
+    background-color: #ececec;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+/* table {
+  display: block;
+  overflow-y: auto;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-height: 65%;
+  width: 100% !important;
+} 
+
+tr {
+  width: 100% !important;
+  display: table !important;
+  table-layout: fixed !important;
+} */
+
+.table-responsive{
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: 8px;  
+  max-height: 60%;
+  min-height: 60%;
+
+}
+  
+  .dl_excel:hover{
+    color: white;
+  }
+  
+  .pagination{
+    margin-right: 78px !important;
+  }
+  
+  .pagination li a{
+    color: #c37700;
+    
+  }
+  
+    .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+    z-index: 3;
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+  }
+  
+  
+  
+  #order-listing_next{
+    margin-right: 28px !important;
+    margin-bottom: -17px !important;
+  
+  }
+  
+  .input-container{
+    background-color: inherit !important;
+  }
+  
+  .dataTables_paginate{
+    position: fixed;
+    bottom: 70px;
+    right: 35px;
+  }
+  
+  .dataTables_info{
+    position: fixed;
+    bottom: 70px;
+  }  

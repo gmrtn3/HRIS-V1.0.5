@@ -1,0 +1,510 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+body{
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    color: black;
+    height: 100%;
+    background-color: #555;     
+}
+
+/* employee change password*/
+.emp-changepass-logo{
+    background-color: black;
+    height: 90px !important;
+    width: 100% !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    
+    
+}
+
+.changepass-login-btn{
+    font-size: 20px;
+    color: #f4f4f4;
+    text-decoration: none;
+}
+
+.changepass-login-btn:hover{
+    color: gold;
+    transition: ease-in 0.3s;
+}
+
+.emp-changepass-container{
+    width: 40%;
+    border-radius: 10px;
+    height: 700px;
+    margin-top: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    background-color: #f1eeee;
+}
+
+.emp-changepass-content{
+   margin: 0 40px 40px 40px;
+}
+
+.changepass-title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    width: 100%;
+
+    
+}
+
+.changepass-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.changepass-form input{
+    width: 600px;
+    height: 50px;
+   
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.changepass-form label{
+    margin-bottom: -7px;
+}
+
+.changepass-update{
+    background-color: #555;
+    color: rgb(233, 198, 1);
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: ease-in-out 0.4s;
+    outline: none;
+}
+.changepass-update:hover{
+    background-color: rgb(233, 198, 1);
+    color: #555;
+    transition: ease-in 0.4s;
+}
+.logo{
+    height: 70px;
+}
+
+.changepass-logo{
+    margin-left: 50px;
+}
+
+.changepass-login{
+    margin-right: 50px;
+}
+.p-title{
+    font-size: 28px;
+}
+
+/* responsive */
+
+
+
+/* tablets and under */
+
+
+@media(max-width: 1350px){
+    .emp-changepass-logo{
+        height: 70px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-logo{
+        margin-left: 30px;
+        transition: ease-in-out 1s;
+    }
+    .logo{
+        height: 70px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login{
+        margin-right: 40px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login a {
+        font-size: 23px;
+        transition: ease-in-out 1s;
+    }
+    .emp-changepass-container{
+        width: 50%;
+        transition: ease-in-out 1s;
+        
+    }
+    .emp-changepass-container input{
+        width: 500px;
+        height: 50px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-title{
+        margin-bottom: -20px;
+        transition: ease-in-out 1s;
+        
+    }
+    .changepass-title p{
+        font-size: 23px;
+        transition: ease-in-out 1s;
+    }
+}
+/* 
+@media(max-width: 769px){
+    .emp-changepass-logo{
+        height: 70px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-logo{
+        margin-left: 20px;
+        transition: ease-in-out 1s;
+    }
+    .logo{
+        height: 65px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login{
+        margin-right: 30px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login a {
+        font-size: 20px;
+        transition: ease-in-out 1s;
+    }
+    .emp-changepass-container{
+        width: 70%;
+        transition: ease-in-out 1s;
+        
+    }
+    .emp-changepass-container input{
+        width: 450px;
+        height: 40px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-title{
+        margin-bottom: -20px;
+        transition: ease-in-out 1s;
+        
+    }
+    .changepass-title p{
+        font-size: 23px;
+        transition: ease-in-out 1s;
+    }
+}
+
+@media(max-height: 724px){
+    .emp-changepass-logo{
+        height: 75px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-logo{
+        margin-left: 30px;
+        transition: ease-in-out 1s;
+    }
+    .logo{
+        height: 70px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login{
+        margin-right: 40px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login a {
+        font-size: 23px;
+        transition: ease-in-out 1s;
+    }
+    .emp-changepass-container{
+        width: 30%;
+        height: 600px;
+        margin-top: 35px;
+        transition: ease-in-out 1s;
+        
+    }
+    .emp-changepass-container input{
+        width: 450px;
+        height: 40px;
+        margin-bottom: 5px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-title{
+        margin-bottom: -20px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-title p{
+        font-size: 23px;
+        transition: ease-in-out 1s;
+    }
+}
+
+
+@media (max-width: 500px){
+    .emp-changepass-logo{
+        height: 60px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-logo{
+        margin-left: 10px;
+        transition: ease-in-out 1s;
+    }
+    .logo{
+        height: 50px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login{
+        margin-right: 20px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login a {
+        font-size: 16px;
+        transition: ease-in-out 1s;
+    }
+    .emp-changepass-container{
+        width: 80%;
+        transition: ease-in-out 1s;
+        
+        
+    }
+    .emp-changepass-container input{
+        width: 300px;
+        height: 40px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-title{
+        margin-bottom: -20px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-title p{
+        font-size: 23px;
+        transition: ease-in-out 1s;
+    }
+
+}
+
+
+@media (max-width: 420px){
+    body{
+        font-size: 12px;
+    }
+    .emp-changepass-logo{
+        height: 60px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-logo{
+        margin-left: 10px;
+        transition: ease-in-out 1s;
+    }
+    .logo{
+        height: 50px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login{
+        margin-right: 20px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login a {
+        font-size: 16px;
+        transition: ease-in-out 1s;
+    }
+    .emp-changepass-container{
+        margin-top: 9%;
+        width: 80%;
+        transition: ease-in-out 1s;
+        height: 85%;
+        
+        
+    }
+    .emp-changepass-container input{
+        width: 100%;
+        height: 40px;
+        transition: ease-in-out 1s;
+        font-size: 14px;
+    }
+    .changepass-title{
+        margin-bottom: -20px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-title p{
+        font-size: 20px;
+        transition: ease-in-out 1s;
+    }
+
+}
+
+
+@media (max-width: 414px){
+    body{
+        font-size: 13px;
+    }
+    .emp-changepass-logo{
+        height: 60px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-logo{
+        margin-left: 10px;
+        transition: ease-in-out 1s;
+    }
+    .logo{
+        height: 50px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login{
+        margin-right: 20px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login a {
+        font-size: 16px;
+        transition: ease-in-out 1s;
+    }
+    .emp-changepass-container{
+        width: 80%;
+        transition: ease-in-out 1s;
+        
+        
+    }
+    .emp-changepass-container input{
+        width: 230px;
+        height: 40px;
+        transition: ease-in-out 1s;
+        font-size: 14px;
+    }
+    .changepass-title{
+        margin-bottom: -20px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-title p{
+        font-size: 20px;
+        transition: ease-in-out 1s;
+    }
+
+}
+
+
+
+
+@media (max-width: 340px){
+    body{
+        font-size: 13px;
+        
+    }
+    .emp-changepass-logo{
+        height: 60px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-logo{
+        margin-left: 10px;
+        transition: ease-in-out 1s;
+    }
+    .logo{
+        height: 50px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login{
+        margin-right: 20px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-login a {
+        font-size: 16px;
+        transition: ease-in-out 1s;
+    }
+    .emp-changepass-container{
+        width: 80%;
+        transition: ease-in-out 1s;
+        background-color: red !important;
+        
+    }
+    .emp-changepass-container input{
+        width: 230px;
+        height: 40px;
+        transition: ease-in-out 1s;
+        font-size: 14px;
+    }
+    .changepass-title{
+        margin-bottom: -20px;
+        transition: ease-in-out 1s;
+    }
+    .changepass-title p{
+        font-size: 20px;
+        transition: ease-in-out 1s;
+    }
+
+}
+ */
+
+
+ @media only screen and (max-width: 767px) {
+    html{
+        overflow-y: scroll !important;
+        height: 110% !important;
+    }
+    body{
+        height: 100% !important;
+    }
+    .emp-changepass-logo{
+        margin-bottom: 20% !important;
+        height: 3.75em !important;
+    }
+
+    .changepass-logo{
+       
+        margin-left: 5% !important;
+        width: 40% !important;
+    }
+
+    .changepass-logo img{
+        height: 3.125em !important;
+        width: 100% !important;
+    }
+    .changepass-login a{
+        font-size: 1em !important;
+    }
+
+    .emp-changepass-container{
+        margin: 2.3em 0 0 0 !important;
+        height: 84% !important;
+        width: 80% !important;
+       
+    }
+    
+    .changepass-title{
+        margin-bottom: 0.3em !important;
+    }
+
+    .p-title{
+        font-size: 1.3em !important;
+    }
+    
+    .changepass-form{
+        
+        margin-top: 0.5em !important;
+    }
+    .form-group input{
+        width: 100% !important;
+        height: 2em !important;
+        font-size: 0.8em !important;
+        margin-bottom: 10px !important;
+    }
+    .cupdate input{
+        border: none !important;
+        font-size: 0.8em !important;
+        width: 218px !important;
+        height: 40px !important;
+        border-radius: 10px !important;
+        margin-bottom: 15px !important;
+        
+       
+    }
+
+
+  }

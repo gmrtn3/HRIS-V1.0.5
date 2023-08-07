@@ -1,0 +1,2 @@
+status,empid,name,date,time_in,time_out,late,early_out,overtime,total_work,total_rest,modified
+Present,2,William Bunn,2023-04-13,10:30,18:30,,,,,,

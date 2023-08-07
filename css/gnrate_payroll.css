@@ -1,0 +1,59 @@
+/* para sa side bar */
+.header-container .header-type .user-name{
+    margin-top:1px;
+  }
+
+  .sidebars ul li{
+      list-style: none;
+      text-decoration:none;
+      width: 289px;
+      margin-left:-16px;
+     
+  }
+
+  .sidebars ul{
+      height:100%;
+  }
+
+  .sidebars ul li .hoverable{
+      height:55px;
+  }
+
+
+  .sidebars .first-ul{
+      line-height:50px;
+  }
+
+  .sidebars ul li ul li{
+      width: 100%;
+  }
+
+
+  .card-body{
+      width: 95%;
+      overflow: hidden;
+  }
+
+  .table{
+      width: 99.8%;
+      
+  } /* para sa side bar END */
+
+
+
+
+  .container{
+    position: absolute;
+    top: 100px;
+    left:17%;
+  }
+
+  .card-body{
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+     width:1550px; 
+     height:auto; 
+     border-radius:20px;
+  }
+  .head_text{
+    color: #747BDA;
+  }

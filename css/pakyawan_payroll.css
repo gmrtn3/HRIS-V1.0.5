@@ -1,0 +1,12 @@
+.payroll-container{
+     position: absolute; 
+    top: 13%; 
+    left:17.5%; 
+    right: 5%; 
+    background-color: #fff; 
+    height: 83%; 
+    width: 80%; 
+    border-radius: 8px;
+    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.4), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+
+}
