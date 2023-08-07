@@ -131,81 +131,58 @@
                         <h1 class="modal-title fs-5" id="title">Change Schedule</h1>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-3">
-                        <?php
-                                $server = "localhost";
-                                $user = "root";
-                                $pass ="";
-                                $database = "hris_db";
+                    <div class="mb-3">
+                        <label for="department">Select Department</label><br>
+                        <select name="department" id="department" style="height: 50px; width: 630px; padding: 10px">
+                        
+                            <!-- Populate options using PHP -->
+                            
+                        </select>
+                        
+                    </div>
+                    <div class="mb-3">
+                        <label for="emp">Select Employee</label><br>
+                        <select name="empid[]" id="employee-dd" style="width: 98%; padding: 10px; font-size: 16px; background-color: white; border: 1px solid gray; height: 50px">
+                        <option value="" disabled selected>Select Employee</option>
+                            <!-- Employee options will be populated dynamically using AJAX -->
+                        </select>
+                    </div>
 
-                                $conn = mysqli_connect($server, $user, $pass, $database);
-                                $sql = "SELECT col_ID,col_deptname FROM dept_tb";
-                                $result = mysqli_query($conn, $sql);
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                    $(document).ready(function() {
+                        // Load departments
+                        $.ajax({
+                            url: "load_departments.php", // Replace with correct path
+                            type: "GET",
+                            success: function(data) {
+                                $("#department").html(data);
+                            }
+                        });
 
-                                $options = "";
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    $options .= "<option value='".$row['col_ID']."'>" .$row['col_deptname'].  "</option>";
+                        // Department change event
+                        $("#department").change(function() {
+                            var selectedDepartment = $(this).val();
+
+                            $.ajax({
+                                url: "getting_emp.php", // Replace with correct path
+                                data: { col_ID: selectedDepartment },
+                                type: "GET",
+                                dataType: "json",
+                                success: function(data) {
+                                    $("#employee-dd").empty();
+                                    $.each(data, function(index, employee) {
+                                        var optionText = employee.empid + " - " + employee.fname + " " + employee.lname;
+                                        $("#employee-dd").append($('<option>', {
+                                            value: employee.empid,
+                                            text: optionText
+                                        }));
+                                    });
                                 }
-                                ?>
-
-                                
-                            <label for="department">Select Department</label><br>
-                            <select name="department" id="department" style="height: 50px; width: 630px; padding: 10px">
-                                <option value="" disabled selected>Select Department</option>
-                                <?php echo $options; ?>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                        <?php
-                                $server = "localhost";
-                                $user = "root";
-                                $pass ="";
-                                $database = "hris_db";
-
-                                $conn = mysqli_connect($server, $user, $pass, $database);
-                                $sql = "SELECT empid, fname, lname FROM employee_tb";
-                                $result = mysqli_query($conn, $sql);
-
-                               
-                                ?>
-     <label for="emp">Select Employee</label><br>
-    <select name="empid[]" id="employee-dd" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" style="width: 98%; padding: 10px; font-size: 16px; background-color: white; border: 1px solid gray; height: 50px">
-        <!-- Employee options will be populated dynamically using AJAX -->
-    </select>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $("#department").change(function() {
-            var selectedDepartment = $(this).val();
-
-            $.ajax({
-                url: "getting_emp.php",
-                data: { department: selectedDepartment },
-                type: "GET",
-                success: function(data) {
-                    // Split the response by line breaks
-                    var employeeOptions = data.split('\n');
-
-                    // Get the employee dropdown element
-                    var employeeDropdown = document.getElementById("employee-dd");
-
-                    // Clear existing options
-                    employeeDropdown.innerHTML = "";
-
-                    // Iterate through each employee option and add it to the dropdown
-                    for (var i = 1; i < employeeOptions.length; i++) {
-                        var option = document.createElement("option");
-                        option.value = employeeOptions[i];
-                        option.text = employeeOptions[i];
-                        employeeDropdown.appendChild(option);
-                    }
-                }
-            });
-        });
-    });
-</script>
+                            });
+                        });
+                    });
+                </script>
                         
                         <div class="mb-3">
                         <?php
@@ -452,6 +429,7 @@
                 </div>
         </div> -->
 
+        
 <!---------Script sa pagdisable ng button kapag nagcheck ng checkbox at hindi naglagay sa time input-------->
 <script>
   // Kunin ang mga checkbox at mga oras gamit ang pangalan ng klase
