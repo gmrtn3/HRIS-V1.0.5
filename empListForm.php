@@ -257,15 +257,34 @@
                                 </div>
                             </div>
                             <div class="emp-info-fourth-input w-100 d-flex flex-start ml-3 mt-1">
-                            <div class="emp-info-empID form-group">
-                                <label for="empid" style="margin-left: 7%">Employee ID</label><br>
-                                    <div class="d-flex">
-                                        <input type="text" class="form-control" name="company_code" value="<?php echo @$row['cmpny_code']?>" style="display flex; align-items: center; justify-content: center;width: 20%; margin-left: 7%" readonly >
-                                        <input type="text" class="form-control" name="empid" id="form-empid" placeholder="Employee ID" required maxlength="6" style="width: 72%">  
-                                        <span id="empid-error" style="color: red;"></span>
+                            <div class="emp-info-empID" style=" width: 25.6%; margin-left: 1.7%;"  >
+                                <label for="empid" >Employee ID</label><br> 
+                               
+                                    
+                                 <?php 
+                                     $server = "localhost";
+                                     $user = "root";
+                                     $pass ="";
+                                     $database = "hris_db";
+
+                                     $conn = mysqli_connect($server, $user, $pass, $database);
+                                     $sql = "SELECT * FROM company_code_tb";
+                                     $result = mysqli_query($conn, $sql);
+                                   
+
+                                    $options = "";
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $options .= "<option value='". $row['id'] . "'>" .$row['company_code'].  "</option>"; 
+                                    }
+                                    ?>
+                                    <div style="display:flex; flex-direction: row">
+                                    <select name="company_code" id=""  style="display flex; align-items: center; justify-content: center;width: 20%; padding: 0.2em; margin-right: 2%; height: 40px">
+                                        <?php echo $options; ?>
+                                    </select>
+                                    <input type="text" name="empid" id="form-empid" class="p-1" placeholder="Employee ID" required maxlength="6" style="width: 78%">  
                                     </div>
+                                    <span id="empid-error" style="color: red;"></span>
                                 </div>
-                            </div>
                         </div> 
                           
                         <div class="employeeList-empDetail-container">

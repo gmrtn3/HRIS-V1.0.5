@@ -242,24 +242,30 @@
 
 
 <form method="post" action="">
-        <div class="status-filter d-flex flex-row align-items-center pl-5">
+        <div class="status-filter d-flex flex-row align-items-center pl-5 justify-content-between" >
+         
     
-        <div class="form-group" style="width: 20em">
-            <label for="">Filter Status</label>
-            <?php
-            // Default filter status when the form is first loaded
-            $status_filter = "Active";
-            if (isset($_POST['status_filter'])) {
-                $status_filter = $_POST['status_filter'];
-            }
-            ?>
-            <select name="status_filter" id="status-filter-select" class="form-control" style="color: black">
-                <option value="all"<?php if ($status_filter === 'all') echo ' selected'; ?>>All</option>
-                <option value="Active"<?php if ($status_filter === 'Active') echo ' selected'; ?>>Active</option>
-                <option value="Inactive"<?php if ($status_filter === 'Inactive') echo ' selected'; ?>>Inactive</option>
-            </select>
+        <div class="form-group d-flex flex-row align-items-center" style="width: 50%; " >
+          <div style="width: 40%; ">
+              <label for="" style="margin-bottom: 1%">Filter Status</label><br>
+              <?php
+              // Default filter status when the form is first loaded
+              $status_filter = "Active";
+              if (isset($_POST['status_filter'])) {
+                  $status_filter = $_POST['status_filter'];
+              }
+              ?>
+              <select name="status_filter" id="status-filter-select" class="form-control" style="color: black">
+                  <option value="all"<?php if ($status_filter === 'all') echo ' selected'; ?>>All</option>
+                  <option value="Active"<?php if ($status_filter === 'Active') echo ' selected'; ?>>Active</option>
+                  <option value="Inactive"<?php if ($status_filter === 'Inactive') echo ' selected'; ?>>Inactive</option>
+              </select>
+            </div>
+            <button type="submit" class="ml-5 btn btn-primary h-25 mt-4" style="">Go</button>
         </div>
-        <button type="submit" class="ml-5 btn btn-primary h-25">Go</button>
+       
+       
+        <a href="empListForm" class="mr-5 btn btn-primary " style="text-decoration: none;">Create Employee</a>
     </form>
 </div>
 
@@ -273,6 +279,7 @@
         <table id="order-listing" class="table" style="width: 100%">
         <a href=""></a>
     <thead>
+        <th>Employee Code</th>
         <th>Employee ID</th>
         <th>Name</th>
         <th>Classification</th>
@@ -313,7 +320,25 @@
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+              $cmpny_empid = $row['empid'];
+
+              $sql = "SELECT employee_tb.company_code, 
+                      employee_tb.empid, 
+                      assigned_company_code_tb.company_code_id, 
+                      assigned_company_code_tb.empid, 
+                      company_code_tb.id, 
+                      company_code_tb.company_code AS company_code_name 
+                      FROM assigned_company_code_tb 
+                      INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                      INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                      WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                      
+                      $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                      $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+
                 echo "<tr class='lh-1'>";
+              
+                echo "<td style='font-weight: 400;'>".$cmpny_row['company_code_name']."</td>";
                 echo "<td style='font-weight: 400;'>" . $row["empid"] . "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["fname"] . " " . $row["lname"] . "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["classification"] . "</td>";
@@ -373,7 +398,8 @@ $(document).ready(function() {
     $('#viewModal').modal('show');
 
     $tr = $(this).closest('tr');
-    var empid = $tr.find("td:first").text();
+var empid = $tr.find("td:eq(1)").text(); // Index 1 refers to the second <td> element
+
 
     $.ajax({
       type: 'POST',

@@ -10,8 +10,8 @@
         $sql ="UPDATE `company_code_tb` SET `company_code`='$new_deptname' WHERE `id` = $id";
         $query_run = mysqli_query($conn, $sql);
 
-        $sqls = "UPDATE `employee_tb` SET `company_code` = '$new_deptname' WHERE `company_Code` = `company_code`";
-        $queries = mysqli_query($conn, $sqls);
+        $sqls = "UPDATE `employee_tb` SET `company_code` = '$new_deptname' WHERE `company_code` = `$id`";
+        
 
         if($query_run){
             header("Location: ../../companyCode?msg=Updated Successfully");

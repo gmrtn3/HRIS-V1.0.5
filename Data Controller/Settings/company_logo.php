@@ -20,7 +20,7 @@ session_start();
     $CompanyName = $_POST['company_name'];
     $CompanyAddress = $_POST['company_address'];
     $CompanyZipcode = $_POST['company_zipcode'];
-    $CompanyCode = $_POST['company_code'];
+   
     @$piece_rate_toggle = $_POST['piece_rate_toggle'];
 
     $query = "SELECT * FROM settings_company_tb";
@@ -32,7 +32,7 @@ session_start();
 
         // Check if user uploaded a photo
         if (!empty($CompanyPhoto)) {
-            $update_query = "UPDATE settings_company_tb SET `cmpny_logo` = '$CompanyPhoto', `cmpny_name` = '$CompanyName', `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `cmpny_code` = '$CompanyCode', `col_salary_settings` = '$salary_settings', `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
+            $update_query = "UPDATE settings_company_tb SET `cmpny_logo` = '$CompanyPhoto', `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `cmpny_code` = '$CompanyCode', `col_salary_settings` = '$salary_settings', `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
             $update_run = mysqli_query($conn, $update_query);
 
             if($update_run){
@@ -43,7 +43,7 @@ session_start();
             }
         } else {
             // User did not upload a photo, update other columns only
-            $update_query = "UPDATE settings_company_tb SET `cmpny_name` = '$CompanyName', `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `cmpny_code` = '$CompanyCode', `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
+            $update_query = "UPDATE settings_company_tb SET `cmpny_name` = '$CompanyName', `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
             $update_run = mysqli_query($conn, $update_query);
 
             if($update_run){
@@ -54,8 +54,8 @@ session_start();
             }
         }
     } else {
-        $query = "INSERT INTO settings_company_tb (`cmpny_logo`, `cmpny_name`, `cmpny_address`, `cmpny_zipcode`, `cmpny_code`, `col_salary_settings`, `piece_rate_toggle`) 
-        VALUES ('$CompanyPhoto', '$CompanyName', '$CompanyAddress', '$CompanyZipcode', '$CompanyCode', '$salary_settings', 'piece_rate_toggle')";
+        $query = "INSERT INTO settings_company_tb (`cmpny_logo`, `cmpny_name`, `cmpny_address`, `cmpny_zipcode`,  `col_salary_settings`, `piece_rate_toggle`) 
+        VALUES ('$CompanyPhoto', '$CompanyName', '$CompanyAddress', '$CompanyZipcode',  '$salary_settings', 'piece_rate_toggle')";
         $query_run = mysqli_query($conn, $query);    
 
         if($query_run){

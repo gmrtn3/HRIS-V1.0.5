@@ -13,7 +13,7 @@ if(!isset($_SESSION['username'])){
     }else {
         include 'config.php';
         include 'user-image.php';
-    }
+    }   
 }
 
 include 'config.php';
@@ -54,6 +54,27 @@ $rowSettings = mysqli_fetch_assoc($result);
     <link rel="stylesheet" href="css/leaveInfoResponsive.css">
 </head>
 <body>
+
+<style>
+    html{
+  overflow: hidden !important;
+}
+     table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 350px;
+                height: 350px;
+                
+                
+            } 
+
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            
+</style>
 
 <!--MODAL BOOTSTRAP-->
 <header>
@@ -228,7 +249,7 @@ $rowSettings = mysqli_fetch_assoc($result);
                         <!-------------------- para sa message na error ENd --------------------->
 
                     <div class="table-responsive" id="table-responsiveness">
-                             <table id="order-listing" class="table mt-2">
+                             <table id="order-listing" class="table mt-2" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th style= 'display: none;' id="header">ID</th>

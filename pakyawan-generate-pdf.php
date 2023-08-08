@@ -232,14 +232,24 @@
             <div class="modal-content-header-first d-flex flex-row mt-2" style="width: 100%">
               <div style="margin-right: 6.5%">
                 <?php
-                   include 'config.php';
-                   $sql="SELECT * FROM employee_tb WHERE empid = $pakyawan_empid";
- 
-                   $result = mysqli_query($conn, $sql);
-                   $row = mysqli_fetch_assoc($result);
+                 $cmpny_empid = $_GET['pakyawan_empid'];
+
+                 $sql = "SELECT employee_tb.company_code, 
+                         employee_tb.empid, 
+                         assigned_company_code_tb.company_code_id, 
+                         assigned_company_code_tb.empid, 
+                         company_code_tb.id, 
+                         company_code_tb.company_code AS company_code_name 
+                         FROM assigned_company_code_tb 
+                         INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                         INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                         WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                         
+                         $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                         $cmpny_row = mysqli_fetch_assoc($cmpny_result); 
                 ?>
 
-                <p style="color: #656464">Employee No: <span style="color: #4B49AC;"><?php echo $row['company_code']?> -</span> <span style="color: #4B49AC;"><?php echo $row['empid'] ?></span></p>
+                <p style="color: #656464">Employee No: <span style="color: #4B49AC;"><?php echo $cmpny_row['company_code_name']?> -</span> <span style="color: #4B49AC;"><?php echo $cmpny_row['empid'] ?></span></p>
               </div>
               <div >
                 <?php
@@ -250,7 +260,7 @@
                    $row = mysqli_fetch_assoc($result);
                 ?>
 
-                <p style="color: #656464">Employee No: <span style="color: #4B49AC; text-transform: uppercase;"><?php echo $row['full_name'] ?></span></p>
+                <p style="color: #656464">Employee Name: <span style="color: #4B49AC; text-transform: uppercase;"><?php echo $row['full_name'] ?></span></p>
               </div>
             </div>
         </div>

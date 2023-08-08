@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-include 'config.php';
-$sql = "SELECT cmpny_code FROM settings_company_tb";
-$result = mysqli_query($conn, $sql);
-
-$rowSettings = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -233,27 +228,43 @@ $rowSettings = mysqli_fetch_assoc($result);
 
                                             $result = mysqli_query($conn, $query);
                                             while($row = mysqli_fetch_assoc($result)){
+
+                                                $cmpny_empid = $row['empid'];
+
+                                                $sql = "SELECT employee_tb.company_code, 
+                                                        employee_tb.empid, 
+                                                        assigned_company_code_tb.company_code_id, 
+                                                        assigned_company_code_tb.empid, 
+                                                        company_code_tb.id, 
+                                                        company_code_tb.company_code AS company_code_name 
+                                                        FROM assigned_company_code_tb 
+                                                        INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                                                        INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                                                        WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                                                        
+                                                        $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                                                        $cmpny_row = mysqli_fetch_assoc($cmpny_result);
                                             ?>
 
                                                 <tr>
                                                     <td style="display:none;"><?php echo $row['id']?></td>
-                                                    <td><?php echo $row['status']?></td>
-                                                    <td><?php $cmpny_code = $rowSettings['cmpny_code'] ?? null;
+                                                    <td style='font-weight: 400'><?php echo $row['status']?></td>
+                                                    <td style='font-weight: 400'><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
                                                     $empid = $row['empid'];
                                                     if (!empty($cmpny_code)) {
                                                         echo $cmpny_code . " - " . $empid;
                                                     } else {
                                                         echo $empid;
                                                     } ?></td>
-                                                    <td><?php echo $row['full_name']?></td>
-                                                    <td><?php echo date('Y-m-d (l)', strtotime($row['date'])) ?></td>
-                                                    <td><?php echo $row['time_in']?></td>
-                                                    <td><?php echo $row['time_out']?></td>
-                                                    <td><?php echo $row['late']?></td>
-                                                    <td><?php echo $row['early_out']?></td>
-                                                    <td><?php echo $row['overtime']?></td>
-                                                    <td><?php echo $row['total_work']?></td>
-                                                    <td><?php echo $row['total_rest']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['full_name']?></td>
+                                                    <td style='font-weight: 400'><?php echo date('Y-m-d (l)', strtotime($row['date'])) ?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['time_in']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['time_out']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['late']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['early_out']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['overtime']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['total_work']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['total_rest']?></td>
                                                 </tr>
                                             <?php
                                             }

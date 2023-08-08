@@ -1,21 +1,17 @@
 <?php
     session_start();
-    if (!isset($_SESSION['username'])) {
-      header("Location: login.php");
-  } else {
-      // Check if the user's role is not "admin"
-      if ($_SESSION['role'] != 'admin') {
-          // If the user's role is not "admin", log them out and redirect to the logout page
-          session_unset();
-          session_destroy();
-          header("Location: logout.php");
-          exit();
-      } else {
-          include 'config.php';
-          include 'user-image.php';
-      }
-  }
-
+    if(!isset($_SESSION['username'])){
+        header("Location: login.php"); 
+    } else {
+        // Check if the user's role is not "admin"
+        if($_SESSION['role'] != 'admin'){
+            // If the user's role is not "admin", log them out and redirect to the logout page
+            session_unset();
+            session_destroy();
+            header("Location: logout.php");
+            exit();
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +42,7 @@
 
     <link rel="stylesheet" href="css/try.css">
     <link rel="stylesheet" href="css/styles.css"> 
-    <link rel="stylesheet" href="css/viewBranchResponsive.css">
+    <link rel="stylesheet" href="css/departmentEmployeeResponsive.css">
 
     <title>Employee Information</title>
 </head>
@@ -68,11 +64,6 @@
         border-color: #000;
     }
 
-    #order-listing_next{
-        margin-right: 30px !important;
-        margin-bottom: -7px !important;
-
-    }
     .card{
       box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
       width: 1500px;
@@ -80,14 +71,19 @@
       margin-left: 3%;
 
     }
-    
+
     h2{
       font-size: 23px;
       font-weight: bold;
     }
     
+    #order-listing_next{
+        margin-right: 30px !important;
+        margin-bottom: -7px !important;
 
+    }
 </style>
+
 
 <body>
    
@@ -96,7 +92,7 @@
             ?>
 </header>
     
-<div class="container mt-5" style="position:absolute; width: 100%; right: 288px; bottom: 60px; height: 80%;  border-radius: 25px">
+<div class="container mt-5 xxl" style="position:absolute; width: 100%; right: 288px; bottom: 60px; height: 80%; border-radius: 25px;">
     <div class="">
         <div class="card border-light">
             
@@ -107,8 +103,9 @@
 
                     if(isset($_POST['view_data'])){
 
-                        $branch = $_POST['name_branch'];
-                        $branch_id = $_POST['branch_id'];
+                        $emp_deptID = $_POST['id'];
+                        $emp_dept_name = $_POST['company_code'];
+                        
                         
                             echo "
                             <div class=''>
@@ -116,12 +113,12 @@
                                 <div class='col-6'>
 
                                     <h2 class=''>";
-                                    echo $branch;
+                                    echo $emp_dept_name;
                                     echo"
                                     </h2>
                                 </div> <!--first col-6 end-->
-                                <div class='col-6 text-end' style=''>
-                                    <a href='Branch.php' class='btn btn-outline-danger'>Go back</a>
+                                <div class='col-6 text-end'>
+                                    <a href='companyCode' class='btn btn-outline-danger'>Go back</a>
                                 </div> <!--sec col-6 end-->
                             </div> <!--row end-->
 
@@ -135,26 +132,25 @@
                                             <tr> 
                                                     <th> Employee ID </th>  
                                                     <th> Employee FullName  </th>
-                                                    <th> Branch Name </th>                   
+                                                    <th> Employee Code </th>                   
                                             </tr>
                                         </thead>
                                         <tbody>";
                                                 include 'config.php';
 
                                                 // Query the department table to retrieve department names
-                                                $dept_query = "SELECT branch_tb.id,
-                                                                        employee_tb.empid,
-                                                                        CONCAT(
-                                                                            employee_tb.`fname`,
-                                                                            ' ',
-                                                                            employee_tb.`lname`
+                                                $dept_query = "SELECT company_code_tb.id,
+                                                                    employee_tb.empid,
+                                                                    CONCAT(
+                                                                        employee_tb.`fname`,
+                                                                        ' ',
+                                                                        employee_tb.`lname`
                                                                         ) AS `full_name`,
-                                                                      branch_tb.branch_name,
-                                                                      branch_tb.branch_address,
-                                                                      branch_tb.zip_code,
-                                                                      branch_tb.email,
-                                                                      branch_tb.telephone FROM employee_tb INNER JOIN branch_tb ON employee_tb.empbranch = branch_tb.id 
-                                                                      WHERE employee_tb.empbranch = '$branch_id'";
+                                                                        company_code_tb.company_code
+                                                                FROM employee_tb 
+                                                                INNER JOIN company_code_tb
+                                                                ON employee_tb.company_code = company_code_tb.id
+                                                                WHERE employee_tb.company_code = '$emp_deptID'";
 
                                                 $result = mysqli_query($conn, $dept_query);
 
@@ -162,34 +158,13 @@
 
                                                 // Loop over the departments and count the employees
                                                 while ($row = mysqli_fetch_array($result)) {
-
-                                                  $cmpny_empid = $row['empid'];
-
-                                                  $sql = "SELECT employee_tb.company_code, 
-                                                          employee_tb.empid, 
-                                                          assigned_company_code_tb.company_code_id, 
-                                                          assigned_company_code_tb.empid, 
-                                                          company_code_tb.id, 
-                                                          company_code_tb.company_code AS company_code_name 
-                                                          FROM assigned_company_code_tb 
-                                                          INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
-                                                          INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
-                                                          WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
-                                                          
-                                                          $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
-                                                          $cmpny_row = mysqli_fetch_assoc($cmpny_result);
-                                                   
+                                                    //$fullname = $row['fname'] . ' ' . $row['lname'];
 
                                                     // Generate the HTML table row
                                                     echo "<tr>
-                                                    <td style='font-weight: 400'>";
-
-                                                    $cmpny_code = $cmpny_row['company_code_name'] ?? '';
-                                                    echo $cmpny_code !== '' ? $cmpny_code . ' - ' . $row['empid'] : $row['empid'];
-
-                                                    echo "</td>
-                                                        <td style='font-weight:400'>" . $row['full_name'] . "</td>
-                                                        <td style='font-weight:400'>" . $row['branch_name'] . "</td>
+                                                        <td>" . $row['empid'] . "</td>
+                                                        <td>" . $row['full_name']. "</td>
+                                                        <td>" . $row['company_code'] . "</td>
 
                                                         </tr>";
                                                 }
@@ -209,9 +184,6 @@
         </div> <!-- card end-->
     </div> <!-- jumbotron end-->
 </div> <!-- container end-->
-
-
-</script>
 
 
 <script> 

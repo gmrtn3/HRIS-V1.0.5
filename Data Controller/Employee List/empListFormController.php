@@ -228,6 +228,26 @@ if ($stmt->errno) {
 
 $stmt->close();
 
+$cmpny_stmt = $conn->prepare("INSERT INTO assigned_company_code_tb(`empid`, `company_code_id`)
+                        VALUES (?,?)");
+
+if (!$cmpny_stmt) {
+    die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+}
+
+$cmpny_stmt->bind_param("ss", $empid, $company_code);
+
+$cmpny_stmt->execute();
+
+if ($cmpny_stmt->errno) {
+    echo "<script>alert('Error: " . $cmpny_stmt->error . "');</script>";
+    echo "<script>window.location.href = '../../empListForm';</script>";
+    exit;
+}
+
+$cmpny_stmt->close();
+
+
 
 // Insert into approver_tb table
 $approverEmpIds = $_POST['approver'];

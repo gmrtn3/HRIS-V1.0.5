@@ -104,6 +104,29 @@ include 'config.php';
   width: 99% !important;
   margin: auto !important; 
 }
+
+table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                max-height: 450px;
+                height: 450px;
+                
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+            th, td {
+                text-align: left !important;
+                width: 14.28% !important;
+            }
 </style>
 
 <!------------------------------------------------------ADD NEW POSITION MODAL-------------------------------------------------------->
@@ -269,8 +292,8 @@ include 'config.php';
                       <form action="View_classification.php" method="post">
                       <input type="hidden" id="id_position_name" name="classification">
                       <input type="hidden" id="table_id_position" name="id">
-                        <div class="table-responsive" style=" height: 35em;">
-                        <table id="order-listing" class="table" style="">
+                        <div style="width: 98%; margin:auto; margin-top: 2em;">
+                        <table id="order-listing" class="table" style="width: 100%">
                         <thead style="background-color: #ececec;">
                             <tr>
                             <th style="display: none;">ID</th>

@@ -65,10 +65,6 @@ if(mysqli_num_rows($result_attendance) > 0){
 // FOR ATTENDANCE AUTO REFRESHER ABSENT END
 
 
-$sql = "SELECT cmpny_code FROM settings_company_tb";
-$result = mysqli_query($conn, $sql);
-
-$rowSettings = mysqli_fetch_assoc($result);
 
 
 ?>
@@ -625,13 +621,30 @@ $result = $conn->query($sql);
 
 
         if($result->num_rows > 0){
+          
             while($row = $result->fetch_assoc()){
+                $cmpny_empid = $row['empid'];
+
+                $sql = "SELECT employee_tb.company_code, 
+                        employee_tb.empid, 
+                        assigned_company_code_tb.company_code_id, 
+                        assigned_company_code_tb.empid, 
+                        company_code_tb.id, 
+                        company_code_tb.company_code AS company_code_name 
+                        FROM assigned_company_code_tb 
+                        INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                        INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                        WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                        
+                        $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                        $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+
                 ?>
                 <tr>
                     <td style="font-weight: 400;"><?php echo $row['status']; ?></td>
                     <td class="empid-width" style="font-weight: 400;">
                         <?php
-                        $cmpny_code = $rowSettings['cmpny_code'] ?? '';
+                        $cmpny_code = $cmpny_row['company_code_name'] ?? '';
                         echo $cmpny_code !== '' ? $cmpny_code . ' - ' . $row['empid'] : $row['empid'];
                         ?>
                     </td>

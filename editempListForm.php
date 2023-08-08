@@ -34,8 +34,10 @@ if(count($_POST) > 0){
     $dailyRate_update = number_format($dailyRate_update, 2);
     $dailyRate_update = str_replace(',', '', $dailyRate_update); // Remove comma
 
-    mysqli_query($conn, "UPDATE employee_tb SET fname='".$_POST['fname']."',mname='".$_POST['mname']."', lname='".$_POST['lname']."',contact='".$_POST['contact']."',cstatus='".$_POST['cstatus']."',gender='".$_POST['gender']."',empdob='".$_POST['empdob']."',empsss='".$_POST['empsss']."',emptin='".$_POST['emptin']."',emppagibig='".$_POST['emppagibig']."',empphilhealth='".$_POST['empphilhealth']."',empbranch='".$_POST['empbranch']."',department_name='".$_POST['department_name']."',empbsalary='".$_POST['empbsalary']."', drate='". $dailyRate_update ."', otrate='".$_POST['otrate']."', empdate_hired='".$_POST['empdate_hired']."',emptranspo='".$_POST['emptranspo']."',empmeal='".$_POST['empmeal']."',empinternet='".$_POST['empinternet']."',empposition='".$_POST['empposition']."', role='".$_POST['role']."',email='".$_POST['email']."', sss_amount='".$_POST['sss_amount']."', tin_amount='".$_POST['tin_amount']."', pagibig_amount='".$_POST['pagibig_amount']."', philhealth_amount='".$_POST['philhealth_amount']."', classification='".$_POST['classification']."', bank_name='".$_POST['bank_name']."', bank_number='".$_POST['bank_number']."'".$emp_img_url.", status='".$_POST['status']."'
+    mysqli_query($conn, "UPDATE employee_tb SET fname='".$_POST['fname']."',mname='".$_POST['mname']."', lname='".$_POST['lname']."',contact='".$_POST['contact']."',cstatus='".$_POST['cstatus']."',gender='".$_POST['gender']."',empdob='".$_POST['empdob']."',empsss='".$_POST['empsss']."',emptin='".$_POST['emptin']."',emppagibig='".$_POST['emppagibig']."',empphilhealth='".$_POST['empphilhealth']."',empbranch='".$_POST['empbranch']."',department_name='".$_POST['department_name']."',empbsalary='".$_POST['empbsalary']."', drate='". $dailyRate_update ."', otrate='".$_POST['otrate']."', empdate_hired='".$_POST['empdate_hired']."',emptranspo='".$_POST['emptranspo']."',empmeal='".$_POST['empmeal']."',empinternet='".$_POST['empinternet']."',empposition='".$_POST['empposition']."', role='".$_POST['role']."',email='".$_POST['email']."', sss_amount='".$_POST['sss_amount']."', tin_amount='".$_POST['tin_amount']."', pagibig_amount='".$_POST['pagibig_amount']."', philhealth_amount='".$_POST['philhealth_amount']."', classification='".$_POST['classification']."', bank_name='".$_POST['bank_name']."', bank_number='".$_POST['bank_number']."'".$emp_img_url.", status='".$_POST['status']."', company_code='".$_POST['company_code']."'
     WHERE id ='".$_POST['id']."'");
+
+    mysqli_query($conn, "UPDATE assigned_company_code_tb SET company_code_id='".$_POST['company_code']."' WHERE empid = '".$_POST['empid']."' ");
     header ("Location: EmployeeList.php");
 
 
@@ -435,9 +437,21 @@ else
                         </div>
 
                         <?php
-                            include 'config.php';
-                            $result = mysqli_query($conn, "SELECT * FROM settings_company_tb");
-                            $rows = mysqli_fetch_assoc($result); 
+                            $cmpny_empid = $row['empid'];
+
+                            $sql = "SELECT employee_tb.company_code, 
+                                    employee_tb.empid, 
+                                    assigned_company_code_tb.company_code_id, 
+                                    assigned_company_code_tb.empid, 
+                                    company_code_tb.id, 
+                                    company_code_tb.company_code AS company_code_name 
+                                    FROM assigned_company_code_tb 
+                                    INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                                    INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                                    WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                                    
+                                    $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                                    $cmpny_row = mysqli_fetch_assoc($cmpny_result); 
                         ?>
 
                         <div class="emp-empInfo-container">
@@ -445,9 +459,25 @@ else
                             <h1>Employment Credentials</h1>
                             </div>
                             <div class="emp-empInfo-first-container">
-                                <div class="empInfo-empid">
+                                <div class="empInfo-empid" style="border:black 1px solid">
                                     <label for="empid">Employee ID</label><br>
-                                        <input type="text" name="empid" id="" placeholder="Employee ID" value="<?php echo $rows['cmpny_code'];?> - <?php echo $row['empid'] ?>" readonly class="form-control" style="height:50px;">
+                                    <div class="" style="display:flex; flex-direction: row">
+                                    <?php
+                                        include 'config.php';
+
+                                        $sql = "SELECT * FROM company_code_tb";
+                                        $results = mysqli_query($conn, $sql);
+                                        $options = "";
+                                        while ($rows = mysqli_fetch_assoc($results)) {
+                                            $selected = ($rows['id'] == $row['company_code']) ? 'selected' : '';
+                                            $options .= "<option value='".$rows['id']."' ".$selected." >" .$rows['company_code'].  "</option>";
+                                        }
+                                        ?>
+                                        <select name="company_code" id="" value="<?php echo $cmpny_row['company_code_name']?>">
+                                            <?php echo $options ?>
+                                        </select>
+                                        <input type="text" name="empid" id="" placeholder="Employee ID" value="<?php echo $row['empid'] ?>" readonly class="form-control" style="height:50px; width: 75%">
+                                    </div>
                                 </div>
                                 <div class="empInfo-position">
                                 <?php

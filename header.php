@@ -725,6 +725,7 @@
                 <li class="nav-item"> <a class="nav-link" href="Department">DEPARTMENT</a></li>
                 <li class="nav-item"> <a class="nav-link" href="Position">POSITION</a></li>
                 <li class="nav-item"> <a class="nav-link" href="Classification">CLASSIFICATION</a></li>
+                <li class="nav-item"> <a class="nav-link" href="companyCode">COMPANY CODE</a></li>
                
               </ul>
             </div>

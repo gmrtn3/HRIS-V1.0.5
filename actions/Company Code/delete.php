@@ -13,7 +13,7 @@ if(isset($_POST['delete_data']))
     $designate = $_POST['company_code'];
 
     if ($designate > 0) {
-        header("Location: ../../companyCode?error=You cannot delete a department that has employee designated");
+        header("Location: ../../companyCode?error=You cannot delete a company code that has employee designated");
     }
     else
     {

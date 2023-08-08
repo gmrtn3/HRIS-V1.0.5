@@ -235,6 +235,22 @@ include_once 'config.php';
                                             $result = mysqli_query($conn, $query);
 
                                             while ($row = mysqli_fetch_assoc($result)) {
+                                               $cmpny_empid = $row['empid'];
+
+                                            $sql = "SELECT employee_tb.company_code, 
+                                                    employee_tb.empid, 
+                                                    assigned_company_code_tb.company_code_id, 
+                                                    assigned_company_code_tb.empid, 
+                                                    company_code_tb.id, 
+                                                    company_code_tb.company_code AS company_code_name 
+                                                    FROM assigned_company_code_tb 
+                                                    INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                                                    INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                                                    WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                                                    
+                                                    $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                                                    $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+
                                                $total_numwork = $row['total_status'];
                                                $daily_rate = $row['drate'];
 
@@ -242,18 +258,24 @@ include_once 'config.php';
                                             ?>
                                                 <tr>
                                                     <td style="display: none;"><?php echo $row['id'] ?></td>
-                                                    <td><?php echo $row['empid'] ?></td>
-                                                    <td><?php echo $row['full_name'] ?></td>
-                                                    <td><?php echo $basic_pay?></td>
-                                                    <td><?php echo $row['total_overtime'] ?></td>
-                                                    <td><?php echo $row['absent_count'] ?></td>
-                                                    <td><?php echo $row['total_late'] ?></td>
-                                                    <td><?php echo $row['total_early_out'] ?></td>
+                                                    <td style='font-weight: 400'><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
+                                                    $empid = $row['empid'];
+                                                    if (!empty($cmpny_code)) {
+                                                        echo $cmpny_code . " - " . $empid;
+                                                    } else {
+                                                        echo $empid;
+                                                    }  ?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['full_name'] ?></td>
+                                                    <td style='font-weight: 400'><?php echo $basic_pay?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['total_overtime'] ?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['absent_count'] ?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['total_late'] ?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['total_early_out'] ?></td>
                                                     <td style="display: none;"><?php echo $row['total_work'] ?></td>
-                                                    <td><?php echo $row['sss_amount']?></td>
-                                                    <td><?php echo $row['philhealth_amount']?></td>
-                                                    <td><?php echo $row['pagibig_amount']?></td>
-                                                    <td><?php echo $row['total_govern_amount']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['sss_amount']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['philhealth_amount']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['pagibig_amount']?></td>
+                                                    <td style='font-weight: 400'><?php echo $row['total_govern_amount']?></td>
                                                 </tr>
                                             <?php
                                             }
