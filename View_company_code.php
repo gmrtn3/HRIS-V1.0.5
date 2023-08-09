@@ -10,7 +10,10 @@
             session_destroy();
             header("Location: logout.php");
             exit();
-        }
+        }else {
+          include 'config.php';
+          include 'user-image.php';
+      }
     }
 ?>
 

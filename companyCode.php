@@ -11,6 +11,11 @@
             header("Location: logout.php");
             exit();
         }
+        else {
+            include 'config.php';
+            include 'user-image.php';
+        }
+    
     }
 ?>
 <!DOCTYPE html>
