@@ -10,9 +10,6 @@ if(!isset($_SESSION['username'])){
         session_destroy();
         header("Location: logout.php");
         exit();
-    }else {
-        include 'config.php';
-        include 'user-image.php';
     }
 }
 
@@ -317,7 +314,6 @@ if(!isset($_SESSION['username'])){
                                     
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {
-
                                             $cmpny_empid = $row['empid'];
 
                                             $sql = "SELECT employee_tb.company_code, 
@@ -333,6 +329,7 @@ if(!isset($_SESSION['username'])){
                                                     
                                                     $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                                                     $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+                            
 
                                             echo "<tr>";
                                             echo "<td style='display: none;'>" . $row['col_ID'] . "</td>";

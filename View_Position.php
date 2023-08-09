@@ -86,6 +86,26 @@
         margin-bottom: -7px !important;
         
     }
+
+    table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                max-height: 450px;
+                height: 450px;
+                
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+         
 </style>
 
 <body>
@@ -126,8 +146,8 @@
 
                             </div> <!-- card-header end-->
                             <div class='card-body'>
-                                <div class='table my-3 table-responsive '>
-                                    <table id='order-listing' class='table table-sortable table-hover caption-top'>
+                                <div class='table my-3 table-responsive ' style='width: 98%; margin:auto; margin-top: 30px'>
+                                    <table id='order-listing' class='table' style='width: 100%'>
                                         <thead style='color: black;
                                                     font-size: 19px;
                                                     background-color: #ececec;'>

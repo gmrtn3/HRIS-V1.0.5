@@ -486,6 +486,7 @@ session_start();
                                   
                                   $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                                   $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+          
                          ?>
                             <tr>
                                 <td style="display: none;"><?php echo $row['id']?></td>

@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-
 ?>
 
 <!DOCTYPE html>
@@ -168,6 +166,109 @@ session_start();
 </div>
 <!-------------------------------------Modal For Download end here------------------------------------------>
 
+<!----------------Modal kapag clinick ang approve button----------------------->
+<div class="modal fade" id="Modal_WFH_Approved" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Wfh Request/approve_wfh.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve this request?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <input type="hidden" id="approve_wfh_id" name="approve_id_wfh">
+                          <textarea class="form-control" name="wfh_approve_marks" placeholder="Approval message..." id="floatingTextarea"></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="name_approved_wfh" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!----------------Modal kapag clinick ang approve button----------------------->
+
+<!----------------Modal kapag clinick ang reject button----------------------->
+<div class="modal fade" id="Modal_WFH_reject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Wfh Request/reject_wfh.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to reject this request?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <input type="hidden" id="reject_wfh_id" name="reject_id_wfh">
+                          <textarea class="form-control" name="wfh_reject_remarks" placeholder="Reject message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="name_rejected_wfh" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!----------------Modal kapag clinick ang reject button----------------------->
+
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+<div class="modal fade" id="approve_all_wfh" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Wfh Request/wfh_approve_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="wfh_approve_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="approve_all_btn" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+
+
+<!-----------------Modal kapag naclick ang Reject all button-------------------------->
+<div class="modal fade" id="reject_all_wfh" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Wfh Request/wfh_reject_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="wfh_reject_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="reject_all_btn" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang Reject all button-------------------------->
+
 <div class="main-panel mt-5">
     <div class=" mt-5">
         <div class="card">
@@ -261,22 +362,13 @@ session_start();
 
 <!----------------------------------Button for Approve and Reject All------------------------------------------>
         <div class="btn-section">
-                <form action="actions/Wfh Request/status_change.php" method="POST">
-                <input type="hidden" name="Approve" value="approved">
-                <button type="submit" name="approve_all" class="approve-btn">Approve All</button>
-                </form>
-
-                <form action="actions/Wfh Request/status_change.php" method="POST">
-                <!-- <input type="hidden" name="status" value="rejected"> -->
-                <button type="submit" name="reject_all" class="reject-btn">Reject All</button>
-                </form>
+                <button type="submit" name="approve_all" data-bs-toggle="modal" data-bs-target="#approve_all_wfh" class="approve-btn">Approve All</button>
+                <button type="submit" name="reject_all" data-bs-toggle="modal" data-bs-target="#reject_all_wfh" class="reject-btn">Reject All</button>
         </div>
 <!--------------------------------End Button for Approve and Reject All----------------------------------------> 
 
-<form action="actions/Wfh Request/approval.php" method="POST">
         <div class="row">
             <div class="col-12 mt-2">
-                <input type="hidden" id="check_id" name="id_check" value="<?php echo $row['id']?>">
                   <div class="table-responsive">
                     <table id="order-listing" class="table" style="width: 100%; max-height: 400px;">
                       <thead>
@@ -376,6 +468,7 @@ session_start();
                                       
                                       $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                                       $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+              
                             ?>
                             <tr>
                                 <td style="display: none;"><?php echo $row['id']?></td>
@@ -402,17 +495,17 @@ session_start();
                                 <td><?php echo $row['date_file']?></td>
                                 <td>    
                                 <?php if ($row['status'] === 'Approved' || $row['status'] === 'Rejected' || $row['status'] === 'Cancelled'): ?>
-                                 <button type="submit" class="btn btn-outline-success viewbtn" name="approve_btn" style="display: none;" disabled>
+                                 <button type="submit" class="btn btn-outline-success approvewfhbth" data-bs-toggle="modal" data-bs-target="#Modal_WFH_Approved" name="approve_btn" style="display: none;" disabled>
                                   Approve
                                 </button>
-                                 <button type="submit" class="btn btn-outline-danger viewbtn" name="reject_btn" style="display: none;" disabled>
+                                 <button type="submit" class="btn btn-outline-danger rejectwfhbtn" data-bs-toggle="modal" data-bs-target="#Modal_WFH_reject" name="reject_btn" style="display: none;" disabled>
                                   Reject
                                 </button>
                                  <?php else: ?>
-                                <button type="submit" class="btn btn-outline-success viewbtn" name="approve_btn">
+                                <button type="submit" class="btn btn-outline-success approvewfhbth" data-bs-toggle="modal" data-bs-target="#Modal_WFH_Approved" name="approve_btn">
                                   Approve
                                  </button>
-                                 <button type="submit" class="btn btn-outline-danger viewbtn" name="reject_btn">
+                                 <button type="submit" class="btn btn-outline-danger rejectwfhbtn" data-bs-toggle="modal" data-bs-target="#Modal_WFH_reject" name="reject_btn">
                                   Reject
                                   </button>
                                   <?php endif; ?>        
@@ -422,7 +515,6 @@ session_start();
                               }
                             ?>
                     </table>
-                  </form>
               </div>
           </div>
       </div>
@@ -437,7 +529,7 @@ session_start();
 <!-------------------------------Script para matest kung naseselect ba ang I.D---------------------------------------->        
 <script> 
             $(document).ready(function(){
-               $('.viewbtn').on('click', function(){
+               $('.approvewfhbth').on('click', function(){
                  $().modal('show');
                       $tr = $(this).closest('tr');
 
@@ -445,7 +537,25 @@ session_start();
                     return $(this).text();
                     }).get();
                    console.log(data);
-                   $('#check_id').val(data[0]);
+                   $('#approve_wfh_id').val(data[0]);
+               });
+             });
+</script>
+<!-----------------------------End Script para matest kung naseselect ba ang I.D------------------------------------->
+
+
+<!-------------------------------Script para matest kung naseselect ba ang I.D---------------------------------------->        
+<script> 
+            $(document).ready(function(){
+               $('.rejectwfhbtn').on('click', function(){
+                 $().modal('show');
+                      $tr = $(this).closest('tr');
+
+                    var data = $tr.children("td").map(function () {
+                    return $(this).text();
+                    }).get();
+                   console.log(data);
+                   $('#reject_wfh_id').val(data[0]);
                });
              });
 </script>

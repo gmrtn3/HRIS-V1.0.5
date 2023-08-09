@@ -312,8 +312,10 @@ session_start();
                                 <th style="display: none;">End Time</th>
                                 <th style="display: none;">Reason</th>
                                 <th>File Attachment</th>
+                                <th>Action Taken</th>
+                                <th>Remarks</th>
                                 <th>Status</th>
-                                <th>Date Filed</th>
+                                <th style="display: none;">Date Filed</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -331,6 +333,8 @@ session_start();
                                 wfh_tb.end_time,
                                 wfh_tb.reason,
                                 wfh_tb.file_attachment,
+                                wfh_tb.wfh_action_taken,
+                                wfh_tb.wfh_remarks,
                                 wfh_tb.status,
                                 wfh_tb.date_file
                             FROM
@@ -354,8 +358,10 @@ session_start();
                                 <?php else: ?>
                                 <td>None</td> <!-- Show an empty cell if there is no file attachment -->
                                 <?php endif; ?>
+                                <td><?php echo $row['wfh_action_taken']?></td>
+                                <td><?php echo $row['wfh_remarks']?></td>
                                 <td <?php if ($row['status'] == 'Approved') {echo 'style="color:green;"';} elseif ($row['status'] == 'Rejected') {echo 'style="color:red;"';} elseif ($row['status'] == 'Pending') {echo 'style="color:orange;"';} elseif ($row['status'] == 'Cancelled') {echo 'style="color:gray;"';} ?>><?php echo $row['status']; ?></td>
-                                <td><?php echo $row['date_file']?></td>
+                                <td style="display: none;"><?php echo $row['date_file']?></td>
                                 <td><a href="" class="btn btn-primary viewbtn" data-bs-toggle="modal" data-bs-target="#view_wfh_modal">View</a></td>
                             </tr>
                             <?php

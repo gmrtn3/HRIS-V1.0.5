@@ -10,9 +10,6 @@
             session_destroy();
             header("Location: logout.php");
             exit();
-        }else {
-            include 'config.php';
-            include 'user-image.php';
         }
     }
 
@@ -352,8 +349,7 @@ function filterPayslip() {
                                             
                                             $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                                             $cmpny_row = mysqli_fetch_assoc($cmpny_result);
-
-
+                    
                                     echo "<tr>
                                             <td style='display: none;'>" . $row['col_ID'] . "</td>
                                             <td>";

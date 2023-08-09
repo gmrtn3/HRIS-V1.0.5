@@ -10,17 +10,9 @@ if(!isset($_SESSION['username'])){
         session_destroy();
         header("Location: logout.php");
         exit();
-    }else {
-        include 'config.php';
-        include 'user-image.php';
-    }   
+    }
 }
 
-include 'config.php';
-$sql = "SELECT cmpny_code FROM settings_company_tb";
-$result = mysqli_query($conn, $sql);
-
-$rowSettings = mysqli_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
@@ -54,27 +46,6 @@ $rowSettings = mysqli_fetch_assoc($result);
     <link rel="stylesheet" href="css/leaveInfoResponsive.css">
 </head>
 <body>
-
-<style>
-    html{
-  overflow: hidden !important;
-}
-     table {
-                display: block;
-                overflow-x: hidden;
-                white-space: nowrap;
-                max-height: 350px;
-                height: 350px;
-                
-                
-            } 
-
-            tbody {
-                display: table;
-                width: 100%;
-            }
-            
-</style>
 
 <!--MODAL BOOTSTRAP-->
 <header>
@@ -249,7 +220,7 @@ $rowSettings = mysqli_fetch_assoc($result);
                         <!-------------------- para sa message na error ENd --------------------->
 
                     <div class="table-responsive" id="table-responsiveness">
-                             <table id="order-listing" class="table mt-2" style="width: 100%;">
+                             <table id="order-listing" class="table mt-2">
                                 <thead>
                                     <tr>
                                         <th style= 'display: none;' id="header">ID</th>
@@ -290,12 +261,28 @@ $rowSettings = mysqli_fetch_assoc($result);
 
                                         //read data
                                         while($row = $result->fetch_assoc()){
+                                            $cmpny_empid = $row['empid'];
+
+                                            $sql = "SELECT employee_tb.company_code, 
+                                                    employee_tb.empid, 
+                                                    assigned_company_code_tb.company_code_id, 
+                                                    assigned_company_code_tb.empid, 
+                                                    company_code_tb.id, 
+                                                    company_code_tb.company_code AS company_code_name 
+                                                    FROM assigned_company_code_tb 
+                                                    INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                                                    INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                                                    WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                                                    
+                                                    $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                                                    $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+                            
 
                                             $_SESSION["id"] =  $row['col_ID'];
                                             echo "<tr>
                                                 <td style= 'display: none;'>" . $row['col_ID']. "</td>
                                                 <td>";
-                                                $cmpny_code = $rowSettings['cmpny_code'] ?? null;
+                                                $cmpny_code = $cmpny_row['company_code_name'] ?? null;
                                                 $empid = $row['empid'];
                                                 if (!empty($cmpny_code)) {
                                                     echo $cmpny_code . " - " . $empid;

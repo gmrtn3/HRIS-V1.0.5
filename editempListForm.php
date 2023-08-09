@@ -259,7 +259,7 @@ else
                                     
                                     <div class="emp-lname">
                                         <label for="lname">Last Name</label><br>
-                                        <input type="text" name="lname" id="" placeholder="Last Name" value="<?php echo $row['lname']; ?>" style="border: black 1px solid;">
+                                        <input type="text" name="lname" id="" placeholder="Middle Name" value="<?php echo $row['lname']; ?>" style="border: black 1px solid;">
                                     </div>
                                     <div class="emp-fname mt-3">
                                         <label for="fname">Middle Name</label><br>

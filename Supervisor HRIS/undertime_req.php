@@ -177,7 +177,108 @@ session_start();
 </div>
 <!------------------------------------------------End ng View Modal ---------------------------------------------------->
 
+<!----------------Modal kapag clinick ang approve button----------------------->
+<div class="modal fade" id="Modal_UT_Approved" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Undertime Request/approve_ut.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve this request?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <input type="text" id="approve_ut_id" name="approve_name_ut">
+                          <textarea class="form-control" name="ut_approve_marks" placeholder="Approval message..." id="floatingTextarea"></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="name_approved_ut" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!----------------Modal kapag clinick ang approve button----------------------->
 
+<!----------------Modal kapag clinick ang reject button----------------------->
+<div class="modal fade" id="Modal_UT_reject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Undertime Request/reject_ut.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to reject this request?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <input type="text" id="reject_ut_id" name="reject_name_ut">
+                          <textarea class="form-control" name="ut_reject_remarks" placeholder="Reject message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="name_rejected_ut" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!----------------Modal kapag clinick ang reject button----------------------->
+
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+<div class="modal fade" id="ut_approve_all_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Undertime Request/ut_approve_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="ut_all_approve_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="approve_all_ut" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+
+
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+<div class="modal fade" id="ut_reject_all_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Undertime Request/ut_reject_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="ut_all_reject_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="reject_all_ut" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
 
 
 
@@ -277,25 +378,16 @@ session_start();
 <!----------------------------Script sa pagfilter ng data table------------------------->
 
 <!----------------------------------Button for Approve and Reject All------------------------------------------>
-<div class="btn-section">
-                <form action="actions/Undertime Request/status_update.php" method="POST">
-                <input type="hidden" name="Approve" value="approved">
-                <button type="submit" name="approve_all" class="approve-btn">Approve All</button>
-                </form>
-
-                <form action="actions/Undertime Request/status_update.php" method="POST">
-                <!-- <input type="hidden" name="status" value="rejected"> -->
-                <button type="submit" name="reject_all" class="reject-btn">Reject All</button>
-                </form>
+        <div class="btn-section">
+                <button type="submit" name="approve_all" data-bs-toggle="modal" data-bs-target="#ut_approve_all_modal" class="approve-btn">Approve All</button>
+                <button type="submit" name="reject_all"  data-bs-toggle="modal" data-bs-target="#ut_reject_all_modal" class="reject-btn">Reject All</button>
         </div>
 <!--------------------------------End Button for Approve and Reject All---------------------------------------->  
                
 
 <!------------------------------------------Syntax ng Table-------------------------------------------------->
-<form action="actions/Undertime Request/approve'reject.php" method="POST">
         <div class="row" >
             <div class="col-12 mt-2">
-                <input type="hidden" id="check_id" name="id_check" value="<?php echo $row['id']?>">
                   <div class="table-responsive" style="max-height: 590px; overflow-y: auto;">
                     <table id="order-listing" class="table" style="width: 100%; max-height: 590px;">
                       <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
@@ -396,6 +488,7 @@ session_start();
                                   
                                   $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                                   $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+          
                          ?>
                             <tr>
                                 <td style="display: none;"><?php echo $row['id']?></td>
@@ -423,17 +516,17 @@ session_start();
                                 <td><?php echo $row['date_file']?></td>
                                 <td>      
                                  <?php if ($row['status'] === 'Approved' || $row['status'] === 'Rejected' || $row['status'] === 'Cancelled'): ?>
-                                 <button type="submit" class="btn btn-outline-success checkunder" name="approve_btn" style="display: none;" disabled>
+                                 <button type="submit" class="btn btn-outline-success approveUTbtn"  data-bs-toggle="modal" data-bs-target="#Modal_UT_Approved" name="approve_btn" style="display: none;" disabled>
                                    Approve
                                  </button>
-                                 <button type="submit" class="btn btn-outline-danger checkunder" name="reject_btn" style="display: none;" disabled>
+                                 <button type="submit" class="btn btn-outline-danger rejectUTbtn" data-bs-toggle="modal" data-bs-target="#Modal_UT_reject" name="reject_btn" style="display: none;" disabled>
                                    Reject
                                  </button>
                                  <?php else: ?>
-                                 <button type="submit" class="btn btn-outline-success checkunder" name="approve_btn">
+                                 <button type="submit" class="btn btn-outline-success approveUTbtn" data-bs-toggle="modal" data-bs-target="#Modal_UT_Approved" name="approve_btn">
                                     Approve
                                  </button>
-                                 <button type="submit" class="btn btn-outline-danger checkunder" name="reject_btn">
+                                 <button type="submit" class="btn btn-outline-danger rejectUTbtn" data-bs-toggle="modal" data-bs-target="#Modal_UT_reject" name="reject_btn">
                                     Reject
                                   </button>
                                   <?php endif; ?>
@@ -443,7 +536,6 @@ session_start();
                              } 
                             ?>
                       </table>
-                      </form>  
 <!------------------------------------End Syntax ng Table------------------------------------------------->                      
                     </div>
                 </div>
@@ -455,7 +547,39 @@ session_start();
 
 
  
+<!-------------------------------Script para matest kung naseselect ba ang I.D sa approve---------------------------------------->        
+<script> 
+            $(document).ready(function(){
+               $('.approveUTbtn').on('click', function(){
+                 $().modal('show');
+                      $tr = $(this).closest('tr');
 
+                    var data = $tr.children("td").map(function () {
+                    return $(this).text();
+                    }).get();
+                   console.log(data);
+                   $('#approve_ut_id').val(data[0]);
+               });
+             });
+</script>
+<!-----------------------------End Script para matest kung naseselect ba ang I.D approve------------------------------------->
+
+<!-------------------------------Script para matest kung naseselect ba ang I.D sa reject---------------------------------------->        
+<script> 
+            $(document).ready(function(){
+               $('.rejectUTbtn').on('click', function(){
+                 $().modal('show');
+                      $tr = $(this).closest('tr');
+
+                    var data = $tr.children("td").map(function () {
+                    return $(this).text();
+                    }).get();
+                   console.log(data);
+                   $('#reject_ut_id').val(data[0]);
+               });
+             });
+</script>
+<!-----------------------------End Script para matest kung naseselect ba ang I.D reject------------------------------------->
 
 
 <!-------------------------------Script para matest kung naseselect ba ang I.D---------------------------------------->        

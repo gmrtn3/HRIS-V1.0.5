@@ -94,6 +94,28 @@ if(!isset($_SESSION['username'])){
         margin-bottom: -16px !important;
 
     }
+    table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                max-height: 450px;
+                height: 450px;
+                
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+            th, td {
+                text-align: left !important;
+                width: 14.28% !important;
+            }
 
 
 </style>
@@ -261,8 +283,8 @@ if(!isset($_SESSION['username'])){
                       <form action="View_Position.php" method="post">
                       <input type="hidden" id="id_position_name" name="name_position">
                       <input type="hidden" id="table_id_position" name="position_id">
-                        <div class="table-container" style="; height: 600px;">
-                        <table id="order-listing" class="table" style="">
+                        <div class="table-container" style="width: 98%; margin:auto; margin-top: 30px;">
+                        <table id="order-listing" class="table" style="width: 100%">
                         <thead style="background-color: #ececec;">
                             <tr>
                             <th style="display: none;">ID</th>

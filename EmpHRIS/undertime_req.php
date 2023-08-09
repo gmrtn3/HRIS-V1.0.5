@@ -344,8 +344,10 @@ session_start();
                                 <th>Undertime Hours</th>
                                 <th style="display: none;">Reason</th>
                                 <th>File Attachment</th>
+                                <th>Action Taken</th>
+                                <th>Remarks</th>
                                 <th>Status</th>
-                                <th>Date Filed</th>
+                                <th style="display: none;">Date Filed</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -363,6 +365,8 @@ session_start();
                          undertime_tb.total_undertime,
                          undertime_tb.file_attachment,
                          undertime_tb.reason,
+                         undertime_tb.ut_action_taken,
+                         undertime_tb.ut_remarks,
                          undertime_tb.status,
                          undertime_tb.date_file
                          FROM
@@ -385,11 +389,13 @@ session_start();
                                 <button type="button" class="btn btn-outline-success downloadbtn" data-bs-toggle="modal" data-bs-target="#download_undertime">Download</button>
                                 </td>
                                 <?php else: ?>
-                                <td>None</td> <!-- Show an empty cell if there is no file attachment -->
+                                <td>No file attach</td> <!-- Show an empty cell if there is no file attachment -->
                                 <?php endif; ?>
+                                <td><?php echo $row['ut_action_taken'];?></td>
+                                <td><?php echo $row['ut_remarks'];?></td>
                                 <td <?php if ($row['status'] == 'Approved') {echo 'style="color:green;"';} elseif ($row['status'] == 'Rejected') {echo 'style="color:red;"';} elseif ($row['status'] == 'Pending') {echo 'style="color:orange;"';} elseif ($row['status'] == 'Cancelled') {echo 'style="color:gray;"';} ?>><?php echo $row['status']; ?>
                             </td>
-                                <td><?php echo $row['date_file']?></td>
+                                <td style="display: none;"><?php echo $row['date_file']?></td>
                                 <td><a href="" class="btn btn-primary viewbtn" data-bs-toggle="modal" data-bs-target="#view_undertime_modal">View</a></td>
                             </tr>
                             <?php

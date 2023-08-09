@@ -1425,27 +1425,6 @@ font-size: 19px !important;
   </div>
 </div>
 <!--------------------------- Modal of view all Holiday Start Here ---------------------------------->
-<!---------------------------------------View Modal Start Here -------------------------------------->
-<div class="modal fade" id="view_desc_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Description</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-
-        <div class="mb-3">
-            <label for="text_area" class="form-label"></label>
-            <textarea class="form-control" name="text_description" id="view_description" readonly></textarea>
-         </div>
-      </div><!--Modal Body Close Tag-->
-
-    </div>
-  </div>
-</div>
-<!---------------------------------------View Modal End Here --------------------------------------->
 
 <!-------------------------------------------Modal of View Summary Start Here--------------------------------------------->
 <div class="modal fade" id="view_summary" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -1520,7 +1499,28 @@ font-size: 19px !important;
   </div>
 </div>
 <!-------------------------------------------Modal of View Summary End Here--------------------------------------------->
-    
+<!---------------------------------------View Modal Start Here -------------------------------------->
+<div class="modal fade" id="view_desc_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Description</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="mb-3">
+            <label for="text_area" class="form-label"></label>
+            <textarea class="form-control" name="text_description" id="view_description" readonly></textarea>
+         </div>
+      </div><!--Modal Body Close Tag-->
+
+    </div>
+  </div>
+</div>
+<!---------------------------------------View Modal End Here --------------------------------------->    
+
 <!---------------------------------------Download Modal Start Here -------------------------------------->
 <div class="modal fade" id="download_announcement" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">

@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -145,20 +146,21 @@ session_start();
                                                                     
                                                                     $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                                                                     $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+                                            
                                                         ?>
                                                             <tr>
                                                                 <td style="display:none;"><?php echo['id']?></td>
-                                                                <td style='font-weight: 400'><?php  $cmpny_code = $cmpny_row['company_code_name'] ?? null;
+                                                                <td><?php  $cmpny_code = $cmpny_row['company_code_name'] ?? null;
                                                                 $empid = $row['empid'];
                                                                 if (!empty($cmpny_code)) {
                                                                     echo $cmpny_code . " - " . $empid;
                                                                 } else {
                                                                     echo $empid;
                                                                 }?></td>
-                                                                <td style='font-weight: 400'><?php echo $row['full_name']?></td>
-                                                                <td style='font-weight: 400'><?php echo $row['email']?></td>
-                                                                <td style='font-weight: 400'><?php echo $row['contact']?></td>
-                                                                <td style='font-weight: 400'><?php echo $row['col_deptname']?></td>
+                                                                <td><?php echo $row['full_name']?></td>
+                                                                <td><?php echo $row['email']?></td>
+                                                                <td><?php echo $row['contact']?></td>
+                                                                <td><?php echo $row['col_deptname']?></td>
                                                             </tr>
                                                             <?php
                                                             }

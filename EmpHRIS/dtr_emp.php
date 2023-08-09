@@ -1,5 +1,6 @@
 <?php
     session_start(); 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,7 +117,7 @@
 </style>
 <!----------------------------------------------Modal Start Here-------------------------------------------------------------->
 
-<div class="modal fade" id="file_dtr_btn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="file_dtr_btn" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -125,54 +126,55 @@
       </div>
 
       <form action="Data Controller/DTR Employee/dtr_conn.php" method="POST" enctype="multipart/form-data">
-      <div class="modal-body">
-      
-      <div class="mb-3" style="display: none;">
-          <label for="Select_emp" class="form-label">Employee Name</label>
-            <?php
-                include 'config.php'; 
-                // if(isset($_SESSION['empid'])){ // check if the empid key is set in the session array
-                //     $empid = $_SESSION['empid'];
-                // }else{
-                //     $empid = 'Error'; // set default value to empty string if empid key is not set
-                // }
-                ?>
-                <input type="text" class="form-control" name="name_emp" value="<?php echo $_SESSION['empid'];?>" id="empid" readonly>
-        </div> <!--mb-3 end--->
+        <div class="modal-body">
 
-        <div class="mb-3">
-            <label for="exampleInputDate" class="form-label">Date</label>
-            <input name="date_dtr" type="date" class="form-control" id="date_input" required>
-        </div>
+            <input type="text" name="dtr_input_name" id="dtr_input_id">
+            <div class="mb-3" style="display: none;">
+                <label for="Select_emp" class="form-label">Employee Name</label>
+                  <?php
+                      include 'config.php'; 
+                      // if(isset($_SESSION['empid'])){ // check if the empid key is set in the session array
+                      //     $empid = $_SESSION['empid'];
+                      // }else{
+                      //     $empid = 'Error'; // set default value to empty string if empid key is not set
+                      // }
+                      ?>
+                      <input type="text" class="form-control" name="name_emp" value="<?php echo $_SESSION['empid'];?>" id="empid" readonly>
+              </div> <!--mb-3 end--->
 
-        <div class="mb-3">
-            <label for="exampleInputTime" class="form-label">Time</label>
-            <input name="time_dtr" type="time" class="form-control" id="time_input" required>
-        </div>
+              <div class="mb-3">
+                  <label for="exampleInputDate" class="form-label">Date</label>
+                  <input name="date_dtr" type="text" class="form-control" id="date_input" readonly>
+              </div>
 
-        <div class="mb-3">
-            <label for="disabledSelect" class="form-label">Type</label>
-            <select name="select_type" id="disabledSelect" class="form-select" required>
-                <option value="" disabled="" selected="">Type</option>
-                <option value="IN">IN</option>
-                <option value="OUT">OUT</option>
-            </select>
-         </div>
+              <div class="mb-3">
+                  <label for="exampleInputTime" class="form-label">Time</label>
+                  <input name="time_dtr" type="text" class="form-control" id="time_input" required>
+              </div>
 
-         <div class="mb-3">
-             <label for="floatingTextarea2" class="form-label">Reason</label>
-             <textarea name="text_reason" class="form-control" placeholder="Leave a reason here" id="floatingTextarea2" style="height: 100px" required></textarea>
-         </div>
-        
-         <div class="input-group mb-3">
-                 <input type="file" name="file_upload" class="form-control" id="inputGroupFile02">
-          </div>
-      </div> <!--Modal body div close tag-->
-      <div class="modal-footer">
-        <button type="submit" name="add_data" class="btn btn-primary">Add</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      </div>
-      </form>
+              <div class="mb-3">
+                  <label for="disabledSelect" class="form-label">Type</label>
+                  <select name="select_type" id="disabledSelect" class="form-select" required>
+                      <option value="" disabled="" selected="">Type</option>
+                      <option value="IN">IN</option>
+                      <option value="OUT">OUT</option>
+                  </select>
+              </div>
+
+              <div class="mb-3">
+                  <label for="floatingTextarea2" class="form-label">Reason</label>
+                  <textarea name="text_reason" class="form-control" placeholder="Leave a reason here" id="floatingTextarea2" style="height: 100px" required></textarea>
+              </div>
+              
+              <div class="input-group mb-3">
+                      <input type="file" name="file_upload" class="form-control" id="inputGroupFile02">
+                </div>
+            </div> <!--Modal body div close tag-->
+            <div class="modal-footer">
+              <button type="submit" name="add_data" class="btn btn-primary">Add</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
 
 
     </div>
@@ -270,13 +272,7 @@
                                 <div class="col-6">
                                     <h2 style="font-size: 23px; font-weight: bold;">DTR Correction Application</h2>
                                 </div>
-                                <div class="col-6 mt-1 text-end">
-                                <!-- Button trigger modal -->
-                                <button type="button" class="add_dtr_btn" data-bs-toggle="modal" data-bs-target="#file_dtr_btn">
-                                    File DTR Correction
-                                    </button>
-                                </div>
-                            </div> <!--ROW END-->
+                            </div>
 <!----------------------------------End Class ng header including the button for modal-------------------------------------------->
 
 
@@ -314,73 +310,101 @@
 
                         <div class="row">
                             <div class="col-12 mt-3">
+                             
                                 <div class="table-responsive" style="overflow: hidden;">
                                     <table id="order-listing" class="table">
                                       <thead>
                                             <tr>
                                                 <th style="display: none;">ID</th>
-                                                <th style="display: none;">Employee ID</th>
+                                                <th>Employee ID</th>
                                                 <th style="display: none;">Name</th>
+                                                <th style="display: none;">Status</th>
                                                 <th>Date</th>
-                                                <th>Time</th>
-                                                <th>Type</th>
-                                                <th>Reason</th>
-                                                <th>File Attachment</th>
-                                                <th style="display: none;">View Button</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+                                                <th>Time in</th>
+                                                <th>Time out</th>
+                                                <th>Late</th>
+                                                <th>Remarks</th>
+                                                <th>Action</th> 
                                             </tr>
                                         </thead>
-
                                                 <?php 
                                                     $conn = mysqli_connect("localhost","root","","hris_db");
                                                     $employeeid = $_SESSION['empid'];
 
-                                                    $query = "SELECT
-                                                    emp_dtr_tb.id,
-                                                    employee_tb.empid,
-                                                    CONCAT(
-                                                        employee_tb.`fname`,
-                                                        ' ',
-                                                        employee_tb.`lname`
-                                                    ) AS `full_name`,
-                                                    emp_dtr_tb.date,
-                                                    emp_dtr_tb.time,
-                                                    emp_dtr_tb.type,
-                                                    emp_dtr_tb.reason,
-                                                    emp_dtr_tb.file_attach,
-                                                    emp_dtr_tb.status
-                                                FROM
-                                                    employee_tb
-                                                INNER JOIN emp_dtr_tb ON employee_tb.empid = emp_dtr_tb.empid WHERE emp_dtr_tb.empid = $employeeid;";
+                                                    date_default_timezone_set('Asia/Manila');
+                                                    $month = date('m');
+                                                    $year = date('Y');
+
+                                                    $query = "SELECT attendances.id,
+                                                    attendances.status,
+                                                    attendances.empid,
+                                                    attendances.date,
+                                                    attendances.time_in,
+                                                    attendances.time_out,
+                                                    attendances.late,
+                                                    attendances.early_out,
+                                                    attendances.overtime,
+                                                    attendances.total_work,
+                                                    attendances.total_rest,
+                                                    CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`
+                                                FROM attendances
+                                                INNER JOIN employee_tb ON employee_tb.empid = attendances.empid
+                                                WHERE attendances.empid = '$employeeid'
+                                                    AND MONTH(attendances.date) = '$month'
+                                                    AND YEAR(attendances.date) = '$year'
+                                                    AND (
+                                                        (attendances.time_in = '00:00:00' AND attendances.time_out <> '00:00:00')
+                                                        OR (attendances.time_in <> '00:00:00' AND attendances.time_out = '00:00:00')
+                                                        OR attendances.late <> '00:00:00'
+                                                    )";
+
                                                     $result = mysqli_query($conn, $query);
                                                     while ($row = mysqli_fetch_assoc($result)) {
+                                                      $cmpny_empid = $row['empid'];
+
+                                                      $sql = "SELECT employee_tb.company_code, 
+                                                              employee_tb.empid, 
+                                                              assigned_company_code_tb.company_code_id, 
+                                                              assigned_company_code_tb.empid, 
+                                                              company_code_tb.id, 
+                                                              company_code_tb.company_code AS company_code_name 
+                                                              FROM assigned_company_code_tb 
+                                                              INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                                                              INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                                                              WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                                                              
+                                                              $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                                                              $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+                                      
                                                 ?>
-                                                                <tr>
-                                                                <td style="display: none;"><?php echo $row['id']?></td>
-                                                                <td style="display: none;"><?php echo $row['empid']?></td>
-                                                                <td style="display: none;"><?php echo $row['full_name']?></td>
-                                                                <td><?php echo $row['date']?></td>
-                                                                <td><?php echo date('h:i A', strtotime($row['time'])) ?></td>
-                                                                <td><?php echo $row['type']?></td>
-                                                                <td  style="display: none;"><?php echo $row['reason'];?></td>
-                                                                <td><a href="" class="btn btn-primary viewbtn" data-bs-toggle="modal" data-bs-target="#view_dtr_modal">View</a></td>
-                                                                <?php if(!empty($row['file_attach'])): ?>
-                                                                <td>
-                                                                <button type="button" class="btn btn-outline-success downloadbtn" data-bs-toggle="modal" data-bs-target="#download_dtr">Download</button>
-                                                                </td>
-                                                                <?php else: ?>
-                                                                <td>None</td> <!-- Show an empty cell if there is no file attachment -->
-                                                                <?php endif; ?>
-                                                                <td <?php if ($row['status'] == 'Approved') {echo 'style="color:green;"';} elseif ($row['status'] == 'Rejected') {echo 'style="color:red;"';} elseif ($row['status'] == 'Pending') {echo 'style="color:orange;"';} elseif ($row['status'] == 'Cancelled') {echo 'style="color:gray;"';}?>><?php echo $row['status']; ?></td>
-                                                                <td>
-                                                                  <?php if ($row['status'] === 'Approved' || $row['status'] === 'Rejected' || $row['status'] === 'Cancelled'): ?>
-                                                                  <button class="btn btn-outline-danger cancelbtn" data-bs-toggle="modal" data-bs-target="#cancelmodal" type="button" class="btn btn-outline-danger" style="display: none;" disabled>Cancel</button>
-                                                                  <?php else: ?>
-                                                                  <button class="btn btn-outline-danger cancelbtn" data-bs-toggle="modal" data-bs-target="#cancelmodal" type="button" class="btn btn-outline-danger">Cancel</button>
-                                                                  <?php endif; ?>
-                                                                </td>
-                                                                </tr>
+                                                <tr>
+                                                    <td style="display: none;"><?php echo $row['id']?></td>
+                                                    <td><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
+                                                    $empid = $row['empid'];
+                                                    if (!empty($cmpny_code)) {
+                                                        echo $cmpny_code . " - " . $empid;
+                                                    } else {
+                                                        echo $empid;
+                                                    } ?></td>
+                                                    <td style="display: none;"><?php echo $row['full_name']?></td>
+                                                    <td style="display: none;"><?php echo $row['status']?></td>
+                                                    <td><?php echo $row['date']?></td>
+                                                    <td <?php if ($row['time_in'] == '00:00:00') {echo 'style="color:red;"';}?>><?php echo $row['time_in']?></td>
+                                                    <td <?php if ($row['time_out'] == '00:00:00') {echo 'style="color:red;"';}?>><?php echo $row['time_out']?></td>
+                                                    <td><?php echo $row['late']?></td>
+                                                    <td <?php if($row['time_in'] == '00:00:00' || $row['time_out'] == '00:00:00') {echo ' style="color:red;"';} ?>>
+                                                        <?php if($row['time_in'] == '00:00:00') {echo 'NO TIME IN ';} ?>
+                                                        <?php if($row['time_out'] == '00:00:00') {echo 'NO TIME OUT';} ?>
+                                                    </td>
+
+                                                    <td>
+                                                      <?php if ($row['status'] === 'Approved' || $row['status'] === 'Rejected' || $row['status'] === 'Cancelled'): ?>
+                                                      <button class="btn btn-outline-danger cancelbtn" data-bs-toggle="modal" data-bs-target="#cancelmodal" type="button" class="btn btn-outline-danger" style="display: none;" disabled>Cancel</button>
+                                                      <?php else: ?>
+                                                      <button class="btn btn-outline-danger cancelbtn" data-bs-toggle="modal" data-bs-target="#cancelmodal" type="button" class="btn btn-outline-danger">Cancel</button>
+                                                      <?php endif; ?>
+                                                    </td>
+                                                </tr>
                                                 <?php
                                                     } 
                                                 ?>
@@ -394,6 +418,24 @@
         </div>
     </div>
 
+<!-------------------------------Script para matest kung naseselect ba ang I.D---------------------------------------->        
+<script> 
+      $(document).ready(function(){
+          $('.viewdtr').on('click', function(){
+            $().modal('show');
+                $tr = $(this).closest('tr');
+
+              var data = $tr.children("td").map(function () {
+              return $(this).text();
+              }).get();
+              console.log(data);
+              $('#dtr_input_id').val(data[0]);
+              $('#date_input').val(data[4]);
+              $('#time_input').val(data[5]);          
+          });
+        });
+</script>
+<!-----------------------------End Script para matest kung naseselect ba ang I.D------------------------------------->    
 
 <!-----------------------------Script sa pagremove ng message sa link------------------------------------>
 <script>
