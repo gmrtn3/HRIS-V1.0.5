@@ -459,7 +459,7 @@ else
                             <h1>Employment Credentials</h1>
                             </div>
                             <div class="emp-empInfo-first-container">
-                                <div class="empInfo-empid" style="border:black 1px solid">
+                                <div class="empInfo-empid" style="">
                                     <label for="empid">Employee ID</label><br>
                                     <div class="" style="display:flex; flex-direction: row">
                                     <?php
@@ -473,7 +473,7 @@ else
                                             $options .= "<option value='".$rows['id']."' ".$selected." >" .$rows['company_code'].  "</option>";
                                         }
                                         ?>
-                                        <select name="company_code" id="" value="<?php echo $cmpny_row['company_code_name']?>">
+                                        <select name="company_code" id="" value="<?php echo $cmpny_row['company_code_name']?>" style="width: 15%">
                                             <?php echo $options ?>
                                         </select>
                                         <input type="text" name="empid" id="" placeholder="Employee ID" value="<?php echo $row['empid'] ?>" readonly class="form-control" style="height:50px; width: 75%">
