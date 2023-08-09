@@ -57,6 +57,27 @@
         <?php include("header.php")?>
     </header>
 
+    <style>
+         table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 450px;
+                height: 450px;
+                
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+    </style>
+
     <div class="modal fade" id="schedUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="title" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -180,8 +201,8 @@
                             </div> <!--Container Select-->
                             <!----------------------------------------select button and text input--------------------------------------->
                             
-                                <div class="table-responsive" id="table-responsiveness">
-                                    <table id="order-listing" class="table mt-2">
+                                <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                                    <table id="order-listing" class="table" style="width: 100%">
                                         <thead>
                                             <th>Employee</th>
                                             <th>Time Entry</th>
