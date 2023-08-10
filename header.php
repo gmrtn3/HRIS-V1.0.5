@@ -587,7 +587,7 @@
   <ul class="nav" style="margin-top: 50px; color:red;">
           <li class="nav-item" style="color: black">
             <a class="nav-link" href="dashboard" style="color: white;">
-              <i class="icon-grid fa-solid fa-tv" style=""></i>
+              <i class="icon-grid fa-solid fa-tv"></i>
               <span class="nav-title" style="font-size: 21px; margin-left: 15px; font-family: Arial, sans-serif; font-weight: 500">DASHBOARD</span>
             </a>
           </li>
