@@ -1370,6 +1370,8 @@ if(mysqli_num_rows($result) <= 0) {
         </div>
     </div>
 
+    <!-- swiper -->
+
     <script>
         const swiper = new Swiper('.swiper', {
         // Optional parameters

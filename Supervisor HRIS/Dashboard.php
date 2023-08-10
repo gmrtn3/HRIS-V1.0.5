@@ -2942,6 +2942,22 @@ const swiper = new Swiper('.swiper', {
 });
 </script>
 
+<script> 
+        $(document).ready(function(){
+        $('.viewEmprequest').on('click', function(){
+        $tr = $(this).closest('tr');
+
+            var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+        $('#id_Super_request').val(data[0]);                  
+        $('#id_request_type').val(data[1]);
+    });
+});
+</script>
+
 <!------------------------------------Script para sa pag pop-up ng view modal------------------------------------------------->
 <script>
      $(document).ready(function(){

@@ -251,7 +251,7 @@ else
                             <div class="emp-list-main">
                                 <div class="emp-info-first-container" style="height: 400px">
                                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                
+                                    
                                     <div class="emp-fname">
                                         <label for="fname">First Name</label><br>
                                         <input type="text"  name="fname" id="" placeholder="First Name" value="<?php echo $row['fname']; ?>" style="border: black 1px solid;"> 
@@ -297,7 +297,6 @@ else
                                         <option value="<?php echo $row['gender']?>" selected="selected" class="selectTag" style="color: gray;"><?php echo $row['gender']?></option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
                                 </div>

@@ -1,5 +1,3 @@
-
-
 <?php
     session_start();
     if (!isset($_SESSION['username'])) {
@@ -19,8 +17,9 @@
     }
 
     include 'config.php';
-    $result = mysqli_query($conn, "SELECT * FROM settings_company_tb");
-    $rows = mysqli_fetch_assoc($result); 
+    // $result = mysqli_query($conn, "SELECT * FROM settings_company_tb");
+    // $rows = mysqli_fetch_assoc($result); 
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">

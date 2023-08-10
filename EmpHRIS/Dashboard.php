@@ -48,6 +48,10 @@
     <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
 
+    <!-- swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/try.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -60,6 +64,14 @@
         body {
             overflow-X: hidden;
         }
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        .emp-dash2-shortcut a{
+            text-decoration: none;
+            font-size: 1em;        }
     </style>
     <header>
         <?php include("header.php")?>
@@ -420,7 +432,7 @@
                  </div>   
               </div>
                                     <div class="dash-schedule-content">
-                                        <div style="border: 1px solid black;">
+                                        <div style="">
                                             <?php
                                                 $employeeid = $_SESSION['empid'];
                                                 include '../config.php';
@@ -462,7 +474,7 @@
                                                                 <div class="dash-barrier" style="margin-left: 70px;">
                                                                         <!---Barrier--->
                                                                 </div>
-                                                <div style="margin-right: 38px; border: 1px solid black; width: 250px;">
+                                                <div style="margin-right: 38px; width: 250px;">
                                                         <?php 
                                                         $employeeid = $_SESSION['empid'];
                                                         include '../config.php';
@@ -772,7 +784,8 @@
                                             <h1 style="text-align: center;">Announcement</h1>
                                         </div>
 
-                                        <div class="emp-dash2-announcement-content">
+                                        <div class="swiper" style="height: 80%">
+                                            <div class="swiper-wrapper" >
                                                 <?php
                                                     include 'config.php';
 
@@ -791,7 +804,7 @@
                                                     if (mysqli_num_rows($result) > 0) {
                                                         while ($row = mysqli_fetch_assoc($result)) {
                                                             if ($slideIndex % 1 === 0) {
-                                                                echo "<div class='announcement-slide'>";
+                                                                echo "<div class='swiper-slide pl-5 pr-5 pt-3'>";
                                                             }
                                                             ?>                          
                                                             <h4 class="mt-2 ml-2"><?php echo $row['announce_title'] ?></h4>
@@ -813,27 +826,72 @@
                                                     }
                                                     ?>
 
-                                                <button class="previous" onclick="prevSlide()">&#10094;</button>
-                                                <button class="next-step" onclick="nextSlide()">&#10095;</button>
+                                                
+                                            </div>
+                                            <!-- If we need pagination -->
+                                              <div class="swiper-pagination"></div>
+
+                                            <!-- If we need navigation buttons -->
+                                            <div class="swiper-button-prev"></div>
+                                            <div class="swiper-button-next"></div>
                                     </div>
                                 </div>
                                     
 
                                     <div class="emp-dash2-chart">
-                                        <?php
-                                            $query = "SELECT * FROM event_tb ORDER BY `date_event` ASC";
-                                            $result = mysqli_query($conn, $query);
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                $eventDate = date('Y-m-d', strtotime($row['date_event']));
-                                                $eventDay = date('l', strtotime($row['date_event']));
-                                            ?>
-                                            <div class="emp_chart_son">
-                                                <p><?php echo '<strong style="font-size: 20px; margin-left: 10px;">' . $row['event_title'] . '</strong> ' . '<span style="float: right; margin-right: 10px;">' . $eventDate . '</span>'; ?></p>
-                                                <p><?php echo '<span style="margin-left: 10px;"></span> ' . '<span style="float: right; margin-right: 10px;">' . $eventDay . '</span>'; ?></p>
-                                            </div>
-                                            <?php
-                                            }
-                                        ?>
+                                        <h3 class="d-flex align-items-center justify-content-center" style="font-size: 1.2em; height: 1.9em; background-color: #838383; color: #fff; font-weight: 400">Events and Holidays</h3>
+                                        <div class="event-content">
+                            <div class="first_content">
+                                <?php
+                                  date_default_timezone_set('Asia/Manila');
+
+                                  // Get the current month's start and end dates
+                                  $startDate = date('Y-m-d');
+                                  $endDate = date('Y-m-t');
+                                  
+                                $query = "SELECT * FROM event_tb WHERE date_event BETWEEN '$startDate' AND '$endDate' ORDER BY `date_event` ASC";
+                                $result = mysqli_query($conn, $query);
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $eventDate = date('Y-m-d', strtotime($row['date_event']));
+                                    $eventDay = date('l', strtotime($row['date_event']));
+                                ?>
+                                <div class="son_first" style="background-color: #ECECEC;">
+                                    <p ><?php echo '<strong style="font-size: 20px; margin-left: 10px;">' . $row['event_title'] . '</strong> ' . '<span style="float: right; margin-right: 10px;">' . $eventDate . '</span>'; ?></p>
+                                    <p><?php echo '<span style="margin-left: 10px;">' . $row['event_type'] . '</span> ' . '<span style="float: right; margin-right: 10px;">' . $eventDay . '</span>'; ?></p>
+                                    <p class="ml-2 fst-italic">Type: Event</p>
+                                </div>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                            
+                            <div class="holiday-content">
+                            <div class="first_holiday_content">
+                                <?php
+
+                              
+
+                                // // Display the start and end dates
+                                // echo "Start date: " . $startDate . "<br>";
+                                // echo "End date: " . $endDate;
+
+                                $query = "SELECT * FROM holiday_tb WHERE holiday_type != 'Regular Working Day' AND `date_holiday` BETWEEN '$startDate' AND '$endDate' ORDER BY `date_holiday` ASC";
+                                $result = mysqli_query($conn, $query);
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $holidayDate = date('Y-m-d', strtotime($row['date_holiday']));
+                                    $holidayDay = date('l', strtotime($row['date_holiday']));
+                                ?>
+                                <div class="son_holiday" style="background-color: #ECECEC;">
+                                    <p><?php echo '<strong style="font-size: 20px; margin-left: 10px;">' . $row['holiday_title'] . '</strong> ' . '<span style="float: right; margin-right: 10px;">' . $holidayDate . '</span>'; ?></p>
+                                    <p><?php echo '<span style="margin-left: 10px;">' . $row['holiday_type'] . '</span> ' . '<span style="float: right; margin-right: 10px;">' . $holidayDay . '</span>'; ?></p>
+                                    <p class="ml-2 fst-italic">Type: Holiday</p>
+                                </div>
+                                <?php
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                                </div>
                                     </div>
 
                                     <div class="emp-dash2-shortcut">
@@ -884,6 +942,33 @@
                                 </div>
                             </div> 
                         </div>
+
+
+    <!-- swiper -->
+
+    <script>
+        const swiper = new Swiper('.swiper', {
+        // Optional parameters
+        direction: 'horizontal',
+        loop: true,
+
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+        },
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+        // And if we need scrollbar
+        scrollbar: {
+            el: '.swiper-scrollbar',
+        },
+        });
+    </script>
 
 
 <!-----------------------Script sa graph--------------------------------->

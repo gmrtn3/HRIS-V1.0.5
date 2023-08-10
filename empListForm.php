@@ -1,6 +1,6 @@
 
 <?php
-//   error_reporting();
+  error_reporting();
    session_start();
    if (!isset($_SESSION['username'])) {
     header("Location: login.php");
@@ -248,7 +248,7 @@
                                             <option value="" selected="selected" class="selectTag" style="color: gray;">Select Gender</option>
                                             <option value="Male" <?php echo isset($_GET['gender']) && $_GET['gender'] === 'Male' ? 'selected' : ''; ?>>Male</option>
                                             <option value="Female" <?php echo isset($_GET['gender']) && $_GET['gender'] === 'Female' ? 'selected' : ''; ?>>Female</option>
-                                            <option value="Other" <?php echo isset($_GET['gender']) && $_GET['gender'] === 'Other' ? 'selected' : ''; ?>>Other</option>
+                                          
                                         </select>
                                 </div>
                                 <div class="emp-info-dob">

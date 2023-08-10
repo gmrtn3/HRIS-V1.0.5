@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->close();
 
     echo "<script> alert('Data Inserted Successfully')</script>";
-    echo "<script>window.location.href = '../../pakyawanEmpList';</script>";
+    echo "<script>window.location.href = '../../EmployeeList';</script>";
     exit;
 }
 ?>

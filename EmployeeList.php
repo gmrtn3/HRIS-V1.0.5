@@ -1,5 +1,3 @@
-
-
 <?php
     session_start();
     if (!isset($_SESSION['username'])) {
@@ -43,6 +41,11 @@
 <link rel="stylesheet" href="skydash/themify-icons.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/themify-icons/0.1.2/css/themify-icons.css">
 <link rel="stylesheet" href="skydash/vendor.bundle.base.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Bootstrap JavaScript library -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="skydash/style.css">
 
@@ -96,9 +99,39 @@
         <div class="empList-title">
             <h1>Employee List</h1>
         </div>
-        <div class="empList-create-search">
-            <a href="empListForm.php" class="empList-btn" title="Create New">Create New</a>
+        <div class="empList-create-search" style="">
+            
+    
+
+        <form method="post" action="">
+            <div class="status-filter d-flex flex-row align-items-center pl-5 justify-content-between" >
+            
+        
+            <div class="form-group d-flex flex-row align-items-center" style="width: 100%; " >
+            <div style="width:100%; ">
+                <label for="" style="margin-bottom: 1%; font-size: 1em">Filter Status</label><br>
+                <?php
+                // Default filter status when the form is first loaded
+                $status_filter = "Active";
+                if (isset($_POST['status_filter'])) {
+                    $status_filter = $_POST['status_filter'];
+                }
+                ?>
+                <select name="status_filter" id="status-filter-select" class="form-control" style="color: black">
+                    <option value="all"<?php if ($status_filter === 'all') echo ' selected'; ?>>All</option>
+                    <option value="Active"<?php if ($status_filter === 'Active') echo ' selected'; ?>>Active</option>
+                    <option value="Inactive"<?php if ($status_filter === 'Inactive') echo ' selected'; ?>>Inactive</option>
+                </select>
+                </div>
+                <button type="submit" class="ml-5 btn btn-primary h-25 mt-4" style="">Go</button>
+            </div>
+        
+        </form>
+</div>
+    
+            <a href="empListForm.php" class="empList-btn mr-5" title="Create New">Create New</a>
         </div>
+        
 
         <style>
             table {
@@ -141,12 +174,32 @@
     </thead>
     <tbody id="myTable">
         <?php
-        $conn = mysqli_connect("localhost", "root", "", "hris_db");
-        $stmt = "SELECT * FROM employee_tb
-                 INNER JOIN classification_tb
-                 ON employee_tb.classification = classification_tb.id 
-                 WHERE employee_tb.classification != 3";
-        $result = $conn->query($stmt);
+       $conn = mysqli_connect("localhost", "root", "", "hris_db");
+
+       // Check if the form is submitted and the status_filter value is set
+       if (isset($_POST['status_filter'])) {
+        $status_filter = $_POST['status_filter'];
+
+        // Check if the selected filter is "Active" or "Inactive"
+        if ($status_filter === "Active" || $status_filter === "Inactive") {
+            $query = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
+                      INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
+                     AND employee_tb.status = '$status_filter'";
+        } else {
+            // If the selected filter is "All" or not set, show all employees
+            $query = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
+                      INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
+                      ";
+        }
+    } else {
+        // Default filter status when the form is first loaded
+        $status_filter = "Active";
+        $query = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
+                  INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
+                   AND employee_tb.status = '$status_filter'";
+    }
+ 
+        $result = $conn->query($query);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -180,6 +233,7 @@
                 echo "<td style='font-weight: 400;'>" . $row["contact"] . "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["role"] . " </td>";
 
+               
                 if ($row["status"] == "Active") {
                     echo "<td style='font-weight: 400; color: green;'>" . $row["status"] . "</td>";
                 } else {
@@ -225,7 +279,20 @@
                 }
 
                 echo "<td class='tbody-btn' style='width:120px;'>";
-                echo "<button class='tb-view' style='text-decoration:none; border:none;background-color:inherit; outline:none;'><a href='editempListForm.php?empid=$row[empid]' style='color:gray; text-decoration:none;'>View</a></button>";
+
+                $empid = $row['empid'];
+                $classification = $row['classification'];
+
+                if ($classification != 'Pakyawan') {
+                    $redirectUrl = "editempListForm.php?empid=$empid&classification=$classification";
+                } else {
+                    $redirectUrl = "edit_pakyawan_work.php?empid=$empid&classification=$classification";
+                }
+
+                echo "<button class='tb-view' style='text-decoration:none; border:none;background-color:inherit; outline:none;'>
+                <a href='$redirectUrl' style='color:gray; text-decoration:none;'>View</a>
+                </button>";
+
                 echo "</td>";
                 echo "</tr>";
             }
@@ -236,6 +303,7 @@
         ?>
     </tbody>
 </table>
+
 
 
         </div>
@@ -258,6 +326,30 @@
             </div>
         </div>
     </div>
+
+
+    
+    <script>
+    function applyFilter() {
+        var selectedStatus = document.getElementById("status-filter-select").value;
+        var tableRows = document.querySelectorAll("#myTable tr");
+
+        for (var i = 0; i < tableRows.length; i++) {
+            var row = tableRows[i];
+            row.style.display = "table-row";
+
+            if (selectedStatus !== "all") {
+                var statusCell = row.cells[5]; // Assuming the status cell is in the fifth column
+                var statusValue = statusCell.textContent.trim(); // Get the actual status value without extra spaces
+
+                if (statusValue !== selectedStatus) {
+                    row.style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
 
        <!-- Add the Bootstrap 5 JS and jQuery (required by Bootstrap) links before closing the <body> tag -->
        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

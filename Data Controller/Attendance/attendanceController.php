@@ -419,31 +419,37 @@ if(isset($_POST['importSubmit'])){
 
                             // if($time_in_datetime >= $  )                           
                                
-                            // Subtract lunch break (1 hour) from the total work duration
-                            $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
-                            $total_work_datetime->sub(new DateInterval('PT1H'));
-                            $total_work = $total_work_datetime->format('H:i:s');
+                              // if($time_in_datetime >= $  )
+                     
+                         // Subtract lunch break (1 hour) from the total work duration
+                         $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                         $total_work_datetime->sub(new DateInterval('PT1H'));
+                         $total_work = $total_work_datetime->format('H:i:s');
 
-                           
-                            $get_sched_ot = $time['sched_ot'];
-                            $get_tues_timeout = $time['tues_timeout'];
-                            $get_tues_timein = $time['tues_timein'];
+                        
+                         $get_sched_ot = $time['sched_ot'];
+                         $get_mon_timeout = $time['mon_timeout'];
+                         $get_mon_timein = $time['mon_timein'];
 
-                            $convert_tues_timeout = new DateTime($get_tues_timeout);
-                            $convert_time_in = new DateTime($time_in);
+                         $convert_mon_timeout = new DateTime($get_mon_timeout);
+                         $convert_time_in = new DateTime($time_in);
+
+                         $convert_time_out = new DateTime($time_out);
 
 
-                            // Convert $get_sched_ot to minutes
-                            $sched_ot_minutes = (int) $get_sched_ot;
-                                                    
-                            // Convert $get_tues_timeout to a DateTime object
-                            $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_tues_timeout);
-                                                    
-                            // Add $sched_ot_minutes to $mon_timeout_datetime
-                            $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
-                                                    
-                            // Format the resulting time as 'H:i'
-                            $result_sched_ot = $mon_timeout_datetime->format('H:i');
+                         // Convert $get_sched_ot to minutes
+                         $sched_ot_minutes = (int) $get_sched_ot;
+                                                 
+                         // Convert $get_mon_timeout to a DateTime object
+                         $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_mon_timeout);
+                                                 
+                         // Add $sched_ot_minutes to $mon_timeout_datetime
+                         $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                                 
+                         // Format the resulting time as 'H:i'
+                         $result_sched_ot = $mon_timeout_datetime->format('H:i');
+
+                        
 
                             if ($minutes_in_time_in <= $grace_period_minutes && $time_out <= $result_sched_ot ){
                                 
@@ -475,26 +481,122 @@ if(isset($_POST['importSubmit'])){
                             $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
                         }
 
-                        if($time_out < $time['mon_timeout']){
-                            $time_out_datetime = new DateTime('08:00:00');
-                            $scheduled_outs = new DateTime($total_work);
-                            $early_interval = $scheduled_outs->diff($time_out_datetime);
-                            $early_out = $early_interval->format('%h:%i:%s');
-                        } else { 
-                            $early_out = '00:00:00';
-                        }
-
-
     
                         if($time_in < '00:00:00'){
                             $early_out = '00:00:00';
                             $total_work = '00:00:00';
                             $total_rest = '08:00:00';
                         }
+
+                        $get_sched_ot = $time['sched_ot'];
+                        $get_mon_timeout = $time['mon_timeout'];
+                        $get_mon_timein = $time['mon_timein'];
+                        
+                        $convert_mon_timeout = new DateTime($get_mon_timeout);
+                        $convert_time_in = new DateTime($time_in);
+                        
+                        // Check if time_out is set
+                        if (!empty($time_out)) {
+                            $convert_time_out = new DateTime($time_out);
+                            
+                            // Calculate the interval between time_in and time_out
+                            $interval = $convert_time_in->diff($convert_time_out);
+                        
+                            // Subtract lunch break (1 hour) from the total work duration
+                            $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                            $total_work_datetime->sub(new DateInterval('PT1H'));
+                            $total_work = $total_work_datetime->format('H:i:s');
+                        
+                            // Convert $get_sched_ot to minutes
+                            $sched_ot_minutes = (int) $get_sched_ot;
+                        
+                            // Convert $get_mon_timeout to a DateTime object
+                            $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_mon_timeout);
+                        
+                            // Add $sched_ot_minutes to $mon_timeout_datetime
+                            $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                        
+                            // Format the resulting time as 'H:i'
+                            $result_sched_ot = $mon_timeout_datetime->format('H:i');
+                            
+                            // Handle any further logic for the case when time_out is set
+                        } else {
+                            // Handle the case when time_out is not set (e.g., user only provided time_in)
+                            // You can set defaults or handle it accordingly
+                            $total_work = '00:00:00';
+                            $result_sched_ot = '00:00';
+                            $early_out = '00:00:00';
+                            // Handle any further logic for this case
+                        }
+   
+                        if(!empty($time_in)){
+                          echo "hindi gumana";
+                        }else{
+                           // Convert wed_timein and time_out to DateTime objects
+                               $convert_wed_timein = new DateTime($get_mon_timein);
+                               $convert_time_out = new DateTime($time_out);
+   
+                               // Subtract an hour from time_out
+                               $convert_time_out->sub(new DateInterval('PT1H'));
+   
+                               // Calculate the interval between wed_timein and time_out
+                               $interval = $convert_wed_timein->diff($convert_time_out);
+   
+                               // Format the interval as 'H:i:s'
+                               $interval_formatted = $interval->format('%H:%I:%S');
+   
+                               // Assign the formatted interval to $early_out
+                               $early_out = $interval_formatted;
+   
+                           $total_work = '00:00:00';
+                           $late = '00:00:00';
+                           echo "walang time_in";
+                        }
+   
+                        if($time_out < $time['mon_timeout']){
+                           $get_timeout = $time['mon_timeout'];
+                           $time_out_datetime = new DateTime($time_out);
+                           $mon_timeout_datetime = new DateTime($get_timeout);
+                           
+                           // Check if $time_out is earlier than $wed_timeout
+                           if ($time_out_datetime < $mon_timeout_datetime) {
+                               // Calculate the difference between $time_out and $wed_timeout
+                               $early_interval = $time_out_datetime->diff($mon_timeout_datetime);
+                           
+                               // Format the early out interval as 'H:i:s'
+                               $early_out = $early_interval->format('%H:%I:%S');
+                           
+                               // Get the current time
+                               $current_time = new DateTime();
+                               
+                               // Check if the current time is after 12:00 PM (noon)
+                               $noon_time = new DateTime('12:00:00');
+                               if ($current_time > $noon_time) {
+                                   // Convert total work interval to a DateTime object
+                                   $total_work_datetime = new DateTime($total_work);
+                                   
+                                   // Subtract an hour from the total work time
+                                   $total_work_datetime->sub(new DateInterval('PT1H'));
+                                   
+                                   // Format the updated total work time
+                                   $total_work = $total_work_datetime->format('H:i:s');
+                               }
+                           } else {
+                               $early_out = '00:00:00';
+                           }
+                           
+                           echo $early_out; // Display the calculated early out time
+                           echo $total_work; // Display the calculated total work time
+   
+                           //  echo $total_work;
+                        } else { 
+                            $early_out = '00:00:00';
+                        }
+   
                         
 
                 }elseif($currentDayOfWeek == $tuesday){
-                    // echo "it is tuesday";
+                    echo "it is tuesday";
                         // Check if the employee is late
                         $grace_period_total = new DateTime($time['tues_timein']);
                         $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
@@ -641,31 +743,32 @@ if(isset($_POST['importSubmit'])){
                             // if($time_in_datetime >= $  )
                         
                             // Subtract lunch break (1 hour) from the total work duration
-                            $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
-                            $total_work_datetime->sub(new DateInterval('PT1H'));
-                            $total_work = $total_work_datetime->format('H:i:s');
+                         $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                         $total_work_datetime->sub(new DateInterval('PT1H'));
+                         $total_work = $total_work_datetime->format('H:i:s');
 
-                           
-                            $get_sched_ot = $time['sched_ot'];
-                            $get_tues_timeout = $time['tues_timeout'];
-                            $get_tues_timein = $time['tues_timein'];
+                        
+                         $get_sched_ot = $time['sched_ot'];
+                         $get_tues_timeout = $time['tues_timeout'];
+                         $get_wed_timein = $time['tues_timein'];
 
-                            $convert_tues_timeout = new DateTime($get_tues_timeout);
-                            $convert_time_in = new DateTime($time_in);
+                         $convert_wed_timeout = new DateTime($get_tues_timeout);
+                         $convert_time_in = new DateTime($time_in);
+
+                         $convert_time_out = new DateTime($time_out);
 
 
-                            // Convert $get_sched_ot to minutes
-                            $sched_ot_minutes = (int) $get_sched_ot;
-                                                    
-                            // Convert $get_tues_timeout to a DateTime object
-                            $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_tues_timeout);
-                                                    
-                            // Add $sched_ot_minutes to $mon_timeout_datetime
-                            $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
-                                                    
-                            // Format the resulting time as 'H:i'
-                            $result_sched_ot = $mon_timeout_datetime->format('H:i');
-
+                         // Convert $get_sched_ot to minutes
+                         $sched_ot_minutes = (int) $get_sched_ot;
+                                                 
+                         // Convert $get_tues_timeout to a DateTime object
+                         $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_tues_timeout);
+                                                 
+                         // Add $sched_ot_minutes to $mon_timeout_datetime
+                         $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                                                 
+                         // Format the resulting time as 'H:i'
+                         $result_sched_ot = $mon_timeout_datetime->format('H:i');
                            
                                
 
@@ -719,20 +822,115 @@ if(isset($_POST['importSubmit'])){
                             $total_work = '00:00:00'; // Set total work to 0:00 if no time_out
                         }
 
-    
-                        if($time_out < $time['tues_timeout']){
-                            $time_out_datetime = new DateTime('08:00:00');
-                            $scheduled_outs = new DateTime($total_work);
-                            $early_interval = $scheduled_outs->diff($time_out_datetime);
-                            $early_out = $early_interval->format('%h:%i:%s');
-                        } else { 
-                            $early_out = '00:00:00';
-                        }
-    
                         if($time_in < '00:00:00'){
                             $early_out = '00:00:00';
                             $total_work = '00:00:00';
                             $total_rest = '08:00:00';
+                        }
+
+                        $get_sched_ot = $time['sched_ot'];
+                        $get_week_timeout = $time['tues_timeout'];
+                        $get_week_timein = $time['tues_timein'];
+                        
+                        $convert_week_timeout = new DateTime($get_week_timeout);
+                        $convert_time_in = new DateTime($time_in);
+                        
+                        // Check if time_out is set
+                        if (!empty($time_out)) {
+                            $convert_time_out = new DateTime($time_out);
+                            
+                            // Calculate the interval between time_in and time_out
+                            $interval = $convert_time_in->diff($convert_time_out);
+                        
+                            // Subtract lunch break (1 hour) from the total work duration
+                            $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                            $total_work_datetime->sub(new DateInterval('PT1H'));
+                            $total_work = $total_work_datetime->format('H:i:s');
+                        
+                            // Convert $get_sched_ot to minutes
+                            $sched_ot_minutes = (int) $get_sched_ot;
+                        
+                            // Convert $get_week_timeout to a DateTime object
+                            $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_week_timeout);
+                        
+                            // Add $sched_ot_minutes to $mon_timeout_datetime
+                            $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                        
+                            // Format the resulting time as 'H:i'
+                            $result_sched_ot = $mon_timeout_datetime->format('H:i');
+                            
+                            // Handle any further logic for the case when time_out is set
+                        } else {
+                            // Handle the case when time_out is not set (e.g., user only provided time_in)
+                            // You can set defaults or handle it accordingly
+                            $total_work = '00:00:00';
+                            $result_sched_ot = '00:00';
+                            $early_out = '00:00:00';
+                            // Handle any further logic for this case
+                        }
+   
+                        if(!empty($time_in)){
+                          echo "hindi gumana";
+                        }else{
+                           // Convert wed_timein and time_out to DateTime objects
+                               $convert_wed_timein = new DateTime($get_week_timein);
+                               $convert_time_out = new DateTime($time_out);
+   
+                               // Subtract an hour from time_out
+                               $convert_time_out->sub(new DateInterval('PT1H'));
+   
+                               // Calculate the interval between wed_timein and time_out
+                               $interval = $convert_wed_timein->diff($convert_time_out);
+   
+                               // Format the interval as 'H:i:s'
+                               $interval_formatted = $interval->format('%H:%I:%S');
+   
+                               // Assign the formatted interval to $early_out
+                               $early_out = $interval_formatted;
+   
+                           $total_work = '00:00:00';
+                           $late = '00:00:00';
+                           echo "walang time_in";
+                        }
+   
+                        if($time_out < $time['tues_timeout']){
+                           $get_timeout = $time['tues_timeout'];
+                           $time_out_datetime = new DateTime($time_out);
+                           $week_timeout_datetime = new DateTime($get_timeout);
+                           
+                           // Check if $time_out is earlier than $wed_timeout
+                           if ($time_out_datetime < $week_timeout_datetime) {
+                               // Calculate the difference between $time_out and $wed_timeout
+                               $early_interval = $time_out_datetime->diff($week_timeout_datetime);
+                           
+                               // Format the early out interval as 'H:i:s'
+                               $early_out = $early_interval->format('%H:%I:%S');
+                           
+                               // Get the current time
+                               $current_time = new DateTime();
+                               
+                               // Check if the current time is after 12:00 PM (noon)
+                               $noon_time = new DateTime('12:00:00');
+                               if ($current_time > $noon_time) {
+                                   // Convert total work interval to a DateTime object
+                                   $total_work_datetime = new DateTime($total_work);
+                                   
+                                   // Subtract an hour from the total work time
+                                   $total_work_datetime->sub(new DateInterval('PT1H'));
+                                   
+                                   // Format the updated total work time
+                                   $total_work = $total_work_datetime->format('H:i:s');
+                               }
+                           } else {
+                               $early_out = '00:00:00';
+                           }
+                           
+                           echo $early_out; // Display the calculated early out time
+                           echo $total_work; // Display the calculated total work time
+   
+                           //  echo $total_work;
+                        } else { 
+                            $early_out = '00:00:00';
                         }
                 }elseif($currentDayOfWeek == $wednesday){
                      // Check if the employee is late
@@ -950,17 +1148,7 @@ if(isset($_POST['importSubmit'])){
                     
 
  
-                     if($time_out < $time['wed_timeout']){
-                        $get_timeout = $time['wed_timeout'];
-                         $time_out_datetime = new DateTime($get_timeout);
-                         $scheduled_outs = new DateTime($time_out);
-                         $early_interval = $scheduled_outs->diff($time_out_datetime);
-                         $early_out = $early_interval->format('%h:%i:%s');
-                         echo $total_work;
-                     } else { 
-                         $early_out = '00:00:00';
-                     }
-
+                   
                      if($time_in < '00:00:00'){
                          $early_out = '00:00:00';
                          $total_work = '00:00:00';
@@ -1029,8 +1217,48 @@ if(isset($_POST['importSubmit'])){
                             $early_out = $interval_formatted;
 
                         $total_work = '00:00:00';
-                        
+                        $late = '00:00:00';
                         echo "walang time_in";
+                     }
+
+                     if($time_out < $time['wed_timeout']){
+                        $get_timeout = $time['wed_timeout'];
+                        $time_out_datetime = new DateTime($time_out);
+                        $wed_timeout_datetime = new DateTime($get_timeout);
+                        
+                        // Check if $time_out is earlier than $wed_timeout
+                        if ($time_out_datetime < $wed_timeout_datetime) {
+                            // Calculate the difference between $time_out and $wed_timeout
+                            $early_interval = $time_out_datetime->diff($wed_timeout_datetime);
+                        
+                            // Format the early out interval as 'H:i:s'
+                            $early_out = $early_interval->format('%H:%I:%S');
+                        
+                            // Get the current time
+                            $current_time = new DateTime();
+                            
+                            // Check if the current time is after 12:00 PM (noon)
+                            $noon_time = new DateTime('12:00:00');
+                            if ($current_time > $noon_time) {
+                                // Convert total work interval to a DateTime object
+                                $total_work_datetime = new DateTime($total_work);
+                                
+                                // Subtract an hour from the total work time
+                                $total_work_datetime->sub(new DateInterval('PT1H'));
+                                
+                                // Format the updated total work time
+                                $total_work = $total_work_datetime->format('H:i:s');
+                            }
+                        } else {
+                            $early_out = '00:00:00';
+                        }
+                        
+                        echo $early_out; // Display the calculated early out time
+                        echo $total_work; // Display the calculated total work time
+
+                        //  echo $total_work;
+                     } else { 
+                         $early_out = '00:00:00';
                      }
 
 
@@ -1196,6 +1424,7 @@ if(isset($_POST['importSubmit'])){
   
                            $convert_thurs_timeout = new DateTime($get_thurs_timeout);
                            $convert_time_in = new DateTime($time_in);
+                           $convert_time_out = new DateTime($time_out);
   
   
                            // Convert $get_sched_ot to minutes
@@ -1244,20 +1473,116 @@ if(isset($_POST['importSubmit'])){
                        }
   
    
-                       if($time_out < $time['thurs_timeout']){
-                           $time_out_datetime = new DateTime('08:00:00');
-                           $scheduled_outs = new DateTime($total_work);
-                           $early_interval = $scheduled_outs->diff($time_out_datetime);
-                           $early_out = $early_interval->format('%h:%i:%s');
-                       } else { 
-                           $early_out = '00:00:00';
-                       }
-   
                        if($time_in < '00:00:00'){
+                        $early_out = '00:00:00';
+                        $total_work = '00:00:00';
+                        $total_rest = '08:00:00';
+                    }
+
+                    $get_sched_ot = $time['sched_ot'];
+                    $get_week_timeout = $time['thurs_timeout'];
+                    $get_week_timein = $time['thurs_timein'];
+                    
+                    $convert_week_timeout = new DateTime($get_week_timeout);
+                    $convert_time_in = new DateTime($time_in);
+                    
+                    // Check if time_out is set
+                    if (!empty($time_out)) {
+                        $convert_time_out = new DateTime($time_out);
+                        
+                        // Calculate the interval between time_in and time_out
+                        $interval = $convert_time_in->diff($convert_time_out);
+                    
+                        // Subtract lunch break (1 hour) from the total work duration
+                        $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                        $total_work_datetime->sub(new DateInterval('PT1H'));
+                        $total_work = $total_work_datetime->format('H:i:s');
+                    
+                        // Convert $get_sched_ot to minutes
+                        $sched_ot_minutes = (int) $get_sched_ot;
+                    
+                        // Convert $get_week_timeout to a DateTime object
+                        $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_week_timeout);
+                    
+                        // Add $sched_ot_minutes to $mon_timeout_datetime
+                        $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                    
+                        // Format the resulting time as 'H:i'
+                        $result_sched_ot = $mon_timeout_datetime->format('H:i');
+                        
+                        // Handle any further logic for the case when time_out is set
+                    } else {
+                        // Handle the case when time_out is not set (e.g., user only provided time_in)
+                        // You can set defaults or handle it accordingly
+                        $total_work = '00:00:00';
+                        $result_sched_ot = '00:00';
+                        $early_out = '00:00:00';
+                        // Handle any further logic for this case
+                    }
+
+                    if(!empty($time_in)){
+                      echo "hindi gumana";
+                    }else{
+                       // Convert wed_timein and time_out to DateTime objects
+                           $convert_week_timein = new DateTime($get_week_timein);
+                           $convert_time_out = new DateTime($time_out);
+
+                           // Subtract an hour from time_out
+                           $convert_time_out->sub(new DateInterval('PT1H'));
+
+                           // Calculate the interval between wed_timein and time_out
+                           $interval = $convert_week_timein->diff($convert_time_out);
+
+                           // Format the interval as 'H:i:s'
+                           $interval_formatted = $interval->format('%H:%I:%S');
+
+                           // Assign the formatted interval to $early_out
+                           $early_out = $interval_formatted;
+
+                       $total_work = '00:00:00';
+                       $late = '00:00:00';
+                       echo "walang time_in";
+                    }
+
+                    if($time_out < $time['thurs_timeout']){
+                       $get_timeout = $time['thurs_timeout'];
+                       $time_out_datetime = new DateTime($time_out);
+                       $week_timeout_datetime = new DateTime($get_timeout);
+                       
+                       // Check if $time_out is earlier than $wed_timeout
+                       if ($time_out_datetime < $week_timeout_datetime) {
+                           // Calculate the difference between $time_out and $wed_timeout
+                           $early_interval = $time_out_datetime->diff($week_timeout_datetime);
+                       
+                           // Format the early out interval as 'H:i:s'
+                           $early_out = $early_interval->format('%H:%I:%S');
+                       
+                           // Get the current time
+                           $current_time = new DateTime();
+                           
+                           // Check if the current time is after 12:00 PM (noon)
+                           $noon_time = new DateTime('12:00:00');
+                           if ($current_time > $noon_time) {
+                               // Convert total work interval to a DateTime object
+                               $total_work_datetime = new DateTime($total_work);
+                               
+                               // Subtract an hour from the total work time
+                               $total_work_datetime->sub(new DateInterval('PT1H'));
+                               
+                               // Format the updated total work time
+                               $total_work = $total_work_datetime->format('H:i:s');
+                           }
+                       } else {
                            $early_out = '00:00:00';
-                           $total_work = '00:00:00';
-                           $total_rest = '08:00:00';
                        }
+                       
+                       echo $early_out; // Display the calculated early out time
+                       echo $total_work; // Display the calculated total work time
+
+                       //  echo $total_work;
+                    } else { 
+                        $early_out = '00:00:00';
+                    }
             }elseif($currentDayOfWeek == $friday){
                 echo "it is friday";
                 // Check if the employee is late
@@ -1417,6 +1742,7 @@ if(isset($_POST['importSubmit'])){
 
                     $convert_fri_timeout = new DateTime($get_fri_timeout);
                     $convert_time_in = new DateTime($time_in);
+                    $convert_time_out = new DateTime($time_out);
 
 
                     // Convert $get_sched_ot to minutes
@@ -1465,19 +1791,115 @@ if(isset($_POST['importSubmit'])){
                 }
 
 
-                if($time_out < $time['fri_timeout']){
-                    $time_out_datetime = new DateTime('08:00:00');
-                    $scheduled_outs = new DateTime($total_work);
-                    $early_interval = $scheduled_outs->diff($time_out_datetime);
-                    $early_out = $early_interval->format('%h:%i:%s');
-                } else { 
-                    $early_out = '00:00:00';
-                }
-
                 if($time_in < '00:00:00'){
                     $early_out = '00:00:00';
                     $total_work = '00:00:00';
                     $total_rest = '08:00:00';
+                }
+
+                $get_sched_ot = $time['sched_ot'];
+                $get_week_timeout = $time['fri_timeout'];
+                $get_week_timein = $time['fri_timein'];
+                
+                $convert_week_timeout = new DateTime($get_week_timeout);
+                $convert_time_in = new DateTime($time_in);
+                
+                // Check if time_out is set
+                if (!empty($time_out)) {
+                    $convert_time_out = new DateTime($time_out);
+                    
+                    // Calculate the interval between time_in and time_out
+                    $interval = $convert_time_in->diff($convert_time_out);
+                
+                    // Subtract lunch break (1 hour) from the total work duration
+                    $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                    $total_work = $total_work_datetime->format('H:i:s');
+                
+                    // Convert $get_sched_ot to minutes
+                    $sched_ot_minutes = (int) $get_sched_ot;
+                
+                    // Convert $get_week_timeout to a DateTime object
+                    $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_week_timeout);
+                
+                    // Add $sched_ot_minutes to $mon_timeout_datetime
+                    $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                
+                    // Format the resulting time as 'H:i'
+                    $result_sched_ot = $mon_timeout_datetime->format('H:i');
+                    
+                    // Handle any further logic for the case when time_out is set
+                } else {
+                    // Handle the case when time_out is not set (e.g., user only provided time_in)
+                    // You can set defaults or handle it accordingly
+                    $total_work = '00:00:00';
+                    $result_sched_ot = '00:00';
+                    $early_out = '00:00:00';
+                    // Handle any further logic for this case
+                }
+
+                if(!empty($time_in)){
+                  echo "hindi gumana";
+                }else{
+                   // Convert wed_timein and time_out to DateTime objects
+                       $convert_week_timein = new DateTime($get_week_timein);
+                       $convert_time_out = new DateTime($time_out);
+
+                       // Subtract an hour from time_out
+                       $convert_time_out->sub(new DateInterval('PT1H'));
+
+                       // Calculate the interval between wed_timein and time_out
+                       $interval = $convert_week_timein->diff($convert_time_out);
+
+                       // Format the interval as 'H:i:s'
+                       $interval_formatted = $interval->format('%H:%I:%S');
+
+                       // Assign the formatted interval to $early_out
+                       $early_out = $interval_formatted;
+
+                   $total_work = '00:00:00';
+                   $late = '00:00:00';
+                   echo "walang time_in";
+                }
+
+                if($time_out < $time['fri_timeout']){
+                   $get_timeout = $time['fri_timeout'];
+                   $time_out_datetime = new DateTime($time_out);
+                   $week_timeout_datetime = new DateTime($get_timeout);
+                   
+                   // Check if $time_out is earlier than $wed_timeout
+                   if ($time_out_datetime < $week_timeout_datetime) {
+                       // Calculate the difference between $time_out and $wed_timeout
+                       $early_interval = $time_out_datetime->diff($week_timeout_datetime);
+                   
+                       // Format the early out interval as 'H:i:s'
+                       $early_out = $early_interval->format('%H:%I:%S');
+                   
+                       // Get the current time
+                       $current_time = new DateTime();
+                       
+                       // Check if the current time is after 12:00 PM (noon)
+                       $noon_time = new DateTime('12:00:00');
+                       if ($current_time > $noon_time) {
+                           // Convert total work interval to a DateTime object
+                           $total_work_datetime = new DateTime($total_work);
+                           
+                           // Subtract an hour from the total work time
+                           $total_work_datetime->sub(new DateInterval('PT1H'));
+                           
+                           // Format the updated total work time
+                           $total_work = $total_work_datetime->format('H:i:s');
+                       }
+                   } else {
+                       $early_out = '00:00:00';
+                   }
+                   
+                   echo $early_out; // Display the calculated early out time
+                   echo $total_work; // Display the calculated total work time
+
+                   //  echo $total_work;
+                } else { 
+                    $early_out = '00:00:00';
                 }
             }elseif($currentDayOfWeek == $saturday){
                 echo "it is saturday";
@@ -1638,6 +2060,7 @@ if(isset($_POST['importSubmit'])){
 
                     $convert_sat_timeout = new DateTime($get_sat_timeout);
                     $convert_time_in = new DateTime($time_in);
+                    $convert_time_out = new DateTime($time_out);
 
 
                     // Convert $get_sched_ot to minutes
@@ -1686,19 +2109,116 @@ if(isset($_POST['importSubmit'])){
                 }
 
 
-                if($time_out < $time['sat_timeout']){
-                    $time_out_datetime = new DateTime('08:00:00');
-                    $scheduled_outs = new DateTime($total_work);
-                    $early_interval = $scheduled_outs->diff($time_out_datetime);
-                    $early_out = $early_interval->format('%h:%i:%s');
-                } else { 
-                    $early_out = '00:00:00';
-                }
-
+                
                 if($time_in < '00:00:00'){
                     $early_out = '00:00:00';
                     $total_work = '00:00:00';
                     $total_rest = '08:00:00';
+                }
+
+                $get_sched_ot = $time['sched_ot'];
+                $get_week_timeout = $time['sat_timeout'];
+                $get_week_timein = $time['sat_timein'];
+                
+                $convert_week_timeout = new DateTime($get_week_timeout);
+                $convert_time_in = new DateTime($time_in);
+                
+                // Check if time_out is set
+                if (!empty($time_out)) {
+                    $convert_time_out = new DateTime($time_out);
+                    
+                    // Calculate the interval between time_in and time_out
+                    $interval = $convert_time_in->diff($convert_time_out);
+                
+                    // Subtract lunch break (1 hour) from the total work duration
+                    $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                    $total_work = $total_work_datetime->format('H:i:s');
+                
+                    // Convert $get_sched_ot to minutes
+                    $sched_ot_minutes = (int) $get_sched_ot;
+                
+                    // Convert $get_week_timeout to a DateTime object
+                    $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_week_timeout);
+                
+                    // Add $sched_ot_minutes to $mon_timeout_datetime
+                    $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                
+                    // Format the resulting time as 'H:i'
+                    $result_sched_ot = $mon_timeout_datetime->format('H:i');
+                    
+                    // Handle any further logic for the case when time_out is set
+                } else {
+                    // Handle the case when time_out is not set (e.g., user only provided time_in)
+                    // You can set defaults or handle it accordingly
+                    $total_work = '00:00:00';
+                    $result_sched_ot = '00:00';
+                    $early_out = '00:00:00';
+                    // Handle any further logic for this case
+                }
+
+                if(!empty($time_in)){
+                  echo "hindi gumana";
+                }else{
+                   // Convert wed_timein and time_out to DateTime objects
+                       $convert_week_timein = new DateTime($get_week_timein);
+                       $convert_time_out = new DateTime($time_out);
+
+                       // Subtract an hour from time_out
+                       $convert_time_out->sub(new DateInterval('PT1H'));
+
+                       // Calculate the interval between wed_timein and time_out
+                       $interval = $convert_week_timein->diff($convert_time_out);
+
+                       // Format the interval as 'H:i:s'
+                       $interval_formatted = $interval->format('%H:%I:%S');
+
+                       // Assign the formatted interval to $early_out
+                       $early_out = $interval_formatted;
+
+                   $total_work = '00:00:00';
+                   $late = '00:00:00';
+                   echo "walang time_in";
+                }
+
+                if($time_out < $time['sat_timeout']){
+                   $get_timeout = $time['sat_timeout'];
+                   $time_out_datetime = new DateTime($time_out);
+                   $week_timeout_datetime = new DateTime($get_timeout);
+                   
+                   // Check if $time_out is earlier than $wed_timeout
+                   if ($time_out_datetime < $week_timeout_datetime) {
+                       // Calculate the difference between $time_out and $wed_timeout
+                       $early_interval = $time_out_datetime->diff($week_timeout_datetime);
+                   
+                       // Format the early out interval as 'H:i:s'
+                       $early_out = $early_interval->format('%H:%I:%S');
+                   
+                       // Get the current time
+                       $current_time = new DateTime();
+                       
+                       // Check if the current time is after 12:00 PM (noon)
+                       $noon_time = new DateTime('12:00:00');
+                       if ($current_time > $noon_time) {
+                           // Convert total work interval to a DateTime object
+                           $total_work_datetime = new DateTime($total_work);
+                           
+                           // Subtract an hour from the total work time
+                           $total_work_datetime->sub(new DateInterval('PT1H'));
+                           
+                           // Format the updated total work time
+                           $total_work = $total_work_datetime->format('H:i:s');
+                       }
+                   } else {
+                       $early_out = '00:00:00';
+                   }
+                   
+                   echo $early_out; // Display the calculated early out time
+                   echo $total_work; // Display the calculated total work time
+
+                   //  echo $total_work;
+                } else { 
+                    $early_out = '00:00:00';
                 }
              }elseif($currentDayOfWeek == $sunday){
                 echo "it is sunday";
@@ -1859,6 +2379,7 @@ if(isset($_POST['importSubmit'])){
 
                     $convert_sun_timeout = new DateTime($get_sun_timeout);
                     $convert_time_in = new DateTime($time_in);
+                    $convert_time_out = new DateTime($time_out);
 
 
                     // Convert $get_sched_ot to minutes
@@ -1907,19 +2428,116 @@ if(isset($_POST['importSubmit'])){
                 }
 
 
-                if($time_out < $time['sun_timeout']){
-                    $time_out_datetime = new DateTime('08:00:00');
-                    $scheduled_outs = new DateTime($total_work);
-                    $early_interval = $scheduled_outs->diff($time_out_datetime);
-                    $early_out = $early_interval->format('%h:%i:%s');
-                } else { 
-                    $early_out = '00:00:00';
-                }
-
+               
                 if($time_in < '00:00:00'){
                     $early_out = '00:00:00';
                     $total_work = '00:00:00';
                     $total_rest = '08:00:00';
+                }
+
+                $get_sched_ot = $time['sched_ot'];
+                $get_week_timeout = $time['sun_timeout'];
+                $get_week_timein = $time['sun_timein'];
+                
+                $convert_week_timeout = new DateTime($get_week_timeout);
+                $convert_time_in = new DateTime($time_in);
+                
+                // Check if time_out is set
+                if (!empty($time_out)) {
+                    $convert_time_out = new DateTime($time_out);
+                    
+                    // Calculate the interval between time_in and time_out
+                    $interval = $convert_time_in->diff($convert_time_out);
+                
+                    // Subtract lunch break (1 hour) from the total work duration
+                    $total_work_datetime = new DateTime($interval->format('%H:%I:%S'));
+                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                    $total_work = $total_work_datetime->format('H:i:s');
+                
+                    // Convert $get_sched_ot to minutes
+                    $sched_ot_minutes = (int) $get_sched_ot;
+                
+                    // Convert $get_week_timeout to a DateTime object
+                    $mon_timeout_datetime = DateTime::createFromFormat('H:i', $get_week_timeout);
+                
+                    // Add $sched_ot_minutes to $mon_timeout_datetime
+                    $mon_timeout_datetime->add(new DateInterval('PT' . $sched_ot_minutes . 'M'));
+                
+                    // Format the resulting time as 'H:i'
+                    $result_sched_ot = $mon_timeout_datetime->format('H:i');
+                    
+                    // Handle any further logic for the case when time_out is set
+                } else {
+                    // Handle the case when time_out is not set (e.g., user only provided time_in)
+                    // You can set defaults or handle it accordingly
+                    $total_work = '00:00:00';
+                    $result_sched_ot = '00:00';
+                    $early_out = '00:00:00';
+                    // Handle any further logic for this case
+                }
+
+                if(!empty($time_in)){
+                  echo "hindi gumana";
+                }else{
+                   // Convert wed_timein and time_out to DateTime objects
+                       $convert_week_timein = new DateTime($get_week_timein);
+                       $convert_time_out = new DateTime($time_out);
+
+                       // Subtract an hour from time_out
+                       $convert_time_out->sub(new DateInterval('PT1H'));
+
+                       // Calculate the interval between wed_timein and time_out
+                       $interval = $convert_week_timein->diff($convert_time_out);
+
+                       // Format the interval as 'H:i:s'
+                       $interval_formatted = $interval->format('%H:%I:%S');
+
+                       // Assign the formatted interval to $early_out
+                       $early_out = $interval_formatted;
+
+                   $total_work = '00:00:00';
+                   $late = '00:00:00';
+                   echo "walang time_in";
+                }
+
+                if($time_out < $time['sun_timeout']){
+                   $get_timeout = $time['sun_timeout'];
+                   $time_out_datetime = new DateTime($time_out);
+                   $week_timeout_datetime = new DateTime($get_timeout);
+                   
+                   // Check if $time_out is earlier than $wed_timeout
+                   if ($time_out_datetime < $week_timeout_datetime) {
+                       // Calculate the difference between $time_out and $wed_timeout
+                       $early_interval = $time_out_datetime->diff($week_timeout_datetime);
+                   
+                       // Format the early out interval as 'H:i:s'
+                       $early_out = $early_interval->format('%H:%I:%S');
+                   
+                       // Get the current time
+                       $current_time = new DateTime();
+                       
+                       // Check if the current time is after 12:00 PM (noon)
+                       $noon_time = new DateTime('12:00:00');
+                       if ($current_time > $noon_time) {
+                           // Convert total work interval to a DateTime object
+                           $total_work_datetime = new DateTime($total_work);
+                           
+                           // Subtract an hour from the total work time
+                           $total_work_datetime->sub(new DateInterval('PT1H'));
+                           
+                           // Format the updated total work time
+                           $total_work = $total_work_datetime->format('H:i:s');
+                       }
+                   } else {
+                       $early_out = '00:00:00';
+                   }
+                   
+                   echo $early_out; // Display the calculated early out time
+                   echo $total_work; // Display the calculated total work time
+
+                   //  echo $total_work;
+                } else { 
+                    $early_out = '00:00:00';
                 }
                     
         } 
@@ -1936,57 +2554,67 @@ if(isset($_POST['importSubmit'])){
         // } else{
         //     echo $thursday;
         // }
-               // Check if empid exists in the employee_tb
-                $empQuery = "SELECT * FROM employee_tb WHERE empid = '$empid'";
-                $empResult = $db->query($empQuery);
-                if(mysqli_num_rows($empResult) < 1) {
-                    echo '<script>alert("Error: Unable to insert data for non-existing Employee ID because the Employee ID does not exist in the database.")</script>';
-                    echo "<script>window.location.href = '../../attendance.php';</script>";
-                    exit;
-                } else {
-                    $empid = $line[1];
-                    $prevQuery = "SELECT id FROM attendances WHERE empid = '".$line[1]."'";
-                    $prevResult = $db->query($prevQuery);
+               // Assuming $db is your database connection object
 
-                
-                  // Split the empid and date values into separate arrays
-$empids = explode(",", $empid);
-$dates = explode(",", $date);
+// Check if empid exists in the employee_tb
+$empQuery = "SELECT * FROM employee_tb WHERE empid = ?";
+$empStmt = $db->prepare($empQuery);
+$empStmt->bind_param("s", $empid);
+$empStmt->execute();
+$empResult = $empStmt->get_result();
 
-// Iterate over each empid and date combination
-for ($i = 0; $i < count($empids); $i++) {
-    $currentEmpid = $empids[$i];
-    $currentDate = $dates[$i];
+if ($empResult->num_rows < 1) {
+    echo '<script>alert("Error: Unable to insert data for non-existing Employee ID because the Employee ID does not exist in the database.")</script>';
+    echo "<script>window.location.href = '../../attendance.php';</script>";
+    exit;
+} else {
+    $prevQuery = "SELECT id FROM attendances WHERE empid = ?";
+    $prevStmt = $db->prepare($prevQuery);
+    $prevStmt->bind_param("s", $empid);
+    $prevStmt->execute();
+    $prevResult = $prevStmt->get_result();
 
-    if ($prevResult->num_rows > 0) {
-        // Check if the record already exists for the empid and date combination
-        $recordQuery = "SELECT * FROM attendances WHERE empid = '".$currentEmpid."' AND date = '".$currentDate."'";
-        $recordResult = $db->query($recordQuery);
+    // ... your other code ...
+    $empids = explode(",", $empid);
+    $dates = explode(",", $date);
 
+    for ($i = 0; $i < count($empids); $i++) {
+        $currentEmpid = $empids[$i];
+        $currentDate = $dates[$i];
+        
+        // Assuming you have executed the query to fetch attendance records for the current empid and date
+        $recordQuery = "SELECT * FROM attendances WHERE empid = ? AND date = ?";
+        $recordStmt = $db->prepare($recordQuery);
+        $recordStmt->bind_param("ss", $currentEmpid, $currentDate);
+        $recordStmt->execute();
+        $recordResult = $recordStmt->get_result();
+        
         if ($recordResult->num_rows > 0) {
+
             // Update the existing record
-            $db->query("
-                UPDATE attendances SET
-                status = '".$status."', time_in = '".$time_in."', time_out = '".$time_out."', late = '".$late."', early_out = '".$early_out."', overtime = '".$overtime."', total_work = '".$total_work."', total_rest = '".$total_rest."'
-                WHERE empid = '".$currentEmpid."' AND date = '".$currentDate."'
-            ");
+            $updateQuery = "UPDATE attendances SET
+                status = ?, time_in = ?, time_out = ?, late = ?, early_out = ?, overtime = ?, total_work = ?, total_rest = ?
+                WHERE empid = ? AND date = ?";
+            $updateStmt = $db->prepare($updateQuery);
+            $updateStmt->bind_param("ssssssssss", $status, $time_in, $time_out, $late, $early_out, $overtime, $total_work, $total_rest, $currentEmpid, $currentDate);
+            $updateStmt->execute();
+            echo "<br>data update";
         } else {
             // Insert a new record
-            $db->query("
-                INSERT INTO attendances (status, empid, date, time_in, time_out, late, early_out, overtime, total_work, total_rest)
-                VALUES ('".$status."', '".$currentEmpid."', '".$currentDate."', '".$time_in."', '".$time_out."','".$late."','".$early_out."','".$overtime."','".$total_work."','".$total_rest."')
-            ");
-            
+            $insertQuery = "INSERT INTO attendances (status, empid, date, time_in, time_out, late, early_out, overtime, total_work, total_rest)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertStmt = $db->prepare($insertQuery);
+            $insertStmt->bind_param("ssssssssss", $status, $currentEmpid, $currentDate, $time_in, $time_out, $late, $early_out, $overtime, $total_work, $total_rest);
+            $insertStmt->execute();
+
+            echo "<br>data insert";
         }
-    } else {
-        // Insert new member data in the database
-        $db->query("
-            INSERT INTO attendances (status, empid, date, time_in, time_out, late, early_out, overtime, total_work, total_rest)
-            VALUES ('".$status."', '".$currentEmpid."', '".$currentDate."', '".$time_in."', '".$time_out."','".$late."','".$early_out."','".$overtime."','".$total_work."','".$total_rest."')
-        ");
-        
+
+        // ... your other code ...
     }
 }
+
+
 
                     
             }       
@@ -2000,7 +2628,7 @@ for ($i = 0; $i < count($empids); $i++) {
             
 }
             }
-        }
+        
     
 
      

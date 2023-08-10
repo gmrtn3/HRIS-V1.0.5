@@ -4,6 +4,7 @@ include '../../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fname = $_POST['fname'];
+    $mname = $_POST['mname'];
     $lname = $_POST['lname'];
     $company_code = $_POST['company_code'];
     $empid = $_POST['empid'];
@@ -31,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $checkStmt->close();
     $status = 'Active';
     // Insert into employee_tb table
-    $stmt = $conn->prepare("INSERT INTO employee_tb (`fname`, `lname`, `company_code`, `empid`, `address`, `contact`, `cstatus`, `gender`, `empdob`, `classification`, `empdate_hired`, `empbranch`, `status`)
+    $stmt = $conn->prepare("INSERT INTO employee_tb (`fname`,`mname`, `lname`, `company_code`, `empid`, `address`, `contact`, `cstatus`, `gender`, `empdob`, `classification`, `empdate_hired`, `empbranch`, `status`)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     if (!$stmt) {
