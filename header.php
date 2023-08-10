@@ -49,7 +49,7 @@
                         $company_row = mysqli_fetch_assoc($query_run);
                         $inserted_photo = $company_row['cmpny_logo'];
                         $image_data = base64_encode($inserted_photo); // Convert blob to base64
-                        
+
                         $image_type = 'image/jpeg'; // Default image type
                         // Determine the image type based on the blob data
                         if (substr($image_data, 0, 4) === "\x89PNG") {
@@ -65,21 +65,21 @@
       <a class="navbar-brand brand-logo me-5" href="dashboard.php" ><img src="data:<?php echo $image_type; ?>;base64,<?php echo $image_data; ?>" class="me-2" alt="logo" style="margin-left: 25px;"/></a>
         <!-- <a class="navbar-brand brand-logo-mini" href="dashboard.php" style="width: 100px;"><img src="img/header-logo-small.jpg" alt="logo" style="width: 100px; " /></a> -->
       </div>
-      
+
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end" id="upper-nav-container" >
         <button class="navbar-toggler navbar-toggler align-self-center" id="navbar-toggler" type="button" data-toggle="minimize">
             <span class="fa-solid fa-bars" style="color:white;"></span>
-          </button> 
+          </button>
           <button id="sidebarToggle" class="responsive-bars-btn">
             <span class="fa-solid fa-bars" style="color:white;"></span>
           </button>
         <ul class="navbar-nav mr-lg-2">
           <li class="nav-item nav-search d-none d-lg-block">
-            
+
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-          
+
         <div class="header-user">
                 <div class="header-notif">
                   <li class="nav-item dropdown">
@@ -105,7 +105,7 @@
                             $OT_row = mysqli_fetch_assoc($query_run);
                             $employeeOT = $OT_row['employee_ot'];
                             $lastPending = $OT_row['last_pending'];
-                            
+
                             $now = time(); // Current timestamp
                             $pendingTime = strtotime($lastPending); // Convert last_pending to timestamp
                             $timeDiff = $now - $pendingTime; // Difference in seconds
@@ -168,7 +168,7 @@
                               $UT_row = mysqli_fetch_assoc($query_run);
                               $employeeUT = $UT_row['employee_ut'];
                               $lastPending = $UT_row['last_pending'];
-                              
+
                               $now = time(); // Current timestamp
                               $pendingTime = strtotime($lastPending); // Convert last_pending to timestamp
                               $timeDiff = $now - $pendingTime; // Difference in seconds
@@ -231,7 +231,7 @@
                               $WFH_row = mysqli_fetch_assoc($query_run);
                               $employeeWFH = $WFH_row['employee_wfh'];
                               $lastPending = $WFH_row['last_pending'];
-                              
+
                               $now = time(); // Current timestamp
                               $pendingTime = strtotime($lastPending); // Convert last_pending to timestamp
                               $timeDiff = $now - $pendingTime; // Difference in seconds
@@ -294,7 +294,7 @@
                             $OB_row = mysqli_fetch_assoc($query_run);
                             $employeeOB = $OB_row['employee_OB'];
                             $lastPending = $OB_row['last_pending'];
-                            
+
                             $now = time(); // Current timestamp
                             $pendingTime = strtotime($lastPending); // Convert last_pending to timestamp
                             $timeDiff = $now - $pendingTime; // Difference in seconds
@@ -360,7 +360,7 @@
                               $now = time(); // Current timestamp
                               $pendingTime = strtotime($lastPending); // Convert last_pending to timestamp
                               $timeDiff = $now - $pendingTime; // Difference in seconds
-  
+
                               if ($timeDiff < 60) {
                                 $formattedTime = 'Just now';
                               } elseif ($timeDiff < 3600) {
@@ -375,7 +375,7 @@
                                   $formattedTime = $days . ' day(s) ago';
                                 }
                               }
-                              
+
                             }
 
                             $hideDropdown = true;
@@ -422,7 +422,7 @@
                               $now = time(); // Current timestamp
                               $pendingTime = strtotime($lastPending); // Convert last_pending to timestamp
                               $timeDiff = $now - $pendingTime; // Difference in seconds
-  
+
                               if ($timeDiff < 60) {
                                 $formattedTime = 'Just now';
                               } elseif ($timeDiff < 3600) {
@@ -437,7 +437,7 @@
                                   $formattedTime = $days . ' day(s) ago';
                                 }
                               }
-                              
+
                             }
                             $hideDropdown = true;
 
@@ -480,11 +480,11 @@
                             </p>
                           </div>
                         </a> -->
-                        
+
                       </div>
                     </li>
                 </div><!---header-notif-->
-                
+
                 <div class="header-head">
                 <img src="uploads/<?php echo $image_url;?>" alt="" srcset="" accept=".jpg,.jpeg,.png" title="<?php echo $image_url; ?>" style="height: 70px; width: 70px; border-radius: 50%;">
                 </div>
@@ -494,7 +494,7 @@
                             }else{
                                 echo $_SESSION['username'];
                             }
-                            ?></h1> 
+                            ?></h1>
                     <p class="user-name" style="color: white; margin-top: 10px;"><?php if(empty($_SESSION['role'])){
                                 echo "";
                             }else{
@@ -515,7 +515,7 @@
               <i class="icon-bell mx-0"></i>
               <span class="count"></span>
             </a>
-            
+
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
@@ -543,46 +543,46 @@
         </button> -->
       </div>
     </nav> <!-- END UPPER NAV -->
-    
+
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:../../partials/_settings-panel.html -->
       <div class="theme-setting-wrapper">
-        
+
       </div>
       <div id="right-sidebar" class="settings-panel">
-        
+
         <div class="tab-content" id="setting-content">
           <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
             <div class="add-items d-flex px-3 mb-0">
-              
+
                 <div class="form-group d-flex">
-                  
+
                 </div>
-             
+
             </div>
             <div class="list-wrapper px-3">
-              
+
             </div>
-           
+
             <div class="events pt-4 px-3">
               <div class="wrapper d-flex mb-2">
-                
+
               </div>
-             
+
             </div>
             <div class="events pt-4 px-3">
               <div class="wrapper d-flex mb-2">
-                
+
               </div>
-          
+
             </div>
           </div>
-       
+
         </div>
       </div>
 
-<!-- sidebar -->      
+<!-- sidebar -->
 <nav class="sidebar sidebar-offcanvas custom-nav" id="sidebar" style="margin-top: 20px; position:fixed; overflow-y: auto; height: calc(100vh - 40px);">
   <ul class="nav" style="margin-top: 50px; color:red;">
           <li class="nav-item" style="color: black">
@@ -611,7 +611,7 @@
             </ul>
           </div>
         </li>
-        
+
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-payroll" aria-expanded="false" aria-controls="ui-payroll" style="margin-top: 5px; color:white">
               <i class="fa-regular fa-credit-card" ></i>
@@ -726,7 +726,7 @@
                 <li class="nav-item"> <a class="nav-link" href="Position">POSITION</a></li>
                 <li class="nav-item"> <a class="nav-link" href="Classification">CLASSIFICATION</a></li>
                 <li class="nav-item"> <a class="nav-link" href="companyCode">COMPANY CODE</a></li>
-               
+
               </ul>
             </div>
           </li>
@@ -755,8 +755,8 @@
             <div class="collapse" id="ui-settings">
               <ul class="nav flex-column sub-menu" style=" width: 100%;">
                 <li class="nav-item"> <a class="nav-link" href="settings">GENERAL SETTINGS</a></li>
-                
-                
+
+                <li class="nav-item"> <a class="nav-link" href="hardwareSettings">HARDWARE SETTINGS</a></li>
               </ul>
             </div>
           </li>
@@ -780,6 +780,6 @@
         }
     </script>
 
- 
+
 </body>
 </html>
