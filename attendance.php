@@ -7,9 +7,9 @@
         unset($_SESSION['alert_msg']);
     }
 
-    
+
     if(!isset($_SESSION['username'])){
-        header("Location: login.php"); 
+        header("Location: login.php");
     } else {
         // Check if the user's role is not "admin"
         if($_SESSION['role'] != 'admin'){
@@ -24,7 +24,7 @@
         }
     }
 
- 
+
     // $server = "localhost";
     // $user = "root";
     // $pass ="";
@@ -59,8 +59,8 @@ $_query_attendance = "SELECT * FROM attendances";
 $result_attendance = mysqli_query($conn, $_query_attendance);
 if(mysqli_num_rows($result_attendance) > 0){
     include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature
-   
-    
+
+
 }
 // FOR ATTENDANCE AUTO REFRESHER ABSENT END
 
@@ -75,11 +75,6 @@ if(mysqli_num_rows($result_attendance) > 0){
 <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    
-
-   
-
 
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -96,16 +91,14 @@ if(mysqli_num_rows($result_attendance) > 0){
     <link rel="stylesheet" href="skydash/style.css">
 
     <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
-   
+
 
     <link rel="stylesheet" href="css/try.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/attendance.css">
     <!-- <link rel="stylesheet" href="css/attendanceResponsive.css"> -->
-    
-   
-    
-    
+
+
     <title>HRIS | Employee List</title>
 </head>
 <script>
@@ -139,9 +132,9 @@ if(mysqli_num_rows($result_attendance) > 0){
                 white-space: nowrap;
                 max-height: 350px;
                 height: 350px;
-                
-                
-            } 
+
+
+            }
 
             tbody {
                 display: table;
@@ -154,7 +147,7 @@ if(mysqli_num_rows($result_attendance) > 0){
             }
             .pagination{
         margin-right: 64px !important;
-        
+
     }
     .sorting_asc{
         color: black !important;
@@ -171,14 +164,14 @@ if(mysqli_num_rows($result_attendance) > 0){
         border-color: #000;
     }
 
-    
-    
+
+
     #order-listing_next{
         margin-right: 28px !important;
         margin-bottom: -16px !important;
 
     }
-    
+
     th.sorting_asc::after{
         opacity: 1 !important;
     }
@@ -198,11 +191,11 @@ if(mysqli_num_rows($result_attendance) > 0){
 @media(max-width: 1350px){
     html{
         background-color: #fff !important;
-        
+
     }
-    
+
     .header-user{
-       
+
         margin-right: 10px !important;
         width: 400px !important;
     }
@@ -224,7 +217,7 @@ if(mysqli_num_rows($result_attendance) > 0){
    }
 
    .attendance-input{
-    
+
     width: 95%;
     margin: auto !important;
    }
@@ -238,7 +231,7 @@ if(mysqli_num_rows($result_attendance) > 0){
    }
 
    .att-emp{
-    
+
     width: 350px;
     display: flex !important;
     flex-direction: row !important;
@@ -255,7 +248,7 @@ if(mysqli_num_rows($result_attendance) > 0){
    }
 
    .att-stat{
-    
+
     width: 350px;
     display: flex !important;
     flex-direction: row !important;
@@ -272,7 +265,7 @@ if(mysqli_num_rows($result_attendance) > 0){
    }
 
    .att-range{
-   
+
     width: 350px;
     display: flex !important;
     flex-direction: row !important;
@@ -289,7 +282,7 @@ if(mysqli_num_rows($result_attendance) > 0){
    }
 
    .att-end{
-   
+
     width: 350px;
     display: flex !important;
     flex-direction: row !important;
@@ -307,7 +300,7 @@ if(mysqli_num_rows($result_attendance) > 0){
 
    .att-excel-input{
     margin-top: 0px !important;
-    
+
     width: 300px !important;
     margin-right: -83px !important;
    }
@@ -427,25 +420,25 @@ if(mysqli_num_rows($result_attendance) > 0){
    #table-responsiveness{
     overflow: hidden !important;
    }
-   
+
 }
 
     </style>
 
-<!-- 
+<!--
     <style>
             table {
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
                 max-height: 320px;
-                
-                
-                
+
+
+
             }
             tbody {
                 display: table;
-                width: 100%;    
+                width: 100%;
             }
             tr {
                 width: 100% !important;
@@ -479,6 +472,7 @@ if(mysqli_num_rows($result_attendance) > 0){
 
                         $conn = mysqli_connect($server, $user, $pass, $database);
                         $sql = "SELECT `empid`, CONCAT(`fname`, ' ',`lname`) AS `full_name` FROM employee_tb";
+
                         $result = mysqli_query($conn, $sql);
 
                         $empid = isset($_GET['empid']) ? $_GET['empid'] : '';
@@ -489,7 +483,7 @@ if(mysqli_num_rows($result_attendance) > 0){
                             $emp_name = $row['full_name'];
                             $selected = ($empid == $emp_id) ? ' selected' : '';
                              $options .= "<option value='$emp_id' $selected>$emp_id - $emp_name</option>";
-                            
+
                         }
                     ?>
                     <label for="emp">Select Employee
@@ -499,7 +493,7 @@ if(mysqli_num_rows($result_attendance) > 0){
                         </select>
                     </label>
                 </div>
-              
+
                 <div class="att-stat">
                     <?php
                         $status = isset($_GET['status']) ? $_GET['status'] : '';
@@ -520,35 +514,43 @@ if(mysqli_num_rows($result_attendance) > 0){
             <?php
                     $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
                     $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
-                    
+
                 ?>
-                <div class="att-range">                   
-                        <label for="Employee"><span>Date Range</span> 
+                <div class="att-range">
+                        <label for="Employee"><span>Date Range</span>
                         <input type="date" name="date_from" id="startdate" placeholder="Start Date" style="padding:10px; " value="<?php echo $dateFrom; ?>">
                         </label>
                 </div>
                 <input class="att-end" type="date" name="date_to" id="enddate" placeholder="End Date" style="padding:10px; " value="<?php echo $dateTo; ?>">
             </div>
             <button class="btn_go" id="id_btngo" style="height: 50px; width: 80px; margin-top: 20px; margin-left: 10px; background-color: black;" onclick="filterData()">Go</button>
-            <div class="att-excel-input">   
+            <div class="att-excel-input">
                     <form action="Data Controller/Attendance/attendanceController.php"  enctype="multipart/form-data" method="POST">
                             <input type="file" name="file" />
                             <input type="submit" value="Submit" name="importSubmit" class="btn btn-primary" style="background-color: black;">
                     </form>
                 </div>
-            
+
 
         </div>
 
         <div id="att-listing" class="att-date">
             <h1 id="current-date"></h1>
         </div>
-        
 
-      
+            <script type="text/javascript">
+                function update(){
+                    console.log("lols")
+                    fetch('SpecialFolders/BiometricsData/AddAttendanceToDb.php')
+                        .then(res => res.json())
+                        .catch(err => console.error(err));
+                }
+            </script>
+
+
         <div class="table-responsive p-2" id="table-responsiveness">
         <div style="overflow-x: hidden; overflow-y: hidden;">
-            <table id="order-listing" class="table table-responsive" style="width: 100%;">
+            <table id="order-listing" class="table table-responsive" style="width: 100%;" onload="update()">
                 <thead>
                         <th>Status</th>
                         <th class="empid-width">Employee ID</th>
@@ -561,9 +563,10 @@ if(mysqli_num_rows($result_attendance) > 0){
                         <th>Overtime</th>
                         <th>Total Work</th>
                         <th>Total Rest</th>
-                        <th>Remarks</th>                  
+                        <th>Remarks</th>
                 </thead>
              <tbody>
+
              <?php
 date_default_timezone_set('Asia/Manila');
 $currentMonth = date('m');
@@ -577,19 +580,37 @@ $empid = isset($_GET['empid']) ? $_GET['empid'] : ''; // Assuming you have 'empi
 $status = isset($_GET['status']) ? $_GET['status'] : ''; // Assuming you have 'status' in your URL parameters
 
 // Start building the SQL query
-$sql = "SELECT attendances.status, 
-        attendances.empid,
+// $sql = "SELECT attendances.status,
+//         attendances.empid,
+//         attendances.date,
+//         attendances.time_in,
+//         attendances.time_out,
+//         attendances.late,
+//         attendances.early_out,
+//         attendances.overtime,
+//         attendances.total_work,
+//         attendances.total_rest,
+//         CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`
+//         FROM attendances
+//         INNER JOIN employee_tb ON employee_tb.empid = attendances.empid";
+
+$sql = "SELECT attendances.status,
         attendances.date,
-        attendances.time_in,
-        attendances.time_out,
+        attendances.empid,
+        attendance_time_in.time_in AS time_in,
+        attendance_time_out.time_out AS time_out,
         attendances.late,
         attendances.early_out,
         attendances.overtime,
         attendances.total_work,
-        attendances.total_rest, 
-        CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`
+        attendances.total_rest,
+        CONCAT (employee_tb.`fname`,' ',employee_tb.`lname`) AS `full_name`
         FROM attendances
-        INNER JOIN employee_tb ON employee_tb.empid = attendances.empid";
+        INNER JOIN employee_tb ON employee_tb.empid = attendances.empid
+        INNER JOIN attendance_time_in ON attendance_time_in.time_in_personId = attendances.empid
+        AND attendance_time_in.date_time_in = attendances.date
+        INNER JOIN attendance_time_out ON attendance_time_out.time_out_personId = attendances.empid
+        AND attendance_time_out.date_time_out = attendances.date";
 
 // Add filters based on the user inputs
 if (!empty($empid) && $empid != 'All Employee') {
@@ -621,21 +642,21 @@ $result = $conn->query($sql);
 
 
         if($result->num_rows > 0){
-          
+
             while($row = $result->fetch_assoc()){
                 $cmpny_empid = $row['empid'];
 
-                $sql = "SELECT employee_tb.company_code, 
-                        employee_tb.empid, 
-                        assigned_company_code_tb.company_code_id, 
-                        assigned_company_code_tb.empid, 
-                        company_code_tb.id, 
-                        company_code_tb.company_code AS company_code_name 
-                        FROM assigned_company_code_tb 
-                        INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
-                        INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                $sql = "SELECT employee_tb.company_code,
+                        employee_tb.empid,
+                        assigned_company_code_tb.company_code_id,
+                        assigned_company_code_tb.empid,
+                        company_code_tb.id,
+                        company_code_tb.company_code AS company_code_name
+                        FROM assigned_company_code_tb
+                        INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id
+                        INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid
                         WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
-                        
+
                         $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                         $cmpny_row = mysqli_fetch_assoc($cmpny_result);
 
@@ -651,8 +672,8 @@ $result = $conn->query($sql);
                     <td class="email-col" style="font-weight: 400;"><?php echo $row['full_name']; ?> </td>
                     <td style="font-weight: 400;"><?php echo $row['date']; ?></td>
                             <!-------- td  for time out ----------->
-                    <td 
-                        <?php 
+                    <td
+                        <?php
                             if ($row['status'] === 'LWOP'){
                                 echo 'style="font-weight: 400; text-align: center;"';
                             }
@@ -665,17 +686,17 @@ $result = $conn->query($sql);
                                 {
                                     echo 'style="font-weight: 400;"';
                                 }
-                                
+
                             }
                         ?>
                     > <!--close td -->
-                        <?php 
+                        <?php
                              echo substr($row['time_in'], 0, 5); // Display only hour:minute
                         ?>
                     </td>
                             <!-------- td  for time out ----------->
-                    <td  
-                        <?php 
+                    <td
+                        <?php
 
                             if ($row['status'] === 'LWOP'){
                                 echo 'style="font-weight: 400; text-align: center;"';
@@ -689,24 +710,24 @@ $result = $conn->query($sql);
                                 {
                                     echo 'style="font-weight: 400;"';
                                 }
-                                
+
                             }
-                           
+
                         ?>
                     > <!--close td -->
-                        <?php 
+                        <?php
                            echo substr($row['time_out'], 0, 5); // Display only hour:minute
                         ?>
                     </td>
-                    
+
                     <td style="font-weight: 400; color:red;"><?php echo substr($row['late'], 0, 5); ?></td>
                     <td style="font-weight: 400; color: blue"><?php echo substr($row['early_out'], 0, 5); ?></td>
                     <td style="font-weight: 400; color: orange;"><?php echo substr($row['overtime'], 0, 5); ?></td>
                     <td style="font-weight: 400; color:green;"><?php echo substr($row['total_work'], 0, 5); ?></td>
                     <td style="font-weight: 400; color:gray;"><?php echo substr($row['total_rest'], 0, 5); ?></td>
 
-                    <td 
-                        <?php 
+                    <td
+                        <?php
                         if ($row['status'] === 'LWOP'){
                             echo 'style="font-weight: 400; text-align: center;"';
                         }
@@ -714,15 +735,15 @@ $result = $conn->query($sql);
                             if($row['time_in'] === '00:00:00' || $row['time_out'] === '00:00:00')
                             {
                                 echo 'style="color: #FF5D5E;  text-align: center;"';
-                            } 
+                            }
                             else{
                                 echo 'style="font-weight: 400; text-align: center;"';
                             }
-                            
+
                         }
-                            
-                            
-                        ?> 
+
+
+                        ?>
                     > <!--close td -->
                         <?php
                             if($row['status'] === 'LWOP'){
@@ -741,15 +762,15 @@ $result = $conn->query($sql);
                                     echo 'N/A';
                                 }
                             }
-                            
+
                          ?>
                     </td>
-                </tr> 
-                <?php        
+                </tr>
+                <?php
             }
         } else{
             ?>
-            
+
 
         <?php
         }
@@ -772,18 +793,18 @@ $result = $conn->query($sql);
         </tbody>
     </table> -->
 
-    
-    
+
+
         <div class="att-export-btn">
         <form action="att-pdf.php" method="POST" target="_blank">
          <p>Export options: <a href="excel-att.php" class="" style="color:green"></i>Excel</a><span> |</span> <input type="submit" name="pdf_creater" value="PDF" style="border:none; color:red; background-color: inherit;"> </p>
          </form>
         </div>
-   
+
     </div>
 
 
-    
+
 <!----------------------------Script sa pagfilter ng data table------------------------->
 <script>
     function filterData() {
@@ -798,7 +819,7 @@ $result = $conn->query($sql);
 </script>
 <!----------------------------Script sa pagfilter ng data table------------------------->
 
-<!-- 
+<!--
     <script>
 $(document).ready(function () {
     $("#btnExport").click(function () {
@@ -827,7 +848,7 @@ $(document).ready(function () {
 </script> -->
 
 
-<script> 
+<script>
      $('.header-dropdown-btn').click(function(){
         $('.header-dropdown .header-dropdown-menu').toggleClass("show-header-dd");
     });
@@ -836,7 +857,7 @@ $(document).ready(function () {
 //     $('.navbar-toggler').click(function() {
 //     $('.nav-title').toggleClass('hide-title');
 //     $('.dashboard-container').toggleClass('move-content');
-  
+
 //   });
 // });
 $(document).ready(function() {
@@ -861,7 +882,7 @@ $(document).ready(function() {
     }
   });
 });
- 
+
 
 //     $(document).ready(function() {
 //   $('.navbar-toggler').click(function() {
@@ -874,8 +895,8 @@ $(document).ready(function() {
 
 <script>
  //HEADER RESPONSIVENESS SCRIPT
- 
- 
+
+
 $(document).ready(function() {
   // Toggle the submenu visibility on click (for mobile devices)
   $('.nav-link').on('click', function(e) {
@@ -918,7 +939,7 @@ $(document).ready(function() {
 
 
 
-    
+
 
     <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap4.min.js"></script>
@@ -937,20 +958,20 @@ $(document).ready(function() {
     <script src="bootstrap js/data-table.js"></script>
 
 
-    
 
-  
+
+
     <script src="vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
- 
+
 
     <!-- PDF -->
-   
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/pdfmake.min.js"></script>
 
 
 
-    
+
 </body>
 </html>
 
