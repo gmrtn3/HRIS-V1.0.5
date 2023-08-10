@@ -128,10 +128,7 @@
                         <input name="company_zipcode" type="number" maxlength="4" class="form-control input_zipcode" id="zipcode_id" value="<?php echo $row['cmpny_zipcode']?>">
                       </div>
 
-                      <div class="">
-                        <label for="" class="form-label comp_text">Company Code</label>
-                        <input type="text" name="company_code" type="text" class="form-control input_code" id="company_id" value="<?php echo $row['cmpny_code']?>">
-                      </div>
+                      
                       <div class="form-check form-switch" >
                         <label for="" class="" style="margin-top: 5%">Hide Pakyawan</label>
                         <?php
