@@ -756,7 +756,7 @@
               <ul class="nav flex-column sub-menu" style=" width: 100%;">
                 <li class="nav-item"> <a class="nav-link" href="settings">GENERAL SETTINGS</a></li>
 
-                <li class="nav-item"> <a class="nav-link" href="hardwareSettings">HARDWARE SETTINGS</a></li>
+                <li class="nav-item"> <a class="nav-link" href="hardwareSet">HARDWARE SETTINGS</a></li>
               </ul>
             </div>
           </li>
