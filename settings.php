@@ -1,7 +1,7 @@
   <?php
   session_start();
   if(!isset($_SESSION['username'])){
-      header("Location: login.php"); 
+      header("Location: login.php");
   } else {
       // Check if the user's role is not "admin"
       if($_SESSION['role'] != 'admin'){
@@ -81,11 +81,11 @@
   </header>
 
   <style>
-    
+
   .first-flex{
       display: flex;
       flex-direction: row;
-    
+
       width: 60%;
   }
   </style>
@@ -107,7 +107,7 @@
               <?php
               include 'config.php';
               $result = mysqli_query($conn, "SELECT * FROM settings_company_tb");
-              $row = mysqli_fetch_assoc($result); 
+              $row = mysqli_fetch_assoc($result);
             ?>
 
               <div class="setting_content">
@@ -121,7 +121,7 @@
                       <label for="" class="form-label comp_text">Company Address</label>
                       <input name="company_address" type="text" class="form-control input_address" id="address_id" value="<?php echo $row['cmpny_address']?>">
                     </div>
-                    
+
                     <div class="first-flex">
                       <div class="">
                         <label for="" class="form-label comp_text">Zipcode</label>
@@ -140,7 +140,7 @@
                           ?>
                           <input class="form-check-input" type="checkbox" style="margin-left: -70%; margin-top: 40%" name="piece_rate_toggle" id="piece_rate_toggle" value="Hidden" <?php echo $isChecked; ?>>
                       </div>
-            
+
                     </div>
 
 
@@ -152,7 +152,7 @@
                         $result_Settings = mysqli_query($conn, $query_settings);
 
                         $row_settings = mysqli_fetch_assoc($result_Settings);
-                    
+
                     ?>
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="Fixed Salary" autocomplete="off" <?php if($row_settings['col_salary_settings'] === 'Fixed Salary'){echo 'checked';} ?> >
@@ -162,10 +162,10 @@
                         <label class="btn btn-outline-warning radio_btn" for="btnradio3">Days Worked</label>
                     </div>
                     </div>
-            
+
                 </div><!--first_cont-->
-                
-                <div class="emp_logo_second_cont"> 
+
+                <div class="emp_logo_second_cont">
                       <?php
                         include 'config.php';
                         $query = "SELECT * FROM settings_company_tb";
@@ -175,7 +175,7 @@
                           $company_row = mysqli_fetch_assoc($query_run);
                           $inserted_photo = $company_row['cmpny_logo'];
                           $image_data = base64_encode($inserted_photo); // Convert blob to base64
-                          
+
                           $image_type = 'image/jpeg'; // Default image type
                           // Determine the image type based on the blob data
                           if (substr($image_data, 0, 4) === "\x89PNG") {
@@ -197,14 +197,14 @@
                     </div>
 
 
-                  
+
             </div><!--setting content--->
-          
-            
+
+
             <div class="">
               <button type="submit" name="update_company" class="btn btn-primary update_btn mb-3" id="update-button">Update</button>
             </div>
-          
+
           </div> <!--for-head-->
     </form>
             <form action="Data Controller/Settings/Save_company.php" method="POST" enctype="multipart/form-data">
@@ -223,7 +223,7 @@
   <div class="check_before_holiday">
       <div class="input-group-text check1">
           <input class="form-check-input mt-0" type="checkbox" name="name_before" value="Holiday Before" aria-label="Checkbox for following text input" <?php if ($databaseValue === 'Holiday Before') echo 'checked'; ?>>
-          <input type="text" class="form-control" aria-label="Text input with checkbox" readonly value="Holiday Before">         
+          <input type="text" class="form-control" aria-label="Text input with checkbox" readonly value="Holiday Before">
       </div>
   </div>
 
@@ -247,13 +247,13 @@
                       </div> <!--  end Col-4 -->
 
                       <div class="col-8">
-                        
-                      </div> 
-                    
-                  </div> <!--  end row -->    
+
+                      </div>
+
+                  </div> <!--  end row -->
             </form>
-            
-            
+
+
           </div> <!--  end Card-body -->
       </div> <!--  end Card -->
   </div> <!--  end Container -->
@@ -264,7 +264,7 @@
     const name_after = document.querySelector('input[name="name_after"]');
     const name_beforeAfter = document.querySelector('input[name="name_beforeAfter"]');
     const description = document.getElementById('id_desc');
-    
+
     name_before.addEventListener('click', function() {
       if (this.checked) {
         name_after.checked = false;
@@ -274,7 +274,7 @@
         description.value = 'There is no checked in the checkboxes, it means the HOLIDAY PAY is set to Default. The Holiday pay will be applied in all types.';
       }
     });
-    
+
     name_after.addEventListener('click', function() {
       if (this.checked) {
         name_before.checked = false;
@@ -298,7 +298,7 @@
 
 
 
-  <script> 
+  <script>
       $('.header-dropdown-btn').click(function(){
           $('.header-dropdown .header-dropdown-menu').toggleClass("show-header-dd");
       });
@@ -307,7 +307,7 @@
   //     $('.navbar-toggler').click(function() {
   //     $('.nav-title').toggleClass('hide-title');
   //     $('.dashboard-container').toggleClass('move-content');
-    
+
   //   });
   // });
   $(document).ready(function() {
@@ -332,7 +332,7 @@
       }
     });
   });
-  
+
 
   //     $(document).ready(function() {
   //   $('.navbar-toggler').click(function() {
@@ -383,10 +383,32 @@
 
   </script>
 
+<script>
+    $(document).ready(function() {
+    $('#zipcode_id').on('input', function() {
+
+      var inputValue = $(this).val();
+
+      inputValue = inputValue.replace(/\D/g, '');
+
+      var intValue = parseInt(inputValue);
+      if (isNaN(intValue) || intValue <= 0) {
+        intValue = '';
+      }
+
+      if (intValue.toString().length > 4) {
+        intValue = intValue.toString().slice(0, 4);
+      }
+
+      $(this).val(intValue);
+    });
+  });
+</script>
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>   
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 
@@ -396,7 +418,7 @@
 
       <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
       <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap4.min.js"></script>
-      
+
       <!--skydash-->
       <script src="skydash/vendor.bundle.base.js"></script>
       <script src="skydash/off-canvas.js"></script>
@@ -406,7 +428,7 @@
       <script src="skydash/todolist.js"></script>
       <script src="main.js"></script>
       <script src="bootstrap js/data-table.js"></script>
-      
+
 
       <script src="vendors/datatables.net/jquery.dataTables.js"></script>
       <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
