@@ -743,6 +743,7 @@
                 <li class="nav-item"> <a class="nav-link" href="Piece_rate">PIECE RATE</a></li>
                 <li class="nav-item"> <a class="nav-link" href="pakyawan_work">SET WORK LOAD</a></li>
                 <li class="nav-item"> <a class="nav-link" href="pakyawan_payroll">PAYROLL</a></li>
+                <li class="nav-item"> <a class="nav-link" href="cash_advance">CASH ADVANCE</a></li>
               </ul>
             </div>
           </li>

@@ -424,6 +424,17 @@
                                     
                                     </div>
                                 </div>
+                                <div class="emp-empDetail-work_frequency" style="display:none;">
+                                    <div>
+                                        <label for="">Work Frequency</label><br>
+                                        <select name="work_frequency" id="">
+                                            <option value selected disabled>Select Frequency</option>
+                                            <option value="Daily">Daily</option>
+                                            <option value="Weekly">Weekly</option>
+                                        </select>
+                                    
+                                    </div>
+                                </div>
                                
                                 <div class="emp-empDetail-bsalary">
                                     <label for="empbsalary">Basic Salary</label><br>
@@ -875,6 +886,7 @@ function matchPass(){
   var empDept = document.querySelector(".emp-empDetail-dept");
   var empPosition = document.querySelector(".emp-empDetail-jposition");
   var pakyawan = document.querySelector(".emp-empDetail-piece_rate");
+  var freq = document.querySelector(".emp-empDetail-work_frequency");
 //   var empDetailSecondInput = document.querySelector(".emp-empDetail-second-input");
 
     classificationSelect.addEventListener("change", function() {
@@ -896,6 +908,7 @@ function matchPass(){
         empDept.style.display = "none";
         empPosition.style.display = "none";
         pakyawan.style.display = "block";
+        freq.style.display = "block";
         pass.removeAttribute("disabled");
         cpass.removeAttribute("disabled");
         empbsalary.removeAttribute("required");
@@ -922,6 +935,7 @@ function matchPass(){
         empDept.style.display = "block";
         empPosition.style.display = "block";
         pakyawan.style.display = "none";
+        freq.style.display = "none";
         empbsalary.setAttribute("required");
         
       }

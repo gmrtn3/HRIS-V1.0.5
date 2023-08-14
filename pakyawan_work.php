@@ -80,62 +80,61 @@
                   <div class="modal-body">
                   <div class="form-group">
                     <div id="error-msg" class="alert alert-danger mt-2" style="display: none;">Start Date and End Date cannot be the same for Weekly frequency</div>
+                    <?php
+                        include 'config.php';
+                        $conn = mysqli_connect($server, $user, $pass, $database);
+
+                        $sql = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
+                                INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
+                                WHERE employee_tb.classification = 3";
+
+                        $result = mysqli_query($conn, $sql);
+                        $options = "";
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $options .= "<option value='".$row['empid']."'>".$row['fname']."  ".$row['lname']."</option>";
+                        }
+                        ?>
+
+                        <label for="">Employee Name:</label>
+                        <select name="employee" id="employeeDropdown" class="form-select" style="color: black">
+                            <option value="" disabled selected>Select Employee</option> 
+                            <?php echo $options; ?>
+                        </select>
+
+                        
+
+                        <label for="" class="mt-3">Unit Type:</label>
+                        <select name="unit_type" id="unitTypeDropdown" class="form-select" style="color: black">
+                            <option value="" disabled selected>Select Unit Type</option> 
+                        </select><br>
+
+                        <script>
+                            const employeeDropdown = document.getElementById("employeeDropdown");
+                            const unitTypeDropdown = document.getElementById("unitTypeDropdown");
+
+                            employeeDropdown.addEventListener("change", function() {
+                                const selectedEmployeeId = employeeDropdown.value;
+
+                                fetch('get_unit_types.php?empid=' + selectedEmployeeId)
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        unitTypeDropdown.innerHTML = data;
+                                    })
+                                    .catch(error => console.error('Error:', error));
+                            });
+                        </script>
+
                   
-                    <label for="">Frequency</label><br>
-                    <select id="frequency" required name="work_frequency" class='form-select form-select-m' id="frequency" aria-label='.form-select-sm example' style='cursor: pointer;'>
-                        <option disabled selected value=''>Select Frequency</option>
-                        <option value='Daily'>Daily</option>
-                        <option value='Weekly'>Weekly</option>
-                    </select><br>
+                    <label for="frequency">Frequency</label><br>
+                    <input type="text" id="frequencyInput" name="work_frequency" readonly class="form-control" ><br>
 
                     <label for="">Start Date</label><br>
                     <input type="date" required name="start_date" class="form-control" id="startDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"><br>
 
                     <label for="">End Date</label><br>
-                    <input type="date" required name="end_date" class="form-control" id="endDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="endDate"><br>
+                    <input type="date" required name="end_date" class="form-control" id="endDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="endDate">   
 
-                    <?php
-include 'config.php';
-$conn = mysqli_connect($server, $user, $pass, $database);
-
-$sql = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
-        INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
-        WHERE employee_tb.classification = 3";
-
-$result = mysqli_query($conn, $sql);
-$options = "";
-while ($row = mysqli_fetch_assoc($result)) {
-    $options .= "<option value='".$row['empid']."'>".$row['fname']."  ".$row['lname']."</option>";
-}
-?>
-
-<label for="">Employee Name:</label>
-<select name="employee" id="employeeDropdown" class="form-control" style="color: black">
-    <option value="" disabled selected>Select Employee</option> 
-    <?php echo $options; ?>
-</select>
-
-<label for="" class="mt-3">Unit Type:</label>
-<select name="unit_type" id="unitTypeDropdown" class="form-control" style="color: black">
-    <option value="" disabled selected>Select Unit Type</option> 
-</select>
-
-<script>
-    const employeeDropdown = document.getElementById("employeeDropdown");
-    const unitTypeDropdown = document.getElementById("unitTypeDropdown");
-
-    employeeDropdown.addEventListener("change", function() {
-        const selectedEmployeeId = employeeDropdown.value;
-
-        fetch('get_unit_types.php?empid=' + selectedEmployeeId)
-            .then(response => response.text())
-            .then(data => {
-                unitTypeDropdown.innerHTML = data;
-            })
-            .catch(error => console.error('Error:', error));
-    });
-</script>
-
+    
 
                     <label for="" class="mt-3">Unit Work:</label><br>
                     <input type="text" name="unit_work" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);">
@@ -160,7 +159,7 @@ while ($row = mysqli_fetch_assoc($result)) {
       <div class="modal-content">
         <div class="modal-header">
           <input type="text" id="id" name="id" style="display: none;">
-          <!-- <input type="text" name="employee" id="employee_ids"style="display: none;" > -->
+          <!-- <input type="text" name="employee" id="employee_ids" style="display: block;" > -->
           <!-- <input type="text" name="unit_type" id="unit_types" style="display: block;"> -->
           <!-- <input type="text" name="work_frequency" id="work_frequency" style="display: block;"> -->
           <!-- <input type="text" name="start_date" id="start_date">
@@ -264,6 +263,8 @@ while ($row = mysqli_fetch_assoc($result)) {
             <th>Unit Work</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <!-- <th>Unit Quantity</th> -->
+            <th>Work Pay</th>
             <th>Actions</th>
             <th style='display:none'>Frequency</th>
           
@@ -274,7 +275,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
         
 
-        $sql = "SELECT pakyaw.id, emp.fname, emp.lname, peice.unit_type, pakyaw.unit_work, pakyaw.start_date, pakyaw.end_date, pakyaw.work_frequency, pakyaw.employee, peice.id AS id_piece
+        $sql = "SELECT pakyaw.id, emp.work_frequency, emp.fname, emp.lname, peice.unit_type, peice.unit_quantity, pakyaw.unit_work, pakyaw.start_date, pakyaw.end_date,  pakyaw.employee, pakyaw.work_pay,  peice.id AS id_piece
                 FROM pakyawan_based_work_tb AS pakyaw
                 INNER JOIN employee_tb AS emp ON pakyaw.employee = emp.empid
                 INNER JOIN piece_rate_tb AS peice ON pakyaw.unit_type = peice.id";
@@ -292,6 +293,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                 echo "<td style='font-weight: 400'>" . $row['unit_work'] . "</td>";
                 echo "<td style='font-weight: 400'>" . $row['start_date'] . "</td>";
                 echo "<td style='font-weight: 400'>".$row['end_date']."</td>";
+                // echo "<td style='font-weight: 400'>".$row['unit_quantity']."</td>";
+                echo "<td style='font-weight: 400'>".$row['work_pay']."</td>";
                 echo "<td style='font-weight: 400'>
                             <button class='editbtn' style='margin-right: 0.6em; border: none; background-color: inherit'>
                                 <i class='fa-solid fa-pen-to-square' style='font-size: 1.4em' title='Edit' data-bs-toggle='modal' data-bs-target='#updateModal'></i>
@@ -316,8 +319,33 @@ while ($row = mysqli_fetch_assoc($result)) {
         </div>
     </div>
 
+
+
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+document.getElementById("employeeDropdown").addEventListener("change", function() {
+    var selectedEmployee = this.value;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "get_work_frequency.php?empid=" + selectedEmployee, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var workFrequency = xhr.responseText;
+                document.getElementById("frequencyInput").value = workFrequency; // Set work_frequency as the value
+                handleFrequencyChange(); // Update end date and validation
+            } else {
+                console.error("Error fetching work frequency.");
+            }
+        }
+    };
+    xhr.send();
+});
+</script>
+
     <script>
         // Function to remove the validation message
         function removeValidationMessage() {
@@ -341,7 +369,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     <script>
 // Get the frequency select element
-var frequencySelect = document.getElementById('frequency');
+var frequencySelect = document.getElementById('frequencyInput');
 
 // Get the start date and end date input fields
 var startDateInput = document.getElementById('startDate');
@@ -353,20 +381,24 @@ var saveButton = document.getElementById('btn_save');
 // Function to handle changes in the frequency select element
 function handleFrequencyChange() {
   var selectedFrequency = frequencySelect.value;
-  if (selectedFrequency === 'Select Frequency') {
+  if (selectedFrequency === '') {
     startDateInput.disabled = true;
     endDateInput.disabled = true;
     endDateInput.readOnly = false;
     endDateInput.value = '';
+    console.log("haha");
   } else if (selectedFrequency === 'Daily') {
     startDateInput.disabled = false;
+    endDateInput.disabled = false;
     endDateInput.readOnly = true;
     updateEndDate(); // Update the end date initially
+    console.log("hehe");
   } else {
     startDateInput.disabled = false;
     endDateInput.disabled = false;
     endDateInput.readOnly = false;
     endDateInput.value = '';
+    console.log("hihi");
   }
 
   validateEndDate(); // Run validation when frequency changes
@@ -392,7 +424,7 @@ function validateEndDate() {
       errorMessage.className = 'alert alert-danger mt-2';
       errorMessage.innerText = 'Start Date and End Date cannot be the same for Weekly frequency';
 
-      var frequencyDiv = document.getElementById('frequency').parentNode;
+      var frequencyDiv = document.getElementById('frequencyInput').parentNode;
       frequencyDiv.parentNode.insertBefore(errorMessage, frequencyDiv);
     }
   } else {
@@ -408,7 +440,8 @@ function validateEndDate() {
 
 // Function to update the end date with the start date value when the frequency is "Daily"
 function updateEndDate() {
-  if (frequencySelect.value === 'Daily') {
+  var selectedFrequency = frequencySelect.value;
+  if (selectedFrequency === 'Daily') {
     endDateInput.value = startDateInput.value;
   }
 }
@@ -470,7 +503,7 @@ handleFrequencyChange();
                                     $('#unit_work').val(data[5]);
                                     $('#start_date').val(data[6]);
                                     $('#end_date').val(data[7]);
-                                    $('#work_frequency').val(data[9]);
+                                    $('#work_frequency').val(data[10]);
                                    
                                    
                                 });

@@ -15,6 +15,28 @@
         include 'user-image.php';
     }
 }
+include 'config.php';
+
+if(isset($_POST["import"])){
+  $fileName = $_FILES["file"]["tmp_name"];
+
+  if($_FILES["file"]["size"] > 0){
+    $file = fopen($fileName, "r");
+    $firstRow = true; // Flag to skip the first row
+
+    while(($column = fgetcsv($file, 10000, ",")) !== FALSE){
+      if ($firstRow) {
+        $firstRow = false;
+        continue; // Skip the first row
+      }
+      
+      $sql = "INSERT INTO piece_rate_tb (unit_type, unit_quantity, unit_rate)
+              VALUES ('".$column[0]."', '".$column[1]."', '".$column[2]."')";
+
+      $result = mysqli_query($conn, $sql);
+    }
+  }
+}
 
 
 ?>
@@ -166,16 +188,26 @@
     <div class="pr-container">
         <div class="header-title">
             <h1 style="font-size: 32px">Piece Rate</h1>
-            <button  class="btn btn-primary btn_add" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Unit Piece</button>
+            <div class="d-flex flex-row justify-content-between align-items-center" style="height: 4em; width: 50%;">
+              <form action="" method="post" enctype="multipart/form-data" name="uploadCsv" class="form-horizoontal">
+                <div class="d-flex flex-row justify-content-between w-100 align-items-center">
+                  <input type="file" name="file" id="" class="form-control mr-3" accept=".csv">
+                  <button type="submit" name="import" class="btn btn-primary">Import</button>
+                  
+                </div>
+              </form>  
+                <button  class="btn btn-primary btn_add mr-5 " data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="height: 3.3em">Add Unit Piece</button>
+                
+            </div>
         </div>
-        <div class="table mt-5">
-            <div class="table-responsive" id="table-responsive">
-                <table id="order-listing" class="table table-responsive">
+        <div class=" mt-5">
+            <div class="table-responsive " id="table-responsive" >
+                <table id="order-listing" class="table table-responsive" >
                     <thead>
                       <th style= 'display: none;'> ID  </th>  
-                        <th>Quantity</th>
                         <th>Unit Type</th>
-                        <th>Unit Rate</th>
+                        <th>Unit Quantity</th>
+                        <th>Quantity Rate</th>
                         <th>Actions</th>
                     </thead>
                     <tbody>
@@ -199,8 +231,8 @@
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo "<tr>";
                                 echo "<td style='display: none'>".$row['id']." </td>";
-                                echo "<td style='font-weight: 400'>" . $row['unit_quantity'] . "</td>";
                                 echo "<td style='font-weight: 400'>" . $row['unit_type'] . "</td>";
+                                echo "<td style='font-weight: 400'>" . $row['unit_quantity'] . "</td>";
                                 echo "<td style='font-weight: 400'>₱ " . $row['unit_rate'] . "</td>";
                                 echo "<td style='font-weight: 400'> 
                                           <button class='editbtn' style='margin-right: 0.6em; border: none; background-color: inherit' > <i class='fa-solid fa-pen-to-square' style='font-size: 1.4em' title = 'Edit' data-bs-toggle='modal' data-bs-target='#updateModal'></i> </button>
@@ -217,8 +249,40 @@
                     </tbody>
                 </table>
             </div>
+            <div class=" mt-3" style="margin-left: 2.4%">
+              <p style="font-size: 1.1em">Export options: <button id="export-csv-btn" class="" style="color: green; border: none; background-color: inherit">CSV</button> | </p>
+            </div>
+            
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+$(document).ready(function() {
+    // Export button click event
+    $('#export-csv-btn').click(function() {
+        // Create a CSV content
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Unit Quantity,Unit Type,Quantity Rate\n";
+
+        // Loop through table rows and append data
+        $('#order-listing tbody tr').each(function() {
+            var unitQuantity = $(this).find('td:nth-child(2)').text();
+            var unitType = $(this).find('td:nth-child(3)').text();
+            var quantityRate = $(this).find('td:nth-child(4)').text().replace("₱ ", ""); // Remove currency sign
+            csvContent += unitQuantity + "," + unitType + "," + quantityRate + "\n";
+        });
+
+        // Create a CSV blob and trigger a download
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "piece_rate_data.csv");
+        document.body.appendChild(link);
+        link.click();
+    });
+});
+</script>
 
 
     <script>

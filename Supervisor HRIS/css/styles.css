@@ -2546,7 +2546,7 @@ header{
     justify-content: space-between;
 }
 
-.loanreq-input button{
+/* .loanreq-input button{
     height: 50px;
     width: 120px;
     padding: 10px;
@@ -2556,11 +2556,11 @@ header{
     color: white;
     transition: ease-in 0.2s;
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 5px 0 rgba(0, 0, 0, 0.17);
-}
+} */
 
-.loanreq-input button:hover{
+/* .loanreq-input button:hover{
     background-color: #555;
-}
+} */
 
 .loanreq-input input{
     width: 300px;

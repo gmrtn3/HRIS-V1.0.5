@@ -53,16 +53,14 @@
     <link rel="stylesheet" href="css/styles.css"> 
     <link rel="stylesheet" href="css/pakyawan_generate.css">
     <link rel="stylesheet" href="css/gnratepayrollVIEW.css">
-    <title>Employee List</title>
+    <title>Pakyawan Payroll</title>
 </head>
 <body>
 
-
+<?php
+    include 'header.php';
+    ?>
     
-    <header>
-       <!-- include -->
-       <?php include 'header.php';?>
-    </header>
 
   
   <?php 
@@ -83,55 +81,35 @@
         $cutoff_id = $row['cutoff_id'];
         // echo $cutoff_id;
 
-          $cutoff_sql = "SELECT * FROM pakyawan_cutoff_tb WHERE `id` = $cutoff_id";
-          $cutoff_result = mysqli_query($conn, $cutoff_sql);
-          $cutoff_row = mysqli_fetch_assoc($cutoff_result);
+          // $cutoff_sql = "SELECT * FROM pakyawan_cutoff_tb WHERE `id` = $cutoff_id";
+          // $cutoff_result = mysqli_query($conn, $cutoff_sql);
+          // $cutoff_row = mysqli_fetch_assoc($cutoff_result);
 
-          $cutoff_start_date = $cutoff_row['start_date'];
-          $cutoff_end_date = $cutoff_row['end_date'];
+          // $cutoff_start_date = $cutoff_row['start_date'];
+          // $cutoff_end_date = $cutoff_row['end_date'];
 
-          // echo $cutoff_start_date;
-          $based_work_sql = "SELECT * FROM pakyawan_based_work_tb WHERE `employee` = $pakyawan_empid AND ((`start_date` BETWEEN '$cutoff_start_date' AND '$cutoff_end_date') AND (`end_date` BETWEEN '$cutoff_start_date' AND '$cutoff_end_date'))";
-          $based_work_result = mysqli_query($conn, $based_work_sql);
+
+
+          //calculation
+          $currentDate = date('Y-m-d'); // Get the current date
+          $dayOfWeek = date('N', strtotime($currentDate)); // Get the day of the week (1 = Monday, 7 = Sunday)
           
-          if (mysqli_num_rows($based_work_result) > 0) {
+          // Calculate the start date and end date of the current week
+          $startDate = date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($currentDate)));
+          $endDate = date('Y-m-d', strtotime('+' . (7 - $dayOfWeek) . ' days', strtotime($currentDate)));
 
-            $based_work_array = array();
-
-              while ($based_work_row = mysqli_fetch_assoc($based_work_result)) {
-                $employee_id = $based_work_row['employee'];
-                $start_date = $based_work_row['start_date'];
-                $end_date = $based_work_row['end_date'];
-                $unit_type = $based_work_row['unit_type'];
-                $unit_work = $based_work_row['unit_work'];
-
-                 $based_work_array[] = array('employee_id' => $employee_id,
-                                             'start_date' => $start_date,
-                                             'end_date' => $end_date,
-                                             'unit_type' => $unit_type,
-                                             'unit_work' => $unit_work);
-              }
-
-              $pakyawan_salary = 0;
-
-              foreach($based_work_array as $pakyawan_array){
-                $piece_rate_unit_type = $pakyawan_array['unit_type'];
-                $unit_sql = "SELECT * FROM piece_rate_tb WHERE id = $piece_rate_unit_type";
-                $unit_result = mysqli_query($conn, $unit_sql);
-                $unit_row = mysqli_fetch_assoc($unit_result);
-
-                
-                
-                $pakyawan_salary += $pakyawan_array['unit_work'] * $unit_row['unit_rate'];
-                // echo "<br>".$unit_row['unit_type'] ." ," .$pakyawan_salary;
-
-              }
-
-          } else {
-              echo "No rows found.";
-          }
+          $sql = "SELECT SUM(pakyawan_based_work_tb.work_pay) AS cash_total, employee_tb.fname, employee_tb.empid, employee_tb.lname
+          FROM pakyawan_based_work_tb
+          INNER JOIN employee_tb ON pakyawan_based_work_tb.employee = employee_tb.empid
+          WHERE pakyawan_based_work_tb.employee = $pakyawan_empid 
+          AND `start_date` >= '$startDate' 
+          AND `end_date` <= '$endDate'";
           
+          $result = mysqli_query($conn, $sql);
 
+          $row = mysqli_fetch_assoc($result);
+
+          $pakyawan_salary = $row['cash_total'];
 
 
       }
@@ -243,7 +221,7 @@
                          FROM assigned_company_code_tb 
                          INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
                          INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
-                         WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                         WHERE assigned_company_code_tb.empid = '$cmpny_empid'  ";
                          
                          $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                          $cmpny_row = mysqli_fetch_assoc($cmpny_result); 
@@ -263,6 +241,7 @@
                 <p style="color: #656464">Employee Name: <span style="color: #4B49AC; text-transform: uppercase;"><?php echo $row['full_name'] ?></span></p>
               </div>
             </div>
+           
         </div>
 
         <!-- payslip body -->
@@ -283,7 +262,9 @@
 
                       $sql = "SELECT * FROM pakyawan_based_work_tb 
                       INNER JOIN piece_rate_tb ON pakyawan_based_work_tb.unit_type = piece_rate_tb.id
-                      WHERE pakyawan_based_work_tb.employee = $pakyawan_empid";
+                      WHERE pakyawan_based_work_tb.employee = $pakyawan_empid  
+                      AND `start_date` >= '$startDate' 
+                      AND `end_date` <= '$endDate'";
 
                       $result = $conn->query($sql);
 
@@ -300,8 +281,8 @@
                           echo "
                           <div class='box-data w-100 mt-3 d-flex flex-row justify-content-between align-items-center pl-3 pr-3'>
                           <p style='color: #656464'>".$row['unit_type']."</p>
-                          <p style='color: #656464'> ".$unit_work." Sets</p>
-                          <p style='color: #656464' class='mr-4'>₱".$amount."</p>
+                          <p style='color: #656464'> ".$unit_work." Unit</p>
+                          <p style='color: #656464' class='mr-4'>₱".$row['work_pay']."</p>
                           </div>";
                         }
                       }
