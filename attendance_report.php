@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION['username'])){
-    header("Location: login.php"); 
+    header("Location: login.php");
 } else {
     // Check if the user's role is not "admin"
     if($_SESSION['role'] != 'admin'){
@@ -26,7 +26,7 @@ if(!isset($_SESSION['username'])){
 <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
@@ -45,7 +45,7 @@ if(!isset($_SESSION['username'])){
     <link rel="stylesheet" href="skydash/style.css">
 
     <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
-   
+
 
     <link rel="stylesheet" href="css/try.css">
     <link rel="stylesheet" href="css/attendance_report.css"/>
@@ -58,6 +58,7 @@ if(!isset($_SESSION['username'])){
 <header>
     <?php
         include 'header.php';
+        require_once "./SpecialFolders/Databases/Database.php";
     ?>
 </header>
 
@@ -65,7 +66,7 @@ if(!isset($_SESSION['username'])){
     .pagination{
         margin-right: 73px !important;
 
-        
+
     }
 
     .pagination li a{
@@ -79,8 +80,8 @@ if(!isset($_SESSION['username'])){
         border-color: #000;
     }
 
-    
-    
+
+
     #order-listing_next{
         margin-right: 24px !important;
         margin-bottom: -15.5px !important;
@@ -89,7 +90,7 @@ if(!isset($_SESSION['username'])){
 
     .card-body{
         width: 99.8%;
-        box-shadow: box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
     }
 </style>
 
@@ -104,7 +105,7 @@ if(!isset($_SESSION['username'])){
                     <p class="header_slash">\</p> -->
                     <h2 style="font-size: 23px; font-weight: bold;">Employee Attendance Report</h2>
                 </div>
-<!------------------------------------------------- End Of Header -------------------------------------------> 
+<!------------------------------------------------- End Of Header ------------------------------------------->
 
 <!----------------------------------------select button and text input--------------------------------------->
 <div class="container-select">
@@ -118,8 +119,8 @@ if(!isset($_SESSION['username'])){
                         $result = mysqli_query($conn, $sql);
 
                         // Generate the dropdown list
-                        echo "<select class='select-btn form-select-m' aria-label='.form-select-sm example' name='name_emp''>";
-                        echo "<option value='Select All Department' default>Select Department</option>"; // Add a default option
+                        echo "<select class='select-btn form-select-m' id='depts' aria-label='.form-select-sm example' name='name_emp''>";
+                        echo "<option value='none' default>Select Department</option>"; // Add a default option
                         while ($row = mysqli_fetch_array($result)) {
                         $department = $row['col_deptname'];
                         echo "<option value='$department'>$department</option>"; // Set the value to emp_id|date
@@ -127,22 +128,34 @@ if(!isset($_SESSION['username'])){
                         echo "</select>";
                       ?>
                 </div>
-                
+
                 <div class="input-container">
                 <p class="demm-text">Employee</p>
                     <?php
                             include 'config.php';
 
                             // Fetch all values of empid and date from the database
-                            $sql = "SELECT `empid` FROM employee_tb";
+                            $sql = "SELECT employee_tb.empid AS employee_id,
+                                    CONCAT(employee_tb.`fname`, ' ' ,employee_tb.`lname`) AS fullname
+                                    FROM employee_tb ";
                             $result = mysqli_query($conn, $sql);
 
+                            $emp_db = new DatabaseShit();
+
+                            $emp_q = $emp_db->getConnection()->prepare($sql);
+                            $emp_q->execute();
+
+                            $emp_res = $emp_q->fetchAll(PDO::FETCH_ASSOC);
+
                             // Generate the dropdown list
-                            echo "<select class='select-btn form-select-m' aria-label='.form-select-sm example' name='name_emp''>";
-                            echo "<option value='Select All Employee' default>Select Employee</option>"; // Add a default option
-                            while ($row = mysqli_fetch_array($result)) {
-                            $employee_id = $row['employee_id'];
-                            echo "<option value='$employee_id'>$employee_id</option>"; // Set the value to emp_id|date
+                            echo "<select class='select-btn form-select-m' aria-label='.form-select-sm example' id='emp_id' name='name_emp''>";
+                            echo "<option value='none' default>Select Employee</option>"; // Add a default option
+                            // while ($row = mysqli_fetch_array($result)) {
+                            // $employee_id = $row['employee_id'];
+                            // echo "<option value='$employee_id'>$employee_id</option>"; // Set the value to emp_id|date
+                            // }
+                            foreach($emp_res as $r){
+                                echo "<option value='$r[employee_id]'>$r[fullname]</option>"; // Set the value to emp_id|date
                             }
                             echo "</select>";
                         ?>
@@ -150,19 +163,44 @@ if(!isset($_SESSION['username'])){
 
                 <div class="input-container">
                 <p class="demm-text">Month From</p>
-                <input class="select-btn" type="date" name="" id="datestart" required>
+                <input class="select-btn" type="date" name="startdate" id="startdate" required>
                 </div>
                 <div class="input-container">
                 <div class="notif">
                 <p class="demm-text">Month To</p>
                 <!-- <p id="validate" class="validation" style="display:none;">End date must beyond the start date</p> -->
                 </div>
-                <input class="select-btn" type="date" id="enddate" onchange="datefunct()" required>
+                <input class="select-btn" type="date" id="enddate" name="enddate" onchange="datefunct()" required>
                 </div>
-                <button id="arrowBtn">Apply Filter</button>
+                <button id="arrowBtn" onclick="applyFilter()">Apply Filter</button>
             </div>
 <!----------------------------------------select button and text input--------------------------------------->
 
+
+<script>
+    function applyFilter(){
+        var dept_name = document.getElementById('depts').value
+        var emp_id = document.getElementById('emp_id').value
+        var start_time = document.getElementById('startdate').value
+        var end_time = document.getElementById('enddate').value
+
+
+        url = `attendance_report.php?`
+
+        if(dept_name !== "none"){
+            url += `deptname=${dept_name}`
+        }
+        if(emp_id !== "none"){
+            url += `&empid=${emp_id}`
+        }
+        if(start_time !== "" && end_time !== ""){
+            console.log(`start_time: ${start_time}, end_time: ${end_time}`)
+            url += `&startdate=${start_time}&enddate=${end_time}`
+        }
+
+        window.location.href = url
+    }
+</script>
 
 
 
@@ -173,8 +211,8 @@ if(!isset($_SESSION['username'])){
                         <div class="table-responsive" style="overflow: hidden;">
                             <table id="order-listing" class="table" style="width: 100%;">
                                 <thead style="background-color: #ececec;">
-                                        <tr>  
-                                            <th style="display: none;">ID</th>                                        
+                                        <tr>
+                                            <th style="display: none;">ID</th>
                                             <th>Employee ID</th>
                                             <th>Name</th>
                                             <th>Overtime hours</th>
@@ -187,7 +225,7 @@ if(!isset($_SESSION['username'])){
                                     <tbody>
                                             <?php
                                             include 'config.php';
-                                            
+
                                             // Set the time zone to Manila, Philippines
                                             date_default_timezone_set('Asia/Manila');
 
@@ -209,53 +247,75 @@ if(!isset($_SESSION['username'])){
                                                 employee_tb.empid,
                                                 CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`,
                                                 attendances.date, attendances.time_in,
-                                                attendances.time_out,        
+                                                attendances.time_out,
                                                 SUM(CASE WHEN attendances.status = 'Absent' THEN 1 ELSE 0 END) AS absent_count,
                                                 SEC_TO_TIME(SUM(TIME_TO_SEC(attendances.overtime)))AS total_overtime,
                                                 SEC_TO_TIME(SUM(TIME_TO_SEC(attendances.late))) AS total_late,
                                                 SEC_TO_TIME(SUM(TIME_TO_SEC(attendances.early_out))) AS total_early_out,
-                                                SEC_TO_TIME(SUM(TIME_TO_SEC(attendances.total_work))) AS total_work 
+                                                SEC_TO_TIME(SUM(TIME_TO_SEC(attendances.total_work))) AS total_work
                                                 FROM attendances
                                                 INNER JOIN employee_tb ON employee_tb.empid = attendances.empid
-                                                WHERE MONTH(attendances.date) = $currentMonth
-                                                AND YEAR(attendances.date) = $currentYear
-                                                GROUP BY employee_tb.empid;";
-                                            $result = mysqli_query($conn, $query);
+                                                INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
+                                                ";
 
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                $cmpny_empid = $row['empid'];
+                                            if(isset($_GET["startdate"]) && isset($_GET["enddate"])){
+                                                $start_date = $_GET["startdate"];
+                                                $end_date = $_GET["enddate"];
 
-                                                $sql = "SELECT employee_tb.company_code, 
-                                                        employee_tb.empid, 
-                                                        assigned_company_code_tb.company_code_id, 
-                                                        assigned_company_code_tb.empid, 
-                                                        company_code_tb.id, 
-                                                        company_code_tb.company_code AS company_code_name 
-                                                        FROM assigned_company_code_tb 
-                                                        INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
-                                                        INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
-                                                        WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
-                                                        
-                                                        $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
-                                                        $cmpny_row = mysqli_fetch_assoc($cmpny_result);
-                                            ?>
+                                                $query .= "WHERE attendances.date BETWEEN '$start_date' AND '$end_date'";
+                                                // echo $query;
+                                            }
+                                            else{
+                                                $query .= "WHERE MONTH(attendances.date) = $currentMonth
+                                                            AND YEAR(attendances.date) = $currentYear
+                                                            ";
+                                            }
+                                            if(isset($_GET["deptname"])){
+                                                $dept_name = $_GET["deptname"];
+                                                $query .= "AND dept_tb.col_deptname = '$dept_name'
+                                                ";
+                                            }
+                                            if(isset($_GET["empid"])){
+                                                $emp_id = $_GET["empid"];
+                                                $query .= "AND employee_tb.empid = $emp_id
+                                                ";
+                                            }
+                                            // if(isset($_GET["startdate"]) && isset($_GET["enddate"])){
+                                            //     $start_date = $_GET["startdate"];
+                                            //     $end_date = $_GET["enddate"];
+
+                                            //     $query .= "AND ";
+                                            // }
+
+                                            $query .= "GROUP BY employee_tb.empid;";
+
+
+                                            //Enough sql, time for PDO
+
+                                            //Initiate PDO Database Connection:
+
+                                            $db = new DatabaseShit();
+
+                                            $q = $db->getConnection()->prepare($query);
+                                            $q->execute();
+
+                                            $res = $q->fetchAll(PDO::FETCH_ASSOC);
+
+                                            // var_dump($res);
+
+                                            foreach($res as $r)
+                                            {
+                                                echo "
                                                 <tr>
-                                                    <td style="display: none;"><?php echo $row['id'] ?></td>
-                                                    <td><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
-                                                    $empid = $row['empid'];
-                                                    if (!empty($cmpny_code)) {
-                                                        echo $cmpny_code . " - " . $empid;
-                                                    } else {
-                                                        echo $empid;
-                                                    }  ?></td>
-                                                    <td><?php echo $row['full_name'] ?></td>
-                                                    <td><?php echo $row['total_overtime'] ?></td>
-                                                    <td><?php echo $row['absent_count'] ?></td>
-                                                    <td><?php echo $row['total_late'] ?></td>
-                                                    <td><?php echo $row['total_early_out'] ?></td>
-                                                    <td><?php echo $row['total_work'] ?></td>
+                                                    <td>$r[empid]</td>
+                                                    <td>$r[full_name]</td>
+                                                    <td>$r[total_overtime]</td>
+                                                    <td>$r[absent_count]</td>
+                                                    <td>$r[total_late]</td>
+                                                    <td></td>
+                                                    <td>$r[total_work]</td>
                                                 </tr>
-                                            <?php
+                                                ";
                                             }
                                             ?>
                                 </tbody>
@@ -278,7 +338,7 @@ if(!isset($_SESSION['username'])){
  </div><!---Main Panel Close Tag--->
 <!-------------------------------------------------TABLE END------------------------------------------->
 
-<script> 
+<script>
      $('.header-dropdown-btn').click(function(){
         $('.header-dropdown .header-dropdown-menu').toggleClass("show-header-dd");
     });
@@ -287,7 +347,7 @@ if(!isset($_SESSION['username'])){
 //     $('.navbar-toggler').click(function() {
 //     $('.nav-title').toggleClass('hide-title');
 //     $('.dashboard-container').toggleClass('move-content');
-  
+
 //   });
 // });
  $(document).ready(function() {
@@ -312,7 +372,7 @@ if(!isset($_SESSION['username'])){
     }
   });
 });
- 
+
 
 //     $(document).ready(function() {
 //   $('.navbar-toggler').click(function() {
@@ -325,8 +385,8 @@ if(!isset($_SESSION['username'])){
 
 <script>
  //HEADER RESPONSIVENESS SCRIPT
- 
- 
+
+
 $(document).ready(function() {
   // Toggle the submenu visibility on click (for mobile devices)
   $('.nav-link').on('click', function(e) {
@@ -365,7 +425,7 @@ $(document).ready(function() {
 
 </script>
 
-<script> 
+<script>
         $(document).ready(function(){
                 $('.sched-update').on('click', function(){
                                     $('#schedUpdate').modal('show');
@@ -382,7 +442,7 @@ $(document).ready(function() {
                                     $('#sched_to').val(data[6]);
                                 });
                             });
-            
+
     </script>
 
 
@@ -404,9 +464,9 @@ $(document).ready(function() {
     <script src="bootstrap js/data-table.js"></script>
 
 
-    
 
-  
+
+
     <script src="vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
 </body>

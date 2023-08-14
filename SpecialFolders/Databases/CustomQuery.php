@@ -2,7 +2,7 @@
 // namespace Db;
 // use PDO;
 require_once 'Database.php';
-class CustomQuery extends DatabaseShit{
+class CustomQuery{
 
     private static $sql;
     private static $table;
@@ -14,6 +14,7 @@ class CustomQuery extends DatabaseShit{
      * @param string $tableName
      */
     public static function SelectAll($tableName){
+
         self::$sql = "SELECT * FROM $tableName";
         self::$table = $tableName;
         return new self();
@@ -96,8 +97,10 @@ class CustomQuery extends DatabaseShit{
     }
 
     public function Execute(){
+
+        $db = new DatabaseShit();
         // echo self::$sql;
-        $q = $this->conn->prepare(self::$sql);
+        $q = $db->getConnection()->prepare(self::$sql);
         $q->execute();
 
         $results = [

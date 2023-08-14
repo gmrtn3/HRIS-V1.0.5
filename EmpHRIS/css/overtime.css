@@ -118,8 +118,35 @@ p {
 tr:hover td {
   background-color: #ECECEC;
 }
+/* .file_overtime{
+  margin-top: 20px;
+  margin-right: 20px;
+  width: 100px;
+  background-color: mediumvioletred;
+  border: none;
+  border-radius: 5px;
+  height: 50px;
+  font-size: 18px;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin-left: 5px;
+}
 
 .file_overtime:hover{
   color: #FFFFFF;
   box-shadow: 10px 10px 8px #888888;
+} */
+
+.file_overtime{
+    background-color: #4B49AC;
+    width: 22%;
+    border-radius: 5px;
+    height: 50px;
+    font-size: 18px;
+    border: none;
+    margin-right: 5px;
+    color: white;
+}
+.file_overtime:hover{
+    background-color: white;
 }

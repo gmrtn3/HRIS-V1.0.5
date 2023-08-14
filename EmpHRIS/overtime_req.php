@@ -7,26 +7,26 @@ session_start();
 <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-    <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="bootstrap/vertical-layout-light/style.css">
-
-    <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/styles.css">
 
-
+    <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap4.min.css">
     <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap4.min.css">
 
 
 <!-- skydash -->
 
-<link rel="stylesheet" href="skydash/feather.css">
+    <link rel="stylesheet" href="skydash/feather.css">
     <link rel="stylesheet" href="skydash/themify-icons.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/themify-icons/0.1.2/css/themify-icons.css">
     <link rel="stylesheet" href="skydash/vendor.bundle.base.css">
@@ -36,7 +36,9 @@ session_start();
     <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
 
+    <!-- Main CSS: -->
     <link rel="stylesheet" href="css/try.css">
+
     <link rel="stylesheet" href="css/overtime.css"/>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/overtime_reqResponsive.css">
@@ -321,9 +323,12 @@ session_start();
                                 </div>
                                 <div class="col-6 mt-1 text-end">
                                 <!-- Button trigger modal -->
-                                <button type="button" class="file_overtime btn btn-primary" data-bs-toggle="modal" data-bs-target="#file_overtime">
+                                <!-- <button type="button" class="file_overtime btn btn-primary" data-bs-toggle="modal" data-bs-target="#file_overtime">
                                     File Overtime
-                                    </button>
+                                </button> -->
+                                <button class="file_overtime">
+                                    File Overtime
+                                </button>
                                 </div>
                             </div> <!--ROW END-->
 <!----------------------------------End Class ng header including the button for modal-------------------------------------------->
@@ -360,23 +365,23 @@ session_start();
                      <div class="table-responsive" style="max-height: 590px; overflow-y: auto;">
                         <table id="order-listing" class="table" style="width: 100%; max-height: 590px;">
                             <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
-                            <tr>
-                                <th style="display: none;">ID</th>
-                                <th style="display: none;">Employee ID</th>
-                                <th style="display: none;">Name</th>
-                                <th>OT Date</th>
-                                <th>Time In</th>
-                                <th>Time Out</th>
-                                <th>OT Hours</th>
-                                <th style="display: none;">Reason</th>
-                                <th>File Attachment</th>
-                                <th>Action Taken</th>
-                                <th style="display: none;">Remarks</th>
-                                <th>Status</th>
-                                <th style="display: none;">Date Filed</th>
-                                <th>View Details</th>
-                            </tr>
-                        </thead>
+                                <tr>
+                                    <th style="display: none;">ID</th>
+                                    <th style="display: none;">Employee ID</th>
+                                    <th style="display: none;">Name</th>
+                                    <th>OT Date</th>
+                                    <th>Time In</th>
+                                    <th>Time Out</th>
+                                    <th>OT Hours</th>
+                                    <th style="display: none;">Reason</th>
+                                    <th>File Attachment</th>
+                                    <th>Action Taken</th>
+                                    <th style="display: none;">Remarks</th>
+                                    <th>Status</th>
+                                    <th style="display: none;">Date Filed</th>
+                                    <th>View Details</th>
+                                </tr>
+                            </thead>
                          <?php
                          $conn = mysqli_connect("localhost","root","","hris_db");
                          $employeeid = $_SESSION['empid'];
