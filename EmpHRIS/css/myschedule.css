@@ -8,8 +8,8 @@
     display: flex;
     margin-top: 50px;
     flex-direction: row;
-    
-    
+
+
 }
 
 
@@ -18,7 +18,7 @@
       border-top-left-radius: 7px;
       background-color: #F2F2F2;
       margin-right: 50px;
-      
+
 
 }
 
@@ -28,22 +28,22 @@
 
 p {
       margin: 0;
-      
+
 }
- 
+
 .notif {
     flex-direction: row;
     display: flex;
     background-color: #F2F2F2;
 }
-  
+
 .validation {
     margin-left: 10px;
     background-color: #F2F2F2;
     color: red;
     visibility: hidden;
 }
-  
+
 .select_custom{
     background-color:#ffffff;
     margin-left: 30px;
@@ -54,11 +54,11 @@ p {
     border: none;
     cursor: pointer;
 }
-  
+
 #date {
         height: 18px;
 }
-  
+
 .btn_go {
     margin-top: 20px;
     margin-right: 20px;
@@ -85,29 +85,29 @@ tr:hover td {
   }
 
 .main-panel{
-    margin-left: 18.7%; 
-    position: absolute; 
+    margin-left: 18.7%;
+    position: absolute;
     top: 8.5%;
 }
 
 h2{
-    font-size: 23px; 
+    font-size: 23px;
     font-weight: bold;
-    
+
 }
 
 .card{
-    width:1500px; 
-    height: 780px; 
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17); 
-    
-    
-    
+    width:1500px;
+    height: 780px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
+
+
+
 }
 
 .card-body{
     border-radius: 25px;
-    
+
 }
 
 .col-12{

@@ -36,7 +36,7 @@
   cursor: pointer;
   height: 35px;
   width: 160px;
-  color: white;   
+  color: white;
 }
 
 .reject-btn:hover {
@@ -61,10 +61,10 @@
     background-color: #F2F2F2;
     margin-right: 20px;
 }
-  
+
 p {
     margin: 0;
-    
+
 }
 
 .empo_date_text{
@@ -117,4 +117,9 @@ p {
 
 tr:hover td {
   background-color: #ECECEC;
+}
+
+.file_overtime:hover{
+  color: #FFFFFF;
+  box-shadow: 10px 10px 8px #888888;
 }
