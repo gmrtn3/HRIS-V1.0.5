@@ -51,11 +51,11 @@ session_start();
 </header>
 
 <style>
-   
+
    html{
         background-color: #f4f4f4 !important;
         overflow: hidden;
-       
+
     }
     body{
         overflow: hidden;
@@ -65,7 +65,7 @@ session_start();
     .pagination{
         margin-right: 63px !important;
 
-        
+
     }
 
     .pagination li a{
@@ -79,12 +79,12 @@ session_start();
         border-color: #000;
     }
 
-    
+
     #order-listing_next{
         margin-top: 20px;
         margin-right: 4px !important;
         margin-bottom: -15.5px !important;
-        
+
     }
 
     #order-listing_previous{
@@ -95,23 +95,23 @@ session_start();
     /* Search Bar */
 
     #order-listing_filter label input{
-        
+
         width: 278px;
         font-size: 17px;
-        
+
     }
 
     /* Sorting Button Color */
     .dataTables_wrapper .dataTable thead .sorting:before, .dataTables_wrapper .dataTable thead .sorting_asc:before, .dataTables_wrapper .dataTable thead .sorting_desc:before, .dataTables_wrapper .dataTable thead .sorting_asc_disabled:before, .dataTables_wrapper .dataTable thead .sorting_desc_disabled:before {
-        
+
         right: 1.2em;
         bottom: 0;
         color: #c0c1c2 !important;
         opacity: 1;
-    } 
+    }
 
     .dataTables_wrapper .dataTable thead .sorting:after, .dataTables_wrapper .dataTable thead .sorting_asc:after, .dataTables_wrapper .dataTable thead .sorting_desc:after, .dataTables_wrapper .dataTable thead .sorting_asc_disabled:after, .dataTables_wrapper .dataTable thead .sorting_desc_disabled:after {
-   
+
         right: 1.2em;
         top: 0;
         color: #c0c1c2 !important;
@@ -128,7 +128,7 @@ session_start();
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Undertime Request</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                    
+
                     <form action="Data Controller/Undertime Request/under_request.php" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="mb-3" style="display: none;">
@@ -138,7 +138,7 @@ session_start();
                                 ?>
                                 <input type="text" class="form-control" name="name_emp" value="<?php echo $_SESSION['empid'];?>" id="empid" readonly>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="company" class="form-label">Date</label>
                                 <input type="date" name="date_undertime" class="form-control" id="date_id_undertime" required onchange="checkSchedule()" required>
@@ -176,7 +176,7 @@ session_start();
                             <button type="submit" name="add_undertime" id="undertime_add" class="btn btn-primary">Add</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             </div>
-                    </form> 
+                    </form>
 
              </div>
         </div>
@@ -228,7 +228,7 @@ session_start();
                             <input type="text" name="undertime_date_view" class="form-control" id="undertime_date_view_id" readonly>
                         </div>
                     </div>
-                    
+
                     <div class="row mt-2">
                        <div class="col-6">
                             <label for="start" class="form-label">Start Time</label>
@@ -283,11 +283,11 @@ session_start();
     <div class="main-panel mt-5" style="margin-left: 18.7%; position: absolute; top: 4.2%;">
         <div class=" mt-5">
           <div class="card" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17); width:1500px; height: 780px;">
-            <div class="card-body" style="border-radius: 25px;">  
+            <div class="card-body" style="border-radius: 25px;">
 <!------------------------------------Main Panel of data table------------------------------------------------->
 
 
-<!----------------------------------Class ng header including the button for modal---------------------------------------------->                    
+<!----------------------------------Class ng header including the button for modal---------------------------------------------->
                             <div class="row">
                                 <div class="col-6">
                                     <h2 style="font-size: 23px; font-weight: bold;">Undertime Request List</h2>
@@ -295,7 +295,8 @@ session_start();
                                 <div class="col-6 mt-1 text-end">
                                 <!-- Button trigger modal -->
                                 <button type="button" class="file_undertime btn btn-primary"
-                                data-bs-toggle="modal" data-bs-target="#file_undertime">
+                                data-bs-toggle="modal" data-bs-target="#file_undertime"
+                                style="background-color: #000;">
                                     File Undertime
                                     </button>
                                 </div>
@@ -325,7 +326,7 @@ session_start();
         }
 ?>
 <!------------------------------------End Message alert------------------------------------------------->
-               
+
 
 <!------------------------------------------Syntax ng Table-------------------------------------------------->
 <form action="" method="POST">
@@ -373,7 +374,7 @@ session_start();
                             employee_tb
                          INNER JOIN undertime_tb ON employee_tb.empid = undertime_tb.empid WHERE undertime_tb.empid = $employeeid;";
                          $result = mysqli_query($conn, $query);
-                         while ($row = mysqli_fetch_assoc($result)){  
+                         while ($row = mysqli_fetch_assoc($result)){
                          ?>
                             <tr>
                                 <td style="display: none;"><?php echo $row['id']?></td>
@@ -399,11 +400,11 @@ session_start();
                                 <td><a href="" class="btn btn-primary viewbtn" data-bs-toggle="modal" data-bs-target="#view_undertime_modal">View</a></td>
                             </tr>
                             <?php
-                             } 
+                             }
                             ?>
                       </table>
-                      </form>  
-<!------------------------------------End Syntax ng Table------------------------------------------------->                      
+                      </form>
+<!------------------------------------End Syntax ng Table------------------------------------------------->
                     </div>
                 </div>
             </div>
@@ -422,11 +423,11 @@ session_start();
     }
 </script>
 <!-----------------------------Script sa pagremove ng message sa link------------------------------------>
- 
 
 
 
-<!------------------------------------Script for Checking date if may nabago------------------------------------------------->               
+
+<!------------------------------------Script for Checking date if may nabago------------------------------------------------->
 <script>
 function checkSchedule() {
     var date = document.getElementById("date_id_undertime").value;
@@ -451,7 +452,7 @@ function checkSchedule() {
     xhttp.send("date=" + date);
 }
 </script>
-<!------------------------------------End Script for Checking date if may nabago-------------------------------------------------> 
+<!------------------------------------End Script for Checking date if may nabago------------------------------------------------->
 
 <!------------------------------------Script para lumabas ang modal------------------------------------------------->
 <script>
@@ -512,7 +513,7 @@ function checkSchedule() {
 
 
 
-<script> 
+<script>
      $('.header-dropdown-btn').click(function(){
         $('.header-dropdown .header-dropdown-menu').toggleClass("show-header-dd");
     });
@@ -521,7 +522,7 @@ function checkSchedule() {
 //     $('.navbar-toggler').click(function() {
 //     $('.nav-title').toggleClass('hide-title');
 //     $('.dashboard-container').toggleClass('move-content');
-  
+
 //   });
 // });
  $(document).ready(function() {
@@ -546,7 +547,7 @@ function checkSchedule() {
     }
   });
 });
- 
+
 
 //     $(document).ready(function() {
 //   $('.navbar-toggler').click(function() {
@@ -600,7 +601,7 @@ $(document).ready(function() {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>   
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 
@@ -610,7 +611,7 @@ $(document).ready(function() {
 
     <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap4.min.js"></script>
-    
+
     <!--skydash-->
     <script src="skydash/vendor.bundle.base.js"></script>
     <script src="skydash/off-canvas.js"></script>
@@ -620,7 +621,7 @@ $(document).ready(function() {
     <script src="skydash/todolist.js"></script>
     <script src="main.js"></script>
     <script src="bootstrap js/data-table.js"></script>
-    
+
 
     <script src="vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>

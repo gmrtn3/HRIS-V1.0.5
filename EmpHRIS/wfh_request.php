@@ -40,7 +40,7 @@ session_start();
     <link rel="stylesheet" href="css/try.css">
     <link rel="stylesheet" href="css/wfh.css"/>
     <link rel="stylesheet" href="css/styles.css">
-    
+
     <link rel="stylesheet" href="css/wfh_requestResponsives.css">
     <title>Work From Home Request</title>
 </head>
@@ -53,7 +53,7 @@ session_start();
       html{
         background-color: #f4f4f4 !important;
         overflow: hidden;
-       
+
     }
     body{
         overflow: hidden;
@@ -63,7 +63,7 @@ session_start();
     .pagination{
         margin-right: 63px !important;
 
-        
+
     }
 
     .pagination li a{
@@ -81,7 +81,7 @@ session_start();
         margin-top: 20px;
         margin-right: 4px !important;
         margin-bottom: -15.5px !important;
-        
+
     }
     #order-listing_previous{
         margin-top: 20px;
@@ -91,23 +91,23 @@ session_start();
     /* Search Bar */
 
     #order-listing_filter label input{
-        
+
         width: 278px;
         font-size: 17px;
-        
+
     }
 
     /* Sorting Button Color */
     .dataTables_wrapper .dataTable thead .sorting:before, .dataTables_wrapper .dataTable thead .sorting_asc:before, .dataTables_wrapper .dataTable thead .sorting_desc:before, .dataTables_wrapper .dataTable thead .sorting_asc_disabled:before, .dataTables_wrapper .dataTable thead .sorting_desc_disabled:before {
-        
+
         right: 1.2em;
         bottom: 0;
         color: #c0c1c2 !important;
         opacity: 1;
-    } 
+    }
 
     .dataTables_wrapper .dataTable thead .sorting:after, .dataTables_wrapper .dataTable thead .sorting_asc:after, .dataTables_wrapper .dataTable thead .sorting_desc:after, .dataTables_wrapper .dataTable thead .sorting_asc_disabled:after, .dataTables_wrapper .dataTable thead .sorting_desc_disabled:after {
-   
+
         right: 1.2em;
         top: 0;
         color: #c0c1c2 !important;
@@ -192,7 +192,7 @@ session_start();
                             <input type="text" name="wfh_date_view" class="form-control" id="wfh_date_view_id" readonly>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                               <label for="time_range" class="form-label mt-1">Time Range</label>
                               <div class="input-group mb-3">
@@ -259,14 +259,16 @@ session_start();
         <div class="card" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17); width:1500px; height:780px;">
             <div class="card-body" style="border: none; border-radius: 25px;">
 
-<!----------------------------------Class ng header including the button for modal---------------------------------------------->                    
+<!----------------------------------Class ng header including the button for modal---------------------------------------------->
                             <div class="row">
                                 <div class="col-6">
                                     <h2 style="font-size: 23px; font-weight: bold;">Work From Home Request List</h2>
                                 </div>
                                 <div class="col-6 mt-1 text-end">
                                 <!-- Button trigger modal -->
-                                <button type="button" class="file_wfh btn btn-primary" data-bs-toggle="modal" data-bs-target="#file_wfh">
+                                <button type="button" class="file_wfh btn btn-primary"
+                                        data-bs-toggle="modal" data-bs-target="#file_wfh"
+                                        style="background-color: #000;">
                                     File Work From Home
                                     </button>
                                 </div>
@@ -447,7 +449,7 @@ session_start();
 </script>
 <!--------------------End ng Script para lumabas ang warning message na PDF File lang inaallow--------------------->
 
-<script> 
+<script>
      $('.header-dropdown-btn').click(function(){
         $('.header-dropdown .header-dropdown-menu').toggleClass("show-header-dd");
     });
@@ -456,7 +458,7 @@ session_start();
 //     $('.navbar-toggler').click(function() {
 //     $('.nav-title').toggleClass('hide-title');
 //     $('.dashboard-container').toggleClass('move-content');
-  
+
 //   });
 // });
  $(document).ready(function() {
@@ -481,7 +483,7 @@ session_start();
     }
   });
 });
- 
+
 
 //     $(document).ready(function() {
 //   $('.navbar-toggler').click(function() {
@@ -535,7 +537,7 @@ $(document).ready(function() {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>   
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 
@@ -545,7 +547,7 @@ $(document).ready(function() {
 
     <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap4.min.js"></script>
-    
+
     <!--skydash-->
     <script src="skydash/vendor.bundle.base.js"></script>
     <script src="skydash/off-canvas.js"></script>
@@ -555,7 +557,7 @@ $(document).ready(function() {
     <script src="skydash/todolist.js"></script>
     <script src="main.js"></script>
     <script src="bootstrap js/data-table.js"></script>
-    
+
 
     <script src="vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>

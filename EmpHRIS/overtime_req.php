@@ -322,13 +322,20 @@ session_start();
                                     <h2 style="font-size: 23px; font-weight: bold;">Overtime Request List</h2>
                                 </div>
                                 <div class="col-6 mt-1 text-end">
+                                <style>
+                                    .file-btn:hover{
+                                        background-color: #c0c1c2;
+                                    }
+                                </style>
                                 <!-- Button trigger modal -->
-                                <!-- <button type="button" class="file_overtime btn btn-primary" data-bs-toggle="modal" data-bs-target="#file_overtime">
-                                    File Overtime
-                                </button> -->
-                                <button class="file_overtime">
+                                <button type="button" class="file_overtime btn btn-primary file-btn"
+                                        data-bs-toggle="modal" data-bs-target="#file_overtime"
+                                        style="background-color: #000;">
                                     File Overtime
                                 </button>
+                                <!-- <button class="file_overtime">
+                                    File Overtime
+                                </button> -->
                                 </div>
                             </div> <!--ROW END-->
 <!----------------------------------End Class ng header including the button for modal-------------------------------------------->

@@ -68,40 +68,40 @@ session_start();
       width: 90%
     }
 
-    
+
 
     #order-listing_next{
         margin-top: 20px;
         margin-right: 4px !important;
         margin-bottom: -15.5px !important;
-        
+
     }
 
     #order-listing_previous{
         margin-top: 20px;
         margin-left: 12px !important;
-        
+
     }
-    
+
     /* Search Bar */
 
     #order-listing_filter label input{
         width: 278px;
         font-size: 17px;
-        
+
     }
 
     /* Sorting Button Color */
     .dataTables_wrapper .dataTable thead .sorting:before, .dataTables_wrapper .dataTable thead .sorting_asc:before, .dataTables_wrapper .dataTable thead .sorting_desc:before, .dataTables_wrapper .dataTable thead .sorting_asc_disabled:before, .dataTables_wrapper .dataTable thead .sorting_desc_disabled:before {
-        
+
         right: 1.2em;
         bottom: 0;
         color: #c0c1c2 !important;
         opacity: 1;
-    } 
+    }
 
     .dataTables_wrapper .dataTable thead .sorting:after, .dataTables_wrapper .dataTable thead .sorting_asc:after, .dataTables_wrapper .dataTable thead .sorting_desc:after, .dataTables_wrapper .dataTable thead .sorting_asc_disabled:after, .dataTables_wrapper .dataTable thead .sorting_desc_disabled:after {
-   
+
         right: 1.2em;
         top: 0;
         color: #c0c1c2 !important;
@@ -118,7 +118,7 @@ session_start();
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Official Business Application</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                    
+
                     <form action="Data Controller/Official Employee/official_conn.php" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
                         <div class="mb-3" style="display: none;">
@@ -143,7 +143,7 @@ session_start();
                                     ?>
                             <input type="text" class="form-control" name="name_emp" value="<?php echo $_SESSION['empid'];?>" id="empid" readonly>
                         </div>  <!--mb-3 end--->
-                            
+
                             <div class="mb-3">
                                     <label for="company" class="form-label">Company Name</label>
                                     <input type="text" name="company_name" class="form-control" id="location_id" required>
@@ -190,7 +190,7 @@ session_start();
                             <button type="submit" name="savedata" id="submit-btn" class="btn btn-primary">Add</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
-                    </form> 
+                    </form>
 
              </div>
         </div>
@@ -207,7 +207,7 @@ session_start();
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        
+
             <div class="mb-3">
                   <label for="" class="form-label">Company Name</label>
                   <input type="text" name="company_name" class="form-control" id="view_company_name" readonly>
@@ -324,15 +324,17 @@ session_start();
                 <div class="card" style="background-color: #f4f4f4">
                     <div class="card-body" style="width:1500px; height:780px; border-radius: 25px; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17); ">
 <!---------------------------------------Main Panel End Here --------------------------------------->
-                        
-<!----------------------------------Class ng header including the button for modal---------------------------------------------->                    
+
+<!----------------------------------Class ng header including the button for modal---------------------------------------------->
                             <div class="row">
                                 <div class="col-6">
                                     <h2 style="font-size: 23px; font-weight: bold;">Official Business</h2>
                                 </div>
                                 <div class="col-6 mt-1 text-end">
                                 <!-- Button trigger modal -->
-                                <button type="button" class="add_off_btn" data-bs-toggle="modal" data-bs-target="#file_off_btn">
+                                <button type="button" class="add_off_btn"
+                                        data-bs-toggle="modal" data-bs-target="#file_off_btn"
+                                        style="background-color: #000;">
                                     File Official Business
                                     </button>
                                 </div>
@@ -389,7 +391,7 @@ session_start();
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
-                                        <?php 
+                                        <?php
                                             // $conn = mysqli_connect("localhost","root","","hris_db");
                                             include 'config.php';
                                             $employeeid = $_SESSION['empid'];
@@ -440,12 +442,12 @@ session_start();
                                                 <td style="display: none;">
                                                 <a href="" class="btn btn-primary showbtn" data-bs-toggle="modal" data-bs-target="#viewmodal">View</a></td>
                                                 <td style="display: none;"><?php echo $row['remarks'];?></td>
-                                                <td><?php echo $row['action_taken'];?></td>   
+                                                <td><?php echo $row['action_taken'];?></td>
                                                 <td <?php if ($row['status'] == 'Approved') {echo 'style="color:green;"';} elseif ($row['status'] == 'Rejected') {echo 'style="color:red;"';} elseif ($row['status'] == 'Pending') {echo 'style="color:orange;"';} elseif ($row['status'] == 'Cancelled') {echo 'style="color:gray;"';} ?>><?php echo $row['status']; ?>
                                             </td>
                                             </tr>
                                                  <?php
-                                                    } 
+                                                    }
                                                   ?>
                                     </table>
                                 </div>
@@ -486,7 +488,7 @@ session_start();
              });
              </script>
 <!---------------------------------End ng Script whole view data ng modal------------------------------------------>
-        
+
 <!-----------------------------Script sa pagremove ng message sa link------------------------------------>
 <script>
     function removeErrorFromURL() {
@@ -548,7 +550,7 @@ session_start();
   });
 </script>
 <!--------------------End ng Script para lumabas ang Script para lumabas ang warning message na PDF File lang inaallow--------------------->
-<script> 
+<script>
      $('.header-dropdown-btn').click(function(){
         $('.header-dropdown .header-dropdown-menu').toggleClass("show-header-dd");
     });
@@ -557,7 +559,7 @@ session_start();
 //     $('.navbar-toggler').click(function() {
 //     $('.nav-title').toggleClass('hide-title');
 //     $('.dashboard-container').toggleClass('move-content');
-  
+
 //   });
 // });
  $(document).ready(function() {
@@ -582,7 +584,7 @@ session_start();
     }
   });
 });
- 
+
 
 //     $(document).ready(function() {
 //   $('.navbar-toggler').click(function() {
@@ -636,7 +638,7 @@ $(document).ready(function() {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>   
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 
@@ -646,7 +648,7 @@ $(document).ready(function() {
 
     <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap4.min.js"></script>
-    
+
     <!--skydash-->
     <script src="skydash/vendor.bundle.base.js"></script>
     <script src="skydash/off-canvas.js"></script>
@@ -656,7 +658,7 @@ $(document).ready(function() {
     <script src="skydash/todolist.js"></script>
     <script src="main.js"></script>
     <script src="bootstrap js/data-table.js"></script>
-    
+
 
     <script src="vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
