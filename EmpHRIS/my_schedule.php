@@ -186,7 +186,7 @@ $db = mysqli_connect($server, $user, $pass, $database);
                     <!------------------------------------------Syntax ng Table-------------------------------------------------->
                     <div class="row">
                         <div class="col-12 mt-2">
-                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <div class="table-responsive" style="max-height: 400px; min-height: 100vh; overflow-y: auto;">
                                 <table id="order-listing" class="table" style="width: 100%; max-height: 590px;">
                                     <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
                                         <tr>

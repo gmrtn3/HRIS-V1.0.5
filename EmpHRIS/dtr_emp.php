@@ -321,8 +321,10 @@ session_start();
           <div class="row">
             <div class="col-12 mt-3">
 
-              <div class="table-responsive" style="overflow: hidden;">
-                <table id="order-listing" class="table">
+              <!-- <div class="table-responsive" style="overflow: hidden;"> -->
+              <div class="table-responsive" style="max-height: 590px; min-height: 100vh; overflow-y: auto;">
+                <!-- <table id="order-listing" class="table"> -->
+                <table id="order-listing" class="table" style="width: 100%; max-height: 590px;">
                   <thead>
                     <tr>
                       <th style="display: none;">ID</th>
