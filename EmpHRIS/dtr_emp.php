@@ -45,6 +45,10 @@ session_start();
   <link rel="stylesheet" href="css/dtr_emp.css" />
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/dtr_empResponsives.css">
+
+  <link rel="stylesheet" href="css/official_emp.css" />
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/official_empResponsive.css">
   <title>DTR CORRECTION - Employee</title>
 </head>
 
@@ -284,6 +288,14 @@ session_start();
             <div class="col-6">
               <h2 style="font-size: 23px; font-weight: bold;">DTR Correction Application</h2>
             </div>
+
+            <div class="col-6 mt-1 text-end">
+              <!-- Button trigger modal -->
+              <button type="button" class="add_off_btn" data-bs-toggle="modal" data-bs-target="#file_off_btn" style="background-color: #000;">
+                File DTR Correction
+              </button>
+            </div>
+
           </div>
           <!----------------------------------End Class ng header including the button for modal-------------------------------------------->
 
