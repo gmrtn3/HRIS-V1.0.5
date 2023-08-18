@@ -345,7 +345,7 @@ session_start();
             </div>
             <div class="col-6 mt-1 text-end">
               <!-- Button trigger modal -->
-              <button type="button" class="add_off_btn" data-bs-toggle="modal" data-bs-target="#file_off_btn" style="background-color: #000;">
+              <button type="button" class="add_off_btn" data-bs-toggle="modal" data-bs-target="#file_off_btn">
                 File Official Business
               </button>
             </div>

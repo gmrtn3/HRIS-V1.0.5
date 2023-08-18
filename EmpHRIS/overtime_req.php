@@ -346,9 +346,13 @@ session_start();
                                 }
                             </style>
                             <!-- Button trigger modal -->
-                            <button type="button" class="file_overtime btn btn-primary file-btn" data-bs-toggle="modal" data-bs-target="#file_overtime" style="background-color: #000;">
+                            <button type="button" class="file_overtime btn btn-primary file-btn" data-bs-toggle="modal" data-bs-target="#file_overtime">
                                 File Overtime
                             </button>
+
+                            <!-- <button type="button" class="add_off_btn main-btn" data-bs-toggle="modal" data-bs-target="#file_off_btn">
+                                File Overtime
+                            </button> -->
                             <!-- <button class="file_overtime">
                                     File Overtime
                                 </button> -->
