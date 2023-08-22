@@ -17,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $empbranch = filter_input(INPUT_POST, 'empbranch', FILTER_SANITIZE_STRING);
     $classification = $_POST['classification'];
     $work_frequency = $_POST['work_frequency'];
+    $empType = 'Piece Rate';
+    $email = "N/A";
 
     // Check if empid already exists in employee_tb
     $checkStmt = $conn->prepare("SELECT empid FROM employee_tb WHERE empid = ?");
@@ -33,20 +35,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $checkStmt->close();
     $status = 'Active';
     // Insert into employee_tb table
-    $stmt = $conn->prepare("INSERT INTO employee_tb (`fname`,`mname`, `lname`, `company_code`, `empid`, `address`, `contact`, `cstatus`, `gender`, `empdob`, `classification`, `empdate_hired`, `empbranch`, `status`, `work_frequency`)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)");
+    $stmt = $conn->prepare("INSERT INTO employee_tb (`fname`,`mname`, `lname`, `company_code`, `empid`, `address`, `contact`, `cstatus`, `gender`, `empdob`, `classification`, `empdate_hired`, `empbranch`, `status`, `work_frequency` , `role`, `email`)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,? , ?)");
 
     if (!$stmt) {
         die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
     }
 
-    $stmt->bind_param("sssssssssssssss", $fname, $mname, $lname, $company_code, $empid, $address, $contact, $cstatus, $gender, $empdob, $classification, $empdate_hired, $empbranch, $status, $work_frequency);
+    $stmt->bind_param("sssssssssssssssss", $fname, $mname, $lname, $company_code, $empid, $address, $contact, $cstatus, $gender, $empdob, $classification, $empdate_hired, $empbranch, $status, $work_frequency , $empType, $email);
 
     $stmt->execute();
 
     if ($stmt->errno) {
         echo "<script>alert('Error: " . $stmt->error . "');</script>";
-        echo "<script>window.location.href = '../../pakyawanEmpList';</script>";
+        echo "<script>window.location.href = '../../EmployeeList';</script>";
         exit;
     }
 
@@ -88,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt2->errno) {
             echo "<script>alert('Error: " . $stmt2->error . "');</script>";
-            echo "<script>window.location.href = '../../pakyawanEmpList';</script>";
+            echo "<script>window.location.href = '../../EmployeeList';</script>";
             exit;
         }
 
@@ -112,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt3->errno) {
             echo "<script>alert('Error: " . $stmt3->error . "');</script>";
-            echo "<script>window.location.href = '../../pakyawanEmpList';</script>";
+            echo "<script>window.location.href = '../../EmployeeList';</script>";
             exit;
         }
 
@@ -120,5 +122,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     echo "<script>alert('Data inserted successfully.');</script>";
-    echo "<script>window.location.href = '../../pakyawanEmpList';</script>";
+    echo "<script>window.location.href = '../../EmployeeList';</script>";
 }

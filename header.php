@@ -739,7 +739,7 @@
             </a>
             <div class="collapse" id="ui-pakyawan">
               <ul class="nav flex-column sub-menu" style=" width: 100%;">
-              <li class="nav-item"> <a class="nav-link" href="pakyawanEmpList">EMPLOYEE LIST</a></li>
+              <!-- <li class="nav-item"> <a class="nav-link" href="pakyawanEmpList">EMPLOYEE LIST</a></li> -->
                 <li class="nav-item"> <a class="nav-link" href="Piece_rate">PIECE RATE</a></li>
                 <li class="nav-item"> <a class="nav-link" href="pakyawan_work">SET WORK LOAD</a></li>
                 <li class="nav-item"> <a class="nav-link" href="pakyawan_payroll">PAYROLL</a></li>

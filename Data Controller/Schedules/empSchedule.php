@@ -1,53 +1,46 @@
-<?php
-$server = "localhost";
-$user = "root";
-$pass = "";
-$database = "hris_db";
+<?php 
 
-$conn = mysqli_connect($server, $user, $pass, $database);
+if(isset($_POST['submit'])){
+    $empidArray = $_POST['empid'][0];
 
-// Check if the connection was successful
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+    $empids = explode(",", $empidArray);
 
-$empids = $_POST['empid'];
-$scheduleNames = $_POST['schedule_name'];
-$schedFromDates = $_POST['sched_from'];
-$schedToDates = $_POST['sched_to'];
+    $schedule_name = $_POST['schedule_name'];
+    $sched_from = $_POST['sched_from'];
+    $sched_to = $_POST['sched_to'];
+    
+    include '../../config.php';
 
-$count = count($empids);
+    $sql = "INSERT INTO empschedule_tb (empid, schedule_name, sched_from, sched_to)
+    VALUES (?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+    schedule_name = VALUES(schedule_name),
+    sched_from = VALUES(sched_from),
+    sched_to = VALUES(sched_to)";
 
-$stmt = $conn->prepare("INSERT INTO empschedule_tb (`empid`, `schedule_name`, `sched_from`, `sched_to`) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE `schedule_name` = VALUES(`schedule_name`), `sched_from` = VALUES(`sched_from`), `sched_to` = VALUES(`sched_to`)");
+    $stmt = mysqli_prepare($conn, $sql);
 
-if (!$stmt) {
-    die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-}
+    foreach($empids as $empID ){
 
-for ($i = 0; $i < $count; $i++) {
-    $empid = isset($empids[$i]) ? $empids[$i] : null;
-    $scheduleName = isset($scheduleNames[$i]) ? $scheduleNames[$i] : null;
-    $schedFromDate = isset($schedFromDates[$i]) ? $schedFromDates[$i] : null;
-    $schedToDate = isset($schedToDates[$i]) ? $schedToDates[$i] : null;
+        $empID = trim($empID);
 
-    if (!empty($scheduleName)) {
-        $stmt->bind_param("ssss", $empid, $scheduleName, $schedFromDate, $schedToDate);
-        $stmt->execute();
+        echo $empID;
+        // Check if the employee ID is not empty
+        if (!empty($empID)) {
+            // Convert the employee ID to a string to preserve leading zeroes
+            $empID = strval($empID);
 
-        if ($stmt->errno) {
-            echo "<script>alert('Error: " . $stmt->error . "');</script>";
-            echo "<script>window.location.href = '../../Schedules';</script>";
-            exit;
+            // Bind parameters and execute the statement for the current employee ID
+            mysqli_stmt_bind_param($stmt, "ssss", $empID, $schedule_name, $sched_from, $sched_to); // Assuming cutOff_ID is an integer
+            mysqli_stmt_execute($stmt);
         }
     }
+    mysqli_stmt_close($stmt);
+
+    // Check if there were any successful insertions
+    // Assuming success if there were no errors and no exit() calls
+    header("Location: ../../Schedules");
+    exit();
+
+    mysqli_close($conn);
 }
-
-$stmt->close();
-
-// Close the database connection
-mysqli_close($conn);
-
-// Redirect back to the form page after successful insertion/update
-header("Location: ../../Schedules");
-exit;
-?>

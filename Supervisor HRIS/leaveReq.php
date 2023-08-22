@@ -328,7 +328,7 @@ session_start();
                                                     //read data
                                                     while($row = $result->fetch_assoc()){
 
-                                                        $cmpny_empid = $row['empid'];
+                                                        $cmpny_empid = $row['col_req_emp'];
 
                                                         $sql = "SELECT employee_tb.company_code, 
                                                                 employee_tb.empid, 

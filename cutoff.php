@@ -50,8 +50,9 @@ if(!isset($_SESSION['username'])){
     <link rel="stylesheet" href="css/gnrate_payroll.css">
     <link rel="stylesheet" href="css/try.css">
     <link rel="stylesheet" href="css/styles.css">
-    <script type="text/javascript" src="js/multi-select-dd.js"></script>
+    <!-- <script type="text/javascript" src="js/multi-select-dd.js"></script> -->
     <!-- para sa font ng net pay -->
+    <link rel="stylesheet" type="text/css" href="css/virtual-select.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap');
@@ -117,6 +118,15 @@ if(!isset($_SESSION['username'])){
         border: #CED4DA 1px solid !important;
 
     }
+    
+    #multi_option{
+	        max-width: 100%;
+	        width: 100%;
+        }
+        #multi_options{
+	        max-width: 100%;
+	        width: 100%;
+        }
 </style>
 <!-- Modal -->
 <div class="modal fade" id="modal_create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -150,7 +160,6 @@ if(!isset($_SESSION['username'])){
                         <div class="mb-3">
                             <select id="" required name="name_type" class='form-select form-select-m' aria-label='.form-select-sm example' style='cursor: pointer;'>
                                 <option selected value='Standard'>Standard</option>
-                                <option value='Off Cycle'>Off Cycle</option>
                             </select>
                         </div> <!-- Second mb-3 end-->
                     </div> <!-- col-6 end-->
@@ -246,6 +255,35 @@ if(!isset($_SESSION['username'])){
                     </div> <!-- col-6 end-->
             </div> <!--END row3 -->
             <!---------------- BREAK -------------->
+            <div class="row" style=" border-bottom: 1px solid #D1D1D1; border-right: 1px solid #D1D1D1; border-left: 1px solid #D1D1D1; padding-top: 10px;">
+                    <div class="col-6 mt-2">
+                        Department : 
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                        <?php
+                            include 'config.php';
+
+                            $sqls = "SELECT * FROM dept_tb";
+
+                            $results = mysqli_query($conn, $sqls);
+
+                            $option = "";
+                            while ($rows = mysqli_fetch_assoc($results)) {
+                                $option .= "<option value='" . $rows['col_ID'] . "'>" . $rows['col_deptname'] . "</option> ";
+                            }
+                        ?>
+                            <select name="department" id="departmentDropdown" class="form-select">
+                            <option value selected>Select Department</option>
+                            <option value='All'>All</option>
+                            <?php echo $option ?>
+                        </select>
+
+                        </div>  <!--mb-3 end--->
+                    </div> <!-- col-6 end-->
+            </div> <!--END row3 -->
+            
+             <!-- <p>Selected Department ID: <span id="selectedDepartment"><?php echo @$selectedDepartment ?></span></p> -->   
 
             <div class="row" style=" border-bottom: 1px solid #D1D1D1; border-right: 1px solid #D1D1D1; border-left: 1px solid #D1D1D1; padding-top: 10px;">
                     <div class="col-6 mt-2">
@@ -253,30 +291,11 @@ if(!isset($_SESSION['username'])){
                     </div>
                     <div class="col-6">
                         <div class="mb-3">
-                            
-                            <?php
-                             $server = "localhost";
-                             $user = "root";
-                             $pass ="";
-                             $database = "hris_db";
-
-                            $conn = mysqli_connect($server, $user, $pass, $database);
-
-                            $sql = "SELECT * FROM employee_tb";
-                            $approveResult = mysqli_query($conn, $sql);
-
-                            
-                            $approverOptions = "";
-                            while ($approverRow = mysqli_fetch_assoc($approveResult)) {
-                                $approverOptions .= "<option value='".$approverRow['empid'] . "' style='display:flex; font-size: 16px; font-style:normal;'>".$approverRow['fname']. " ". " " ." ".$approverRow['lname']." </option>";
-                            }
-
                            
-                            ?>
-                            
-                                <select class="approver-dd" name="name_empId[]" id="" required multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="3" style="display:flex; width: 380px;">
-                                    <?php echo $approverOptions ?>
-                                </select>
+                        <div id="employeeDropdown">
+                            <select class="approver-dd dd-hide" name="name_empId[]" id="multi_option" multiple placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;">
+                            </select>
+                        </div>
 
                         </div>  <!--mb-3 end--->
                     </div> <!-- col-6 end-->
@@ -344,13 +363,13 @@ if(!isset($_SESSION['username'])){
                 </ul>
 
     <div class="tab-content">
-        <form action="gnrate_payroll.php" method="post">
+        <form action="gnrate_payroll_prac.php" method="post">
         <div class="tab-pane" id="Standard">
             <div class="scroll" style="max-height:500px; overflow: scroll;">
                 <?php 
                 include 'config.php';
                 // Fetch data from the MySQL table
-                $sql = "SELECT * FROM cutoff_tb WHERE col_type ='Standard'";
+                $sql = "SELECT * FROM cutoff_tb WHERE col_type = 'Standard'";
                 $result = mysqli_query($conn, $sql);
                 // Display data in div elements
                 if (mysqli_num_rows($result) > 0) {
@@ -424,35 +443,43 @@ if(!isset($_SESSION['username'])){
 <div class="modal fade" id="modal_addEMp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-    <form action="actions/Payroll/addEmp.php" method="post">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Employee</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <input type="hidden" name="name_AddEMp_CutoffID" id="ID_AddEMp_CutoffID">
-        
+     
+            <div class="mb-3">
+                <h4>Department: </h4>
+                <?php
+                            include 'config.php';
+
+                            $sqls = "SELECT * FROM dept_tb";
+
+                            $results = mysqli_query($conn, $sqls);
+
+                            $option = "";
+                            while ($rows = mysqli_fetch_assoc($results)) {
+                                $option .= "<option value='" . $rows['col_ID'] . "'>" . $rows['col_deptname'] . "</option> ";
+                            }
+                        ?>
+                        <select name="department" id="departmentDropdowns" class="form-select">
+                            <option value selected>Select Department</option>
+                            <option value='All'>All</option>
+                            <?php echo $option ?>
+                        </select>
+            </div>
+                <!-- <p>Selected Department ID: <span id="selectedDepartment"><?php echo @$selectedDepartment ?></span></p> -->   
+
             <div class="mb-3">
                 <h4>Select Employee: </h4>
-                <?php
-                    include 'config.php';
-
-                    // Fetch all values of fname and lname from the database
-                    $sql = "SELECT fname, lname, empid FROM employee_tb";
-                    $result = mysqli_query($conn, $sql);
-
-                    $options = "";
-                    while($row = mysqli_fetch_assoc($result)){
-                        $options .="<option value='".$row['empid']."'>".$row['empid']." -    ".$row['fname']."  ".$row['lname']." </option> ";
-                    }
-                    
-
-                    
-                ?>
-
-                        <select class="approver-dd" name="cuttOff_emp[]" id="" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="5" style="display:flex; width: 380px;">
-                            <?php echo $options ?>
-                        </select>
+                <form action="actions/Payroll/addEmp.php" method="post">
+                <input type="hidden" name="name_AddEMp_CutoffID" id="ID_AddEMp_CutoffID">
+                <div id="employeeDropdowns">
+                            <select class="approver-dd dd-hide" name="name_empId[]" id="multi_options" multiple placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;">
+                            </select>
+                        </div>
+                 
             </div>
         
       </div>
@@ -482,7 +509,98 @@ if(!isset($_SESSION['username'])){
  </div> <!-- End Container -->
 
 
-    
+ <script>
+      $(document).ready(function() {
+    $('#departmentDropdown').change(function() {
+        var selectedValue = $(this).val();
+        
+        // Send selectedValue to a PHP script via AJAX
+        $.ajax({
+            type: 'POST',
+            url: 'update_selected_department.php', // Create this PHP file to handle the AJAX request
+            data: { department: selectedValue },
+            success: function(response) {
+                $('#selectedDepartment').text(response); // Update the value in the <p> tag
+
+                // Fetch employee options based on the selected department
+                $.ajax({
+                    type: 'POST',
+                    url: 'create_cutoff_getEmp.php', // Create this PHP file to generate employee options
+                    data: { department: response },
+                    success: function(employeeOptions) {
+                        // Update the employee dropdown with new options
+                        $('#employeeDropdown').html(employeeOptions);
+                        console.log('Employee options updated successfully.');
+
+                        // Collect selected employee IDs
+                        var selectedEmployeeIDs = $('#multi_option').val();
+                        console.log('Selected Employee IDs:', selectedEmployeeIDs);
+
+                        // Now submit the form with the selected employee IDs
+                      
+                    }
+                });
+            }
+        });
+    });
+});
+    </script>
+
+
+
+<script type="text/javascript" src="js/virtual-select.min.js"></script>
+<script type="text/javascript">
+	VirtualSelect.init({ 
+	  ele: '#multi_option' 
+	});
+</script>
+
+<script>
+      $(document).ready(function() {
+    $('#departmentDropdowns').change(function() {
+        var selectedValue = $(this).val();
+        
+        // Send selectedValue to a PHP script via AJAX
+        $.ajax({
+            type: 'POST',
+            url: 'update_selected_department.php', // Create this PHP file to handle the AJAX request
+            data: { department: selectedValue },
+            success: function(response) {
+                $('#selectedDepartment').text(response); // Update the value in the <p> tag
+
+                // Fetch employee options based on the selected department
+                $.ajax({
+                    type: 'POST',
+                    url: 'get_employee_options.php', // Create this PHP file to generate employee options
+                    data: { department: response },
+                    success: function(employeeOptions) {
+                        // Update the employee dropdown with new options
+                        $('#employeeDropdowns').html(employeeOptions);
+                        console.log('Employee options updated successfully.');
+
+                        // Collect selected employee IDs
+                        var selectedEmployeeIDs = $('#multi_options').val();
+                        console.log('Selected Employee IDs:', selectedEmployeeIDs);
+
+                        // Now submit the form with the selected employee IDs
+                      
+                    }
+                });
+            }
+        });
+    });
+});
+    </script>
+
+
+
+<script type="text/javascript" src="js/virtual-select.min.js"></script>
+<script type="text/javascript">
+	VirtualSelect.init({ 
+	  ele: '#multi_options' 
+	});
+</script>
+
 
 
  <script>

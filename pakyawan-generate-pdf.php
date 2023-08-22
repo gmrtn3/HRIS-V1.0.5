@@ -79,6 +79,17 @@
         $row = mysqli_fetch_assoc($result);
 
         $cutoff_id = $row['cutoff_id'];
+
+        $query = "SELECT * FROM pakyawan_cutoff_tb 
+                  INNER JOIN pakyawan_payroll_tb ON pakyawan_cutoff_tb.id = pakyawan_payroll_tb.cutoff_id
+                  WHERE pakyawan_payroll_tb.pakyawan_empid = $pakyawan_empid";
+
+        $queryResult = mysqli_query($conn, $query);
+
+        $queryRow = mysqli_fetch_assoc($queryResult);
+
+        $pakyawStart_cutoff =  $queryRow['start_date'];
+        $pakyawEnd_cutoff =  $queryRow['end_date'];
         // echo $cutoff_id;
 
           // $cutoff_sql = "SELECT * FROM pakyawan_cutoff_tb WHERE `id` = $cutoff_id";
@@ -91,25 +102,39 @@
 
 
           //calculation
-          $currentDate = date('Y-m-d'); // Get the current date
-          $dayOfWeek = date('N', strtotime($currentDate)); // Get the day of the week (1 = Monday, 7 = Sunday)
+          // $currentDate = date('Y-m-d'); // Get the current date
+          // $dayOfWeek = date('N', strtotime($currentDate)); // Get the day of the week (1 = Monday, 7 = Sunday)
           
           // Calculate the start date and end date of the current week
-          $startDate = date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($currentDate)));
-          $endDate = date('Y-m-d', strtotime('+' . (7 - $dayOfWeek) . ' days', strtotime($currentDate)));
+          // $startDate = date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($currentDate)));
+          // $endDate = date('Y-m-d', strtotime('+' . (7 - $dayOfWeek) . ' days', strtotime($currentDate)));
 
           $sql = "SELECT SUM(pakyawan_based_work_tb.work_pay) AS cash_total, employee_tb.fname, employee_tb.empid, employee_tb.lname
           FROM pakyawan_based_work_tb
           INNER JOIN employee_tb ON pakyawan_based_work_tb.employee = employee_tb.empid
           WHERE pakyawan_based_work_tb.employee = $pakyawan_empid 
-          AND `start_date` >= '$startDate' 
-          AND `end_date` <= '$endDate'";
+          AND `start_date` >= '$pakyawStart_cutoff' 
+          AND `end_date` <= '$pakyawEnd_cutoff'";
           
           $result = mysqli_query($conn, $sql);
 
           $row = mysqli_fetch_assoc($result);
 
-          $pakyawan_salary = $row['cash_total'];
+          
+
+          $sqls = "SELECT * FROM pakyaw_cash_advance_tb WHERE empid = $pakyawan_empid AND `status` = 'Approved' AND `date` BETWEEN '$pakyawStart_cutoff' AND '$pakyawEnd_cutoff' ";
+
+          $pakyaw_advanceResult = mysqli_query($conn, $sqls);
+
+          $pakyaw_advanceRow = mysqli_fetch_assoc($pakyaw_advanceResult);
+
+
+          @$cash_advance = $pakyaw_advanceRow['cash_advance'];
+          
+
+          $total = $row['cash_total'];
+
+          $pakyawan_salary = $total - $cash_advance; 
 
 
       }
@@ -166,12 +191,12 @@
         <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
       </div>
 
-      <div class="modal-body" id="modal-body" style="">
+      <div class="modal-body" id="modal-body" >
         <div class="header_view">
           <img src="icons/logo_hris.png" width="70px" alt="">
           <p class="lbl_cnfdntial">CONFIDENTIAL SLIP</p>
         </div>
-        <div class="modal-content-header mt-3" style="6em;">
+        <div class="modal-content-header mt-3" >
 
             <div class="modal-content-header-first d-flex flex-row" style="width: 100%">
               <div style="margin-right: 9%">
@@ -263,8 +288,8 @@
                       $sql = "SELECT * FROM pakyawan_based_work_tb 
                       INNER JOIN piece_rate_tb ON pakyawan_based_work_tb.unit_type = piece_rate_tb.id
                       WHERE pakyawan_based_work_tb.employee = $pakyawan_empid  
-                      AND `start_date` >= '$startDate' 
-                      AND `end_date` <= '$endDate'";
+                      AND `start_date` >= '$pakyawStart_cutoff' 
+                      AND `end_date` <= '$pakyawEnd_cutoff'";
 
                       $result = $conn->query($sql);
 
@@ -290,7 +315,7 @@
                 </div>
                 <div class="box-footer w-100 d-flex flex-row justify-content-between align-items-center pl-3 pr-3" style="position: absolute; bottom: 0; height: 2.7em; border-top: #CED4DA 1px solid">
                       <p style='color: #656464'>Total Earning</p>
-                      <p style='color: #656464' class="mr-4">₱<?php echo $pakyawan_salary?></p>
+                      <p style='color: #656464' class="mr-4">₱<?php echo $total?></p>
                 </div>
               </div>
 
@@ -301,12 +326,33 @@
                     <p class="mr-3" style='color: #656464; font-weight: bold'>Amount</p>
                 </div>
                 <div class="box-content w-100 mt-3 d-flex flex-row justify-content-between align-items-center pl-3 pr-3">
+                  <?php 
+                    $currentDate = date('Y-m-d'); // Get the current date
+                    $dayOfWeek = date('N', strtotime($currentDate)); // Get the day of the week (1 = Monday, 7 = Sunday)
+                    
+                    // Calculate the start date and end date of the current week
+                    $startDate = date('Y-m-d', strtotime('-' . ($dayOfWeek - 1) . ' days', strtotime($currentDate)));
+                    $endDate = date('Y-m-d', strtotime('+' . (7 - $dayOfWeek) . ' days', strtotime($currentDate)));
+          
+                    $sqls = "SELECT * FROM pakyaw_cash_advance_tb WHERE empid = $pakyawan_empid AND `status` = 'Approved' AND `date` BETWEEN '$startDate' AND '$endDate' ";
+          
+                    $pakyaw_advanceResult = mysqli_query($conn, $sqls);
+          
+                    $pakyaw_advanceRow = mysqli_fetch_assoc($pakyaw_advanceResult);
+
+                    @$cash_advance = $pakyaw_advanceRow['cash_advance'];
+
+                    if ($cash_advance === null) {
+                      $cash_advance = 0;
+                  }
+        
+                  ?>
                       <p class="ml-3" style='color: #656464'>Deductions</p>
-                      <p class="mr-5" style='color: #656464'>₱ 0</p>
+                      <p class="mr-5" style='color: #656464'>₱ <?php echo @$cash_advance ?> </p>
                 </div>
                 <div class="box-footer w-100 d-flex flex-row justify-content-between align-items-center pl-3 pr-3" style="position: absolute; bottom: 0; height: 2.7em; border-top: #CED4DA 1px solid">
                       <p class="ml-3" style='color: #656464'>Total Deductions</p>
-                      <p class="mr-3" style='color: #656464' class="mr-4">₱ 0</p>
+                      <p class="mr-3" style='color: #656464' class="mr-4">₱ <?php echo @$cash_advance ?></p>
                 </div>
               </div>
 
@@ -323,7 +369,7 @@
             </div>
         </div>
 
-                    </div>
+      </div>
 
             <div class="modal-footer">
               <a href="pakyawan_payroll" style="text-decoration:none; "  class="mr-3">Close</a>

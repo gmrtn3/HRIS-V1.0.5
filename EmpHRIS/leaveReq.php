@@ -121,6 +121,13 @@ session_start();
         color: #c0c1c2 !important;
         opacity: 1;
     }
+
+    .red-text{
+        color: red;
+    }
+    .green-text{
+        color: green;
+    }
 </style>
 
 
@@ -181,7 +188,21 @@ session_start();
 
                                         <div class="row">
                                         <input type="hidden" name='name_emp' readonly value="<?php  echo $_SESSION['empid']; ?>">
+                                            <?php 
+                                                include 'config.php';
+
+                                                $empid = $_SESSION['empid'];
+                                            
+                                                $sqls = "SELECT * FROM leaveinfo_tb WHERE col_empID = $empid";
+                                            
+                                                $results = mysqli_query($conn, $sqls);
+                                                $rows = mysqli_fetch_assoc($results);
+                                            ?>
+                                                <div class="mb-3" id="credits" style="display:none">
+                                                    <p class="d-flex justify-content-end align-items-center mr-4" style="font-size: 1em">Balance Credits: <span id="showLeave" class="ml-2 red-text green-text" > </span> </p>
+                                                </div>
                                                 <div class="col-6">
+                                                    
                                                     <div class="mb-3">
                                                         <label for="Select_dept" class="form-label">Leave Type :</label>
                                                         <select class='form-select form-select-m' onchange="leavetype()" id="leavetype_id" name="name_LeaveT" aria-label='.form-select-sm example' style=' cursor: pointer;'>
@@ -190,6 +211,7 @@ session_start();
                                                             <option value='Sick Leave'>Sick Leave</option>
                                                             <option value='Bereavement Leave'>Bereavement Leave</option>
                                                         </select>
+                                                       
 
                                                         <?php
                                                         /*
@@ -212,6 +234,7 @@ session_start();
 
                                                     </div> <!-- First mb-3 end-->
                                                 </div> <!-- First col-6 end-->
+                                                
 
                                                 <!---------------------------------- BREAK ------------------------------>
 
@@ -577,21 +600,47 @@ session_start();
 <script> //script in leave request nilipat ko kasi d gumagana pag nasa folder(leaveReq.js) ng js siya nilagay
 
 function leavetype() {
-  let leavetype_id = document.getElementById("leavetype_id").value;
+    let leavetype_id = document.getElementById("leavetype_id").value;
+    var selectedLeaveType = document.getElementById('leavetype_id').value;
+    let credits = document.getElementById("credits");
+    var balanceCredits = 0;
 
-  if (leavetype_id === 'Vacation Leave') {
-    document.getElementById("id_leavePeriod").disabled = false;
-  }
-  else if (leavetype_id === 'Sick Leave') {
-    document.getElementById("id_leavePeriod").disabled = false;
-  }
-  else if (leavetype_id === 'Bereavement Leave') {
-    document.getElementById("id_leavePeriod").disabled = false;
-  }
-   else {
-    document.getElementById("id_leavePeriod").disabled = true;
-  }
+    if (leavetype_id === 'Vacation Leave') {
+        document.getElementById("id_leavePeriod").disabled = false;
+        credits.style.display = "block";
+        balanceCredits = <?php echo $rows['col_vctionCrdt']; ?>;
+        console.log("this is vacation leave");
+    }
+    else if (leavetype_id === 'Sick Leave') {
+        document.getElementById("id_leavePeriod").disabled = false;
+        credits.style.display = "block";
+        balanceCredits = <?php echo $rows['col_sickCrdt']; ?>;
+        console.log("this is sick leave");
+    }
+    else if (leavetype_id === 'Bereavement Leave') {
+        document.getElementById("id_leavePeriod").disabled = false;
+        credits.style.display = "block";
+        balanceCredits = <?php echo $rows['col_brvmntCrdt']; ?>;
+        console.log("this is bereavement leave");
+    }
+    else {
+        document.getElementById("id_leavePeriod").disabled = true;
+        credits.style.display = "none"; // Hide the credits paragraph
+    }
+
+    // Update the balance credits display
+    document.getElementById('showLeave').textContent = balanceCredits;
+
+    // Apply red-text class if balance credits are 0
+    if (balanceCredits === 0) {
+        document.getElementById('showLeave').classList.add('red-text');
+        document.getElementById('showLeave').classList.remove('green-text');
+    } else {
+        document.getElementById('showLeave').classList.remove('red-text');
+        document.getElementById('showLeave').classList.add('green-text');
+    }
 }
+
 
   function endvalidate() {
     let id_inpt_strTime1 = new Date(document.getElementById("id_inpt_strdate").value);

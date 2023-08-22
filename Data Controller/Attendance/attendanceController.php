@@ -750,7 +750,7 @@ if(isset($_POST['importSubmit'])){
                         
                          $get_sched_ot = $time['sched_ot'];
                          $get_tues_timeout = $time['tues_timeout'];
-                         $get_wed_timein = $time['tues_timein'];
+                         $get_tues_timein = $time['tues_timein'];
 
                          $convert_wed_timeout = new DateTime($get_tues_timeout);
                          $convert_time_in = new DateTime($time_in);
@@ -2637,6 +2637,6 @@ if (isset($_SESSION['alert_msg'])) {
     unset($_SESSION['alert_msg']);
 }
 // Redirect to the listing page
-// header("Location: ../../attendance.php");
+header("Location: ../../attendance.php");
 
 

@@ -152,10 +152,10 @@
                     
                     ?>
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="Fixed Salary" autocomplete="off" <?php if($row_settings['col_salary_settings'] === 'Fixed Salary'){echo 'checked';} ?> >
+                        <input type="radio" class="btn-check" name="col_salary_settings" id="btnradio1" value="Fixed Salary" autocomplete="off" <?php if($row_settings['col_salary_settings'] === 'Fixed Salary'){echo 'checked';} ?> >
                         <label class="btn btn-outline-warning radio_btn" for="btnradio1">Fixed Salary</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" value="Days Worked" autocomplete="off" <?php if($row_settings['col_salary_settings'] === 'Days Worked'){echo 'checked';} ?>>
+                        <input type="radio" class="btn-check" name="col_salary_settings" id="btnradio3" value="Days Worked" autocomplete="off" <?php if($row_settings['col_salary_settings'] === 'Days Worked'){echo 'checked';} ?>>
                         <label class="btn btn-outline-warning radio_btn" for="btnradio3">Days Worked</label>
                     </div>
                     </div>

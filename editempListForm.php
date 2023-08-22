@@ -40,6 +40,8 @@ if(count($_POST) > 0){
     mysqli_query($conn, "UPDATE assigned_company_code_tb SET company_code_id='".$_POST['company_code']."' WHERE empid = '".$_POST['empid']."' ");
     header ("Location: EmployeeList.php");
 
+    // echo $_POST['company_code'];
+
 
     // Insert into approver_tb table
 $approverEmpIds = $_POST['approver'];
@@ -51,6 +53,7 @@ $query_run = mysqli_query($conn, $query);
 if($query_run)
 {
     foreach ($approverEmpIds as $approverEmpId) {
+        
         $stmt2 = $conn->prepare("INSERT INTO approver_tb (`empid`, `approver_empid`)
                                 VALUES (?, ?)");
     
@@ -878,7 +881,7 @@ else
                             </script>
                             <input type="hidden" name="id" value="<?php echo $rows['id']; ?>">
                             <div class="modal-header">
-                                <h1 class="modal-title" style="font-size: 25px;">Add new deduction</h1>
+                                <h1 class="modal-title" style="font-size: 25px;">Add new allowance</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">  
@@ -901,7 +904,7 @@ else
                            
 
                                 <div class="other-allowance-title" style="margin-top: 30px">
-                                    <h1 style="font-size: 23px; margin-left: 20px; margin-bottom:-20px;">New Deductions</h1>
+                                    <h1 style="font-size: 23px; margin-left: 20px; margin-bottom:-20px;">New Allowance</h1>
                                 
                                 
                                 <table style="width: 300px; margin-left: 100px; margin-top: 30px;">

@@ -17,6 +17,8 @@ if(!isset($_SESSION['username'])){
 }
 
 
+
+
 ?>
 
 
@@ -34,6 +36,12 @@ if(!isset($_SESSION['username'])){
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap4.min.css">
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
 
         <!-- skydash -->
 
@@ -89,7 +97,7 @@ if(!isset($_SESSION['username'])){
 
     .card-body{
         width: 99.8%;
-        box-shadow: box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
     }
 </style>
 
@@ -266,9 +274,9 @@ if(!isset($_SESSION['username'])){
                     <div class="export-section">
                         <div class="export-sec">
                             <p class="export">Export Options:</p>
-                            <button class="excel" onclick="exportExcel()">Excel</button>
-                            <p class="lbl_exprt_contnt">|</p>
-                            <button class="pdf" onclick="exportPDF()">PDF</button>
+                            <button class="excel" id="export-csv-btn">CSV</button>
+                            <p class="lbl_exprt_contnt"> | </p>
+                            <button class="pdf" onclick="makePDF()">PDF</button>
                         </div>
                     </div>
 
@@ -277,6 +285,65 @@ if(!isset($_SESSION['username'])){
      </div>
  </div><!---Main Panel Close Tag--->
 <!-------------------------------------------------TABLE END------------------------------------------->
+
+<script>
+
+window.html2canvas = html2canvas;
+window.jsPDF = window.jspdf.jsPDF;
+
+function makePDF() {
+    html2canvas(document.querySelector("#order-listing"), {
+        allowTaint: true,
+        useCORS: true,
+        scale: 0.7
+    }).then(canvas => {
+        var img = canvas.toDataURL("Payroll Attendance Report");
+        
+        // Set the PDF to landscape mode
+        var doc = new jsPDF({
+            orientation: 'landscape'
+        });
+
+        doc.setFont('Arial');
+        doc.getFontSize(11);
+        doc.addImage(img, 'PNG', 10, 10, 0,0);
+        doc.save("Attendance Report.pdf");
+    });
+}
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+$(document).ready(function() {
+    // Export button click event
+    $('#export-csv-btn').click(function() {
+        // Create a CSV content
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Employee ID, Name ,Overtime hours, Absences, Late, Undertime, Total Work Hours\n";
+
+        // Loop through table rows and append data
+        $('#order-listing tbody tr').each(function() {
+            var empid = $(this).find('td:nth-child(2)').text();
+            var name = $(this).find('td:nth-child(3)').text();
+            var ot = $(this).find('td:nth-child(4)').text();
+            var absent = $(this).find('td:nth-child(5)').text();
+            var late = $(this).find('td:nth-child(6)').text();
+            var under = $(this).find('td:nth-child(7)').text();
+            var total_work = $(this).find('td:nth-child(8)').text();
+            csvContent += empid + "," + name + "," + ot + ","  + absent + ","  + late + ","  + under + ","  + total_work +"\n";
+        });
+
+        // Create a CSV blob and trigger a download
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Attendance Reports.csv");
+        document.body.appendChild(link);
+        link.click();
+    });
+});
+</script>
+
 
 <script> 
      $('.header-dropdown-btn').click(function(){

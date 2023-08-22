@@ -1,17 +1,18 @@
 <?php
- session_start();
- if (!isset($_SESSION['username'])) {
-   header("Location: login.php");
+  session_start();
+  if (!isset($_SESSION['username'])) {
+    header("Location: ../login.php");
 } else {
-   // Check if the user's role is not "admin"
-   if ($_SESSION['role'] != 'Supervisor') {
-       // If the user's role is not "admin", log them out and redirect to the logout page
-       session_unset();
-       session_destroy();
-       header("Location: logout");
-       exit();
-   } 
+    // Check if the user's role is not "admin"
+    if ($_SESSION['role'] != 'Supervisor') {
+        // If the user's role is not "admin", log them out and redirect to the logout page
+        session_unset();
+        session_destroy();
+        header("Location: ../logout.php");
+        exit();
+    } 
 }
+
 
 ?>
 
@@ -21,6 +22,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -47,6 +49,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/piece_rate.css">
     <title>HRIS | Schedule</title>
+    
 </head>
 <body>
 
@@ -58,18 +61,13 @@
       .odd .dataTables_empty{
         font-weight: 400;
       }
-          .pagination .page-item.active .page-link, .jsgrid .jsgrid-pager .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .pagination .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .page-item.active .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .pagination .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .page-item.active .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a, .pagination .page-item:hover .page-link, .jsgrid .jsgrid-pager .page-item:hover .page-link, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button:hover .page-link, .jsgrid .jsgrid-pager .jsgrid-pager-page:hover .page-link, .pagination .page-item:hover .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .page-item:hover .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item:hover a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button:hover a, .pagination .page-item:hover .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .page-item:hover .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item:hover a, .jsgrid .jsgrid-pager .jsgrid-pager-page:hover a, .pagination .page-item:focus .page-link, .jsgrid .jsgrid-pager .page-item:focus .page-link, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button:focus .page-link, .jsgrid .jsgrid-pager .jsgrid-pager-page:focus .page-link, .pagination .page-item:focus .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .page-item:focus .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item:focus a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button:focus a, .pagination .page-item:focus .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .page-item:focus .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item:focus a, .jsgrid .jsgrid-pager .jsgrid-pager-page:focus a, .pagination .page-item:active .page-link, .jsgrid .jsgrid-pager .page-item:active .page-link, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button:active .page-link, .jsgrid .jsgrid-pager .jsgrid-pager-page:active .page-link, .pagination .page-item:active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .page-item:active .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item:active a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button:active a, .pagination .page-item:active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .page-item:active .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item:active a, .jsgrid .jsgrid-pager .jsgrid-pager-page:active a {
-   background-color: #000 !important;
-   color: white !important;
-}
     </style>
     
 
     <!-- insert modal -->
 
-
     <form action="Data Controller/Pakyawan/workload_insert.php" method="POST">
-       <div class="modal fade draggable" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateLabel" aria-hidden="true">
           <div class="modal-dialog">
               <div class="modal-content">
                   <div class="modal-header">
@@ -79,93 +77,75 @@
                   <div class="modal-body">
                   <div class="form-group">
                     <div id="error-msg" class="alert alert-danger mt-2" style="display: none;">Start Date and End Date cannot be the same for Weekly frequency</div>
+                    <?php
+                       include 'config.php';
+                       $conn = mysqli_connect($server, $user, $pass, $database);
+                       
+                       // Assuming $_SESSION['approver_empid'] holds the current user's empid
+                       // Assuming $_SESSION['empid'] holds the current user's empid
+                       $currentApproverEmpId = $_SESSION['empid'];
+                       // echo "<script>alert($currentApproverEmpid) </script>";
+                       
+                       // echo "<script> alert($currentApproverEmpId) </script>";
+                       
+                       // $sql = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
+                       //         INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
+                       //         INNER JOIN approver_tb ON employee_tb.id = approver_tb.approver_empid
+                       //         WHERE employee_tb.classification = 19
+                       //         AND approver_tb.approver_empid = $currentApproverEmpId";
+                       
+                        $sql = "SELECT * FROM approver_tb
+                        INNER JOIN employee_tb ON employee_tb.empid = approver_tb.empid
+                        INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
+                        WHERE employee_tb.classification = 3 AND approver_tb.approver_empid = $currentApproverEmpId";
+                        
+                        $result = mysqli_query($conn, $sql);
+                        $options = "";
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $options .= "<option value='".$row['empid']."'>".$row['fname']."  ".$row['lname']."</option>";
+                        }
+                        ?>
+
+                        <label for="">Employee Name:</label>
+                        <select name="employee" id="employeeDropdown" class="form-select" style="color: black">
+                            <option value="" disabled selected>Select Employee</option> 
+                            <?php echo $options; ?>
+                        </select>
+
+                        
+
+                        <label for="" class="mt-3">Unit Type:</label>
+                        <select name="unit_type" id="unitTypeDropdown" class="form-select" style="color: black">
+                            <option value="" disabled selected>Select Unit Type</option> 
+                        </select><br>
+
+                        <script>
+                            const employeeDropdown = document.getElementById("employeeDropdown");
+                            const unitTypeDropdown = document.getElementById("unitTypeDropdown");
+
+                            employeeDropdown.addEventListener("change", function() {
+                                const selectedEmployeeId = employeeDropdown.value;
+
+                                fetch('get_unit_types.php?empid=' + selectedEmployeeId)
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        unitTypeDropdown.innerHTML = data;
+                                    })
+                                    .catch(error => console.error('Error:', error));
+                            });
+                        </script>
+
                   
-                    <label for="">Frequency</label><br>
-                    <select id="frequency" required name="work_frequency" class='form-select form-select-m' id="frequency" aria-label='.form-select-sm example' style='cursor: pointer;'>
-                        <option disabled selected value=''>Select Frequency</option>
-                        <option value='Daily'>Daily</option>
-                        <option value='Weekly'>Weekly</option>
-                    </select><br>
+                    <label for="frequency">Frequency</label><br>
+                    <input type="text" id="frequencyInput" name="work_frequency" readonly class="form-control" ><br>
 
                     <label for="">Start Date</label><br>
                     <input type="date" required name="start_date" class="form-control" id="startDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"><br>
 
                     <label for="">End Date</label><br>
-                    <input type="date" required name="end_date" class="form-control" id="endDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="endDate"><br>
+                    <input type="date" required name="end_date" class="form-control" id="endDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="endDate">   
 
-                    <?php
-include 'config.php';
-$conn = mysqli_connect($server, $user, $pass, $database);
-
-// Assuming $_SESSION['approver_empid'] holds the current user's empid
-// Assuming $_SESSION['empid'] holds the current user's empid
-$currentApproverEmpId = $_SESSION['empid'];
-// echo "<script>alert($currentApproverEmpid) </script>";
-
-// echo "<script> alert($currentApproverEmpId) </script>";
-
-// $sql = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
-//         INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
-//         INNER JOIN approver_tb ON employee_tb.id = approver_tb.approver_empid
-//         WHERE employee_tb.classification = 19
-//         AND approver_tb.approver_empid = $currentApproverEmpId";
-
- $sql = "SELECT * FROM approver_tb
- INNER JOIN employee_tb ON employee_tb.empid = approver_tb.empid
- INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
- WHERE employee_tb.classification = 3 AND approver_tb.approver_empid = $currentApproverEmpId";
-
-// $sql = "SELECT employee_tb.empid, employee_tb.classification, approver_tb.empid, approver_tb.approver_empid, classification_tb.id 
-//         FROM ((employee_tb
-//         INNER JOIN approver_tb ON employee_tb.empid = "
-
-
-$result = mysqli_query($conn, $sql);
-$options = "";
-while ($row = mysqli_fetch_assoc($result)) {
-    $options .= "<option value='".$row['empid']."'>".$row['fname']."  ".$row['lname']."</option>";
-}
-?>
-
-<label for="">Employee Name:</label>
-<select name="employee" id="employeeDropdown" class="form-control" style="color: black">
-    <option value="" disabled selected>Select Employee</option> 
-    <?php echo $options; ?>
-</select>
-
-<label for="" class="mt-3">Unit Type:</label>
-<?php
-  // include 'config.php';
-
-  // $sql = "SELECT * FROM piece_rate_tb";
-
-  // $result = mysqli_query($conn, $sql);
-  // $options = "";
-  // while($row = mysqli_fetch_assoc($result)){
-  //   $options .="<option value='".$row['id']."'>".$row['unit_type']." </option>";
-  // }
-?>
-
-<select name="unit_type" id="unitTypeDropdown" class="form-control" style="color: black">
-</select>
-
-<script>
-    const employeeDropdown = document.getElementById("employeeDropdown");
-    const unitTypeDropdown = document.getElementById("unitTypeDropdown");
-
-    employeeDropdown.addEventListener("change", function() {
-        const selectedEmployeeId = employeeDropdown.value;
-
-        fetch('get_unit_types.php?empid=' + selectedEmployeeId)
-            .then(response => response.text())
-            .then(data => {
-                unitTypeDropdown.innerHTML = "<option selected value='' disabled>Select Unit Type</option>" + data;
-            })
-            .catch(error => console.error('Error:', error));
-    });
-</script>
-
-
+    
 
                     <label for="" class="mt-3">Unit Work:</label><br>
                     <input type="text" name="unit_work" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);">
@@ -180,6 +160,7 @@ while ($row = mysqli_fetch_assoc($result)) {
           </div>
       </div>
     </form>
+
     
 
 <!-- edit modal -->
@@ -189,7 +170,7 @@ while ($row = mysqli_fetch_assoc($result)) {
       <div class="modal-content">
         <div class="modal-header">
           <input type="text" id="id" name="id" style="display: none;">
-          <!-- <input type="text" name="employee" id="employee_ids"style="display: none;" > -->
+          <!-- <input type="text" name="employee" id="employee_ids" style="display: block;" > -->
           <!-- <input type="text" name="unit_type" id="unit_types" style="display: block;"> -->
           <!-- <input type="text" name="work_frequency" id="work_frequency" style="display: block;"> -->
           <!-- <input type="text" name="start_date" id="start_date">
@@ -269,12 +250,11 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 
     <div class="pr-container">
-    <div class="header-title">
-        <h1 style="font-size: 32px">Pakyawan Work Load</h1>
-        <button class="btn btn-primary btn_add" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Work</button>
-    </div>
-
-    <div class="pakyawan-validation">
+        <div class="header-title">
+            <h1 style="font-size: 32px">Pakyawan Work Load</h1>
+            <button  class="btn btn-primary btn_add" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Work</button>
+        </div>
+        <div class="pakyawan-validation">
       <!-- Add the validation message container -->
       <?php
         if (isset($_GET['validationFailed'])) {
@@ -282,7 +262,6 @@ while ($row = mysqli_fetch_assoc($result)) {
         }
         ?>
     </div>
-
         <div class="table mt-5">
       <div class="table-responsive" id="table-responsive">
         <table id="order-listing" class="table table-responsive">
@@ -295,6 +274,8 @@ while ($row = mysqli_fetch_assoc($result)) {
             <th>Unit Work</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <!-- <th>Unit Quantity</th> -->
+            <th>Work Pay</th>
             <th>Actions</th>
             <th style='display:none'>Frequency</th>
           
@@ -305,7 +286,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
         $approverEmpid = $_SESSION['empid'];
 
-        $sql = "SELECT pakyaw.id, emp.fname, emp.lname, peice.unit_type, approver.empid, approver.approver_empid, pakyaw.unit_work, pakyaw.start_date, pakyaw.end_date, pakyaw.work_frequency, pakyaw.employee, peice.id AS id_piece FROM pakyawan_based_work_tb AS pakyaw INNER JOIN employee_tb AS emp ON pakyaw.employee = emp.empid INNER JOIN piece_rate_tb AS peice ON pakyaw.unit_type = peice.id INNER JOIN approver_tb AS approver ON emp.empid = approver.empid WHERE approver.approver_empid = $approverEmpid";
+        $sql = "SELECT pakyaw.id, emp.fname, emp.lname, peice.unit_type, approver.empid, approver.approver_empid, pakyaw.unit_work, pakyaw.start_date, pakyaw.end_date, pakyaw.work_frequency, pakyaw.employee, pakyaw.work_pay, peice.id AS id_piece FROM pakyawan_based_work_tb AS pakyaw INNER JOIN employee_tb AS emp ON pakyaw.employee = emp.empid INNER JOIN piece_rate_tb AS peice ON pakyaw.unit_type = peice.id INNER JOIN approver_tb AS approver ON emp.empid = approver.empid WHERE approver.approver_empid = $approverEmpid";
           // $sql ="SELECT * FROM pakyawan_based_work_tb";
         $result = mysqli_query($conn, $sql);
 
@@ -320,6 +301,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                 echo "<td style='font-weight: 400'>" . $row['unit_work'] . "</td>";
                 echo "<td style='font-weight: 400'>" . $row['start_date'] . "</td>";
                 echo "<td style='font-weight: 400'>".$row['end_date']."</td>";
+                // echo "<td style='font-weight: 400'>".$row['unit_quantity']."</td>";
+                echo "<td style='font-weight: 400'>".$row['work_pay']."</td>";
                 echo "<td style='font-weight: 400'>
                             <button class='editbtn' style='margin-right: 0.6em; border: none; background-color: inherit'>
                                 <i class='fa-solid fa-pen-to-square' style='font-size: 1.4em' title='Edit' data-bs-toggle='modal' data-bs-target='#updateModal'></i>
@@ -344,7 +327,33 @@ while ($row = mysqli_fetch_assoc($result)) {
         </div>
     </div>
 
+
+
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+document.getElementById("employeeDropdown").addEventListener("change", function() {
+    var selectedEmployee = this.value;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "get_work_frequency.php?empid=" + selectedEmployee, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var workFrequency = xhr.responseText;
+                document.getElementById("frequencyInput").value = workFrequency; // Set work_frequency as the value
+                handleFrequencyChange(); // Update end date and validation
+            } else {
+                console.error("Error fetching work frequency.");
+            }
+        }
+    };
+    xhr.send();
+});
+</script>
+
     <script>
         // Function to remove the validation message
         function removeValidationMessage() {
@@ -365,9 +374,10 @@ while ($row = mysqli_fetch_assoc($result)) {
     </script>
 
 
+
     <script>
 // Get the frequency select element
-var frequencySelect = document.getElementById('frequency');
+var frequencySelect = document.getElementById('frequencyInput');
 
 // Get the start date and end date input fields
 var startDateInput = document.getElementById('startDate');
@@ -379,20 +389,24 @@ var saveButton = document.getElementById('btn_save');
 // Function to handle changes in the frequency select element
 function handleFrequencyChange() {
   var selectedFrequency = frequencySelect.value;
-  if (selectedFrequency === 'Select Frequency') {
+  if (selectedFrequency === '') {
     startDateInput.disabled = true;
     endDateInput.disabled = true;
     endDateInput.readOnly = false;
     endDateInput.value = '';
+    console.log("haha");
   } else if (selectedFrequency === 'Daily') {
     startDateInput.disabled = false;
+    endDateInput.disabled = false;
     endDateInput.readOnly = true;
     updateEndDate(); // Update the end date initially
+    console.log("hehe");
   } else {
     startDateInput.disabled = false;
     endDateInput.disabled = false;
     endDateInput.readOnly = false;
     endDateInput.value = '';
+    console.log("hihi");
   }
 
   validateEndDate(); // Run validation when frequency changes
@@ -418,7 +432,7 @@ function validateEndDate() {
       errorMessage.className = 'alert alert-danger mt-2';
       errorMessage.innerText = 'Start Date and End Date cannot be the same for Weekly frequency';
 
-      var frequencyDiv = document.getElementById('frequency').parentNode;
+      var frequencyDiv = document.getElementById('frequencyInput').parentNode;
       frequencyDiv.parentNode.insertBefore(errorMessage, frequencyDiv);
     }
   } else {
@@ -434,7 +448,8 @@ function validateEndDate() {
 
 // Function to update the end date with the start date value when the frequency is "Daily"
 function updateEndDate() {
-  if (frequencySelect.value === 'Daily') {
+  var selectedFrequency = frequencySelect.value;
+  if (selectedFrequency === 'Daily') {
     endDateInput.value = startDateInput.value;
   }
 }
@@ -496,7 +511,7 @@ handleFrequencyChange();
                                     $('#unit_work').val(data[5]);
                                     $('#start_date').val(data[6]);
                                     $('#end_date').val(data[7]);
-                                    $('#work_frequency').val(data[9]);
+                                    $('#work_frequency').val(data[10]);
                                    
                                    
                                 });

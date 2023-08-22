@@ -1,0 +1,482 @@
+.card-body{
+    margin-left: 18%;
+    width: 55%;
+    background-color: #FFFFFF;
+    margin-bottom: 25px;
+    max-height: 700px;
+  }
+
+  .header_view{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #E7DEDE ;
+    
+  }
+  .lbl_cnfdntial{
+  font-size: 10px;
+  color: #BABBBF;
+  position: absolute;
+  right: 30%;
+
+  }
+  .div1_mdl{
+
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  align-items: center;
+  }
+  .comp_name{
+  color: #656464;
+  font-size: small;
+  }
+  .lbl_payPeriod{
+  color: #656464;
+  font-size: small;
+  margin-left: 100px;
+  }
+  .dt_mdl_from{
+  color: #4B49AC;
+  font-size: small;
+  margin-left: 10px;
+  }
+  .lbl_to{
+  color: #656464;
+  font-size: small;
+  margin-left: 5px;
+  margin-right: 5px;
+  }
+  .dt_mdl_TO{
+  color: #4B49AC;
+  font-size: small;
+  }
+  .lbl_stats{
+  color: #656464;
+  font-size: small;
+  margin-left: 100px;
+  }  
+  .p_statss{
+  color: #0cdd40;
+  font-size: small;
+  margin-left: 5px;
+  }
+  
+  .emp_no{
+  color: #656464;
+  font-size: small;
+  
+  }
+  .p_empid{
+  color: #656464;
+  font-size: small;
+  margin-left: 17px;
+  }
+  .p_payout{
+  color: #656464;
+  font-size: small;
+  margin-left: 245px;
+  position: fixed;
+  }
+  .dt_pyout{
+  color: #4B49AC;
+  font-size: small;
+  margin-left: 320px;
+  position: fixed;
+  }
+  .emp_name{
+  color: #656464;
+  font-size: small;
+  
+  }
+  .p_emp_name{
+
+  color: #656464;
+  font-size: small;
+  margin-left: 5px;
+  }
+  
+  /*Table for modal payslip*/
+  
+  .headbody{
+  background-color: #F2F2F2;
+  flex-direction: row;
+  display: flex;
+  height: 30px;
+  margin-top: 5px;
+  border-radius: 7px;
+  position: relative;
+  
+  }
+  .headbdy_pnl1{
+    background-color: transparent;
+    flex-direction: row;
+    display: flex;
+    float: left;
+    align-items: center;
+    text-align: center;
+    border-right: 1px solid #9E9E9E;
+    border-bottom: 1px solid #9E9E9E;
+    padding: 10px;
+    width: 35%;
+  }
+  .lbl_sss{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin-top: 10px;
+  }
+  .p_sss{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin-left: 5px;
+  margin-top: 10px;
+  }
+  .lbl_tin{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  position: fixed;
+  margin-top: 10px;
+  margin-left: 200px;
+  
+  }
+  .p_tin{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  position: fixed;
+  margin-top: 10px;
+  margin-left: 230px;
+  }
+  
+  .headbdy_pnl2{
+  background-color: transparent;
+  flex-direction: row;
+  display: flex;
+  float: left;
+  align-items: center;
+  text-align: center;
+  border-right: 1px solid #9E9E9E;
+  border-bottom: 1px solid #9E9E9E;
+  padding: 10px;
+  width: 35%;
+  }
+  .lbl_phl{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin: 0 auto;
+  
+  }
+  .p_phl{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin: 0 auto;
+  }
+  
+  
+  .headbdy_pnl3{
+  background-color: transparent;
+  flex-direction: row;
+  display: flex;
+  float: left;
+  align-items: center;
+  border-bottom: 1px solid #9E9E9E;
+  width: 30%;
+  }
+  .lbl_pgibg{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin: 0 auto;
+  
+  }
+  .p_pgibg{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin-left: 5px;
+  margin: 0 auto;
+  }
+  
+  .headbody2{
+  background-color: #ffffff;
+  flex-direction: row;
+  display: flex;
+  height: 45px;
+  
+  }
+  .headbody2Pnl1{
+  background-color: transparent;
+  flex-direction: row;
+  display: flex;
+  float: left;
+  align-items: center;
+  border-bottom: 1px solid #9E9E9E;
+  border-right: 1px solid #9E9E9E;
+  width: 35%;
+  padding-right: 15px;
+  }
+  .lbl_earnings{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  
+  }
+  .lbl_Hours{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin: auto;
+  }
+  .lbl_Amount{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  }
+  
+  .headbody2Pnl2{
+  background-color: transparent;
+  flex-direction: row;
+  display: flex;
+  float: left;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid #9E9E9E;
+  border-right: 1px solid #9E9E9E;
+  width: 35%;
+  padding-right: 10px;
+  position: relative;
+  }
+  
+  .lbl_deduct{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin-left: 10px;
+  margin: auto;
+  }
+  .lbl_Amount2{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin: auto;
+  }
+  
+  .headbody2Pnl3{
+  background-color: transparent;
+  flex-direction: row;
+  display: flex;
+  float: left;
+  border-bottom: 1px solid #9E9E9E;
+  align-items: center;
+  text-align: center;
+  width: 30%;
+  }
+  .lbl_Balance{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  margin: auto;
+  }
+  
+  .headbody3{
+  background-color: #ffffff;
+  flex-direction: row;
+  display: flex;
+  height: 320px;
+  }
+  
+  .headbdy_pnl11{
+  background-color: transparent;
+  flex-direction: row;
+  display: flex;
+  float: left;
+  border-right: 1px solid #9E9E9E;
+  border-bottom: 1px solid #9E9E9E;
+  padding: 10px;
+  width: 35%;
+  }
+  .div_mdlcontnt_left{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  flex-direction: row;
+  display: flex;
+  }
+  .div_mdlcontnt_left1{ /* para sa allowance */
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  flex-direction: row;
+  display: flex;
+  margin-top: 30px;
+  }
+  .div_mdlcontnt_left2{ /* para sa overtime */
+    background-color: transparent;
+    color: #656464;
+    font-size: small;
+    flex-direction: row;
+    display: flex;
+    margin-top: 60px;
+    }
+    .div_mdlcontnt_left3{ /* para sa ON LEAVE */
+      background-color: transparent;
+      color: #656464;
+      font-size: small;
+      flex-direction: row;
+      display: flex;
+      margin-top: 90px;
+      }
+      .div_mdlcontnt_left4{ /* para sa ON LEAVE */
+        background-color: transparent;
+        color: #656464;
+        font-size: small;
+        flex-direction: row;
+        display: flex;
+        margin-top:120px;
+        }
+        .div_mdlcontnt_left5{ /* para sa ON LEAVE */
+          background-color: transparent;
+          color: #656464;
+          font-size: small;
+          flex-direction: row;
+          display: flex;
+          margin-top:150px;
+          }
+  .lbl_bsc_pay{
+  background-color: transparent;
+  position: fixed;
+  }
+  .p_Thrs{
+  background-color: transparent;
+  position: fixed;
+  margin-left: 150px;
+  }
+  .p_Tamount{
+  background-color: transparent;
+  position: fixed;
+  margin-left: 300px;
+  }
+  .headbdy_pnl22{
+  background-color: transparent;
+  flex-direction: row;
+  display: flex;
+  float: left;
+  border-right: 1px solid #9E9E9E;
+  border-bottom: 1px solid #9E9E9E;
+  padding: 10px;
+  width: 35%;
+  }
+  .div_mdlcontnt_mid{
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  flex-direction: row;
+  display: flex;
+  }
+  .div_mdlcontnt_mid_left{
+  background-color: #ffffff;
+  float: left;
+  color: #656464;
+  font-size: small;
+  flex-direction: column;
+  display: flex;
+  }
+  .lbl_sss_se{
+  background-color: transparent;
+  color: #656464;
+  font-size: smaller;
+  }
+  .lbl_philhlt_c{
+  background-color: transparent;
+  color: #656464;
+  font-size: smaller;
+  }
+  .lbl_hdmf{
+  background-color: transparent;
+  color: #656464;
+  font-size: smaller;
+  }
+  .lbl_advnc_p{
+  background-color: transparent;
+  color: #656464;
+  font-size: smaller;
+  }
+  .lbl_sssL{
+  background-color: transparent;
+  color: #656464;
+  font-size: smaller;
+  }
+  .phlhlt_L{
+  background-color: transparent;
+  color: #656464;
+  font-size: smaller;
+  }
+  .hdmf_L{
+  background-color: transparent;
+  color: #656464;
+  font-size: smaller;
+  }
+  .div_mdlcontnt_mid_right{
+  background-color: transparent;
+  float: left;
+  margin-left: 90px;
+  align-items: center;
+  }
+  
+  .headbdy_pnl33{
+  background-color: transparent;
+  flex-direction: row;
+  display: flex;
+  float: left;
+  border-bottom: 1px solid #9E9E9E;
+  width: 30%;
+  align-items: center;
+  }
+  .div_mdlcontnt_right{
+  background-color: transparent;
+  margin: auto;
+  }
+  .p_balance{
+  background-color: transparent;
+  font-size: 20px;
+  font-family: 'Ubuntu', sans-serif;
+  }
+  
+  .view_btnAction{
+  margin-top: 10px;
+  background-color: transparent;
+  flex-direction: row ;
+  display: flex;
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+  align-items: center;
+  }
+  .view_btnCancel{
+  background-color: #FFFFFF;
+  border: none;
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 30px;
+  font-size: 15px;
+  font-weight: 10;
+  color: #787BDB;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out, background-color .30s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  .view_btnCancel:hover{
+  background-color: #d81818;
+  color: #FFFFFF;
+  box-shadow: 10px 10px 8px #888888;
+  }
+  .barrier{
+  background-color: transparent;
+  color: #656464;
+  font-weight: bold;
+  
+  }

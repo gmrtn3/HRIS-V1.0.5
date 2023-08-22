@@ -8,7 +8,7 @@ $sql_att_all_table = "SELECT
                 `status` = 'Present' 
             
             AND 
-                `empid` = '$emp_ID'
+                `empid` = '$EmployeeID'
             AND 
                 `date` 
             BETWEEN  
@@ -95,7 +95,7 @@ $sql_att_all_table = "SELECT
 //                             *
 //                         FROM 
 //                             `overtime_tb` 
-//                         WHERE `empid` = '$emp_ID' AND `work_schedule` BETWEEN  '$str_date' AND  '$end_date' AND work_schedule = '$check_for_holiday_OT' AND `status` = 'Approved'");
+//                         WHERE `empid` = '$EmployeeID' AND `work_schedule` BETWEEN  '$str_date' AND  '$end_date' AND work_schedule = '$check_for_holiday_OT' AND `status` = 'Approved'");
 
 //                         if(mysqli_num_rows($result_check_holiday_OT) > 0) {
 //                             $row_check_holiday_OT = mysqli_fetch_assoc($result_check_holiday_OT);
@@ -114,7 +114,7 @@ $holiday_OT = " SELECT
                     *
                 FROM 
                     `overtime_tb` 
-                WHERE `empid` = '$emp_ID' AND `work_schedule` BETWEEN  '$str_date' AND  '$end_date' AND `status` = 'Approved'";
+                WHERE `empid` = '$EmployeeID' AND `work_schedule` BETWEEN  '$str_date' AND  '$end_date' AND `status` = 'Approved'";
                                 
                 $result_holiday_OT = $conn->query($holiday_OT);
                                                                  
@@ -157,7 +157,7 @@ $holiday_OT = " SELECT
                                                         *
                                                     FROM 
                                                         `overtime_tb` 
-                                                    WHERE `empid` = '$emp_ID' AND `work_schedule` BETWEEN  '$str_date' AND  '$end_date' AND work_schedule = '$check_for_holiday_OT' AND `status` = 'Approved'");
+                                                    WHERE `empid` = '$EmployeeID' AND `work_schedule` BETWEEN  '$str_date' AND  '$end_date' AND work_schedule = '$check_for_holiday_OT' AND `status` = 'Approved'");
                             
                                                      if(mysqli_num_rows($result_check_holiday_OT) > 0) {
                                                         $row_check_holiday_OT = mysqli_fetch_assoc($result_check_holiday_OT);

@@ -278,7 +278,7 @@
                                     }
                                     ?>
                                     <div style="display:flex; flex-direction: row">
-                                    <select name="company_code" id=""  style="display flex; align-items: center; justify-content: center;width: 20%; padding: 0.2em; margin-right: 2%; height: 40px">
+                                    <select name="company_code" id=""  style="display: flex; align-items: center; justify-content: center;width: 20%; padding: 0.2em; margin-right: 2%; height: 40px">
                                         <?php echo $options; ?>
                                     </select>
                                     <input type="text" name="empid" id="form-empid" class="p-1" placeholder="Employee ID" required maxlength="6" style="width: 78%">  

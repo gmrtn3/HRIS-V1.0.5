@@ -24,7 +24,7 @@ if(isset($_POST['signIn'])){
         header("Location: Dashboard"); // Redirect to admin dashboard
         exit();
     } else {
-        $select_users = mysqli_query($conn, "SELECT * FROM employee_tb WHERE `username`='$username' AND `password`='$password'");
+        $select_users = mysqli_query($conn, "SELECT * FROM employee_tb WHERE BINARY `username`='$username' AND `password`='$password'");
   
         if(mysqli_num_rows($select_users) > 0){
             $row = mysqli_fetch_assoc($select_users);

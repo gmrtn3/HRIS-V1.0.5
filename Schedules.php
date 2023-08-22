@@ -122,9 +122,7 @@
                                         }
                                 ?>
                                 <label for="schedule_name">Schedule Type</label><br>
-                                <select name="schedule_name" class="form-control" id="schedule_name">
-
-                               
+                                <select name="schedule_name" class="form-control" id="schedule_name" style="color: black">                               
                                     <?php echo $options; ?>
                                 </select>
                             </div>

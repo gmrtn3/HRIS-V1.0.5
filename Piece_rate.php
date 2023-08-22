@@ -17,26 +17,50 @@
 }
 include 'config.php';
 
-if(isset($_POST["import"])){
+if (isset($_POST["import"])) {
   $fileName = $_FILES["file"]["tmp_name"];
 
-  if($_FILES["file"]["size"] > 0){
-    $file = fopen($fileName, "r");
-    $firstRow = true; // Flag to skip the first row
+  if ($_FILES["file"]["size"] > 0) {
+      $file = fopen($fileName, "r");
+      $firstRow = true; // Flag to skip the first row
 
-    while(($column = fgetcsv($file, 10000, ",")) !== FALSE){
-      if ($firstRow) {
-        $firstRow = false;
-        continue; // Skip the first row
+      while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
+          if ($firstRow) {
+              $firstRow = false;
+              continue; // Skip the first row
+          }
+
+          $unitType = $column[0];
+          $unitQuantity = $column[1];
+          $unitRate = $column[2];
+
+          // Check if the unit type already exists in the piece_rate_tb table
+          $checkSql = "SELECT * FROM piece_rate_tb WHERE unit_type = '$unitType'";
+          $checkResult = mysqli_query($conn, $checkSql);
+
+          if (mysqli_num_rows($checkResult) > 0) {
+              // If the unit type already exists, update the existing record
+              $updateSql = "UPDATE piece_rate_tb SET unit_quantity = '$unitQuantity', unit_rate = '$unitRate' WHERE unit_type = '$unitType'";
+              $updateResult = mysqli_query($conn, $updateSql);
+
+              if (!$updateResult) {
+                  echo "Error updating data: " . mysqli_error($conn);
+              }
+          } else {
+              // If the unit type doesn't exist, insert a new record
+              $insertSql = "INSERT INTO piece_rate_tb (unit_type, unit_quantity, unit_rate) VALUES ('$unitType', '$unitQuantity', '$unitRate')";
+              $insertResult = mysqli_query($conn, $insertSql);
+
+              if (!$insertResult) {
+                  echo "Error inserting data: " . mysqli_error($conn);
+              }
+          }
       }
       
-      $sql = "INSERT INTO piece_rate_tb (unit_type, unit_quantity, unit_rate)
-              VALUES ('".$column[0]."', '".$column[1]."', '".$column[2]."')";
-
-      $result = mysqli_query($conn, $sql);
-    }
+      fclose($file);
   }
 }
+
 
 
 ?>
@@ -62,6 +86,11 @@ if(isset($_POST["import"])){
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap4.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
 
         <!-- skydash -->
 
@@ -250,11 +279,37 @@ if(isset($_POST["import"])){
                 </table>
             </div>
             <div class=" mt-3" style="margin-left: 2.4%">
-              <p style="font-size: 1.1em">Export options: <button id="export-csv-btn" class="" style="color: green; border: none; background-color: inherit">CSV</button> | </p>
+              <p style="font-size: 1.1em">Export options: <button id="export-csv-btn" class="" style="color: green; border: none; background-color: inherit">CSV</button> | <button class="pdf " style="background-color:inherit; border: none; color: red" onclick="makePDF()">PDF</button></p>
             </div>
             
         </div>
     </div>
+
+    <script>
+
+window.html2canvas = html2canvas;
+window.jsPDF = window.jspdf.jsPDF;
+
+function makePDF() {
+    html2canvas(document.querySelector("#order-listing"), {
+        allowTaint: true,
+        useCORS: true,
+        scale: 1
+    }).then(canvas => {
+        var img = canvas.toDataURL("Payroll Attendance Report");
+        
+        // Set the PDF to landscape mode
+        var doc = new jsPDF({
+            orientation: 'landscape'
+        });
+
+        doc.setFont('Arial');
+        doc.getFontSize(11);
+        doc.addImage(img, 'PNG', 10, 10, 0,0);
+        doc.save("Attendance Report.pdf");
+    });
+}
+</script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

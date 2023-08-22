@@ -53,6 +53,27 @@ if(!isset($_SESSION['username'])){
     <title>Leave Request</title>
 </head>
 <body>
+    
+<style>
+         table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 450px;
+                height: 450px;
+                
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+    </style>
 
 <header>
     <?php include 'header.php';
@@ -135,15 +156,16 @@ if(!isset($_SESSION['username'])){
                 <form action="actions/Leave Request/action.php" method="post">
                     <input id="id_ID_tb" name="name_ID_tb" type="text" style="display: none;">  <!--received the id of selected data in datatble and pass to calss action-->   
                        <input id="id_IDemp_tb" name="name_empID_tb" type="text" style="display: none;"> <!--received the employee_id of selected data in datatble and pass to calss action-->  
-                            <div class="table-responsive" id="table-responsiveness">
-                               <table id="order-listing" class="table mt-2">
+                            <div class="table-responsive" id="table-responsiveness" style="overflow-x: scroll" >
+                               <table id="order-listing" class="table mt-2" style="width: 120%;">
                                     <thead>
                                         <tr>
                                             <th style="display: none;" scope="col">ID</th>
                                             <th scope="col">Employee ID</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Leave Type</th>
-                                            <th style="col" >Credits</th>
+                                            <th scope="col" >Credits</th>
+                                            <th scope="col" >Leave Period</th>
                                             <th scope="col">Leave Date</th>
                                             <th scope="col">Leave End</th>
                                             <th scope="col">Date Filled</th>
@@ -172,6 +194,7 @@ if(!isset($_SESSION['username'])){
                                                         applyleave_tb._datetime,
                                                         applyleave_tb.col_dt_action,
                                                         applyleave_tb.col_approver,
+                                                        applyleave_tb.col_LeavePeriod,
                                                         applyleave_tb.col_status
                                                     FROM
                                                         applyleave_tb
@@ -208,7 +231,7 @@ if(!isset($_SESSION['username'])){
 
                                                     //read data
                                                     while($row = $result->fetch_assoc()){
-                                                        $cmpny_empid = $row['empid'];
+                                                        $cmpny_empid = $row['col_req_emp'];
 
                                                         $sql = "SELECT employee_tb.company_code, 
                                                                 employee_tb.empid, 
@@ -246,7 +269,7 @@ if(!isset($_SESSION['username'])){
                                                         }
                                                         echo "<tr>
                                                                 <td style='display: none;'>" . $row['col_ID'] . "</td>
-                                                                <td>";
+                                                                <td style='font-weight: 400'> ";
                                                                 $cmpny_code = $cmpny_row['company_code_name'] ?? null;
                                                                 $empid = $row['col_req_emp'];
                                                                 if (!empty($cmpny_code)) {
@@ -261,13 +284,14 @@ if(!isset($_SESSION['username'])){
                                                                         " . $row['full_name'] . "
                                                                     </button>
                                                                 </td>
-                                                                <td>" . $row['col_LeaveType'] . "</td>
-                                                                <td>" . $row['col_credit'] . "</td>
-                                                                <td>" . $row['col_strDate'] . "</td>
-                                                                <td>" . $row['col_endDate'] . "</td>
-                                                                <td>" . $row['_datetime'] . "</td>
-                                                                <td>" . $approver_fullname . "</td>
-                                                                <td>";
+                                                                <td style='font-weight: 400'>" . $row['col_LeaveType'] . "</td>
+                                                                <td style='font-weight: 400'>" . $row['col_credit'] . "</td>
+                                                                <td style='font-weight: 400'>" . $row['col_LeavePeriod'] . "</td>
+                                                                <td style='font-weight: 400'>" . $row['col_strDate'] . "</td>
+                                                                <td style='font-weight: 400'>" . $row['col_endDate'] . "</td>
+                                                                <td style='font-weight: 400'>" . $row['_datetime'] . "</td>
+                                                                <td style='font-weight: 400'>" . $approver_fullname . "</td>
+                                                                <td style='font-weight: 400'>";
 
                                                                 if($row['col_file'] === "") {
                                                                     echo "No file attached";
@@ -309,7 +333,7 @@ if(!isset($_SESSION['username'])){
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                            <input name="name_ID_tb" id="id_table" type="text" style="display:none;">
+                                            <input name="name_ID_tb" id="id_table" type="text" style="display: none;">
                                             <input name="name_empID_tb" id="id_EMPID" type="text" style="display:none;">
                                             <h3> Are you sure you want to view the valid reason uploaded as file?</h3>
                                             </div>

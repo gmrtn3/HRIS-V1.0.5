@@ -32,7 +32,7 @@
                     *
                 FROM 
                     `attendances` 
-                WHERE `empid` =  '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                WHERE `empid` =  '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
             
                 if(mysqli_num_rows($result_check_day) > 0) {
@@ -61,7 +61,7 @@
                     *
                 FROM 
                     `attendances` 
-                WHERE `empid` =  '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                WHERE `empid` =  '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
             
                 if(mysqli_num_rows($result_check_day) > 0) {
@@ -90,7 +90,7 @@
                         *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -121,7 +121,7 @@
                         *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -153,7 +153,7 @@
                         *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -184,7 +184,7 @@
                             *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                     
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -211,7 +211,7 @@
                             *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                     
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -251,7 +251,7 @@
                     *
                 FROM 
                     `attendances` 
-                WHERE `empid` =  '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                WHERE `empid` =  '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
             
                 if(mysqli_num_rows($result_check_day) > 0) {
@@ -280,7 +280,7 @@
                         *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -308,7 +308,7 @@
                         *
                     FROM date_after
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -338,7 +338,7 @@
                         *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -369,7 +369,7 @@
                         *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -400,7 +400,7 @@
                         *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -427,7 +427,7 @@
                         *
                     FROM 
                         `attendances` 
-                    WHERE `empid` =  '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    WHERE `empid` =  '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day) > 0) {
@@ -463,7 +463,7 @@
             }else{
 
                 //if HINDI restday ang before day
-                $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
        
                 if(mysqli_num_rows($result_check_day_before) > 0) {
@@ -494,7 +494,7 @@
             }else{
 
                 //if HINDI restday ang before day
-                $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
        
                 if(mysqli_num_rows($result_check_day_before) > 0) {
@@ -525,7 +525,7 @@
                }else {
 
                     //if HINDI restday ang before day
-                    $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
         
                     if(mysqli_num_rows($result_check_day_before) > 0) {
@@ -558,7 +558,7 @@
                }else{
 
                     //if HINDI restday ang before day
-                   $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                   $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
        
                    if(mysqli_num_rows($result_check_day_before) > 0) {
@@ -590,7 +590,7 @@
                }else{
 
                    //if HINDI restday ang before day
-                   $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                   $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
        
                    if(mysqli_num_rows($result_check_day_before) > 0) {
@@ -623,7 +623,7 @@
                }else{
 
                     //if HINDI restday ang before day
-                    $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
        
                     if(mysqli_num_rows($result_check_day_before) > 0) {
@@ -653,7 +653,7 @@
                }else{
 
                     //if HINDI restday ang before day
-                    $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    $result_check_day_before = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_before' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
        
                     if(mysqli_num_rows($result_check_day_before) > 0) {
@@ -688,7 +688,7 @@
 
             }else{
                 //if HINDI restday ang after day
-                $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                 if(mysqli_num_rows($result_check_day_after) > 0) {
@@ -718,7 +718,7 @@
             }else{
 
                     //if HINDI restday ang after day
-                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day_after) > 0) {
@@ -747,7 +747,7 @@
 
                }else {
                     //if HINDI restday ang after day
-                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day_after) > 0) {
@@ -778,7 +778,7 @@
 
                }else{
                     //if HINDI restday ang after day
-                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day_after) > 0) {
@@ -810,7 +810,7 @@
                }else{
 
                     //if HINDI restday ang after day
-                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day_after) > 0) {
@@ -842,7 +842,7 @@
                }else{
 
                     //if HINDI restday ang after day
-                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                    $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day_after) > 0) {
@@ -870,7 +870,7 @@
                }else{
 
                    //if HINDI restday ang after day
-                   $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
+                   $result_check_day_after = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$date_after' AND (`status` = 'Present' OR `status` = 'On-Leave')");
 
                 
                     if(mysqli_num_rows($result_check_day_after) > 0) {

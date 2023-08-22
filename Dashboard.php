@@ -26,7 +26,7 @@
 
     include 'config.php';
     
-    $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb";
+    $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb WHERE classification != 3";
     $result = mysqli_query($conn, $sql);
 
     if(!$result){
@@ -766,7 +766,11 @@ if(mysqli_num_rows($result) <= 0) {
                                         $currentDate = date('Y-m-d');
                                         
                                         // Query to count the employees with a "Present" status for the current date
-                                        $query = "SELECT COUNT(*) AS employee_count FROM attendances WHERE `status` = 'Present' AND DATE(`date`) = '$currentDate'";
+                                        $query = "SELECT COUNT(*) AS employee_count FROM attendances 
+                                                  INNER JOIN employee_tb ON attendances.empid = employee_tb.empid 
+                                                   WHERE attendances.status = 'Present' AND 
+                                                   employee_tb.classification != 3 AND
+                                                   DATE(`date`) = '$currentDate'";
                                         $result = mysqli_query($conn, $query);
                                         
                                         if ($result) {
@@ -789,7 +793,11 @@ if(mysqli_num_rows($result) <= 0) {
                                         $currentDate = date('Y-m-d');
                                         
                                         // Query to count the employees with a "Present" status for the current date
-                                        $query = "SELECT COUNT(*) AS employee_absent FROM attendances WHERE `status` = 'Absent' AND DATE(`date`) = '$currentDate'";
+                                        $query = "SELECT COUNT(*) AS employee_absent FROM attendances
+                                                  INNER JOIN employee_tb ON attendances.empid = employee_tb.empid 
+                                                  WHERE attendances.status = 'Absent' AND 
+                                                  employee_tb.classification != 3 AND
+                                                  DATE(`date`) = '$currentDate'";
                                         $result = mysqli_query($conn, $query);
                                         
                                         if ($result) {
@@ -812,7 +820,11 @@ if(mysqli_num_rows($result) <= 0) {
                                         $currentDate = date('Y-m-d');
                                         
                                         // Query to count the employees with a "Present" status for the current date
-                                        $query = "SELECT COUNT(*) AS employee_onleave FROM attendances WHERE `status` = 'On-Leave' AND DATE(`date`) = '$currentDate'";
+                                        $query = "SELECT COUNT(*) AS employee_onleave FROM attendances 
+                                                 INNER JOIN employee_tb ON attendances.empid = employee_tb.empid 
+                                                WHERE attendances.status = 'On-Leave' AND 
+                                                employee_tb.classification != 3 AND 
+                                                DATE(`date`) = '$currentDate'";
                                         $result = mysqli_query($conn, $query);
                                         
                                         if ($result) {
@@ -858,7 +870,11 @@ if(mysqli_num_rows($result) <= 0) {
                                 // Get the current date in Manila, Philippines
                                 $currentDate = date('Y-m-d');
 
-                                $query = "SELECT COUNT(*) AS employee_late FROM attendances WHERE `late` != '00:00:00' AND `late` != '' AND DATE(`date`) = '$currentDate'";
+                                $query = "SELECT COUNT(*) AS employee_late FROM attendances
+                                 INNER JOIN employee_tb ON attendances.empid = employee_tb.empid 
+                                 WHERE attendances.status != '00:00:00' AND `late` != '' AND 
+                                 employee_tb.classification != 3 AND 
+                                 DATE(`date`) = '$currentDate'";
                                 $result = mysqli_query($conn, $query);
 
                                 if ($result) {

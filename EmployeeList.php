@@ -220,6 +220,8 @@
                         $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                         $cmpny_row = mysqli_fetch_assoc($cmpny_result);
 
+                        // echo $cmpny_row['empid'];
+
                 echo "<tr class='lh-1'>";
                 echo "<td style='font-weight: 400;'>";
 
@@ -254,14 +256,16 @@
                     'pagibig_amount' => 'Pagibig Amount',
                     'philhealth_amount' => 'Philhealth Amount',
                     'bank_name' => 'Bank Name',
-                    'bank_number' => 'Bank Number'
+                    'bank_number' => 'Bank Number',
+                    'emp_img_url' => 'Image'
+                    
                 );
 
                 // Check if any of the columns (except 'user_profile') have null, empty, or 0 values
                 $incomplete = false;
                 $details = '';
                 foreach ($row as $key => $value) {
-                    if ($key !== 'user_profile' && (empty($value) || is_null($value) || $value === "0" || $value === 0)) {
+                    if (($key !== 'user_profile' && $key !== 'work_frequency') && (empty($value) || is_null($value) || $value === "0" || $value === 0)) {
                         // Map the original column name to the new name using the $columnMapping array
                         $columnDisplayName = isset($columnMapping[$key]) ? $columnMapping[$key] : $key;
                         $details .= "<p><strong>$columnDisplayName:</strong> No value</p>";

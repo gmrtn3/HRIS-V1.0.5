@@ -91,144 +91,110 @@ if(!isset($_SESSION['username'])){
 </style>
 
 <!-------------------------------------- BODY START CONTENT ----------------------------------------------->
-<div class="main-panel" style="box-shadow: 10px 10px 10px 8px #888888; position:absolute; TOP: 125px; right: 100px; width:75%; height:800px;">
-    <div class="card">
-        <h3 style="margin-top: 20px; margin-left: 20px;">Employee Request</h3>
-        <div class="row "style="margin-top: 20px; margin-left: 20px;">
-            <div class="col-4">
-                <div class="mb-3">
-                    <?php
-                        $server = "localhost";
-                        $user = "root";
-                        $pass ="";
-                        $database = "hris_db";
+    <div class="request-container" style="position: absolute; left: 17.5%; top: 13%; width: 80%; height: 83%; background-color: #fff; box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17); border-radius: 0.8em;">
+        <div class="container-title p-3" >
+            <h2>Employee Request</h2>
+            <div class="d-flex flex-row p-2">
+                <?php
+                    $server = "localhost";
+                    $user = "root";
+                    $pass ="";
+                    $database = "hris_db";
 
-                        $conn = mysqli_connect($server, $user, $pass, $database);
-                        $sql = "SELECT `empid`, CONCAT(`fname`, ' ',`lname`) AS `full_name` FROM employee_tb";
-                        $result = mysqli_query($conn, $sql);
-
-                        $empid = isset($_GET['empid']) ? $_GET['empid'] : '';
-                        $options = "";
-                        $options .= "<option value='All Employee'" . ($empid == 'All Employee' ? ' selected' : '') . ">All Employee</option>";
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $emp_id = $row['empid'];
-                            $emp_name = $row['full_name'];
-                            $selected = ($empid == $emp_id) ? ' selected' : '';
-                             $options .= "<option value='$emp_id' $selected>$emp_id - $emp_name</option>";
+                    $conn = mysqli_connect($server, $user, $pass, $database);
+                    $sql = "SELECT `empid`, CONCAT(`fname`, ' ',`lname`) AS `full_name` FROM employee_tb";
+                    $result = mysqli_query($conn, $sql);
+                    $empid = isset($_GET['empid']) ? $_GET['empid'] : '';
+                    $options = "";
+                    $options .= "<option value='All Employee'" . ($empid == 'All Employee' ? ' selected' : '') . ">All Employee</option>";
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $emp_id = $row['empid'];
+                        $emp_name = $row['full_name'];
+                        $selected = ($empid == $emp_id) ? ' selected' : '';
+                         $options .= "<option value='$emp_id' $selected>$emp_id - $emp_name</option>";
                             
-                        }
-                    ?>
+                    }
+                ?>  
+                <div class="">
                     <label for="emp" class="form-label">Select Employee
                         <select name="empname" id="sel_employee" class='form-select form-select-m' aria-label='.form-select-sm example' style=' height: 50px; width: 400px; cursor: pointer;'>
                             <option value disabled selected>Select Employee</option>
                             <?php echo $options; ?>
                         </select>
                     </label>
-                </div>  <!--mb-3 end--->
-                          
-                            
+                </div>
 
-                        </div> <!-- first col- 6 end-->
-                        <div class="col-4">
+                <div class="ml-5">
+                    <?php
+                        $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
+                    ?>
+                    <label for="id_strdate" class="form-label">Date Range :
+                        <form class="form-floating">
+                            <input type="date" class="form-control" name="date_from" id="id_inpt_strdate" style=' height: 50px; width: 400px;cursor: pointer;' value="<?php echo $dateFrom; ?>">
+                            <label for="id_inpt_strdates">Start Date :</label>
+                        </form>
+                    </label>
+                </div>
+
+            </div>  
+            <div class="d-flex flex-row p-2">
+                <div>
+                    <?php
+                        $status = isset($_GET['status']) ? $_GET['status'] : '';
+                    ?>
+                    <label for="Select_dept" class="form-label">Select Status</label>
+                    <select id="sel_stats" class='form-select form-select-m' aria-label='.form-select-sm example' style=' height: 50px; width: 400px; cursor: pointer;'>
+                        <option value="">All Status</option>
+                        <option value='Pending <?php if ($status == 'Pending') echo 'selected'; ?>'>Pending</option>
+                        <option value='Approved <?php if ($status == 'Approved') echo 'selected'; ?>'>Approved</option>
+                        <option value='Declined <?php if ($status == 'Declined') echo 'selected'; ?>'>Declined</option>
+                        <option value='Cancelled <?php if ($status == 'Cancelled') echo 'selected'; ?>'>Cancelled</option>
+                    </select>
+                </div>
+                <div class="ml-5">
+                    <?php
+                        $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
+                    ?>
+                    <form class="form-floating" style="margin-top: 1.7em">
+                        <input  type="date" class="form-control" name="date_to" id="id_inpt_enddate" style='  height: 50px; width: 400px; cursor: pointer;' value="<?php echo $dateTo; ?>">
+                        <label for="id_inpt_enddates">End Date :</label>
+                    </form>
+                </div>
+
+                <button type="button " class="btn btn-primary ml-5 mt-4" style="--bs-btn-padding-y: 5px; --bs-btn-padding-x: 20px; --bs-btn-font-size: .75rem; width: 9em; height: 4em" onclick="filterRequest()">
+                GO
+                </button>
+
+            </div> 
+
+        </div>
+        <div class="p-4 mb-2 bg-secondary text-white ml-4 mr-4">List of all Request</div>
+
+        <form action="actions/Employee List/empreq.php" method="post">
+            <div class="table-responsive mt-3" style="width: 98%; margin:auto">
+                <input type="hidden" name="name_reqType" id="id_reqType">
+                <table id="order-listing" class="table" style="width: 100%;" >
+                    <thead >   
+                        <th style="display: none;"> ID </th>  
+                        <th> Employee ID </th>
+                        <th> Name </th>
+                        <th> Positon </th> 
+                        <th> Department </th>
+                        <th> Date Filed </th>
+                        <th> Request Type </th>
+                        <th> Status </th>
+                        <th>Name</th>                                            
+                    </thead>
+                        <tbody>
                             <?php
-                                $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
-                            ?>
-                            <label for="id_strdate" class="form-label">Date Range :</label>
-                            <div class="mb-1">
-                                <form class="form-floating">
-                                    <input type="date" class="form-control" name="date_from" id="id_inpt_strdate" style=' height: 50px; width: 400px;cursor: pointer;' value="<?php echo $dateFrom; ?>">
-                                    <label for="id_inpt_strdates">Start Date :</label>
-                                </form>
-                            </div> <!-- Second mb-3 end-->
-                        </div> <!-- second col- 6 end-->
-                        <div class="col-4">
+                                include 'config.php';
 
-                        </div>
-                    </div><!--row end-->
-                    
-            <!----------------------------------Break------------------------------------->
-
-                    <div class="row"style="margin-left: 20px;">
-                        <div class="col-4">                         
-                            <div class="mb-3">
-                            <?php
+                                $empid = isset($_GET['empid']) ? $_GET['empid'] : '';
                                 $status = isset($_GET['status']) ? $_GET['status'] : '';
-                            ?>
-                                    <label for="Select_dept" class="form-label">Select Status</label>
-                                            <select id="sel_stats" class='form-select form-select-m' aria-label='.form-select-sm example' style=' height: 50px; width: 400px; cursor: pointer;'>
-                                                <option value="">All Status</option>
-                                                <option value='Pending <?php if ($status == 'Pending') echo 'selected'; ?>'>Pending</option>
-                                                <option value='Approved <?php if ($status == 'Approved') echo 'selected'; ?>'>Approved</option>
-                                                <option value='Declined <?php if ($status == 'Declined') echo 'selected'; ?>'>Declined</option>
-                                                <option value='Cancelled <?php if ($status == 'Cancelled') echo 'selected'; ?>'>Cancelled</option>
-                                            </select>
-                                </div> <!-- First mb-3 end-->
-                            </div> <!-- first col- 6 end-->
-                            <div class="col-4">
-                                <div class="mb-1 mt-3">
-                                <?php
-                                    $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
-                                ?>
-                                    <form class="form-floating">
-                                        <input type="date" class="form-control" name="date_to" id="id_inpt_enddate" style=' height: 50px; width: 400px; cursor: pointer;' value="<?php echo $dateTo; ?>">
-                                        <label for="id_inpt_enddates">End Date :</label>
-                                    </form>
-                                </div> <!-- Second mb-3 end-->
-                               
-                            </div> <!-- second col- 6 end-->
-                            <div class="col-4">
-                                <button type="button " class="btn btn-primary" style="--bs-btn-padding-y: 5px; --bs-btn-padding-x: 20px; --bs-btn-font-size: .75rem;" onclick="filterRequest()">
-                                    GO
-                                </button>
-                            </div>
-                    </div><!--row end-->
+                                $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
+                                $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
 
-            <!----------------------------------Break------------------------------------->
-
-
-<!----------------------------Script sa pagfilter ng data table------------------------->
-<script>
-    function filterRequest() {
-        var empid = document.getElementById('sel_employee').value;
-        var status = document.getElementById('sel_stats').value;
-        var dateFrom = document.getElementById('id_inpt_strdate').value;
-        var dateTo = document.getElementById('id_inpt_enddate').value;
-
-        var url = 'employeeRequest.php?empid=' + empid + '&status=' + status + '&date_from=' + dateFrom + '&date_to=' + dateTo;
-        window.location.href = url;
-    }
-</script>
-<!----------------------------Script sa pagfilter ng data table------------------------->
-
-            <div class="p-4 mb-2 bg-secondary text-white ml-4 mr-4">List of all Request</div>
-                
-            <div class="row mr-3 ml-3">
-                <div class="table-responsive mt-5" style="overflow-y: scroll;  max-height: 400px;">
-                    <form action="actions/Employee List/empreq.php" method="post">
-                        <input type="hidden" name="name_reqType" id="id_reqType">
-                            <table id="order-listing" class="table" >
-                                <thead >
-                                    <tr> 
-                                        <th style="display: none;"> ID </th>  
-                                        <th> Employee ID </th>
-                                        <th> Name </th>
-                                        <th> Positon </th> 
-                                        <th> Department </th>
-                                        <th> Date Filed </th>
-                                        <th> Request Type </th>
-                                        <th> Status </th>                             
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                        include 'config.php';
-
-                                        $empid = isset($_GET['empid']) ? $_GET['empid'] : '';
-                                        $status = isset($_GET['status']) ? $_GET['status'] : '';
-                                        $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
-                                        $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
-
-                                        $sql = "
+                                $sql = "
                                         SELECT
                                             CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`,
                                             positionn_tb.position AS Position,
@@ -301,23 +267,23 @@ if(!isset($_SESSION['username'])){
                                         INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
                                         INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID";
 
-                                        if (!empty($empid) && $empid != 'All Employee') {
-                                            $sql .= " AND employee_tb.empid = '$empid'";
-                                        }
+                                if (!empty($empid) && $empid != 'All Employee') {
+                                    $sql .= " AND employee_tb.empid = '$empid'";
+                                    }
                                         
-                                        if (!empty($status) && $status != 'All Status') {
-                                            $sql .= " AND request_data.col_status = '$status'";
-                                        }
+                                if (!empty($status) && $status != 'All Status') {
+                                    $sql .= " AND request_data.col_status = '$status'";
+                                    }
                                         
-                                        if (!empty($dateFrom) && !empty($dateTo)) {
-                                            $sql .= " AND request_data.datefiled BETWEEN '$dateFrom' AND '$dateTo'";
-                                        }
+                                if (!empty($dateFrom) && !empty($dateTo)) {
+                                    $sql .= " AND request_data.datefiled BETWEEN'$dateFrom' AND '$dateTo'";
+                                    }
                                     
-                                    $result = $conn->query($sql);
+                                $result = $conn->query($sql);
                                     
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            $cmpny_empid = $row['empid'];
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                            $cmpny_empid = $row['col_req_emp'];
 
                                             $sql = "SELECT employee_tb.company_code, 
                                                     employee_tb.empid, 
@@ -335,8 +301,10 @@ if(!isset($_SESSION['username'])){
                             
 
                                             echo "<tr>";
+
                                             echo "<td style='display: none;'>" . $row['col_ID'] . "</td>";
-                                            echo "<td>";
+
+                                            echo "<td style='font-weight: 400'>";
                                             $cmpny_code = $cmpny_row['company_code_name'] ?? null;
                                             $empid = $row['col_req_emp'];
                                             if (!empty($cmpny_code)) {
@@ -345,38 +313,82 @@ if(!isset($_SESSION['username'])){
                                                 echo $empid;
                                             }
                                             echo "</td>";
+                                            
                                             echo "<td scope='row'>
                                                     <button type='submit' name='view_data' class='viewbtn' title='View' style='border: none; background: transparent;
                                                         text-transform: capitalize; text-decoration: underline; cursor: pointer; color: #787BDB; font-size: 19px;'>
                                                         " . $row['full_name'] . "
                                                     </button>
                                                     </td>";
-                                            echo "<td>" . $row['Position'] . "</td>";
-                                            echo "<td>" . $row['Department'] . "</td>";
-                                            echo "<td>" . $row['datefiled'] . "</td>";
-                                            echo "<td>" . $row['request_type'] . "</td>";
-                                            echo "<td>" . $row['col_status'] . "</td>";
+
+                                            echo "<td style='font-weight: 400'>" . $row['Position'] . "</td>";
+                                            echo "<td style='font-weight: 400'>" . $row['Department'] . "</td>";
+                                            echo "<td style='font-weight: 400'>" . $row['datefiled'] . "</td>";
+                                            echo "<td style='font-weight: 400'>" . $row['request_type'] . "</td>";
+                                            echo "<td style='font-weight: 400'>" . $row['col_status'] . "</td>";
+                                            echo "<td style='font-weight: 400'>" . $row['full_name'] . "</td>";
                                             echo "</tr>";
                                         }
                                     }
-                                    ?>
-                                </tbody>
-                            </table> 
-                        </form>           
-                </div> <!--table my-3 end-->   
+                                ?>
+                        </tbody>
+                </table>
             </div>
+        </form>    
+        <div class="mt-3 p-3">
+            <p class="fs-5">Export Options: <button style="border:none; background-color: inherit; color: green">CSV</button> | <button style="border:none; background-color: inherit; color: red">PDF</button></p>
+        </div>
+    </div>
 
-               
-    </div><!--card end-->
-    <footer>
-               <div class="att-export-btn" style="background-color:">
-                    <p>Export options: <a href="excel-att.php" class="" style="color:green"></i>Excel</a><span> |</span> <button id="btnExport" style="background-color: inherit; border:none; color: red">Export to PDF</button></p>
-                </div>
-               </footer>    
-</div><!--main-panel end-->
+    <script>
+    function filterRequest() {
+        var empid = document.getElementById('sel_employee').value;
+        var status = document.getElementById('sel_stats').value;
+        var dateFrom = document.getElementById('id_inpt_strdate').value;
+        var dateTo = document.getElementById('id_inpt_enddate').value;
+
+        var url = 'employeeRequest.php?empid=' + empid + '&status=' + status + '&date_from=' + dateFrom + '&date_to=' + dateTo;
+        window.location.href = url;
+    }
+    </script>
+
+    
+
+
     
 <!-------------------------------------- BODY END CONTENT ------------------------------------------------>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+$(document).ready(function() {
+    // Export button click event
+    $('#export-csv-btn').click(function() {
+        // Create a CSV content
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Employee ID, Name , Position, Department, Date Filed, Request Type, Status\n";
+
+        // Loop through table rows and append data
+        $('#order-listing tbody tr').each(function() {
+            var empid = $(this).find('td:nth-child(2)').text();
+            var name = $(this).find('td:nth-child(9)').text();
+            var ot = $(this).find('td:nth-child(4)').text();
+            var absent = $(this).find('td:nth-child(5)').text();
+            var late = $(this).find('td:nth-child(6)').text();
+            var under = $(this).find('td:nth-child(7)').text();
+            var total_work = $(this).find('td:nth-child(8)').text();
+            csvContent += empid + "," + name + "," + ot + ","  + absent + ","  + late + ","  + under + ","  + total_work +"\n";
+        });
+
+        // Create a CSV blob and trigger a download
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Employee Requests.csv");
+        document.body.appendChild(link);
+        link.click();
+    });
+});
+</script>
 
 
 <script> 

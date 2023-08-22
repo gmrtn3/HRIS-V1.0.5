@@ -44,7 +44,8 @@
 <link rel="stylesheet" href="skydash/style.css">
 
 <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
-<script type="text/javascript" src="js/multi-select-dd.js"></script>
+<!-- <script type="text/javascript" src="js/multi-select-dd.js"></script> -->
+<link rel="stylesheet" type="text/css" href="css/virtual-select.min.css">
 
 <link rel="stylesheet" href="css/try.css">
 <link rel="stylesheet" href="css/styles.css">
@@ -113,6 +114,10 @@
     }
 
 
+        #multi_option{
+	        max-width: 100%;
+	        width: 100%;
+        }
     
 </style>
 
@@ -123,7 +128,6 @@
     <button id="" class="schedFormBtn" type="button" data-bs-toggle="modal" data-bs-target="#schedModal"> Assign to Employee</button>
 
     
-    <form action="Data Controller/Schedules/empSchedule.php" method="POST">
         <div class="modal fade" id="schedModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="title" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -133,56 +137,37 @@
                     <div class="modal-body">
                     <div class="mb-3">
                         <label for="department">Select Department</label><br>
-                        <select name="department" id="department" style="height: 50px; width: 630px; padding: 10px">
-                        
-                            <!-- Populate options using PHP -->
-                            
+                        <?php
+                            include 'config.php';
+
+                            $sqls = "SELECT * FROM dept_tb";
+
+                            $results = mysqli_query($conn, $sqls);
+
+                            $option = "";
+                            while ($rows = mysqli_fetch_assoc($results)) {
+                                $option .= "<option value='" . $rows['col_ID'] . "'>" . $rows['col_deptname'] . "</option> ";
+                            }
+                        ?>
+                        <select name="department" id="departmentDropdown" class="form-select">
+                            <option value selected>Select Department</option>
+                            <option value='All'>All</option>
+                            <?php echo $option ?>
                         </select>
-                        
                     </div>
+
+             <!-- <p>Selected Department ID: <span id="selectedDepartment"><?php echo @$selectedDepartment ?></span></p> -->
+                        
+                    
+                    <form action="Data Controller/Schedules/empSchedule.php" method="POST">
                     <div class="mb-3">
                         <label for="emp">Select Employee</label><br>
-                        <select name="empid[]" id="employee-dd" style="width: 98%; padding: 10px; font-size: 16px; background-color: white; border: 1px solid gray; height: 50px">
-                        <option value="" disabled selected>Select Employee</option>
-                            <!-- Employee options will be populated dynamically using AJAX -->
-                        </select>
+                          <div id="employeeDropdown">
+                            <select class="approver-dd dd-hide" name="empid[]" id="multi_option" multiple placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;">
+                            </select>
+                        </div>
                     </div>
 
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <script>
-                    $(document).ready(function() {
-                        // Load departments
-                        $.ajax({
-                            url: "load_departments.php", // Replace with correct path
-                            type: "GET",
-                            success: function(data) {
-                                $("#department").html(data);
-                            }
-                        });
-
-                        // Department change event
-                        $("#department").change(function() {
-                            var selectedDepartment = $(this).val();
-
-                            $.ajax({
-                                url: "getting_emp.php", // Replace with correct path
-                                data: { col_ID: selectedDepartment },
-                                type: "GET",
-                                dataType: "json",
-                                success: function(data) {
-                                    $("#employee-dd").empty();
-                                    $.each(data, function(index, employee) {
-                                        var optionText = employee.empid + " - " + employee.fname + " " + employee.lname;
-                                        $("#employee-dd").append($('<option>', {
-                                            value: employee.empid,
-                                            text: optionText
-                                        }));
-                                    });
-                                }
-                            });
-                        });
-                    });
-                </script>
                         
                         <div class="mb-3">
                         <?php
@@ -192,7 +177,7 @@
                                     $database = "hris_db";
 
                                     $conn = mysqli_connect($server, $user, $pass, $database);
-                                    $sql = "SELECT schedule_name FROM schedule_tb";
+                                    $sql = "SELECT * FROM schedule_tb";
                                     $result = mysqli_query($conn, $sql);
 
                                     $options = "";
@@ -202,23 +187,23 @@
                                     ?>
 
                                 <label for="schedule_name">Schedule Type</label><br>
-                                <select name="schedule_name[]" id="" style="height: 50px; width: 630px; padding: 10px">
+                                <select name="schedule_name" id="" class="form-select">
 
                                 
                                     <?php echo $options; ?>
                                 </select>
                         </div>
-                        <div class="" style="display: flex; ">
-                            <div>
+                        <div class=" d-flex flex-row  w-100">
+                            <div class="w-50">
                                 <label for="from">From</label><br>
-                                <input type="date" name="sched_from[]" id="sched_from_id" style="width: 300px; height: 50px; margin-right: 30px; border: black 1px solid; padding: 10px;" onchange="datevalidate()" min="<?php echo date('Y-m-d'); ?>" required>
+                                <input type="date" name="sched_from" class="form-control " id="sched_from_id"   onchange="datevalidate()" min="<?php echo date('Y-m-d'); ?>" required>
                                 <div id="sched_from_error" class="text-danger" style="font-size: small;"></div>
 
 
                             </div>
-                            <div>
+                            <div class="w-50">
                                 <label for="from">To</label><br>
-                                <input type="date" name="sched_to[]" id="sched_to_id"  style="width: 300px ; height: 50px; border: black 1px solid; padding: 10px;" onchange="datevalidate()" required>   
+                                <input type="date" name="sched_to" id="sched_to_id" class="form-control" onchange="datevalidate()" required>   
                                 <div id="sched_to_error" class="text-danger" style="font-size: small;"></div>
  
                             </div>
@@ -230,7 +215,7 @@
                             </div>
                             <div>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border:none; background-color: inherit; font-size: 23px;">Close</button>
-                                <input type="submit" value="Submit" id="submit-button"  style="outline:none;">
+                            <button class="btn btn-primary" name="submit" type="submit">Submit</button>
                             </div>
                         </div>
                             
@@ -429,8 +414,52 @@
                 </div>
         </div> -->
 
+        <script>
+      $(document).ready(function() {
+    $('#departmentDropdown').change(function() {
+        var selectedValue = $(this).val();
+        
+        // Send selectedValue to a PHP script via AJAX
+        $.ajax({
+            type: 'POST',
+            url: 'update_selected_department.php', // Create this PHP file to handle the AJAX request
+            data: { department: selectedValue },
+            success: function(response) {
+                $('#selectedDepartment').text(response); // Update the value in the <p> tag
+
+                // Fetch employee options based on the selected department
+                $.ajax({
+                    type: 'POST',
+                    url: 'sched_employee_options.php', // Create this PHP file to generate employee options
+                    data: { department: response },
+                    success: function(employeeOptions) {
+                        // Update the employee dropdown with new options
+                        $('#employeeDropdown').html(employeeOptions);
+                        console.log('Employee options updated successfully.');
+
+                        // Collect selected employee IDs
+                        var selectedEmployeeIDs = $('#multi_option').val();
+                        console.log('Selected Employee IDs:', selectedEmployeeIDs);
+
+                        // Now submit the form with the selected employee IDs
+                      
+                    }
+                });
+            }
+        });
+    });
+});
+    </script>
+
+        <script type="text/javascript" src="js/virtual-select.min.js"></script>
+<script type="text/javascript">
+	VirtualSelect.init({ 
+	  ele: '#multi_option' 
+	});
+</script>
         
 <!---------Script sa pagdisable ng button kapag nagcheck ng checkbox at hindi naglagay sa time input-------->
+
 <script>
   // Kunin ang mga checkbox at mga oras gamit ang pangalan ng klase
   var checkboxes = document.getElementsByClassName('checkbox');

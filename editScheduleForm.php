@@ -103,6 +103,7 @@
 
 <link rel="stylesheet" href="css/try.css">
     <link rel="stylesheet" href="css/styles.css"> 
+    <link rel="stylesheet" type="text/css" href="css/virtual-select.min.css">
     <title>HRIS | Employee List Form</title>
 </head>
 <body>
@@ -145,6 +146,10 @@
         height: 50px !important;
         width: 97.5% !important;
     }
+    #multi_option{
+	        max-width: 100%;
+	        width: 100%;
+        }
     </style>
 
 
@@ -152,7 +157,7 @@
     <button id="schedFormBtn" class="schedFormBtn"  type="button" data-bs-toggle="modal" data-bs-target="#schedModal" > Assign to Employee</button>
     
    
-    <form action="Data Controller/Schedules/empSchedule.php" method="POST">
+    
         <div class="modal fade" id="schedModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="title" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -160,54 +165,37 @@
                         <h1 class="modal-title fs-5" id="title">Change Schedule</h1>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-3">
+                    <div class="mb-3">
+                        <label for="department">Select Department</label><br>
                         <?php
-                                $server = "localhost";
-                                $user = "root";
-                                $pass ="";
-                                $database = "hris_db";
+                            include 'config.php';
 
-                                $conn = mysqli_connect($server, $user, $pass, $database);
-                                $sql = "SELECT col_deptname FROM dept_tb";
-                                $result = mysqli_query($conn, $sql);
+                            $sqls = "SELECT * FROM dept_tb";
 
-                                $options = "";
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    $options .= "<option value='".$row['col_deptname']."'>" .$row['col_deptname'].  "</option>";
-                                }
-                                ?>
+                            $results = mysqli_query($conn, $sqls);
 
-                                
-                                <label for="depatment[]">Select Department</label><br>
-                                <select name="department[]" id="" style="height: 50px; width: 630px; padding: 10px">
-                                <option value disabled selected>Select Department</option>
-                                    <?php echo $options; ?>
-                                </select>
+                            $option = "";
+                            while ($rows = mysqli_fetch_assoc($results)) {
+                                $option .= "<option value='" . $rows['col_ID'] . "'>" . $rows['col_deptname'] . "</option> ";
+                            }
+                        ?>
+                        <select name="department" id="departmentDropdown" class="form-select">
+                            <option value selected>Select Department</option>
+                            <option value='All'>All</option>
+                            <?php echo $option ?>
+                        </select>
+                    </div>
+                     <!-- <p>Selected Department ID: <span id="selectedDepartment"><?php echo @$selectedDepartment ?></span></p> -->
+                     <form action="Data Controller/Schedules/empSchedule.php" method="POST">
+                    <div class="mb-3">
+                        <label for="emp">Select Employee</label><br>
+                          <div id="employeeDropdown">
+                            <select class="approver-dd dd-hide" name="empid[]" id="multi_option" multiple placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;">
+                            </select>
                         </div>
-                        <div class="mb-3">
-                        <?php
-                                $server = "localhost";
-                                $user = "root";
-                                $pass ="";
-                                $database = "hris_db";
+                    </div>
 
-                                $conn = mysqli_connect($server, $user, $pass, $database);
-                                $sql = "SELECT empid, fname, lname FROM employee_tb";
-                                $result = mysqli_query($conn, $sql);
-
-                                $options = "";
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    $options .= "<option value='".$row['empid'] . "'>". $row['empid'] . " ". " - ". " " .$row['fname']. " ".$row['lname']. "</option>";
-                                }
-                                ?>
-
-                                <label for="emp">Select Employee</label><br>
-                                <select name="empid[]" id="employee-dd" multiple multiselect-search="true" multiselect-select-all="true" multiselect-max-items="2" style="width: 98%; padding: 10px; font-size: 16px; background-color: white; border: 1px solid gray; height: 50px">
-
-    <?php echo $options; ?>
-</select>
-
-                        </div> 
+                        
                         <div class="mb-3">
                         <?php
                                     $server = "localhost";
@@ -216,7 +204,7 @@
                                     $database = "hris_db";
 
                                     $conn = mysqli_connect($server, $user, $pass, $database);
-                                    $sql = "SELECT schedule_name FROM schedule_tb";
+                                    $sql = "SELECT * FROM schedule_tb";
                                     $result = mysqli_query($conn, $sql);
 
                                     $options = "";
@@ -226,23 +214,23 @@
                                     ?>
 
                                 <label for="schedule_name">Schedule Type</label><br>
-                                <select name="schedule_name[]" id="" style="height: 50px; width: 630px; padding: 10px">
+                                <select name="schedule_name" id="" class="form-select">
 
                                 
                                     <?php echo $options; ?>
                                 </select>
                         </div>
-                        <div class="" style="display: flex; ">
-                            <div>
+                        <div class=" d-flex flex-row  w-100">
+                            <div class="w-50">
                                 <label for="from">From</label><br>
-                               <input type="date" name="sched_from[]" id="sched_from_id" style="width: 300px; height: 50px; margin-right: 30px; border: black 1px solid; padding: 10px;" onchange="datevalidate()" min="<?php echo date('Y-m-d'); ?>" required>
+                                <input type="date" name="sched_from" class="form-control " id="sched_from_id"   onchange="datevalidate()" min="<?php echo date('Y-m-d'); ?>" required>
                                 <div id="sched_from_error" class="text-danger" style="font-size: small;"></div>
 
 
                             </div>
-                            <div>
+                            <div class="w-50">
                                 <label for="from">To</label><br>
-                                <input type="date" name="sched_to[]" id="sched_to_id"  style="width: 300px ; height: 50px; border: black 1px solid; padding: 10px;" onchange="datevalidate()" required>   
+                                <input type="date" name="sched_to" id="sched_to_id" class="form-control" onchange="datevalidate()" required>   
                                 <div id="sched_to_error" class="text-danger" style="font-size: small;"></div>
  
                             </div>
@@ -254,7 +242,8 @@
                             </div>
                             <div>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border:none; background-color: inherit; font-size: 23px;">Close</button>
-                                <input type="submit" value="Submit" id="submit-button"  style="outline:none;">
+                            <button class="btn btn-primary" name="submit" type="submit">Submit</button>
+                            </div>
                             </div>
                         </div>
                             
@@ -417,6 +406,52 @@
             </div>
        </div>
        </form>   
+
+       
+       <script>
+      $(document).ready(function() {
+    $('#departmentDropdown').change(function() {
+        var selectedValue = $(this).val();
+        
+        // Send selectedValue to a PHP script via AJAX
+        $.ajax({
+            type: 'POST',
+            url: 'update_selected_department.php', // Create this PHP file to handle the AJAX request
+            data: { department: selectedValue },
+            success: function(response) {
+                $('#selectedDepartment').text(response); // Update the value in the <p> tag
+
+                // Fetch employee options based on the selected department
+                $.ajax({
+                    type: 'POST',
+                    url: 'sched_employee_options.php', // Create this PHP file to generate employee options
+                    data: { department: response },
+                    success: function(employeeOptions) {
+                        // Update the employee dropdown with new options
+                        $('#employeeDropdown').html(employeeOptions);
+                        console.log('Employee options updated successfully.');
+
+                        // Collect selected employee IDs
+                        var selectedEmployeeIDs = $('#multi_option').val();
+                        console.log('Selected Employee IDs:', selectedEmployeeIDs);
+
+                        // Now submit the form with the selected employee IDs
+                      
+                    }
+                });
+            }
+        });
+    });
+});
+    </script>
+
+
+        <script type="text/javascript" src="js/virtual-select.min.js"></script>
+<script type="text/javascript">
+	VirtualSelect.init({ 
+	  ele: '#multi_option' 
+	});
+</script>
 
        <script>
 function datevalidate() {

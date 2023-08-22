@@ -1,6 +1,19 @@
 <?php
     session_start(); 
-
+    // $cmpny_empid = $row['empid'];
+    // $sql = "SELECT employee_tb.company_code, 
+    //         employee_tb.empid, 
+    //         assigned_company_code_tb.company_code_id, 
+    //         assigned_company_code_tb.empid, 
+    //         company_code_tb.id, 
+    //         company_code_tb.company_code AS company_code_name 
+    //         FROM assigned_company_code_tb 
+    //         INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+    //         INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+    //         WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+            
+    //         $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+    //         $cmpny_row = mysqli_fetch_assoc($cmpny_result);     
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,7 +141,7 @@
       <form action="Data Controller/DTR Employee/dtr_conn.php" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
 
-            <input type="text" name="dtr_input_name" id="dtr_input_id">
+            <input type="hidden" name="dtr_input_name" id="dtr_input_id">
             <div class="mb-3" style="display: none;">
                 <label for="Select_emp" class="form-label">Employee Name</label>
                   <?php
@@ -154,11 +167,12 @@
 
               <div class="mb-3">
                   <label for="disabledSelect" class="form-label">Type</label>
-                  <select name="select_type" id="disabledSelect" class="form-select" required>
+                  <input type="text" name="select_type" id="type_select" class="form-control" required>
+                  <!-- <select name="select_type" id="disabledSelect" class="form-select" required>
                       <option value="" disabled="" selected="">Type</option>
                       <option value="IN">IN</option>
                       <option value="OUT">OUT</option>
-                  </select>
+                  </select> -->
               </div>
 
               <div class="mb-3">
@@ -182,6 +196,62 @@
 </div>
 <!-------------------------------------------------End ng modal----------------------------------------------------------------->
 
+<!----------------------------------------------View Modal Start Here-------------------------------------------------------------->
+
+<div class="modal fade" id="view_file_dtr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Your DTR correction application</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+        <div class="modal-body">
+
+            <input type="hidden" name="dtr_view_name" id="dtr_view_id">
+            <div class="mb-3" style="display: none;">
+                <label for="Select_emp" class="form-label">Employee Name</label>
+                  <?php
+                      include 'config.php'; 
+                      ?>
+                      <input type="text" class="form-control" name="view_name_emp" value="<?php echo $_SESSION['empid'];?>" id="view_empid" readonly>
+              </div>
+
+              <div class="mb-3">
+                  <label for="exampleInputDate" class="form-label">Date</label>
+                  <input name="view_date_dtr" type="text" class="form-control" id="view_date_input" readonly>
+              </div>
+
+              <div class="mb-3">
+                  <label for="exampleInputTime" class="form-label">Time</label>
+                  <input name="view_time_dtr" type="text" class="form-control" id="view_time_input" readonly>
+              </div>
+
+              <div class="mb-3">
+                  <label for="disabledSelect" class="form-label">Type</label>
+                  <input type="text" name="view_select_type" id="view_type_select" class="form-control" readonly>
+              </div>
+
+              <div class="mb-3">
+                  <label for="disabledSelect" class="form-label">Status</label>
+                  <input type="text" class="form-control" name="view_status_name" id="view_status_id" readonly>
+              </div>
+
+              <div class="mb-3">
+                  <label for="floatingTextarea2" class="form-label">Reason</label>
+                  <textarea name="view_text_reason" class="form-control" placeholder="Leave a reason here" id="view_floatingTextarea2" style="height: 100px" readonly></textarea>
+              </div>
+              
+              <!-- <div class="mb-3">
+                  <label for="floatingTextarea2" class="form-label">File attachment</label>
+                   <input type="text" name="view_file_upload" class="form-control" id="view_inputGroupFile02">
+              </div> -->
+            </div> <!--Modal body div close tag-->
+    </div>
+  </div>
+</div>
+<!-------------------------------------------------View End ng modal----------------------------------------------------------------->
+
 <!------------------------------------------------Cancel MODAL------------------------------------------------------------------>
 <div class="modal fade" id="cancelmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -192,11 +262,9 @@
       </div>
       <form action="actions/DTR Employee/dtr_cancel.php" method="post">
       <div class="modal-body">
-           <!-- <label for="floatingTextarea" class="form-label">Reasons:</label>
-           <textarea class="form-control" name="name_cancel_reason" placeholder="Type your reason..." id="floatingTextarea" required></textarea> -->
            <h4>You want to cancel your DTR Correction?</h4>
-           <input type="hidden" name="dtr_ID" id="id_DTR">
-           <input type="hidden" name="dtr_empid" id="empid_dtr">
+           <input type="text" name="dtr_ID" id="id_DTR">
+           <input type="text" name="dtr_empid" id="empid_dtr">
       </div>
       <div class="modal-footer">
         <button type="submit" name="cancel_data" class="btn btn-primary">Yes</button>
@@ -209,27 +277,6 @@
 </div>
 <!---------------------------------------------------END OF Cancel MODAL--------------------------------------------------------->
 
-<!---------------------------------------View Modal Start Here -------------------------------------->
-<div class="modal fade" id="view_dtr_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Reason</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-
-        <div class="mb-3">
-            <label for="text_area" class="form-label"></label>
-            <textarea class="form-control" name="text_reason" id="view_reason1" readonly></textarea>
-         </div>
-      </div><!--Modal Body Close Tag-->
-
-    </div>
-  </div>
-</div>
-<!---------------------------------------View Modal End Here --------------------------------------->
 
 <!---------------------------------------Download Modal Start Here -------------------------------------->
 <div class="modal fade" id="download_dtr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -316,14 +363,14 @@
                                       <thead>
                                             <tr>
                                                 <th style="display: none;">ID</th>
-                                                <th>Employee ID</th>
+                                                <th style="display: none;">Employee ID</th>
                                                 <th style="display: none;">Name</th>
                                                 <th style="display: none;">Status</th>
                                                 <th>Date</th>
                                                 <th>Time in</th>
                                                 <th>Time out</th>
-                                                <th>Late</th>
                                                 <th>Remarks</th>
+                                                <th>Correction</th>
                                                 <th>Action</th> 
                                             </tr>
                                         </thead>
@@ -355,31 +402,31 @@
                                                     AND (
                                                         (attendances.time_in = '00:00:00' AND attendances.time_out <> '00:00:00')
                                                         OR (attendances.time_in <> '00:00:00' AND attendances.time_out = '00:00:00')
-                                                        OR attendances.late <> '00:00:00'
                                                     )";
 
-                                                    $result = mysqli_query($conn, $query);
-                                                    while ($row = mysqli_fetch_assoc($result)) {
-                                                      $cmpny_empid = $row['empid'];
+                                                  $result = mysqli_query($conn, $query);
+                                                  while ($row = mysqli_fetch_assoc($result)) {              
+                                                    $dtrStatus = '';
 
-                                                      $sql = "SELECT employee_tb.company_code, 
-                                                              employee_tb.empid, 
-                                                              assigned_company_code_tb.company_code_id, 
-                                                              assigned_company_code_tb.empid, 
-                                                              company_code_tb.id, 
-                                                              company_code_tb.company_code AS company_code_name 
-                                                              FROM assigned_company_code_tb 
-                                                              INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
-                                                              INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
-                                                              WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
-                                                              
-                                                              $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
-                                                              $cmpny_row = mysqli_fetch_assoc($cmpny_result);
-                                      
-                                                ?>
+                                                    $dtrQuery = "SELECT * FROM emp_dtr_tb WHERE `empid` = '$employeeid' AND `date` = '".$row['date']."'";
+                                                    $DtrRun = mysqli_query($conn, $dtrQuery);
+                                            
+                                                    if(mysqli_num_rows($DtrRun) > 0){
+                                                        $dtrRow = mysqli_fetch_assoc($DtrRun);
+                                                        $dtrID = $dtrRow['id'];
+                                                        $dtrEmpid = $dtrRow['empid'];
+                                                        $dtrDate = $dtrRow['date'];
+                                                        $dtrTime = $dtrRow['time'];
+                                                        $dtrType = $dtrRow['type'];
+                                                        $dtrReason = $dtrRow['reason'];
+                                                        $dtrFile = $dtrRow['file_attach'];
+                                                        $dtrStatus = $dtrRow['status'];
+                                                    }  
+
+                                                  ?>
                                                 <tr>
                                                     <td style="display: none;"><?php echo $row['id']?></td>
-                                                    <td><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
+                                                    <td style="display: none;"><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
                                                     $empid = $row['empid'];
                                                     if (!empty($cmpny_code)) {
                                                         echo $cmpny_code . " - " . $empid;
@@ -391,14 +438,20 @@
                                                     <td><?php echo $row['date']?></td>
                                                     <td <?php if ($row['time_in'] == '00:00:00') {echo 'style="color:red;"';}?>><?php echo $row['time_in']?></td>
                                                     <td <?php if ($row['time_out'] == '00:00:00') {echo 'style="color:red;"';}?>><?php echo $row['time_out']?></td>
-                                                    <td><?php echo $row['late']?></td>
-                                                    <td <?php if($row['time_in'] == '00:00:00' || $row['time_out'] == '00:00:00') {echo ' style="color:red;"';} ?>>
+                                                    <td <?php if($row['time_in'] == '00:00:00' || $row['time_out'] == '00:00:00' || $row['late'] != '00:00:00') {echo ' style="color:red;"';} ?>>
                                                         <?php if($row['time_in'] == '00:00:00') {echo 'NO TIME IN ';} ?>
                                                         <?php if($row['time_out'] == '00:00:00') {echo 'NO TIME OUT';} ?>
                                                     </td>
+                                                    <td>
+                                                      <?php if (!empty($dtrStatus)): ?>
+                                                          <button class="btn btn-outline-success viewfiledtr" data-bs-toggle="modal" data-bs-target="#view_file_dtr" title="View Details">View DTR</button>
+                                                      <?php else: ?>
+                                                          <button class="btn btn-outline-primary viewdtr" data-bs-toggle="modal" data-bs-target="#file_dtr_btn" title="Edit">File DTR</button>
+                                                      <?php endif; ?>
+                                                    </td>
 
                                                     <td>
-                                                      <?php if ($row['status'] === 'Approved' || $row['status'] === 'Rejected' || $row['status'] === 'Cancelled'): ?>
+                                                    <?php if ($dtrStatus === 'Approved' || $dtrStatus === 'Rejected' || $dtrStatus === 'Cancelled' || empty($dtrStatus)): ?>
                                                       <button class="btn btn-outline-danger cancelbtn" data-bs-toggle="modal" data-bs-target="#cancelmodal" type="button" class="btn btn-outline-danger" style="display: none;" disabled>Cancel</button>
                                                       <?php else: ?>
                                                       <button class="btn btn-outline-danger cancelbtn" data-bs-toggle="modal" data-bs-target="#cancelmodal" type="button" class="btn btn-outline-danger">Cancel</button>
@@ -418,24 +471,75 @@
         </div>
     </div>
 
-<!-------------------------------Script para matest kung naseselect ba ang I.D---------------------------------------->        
+<!-------------------------------Script bawat pagclick ng file dtr---------------------------------------->        
 <script> 
-      $(document).ready(function(){
-          $('.viewdtr').on('click', function(){
-            $().modal('show');
-                $tr = $(this).closest('tr');
+    $(document).ready(function(){
+        $('.viewdtr').on('click', function(){
+            $tr = $(this).closest('tr');
+            var data = $tr.children("td").map(function () {
+                return $(this).text();
+            }).get();
+            console.log(data);
+            $('#dtr_input_id').val(data[0]);
+            $('#date_input').val(data[4]);
 
-              var data = $tr.children("td").map(function () {
-              return $(this).text();
-              }).get();
-              console.log(data);
-              $('#dtr_input_id').val(data[0]);
-              $('#date_input').val(data[4]);
-              $('#time_input').val(data[5]);          
-          });
+            //auto fetch ng value sa time input kung time in ba ang need ng correction or time out
+            if (data[5] === '00:00:00' && data[6] !== '00:00:00') {
+                $('#time_input').val(data[5]);
+            } else if (data[5] !== '00:00:00' && data[6] === '00:00:00') {
+                $('#time_input').val(data[6]);
+            } else if(data[7] !== '00:00:00' && data[5] !== '00:00:00' && data[6] !== '00:00:00') {
+                $('#time_input').val(data[5]);
+            }
+            
+            //auto fetch ng value sa type dtr kung IN or OUT
+            if (data[5] === '00:00:00' && data[6] !== '00:00:00') {
+                $('#type_select').val('IN');
+            } else if (data[5] !== '00:00:00' && data[6] === '00:00:00') {
+                $('#type_select').val('OUT');
+            } else if(data[7] !== '00:00:00' && data[5] !== '00:00:00' && data[6] !== '00:00:00') {
+                $('#type_select').val('IN');
+            }
         });
+    });
 </script>
-<!-----------------------------End Script para matest kung naseselect ba ang I.D------------------------------------->    
+<!-----------------------------Script bawat pagclick ng file dtr------------------------------------->    
+
+<!------------------------------------Script para sa whole view data ng request sa modal------------------------------------------------->
+<script>
+    $(document).ready(function() {
+      $('.viewfiledtr').on('click', function() {
+        $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function() {
+          return $(this).text();
+        }).get();
+
+        // Fetch additional data from emp_dtr_tb table
+        var empid = data[1];
+        var date = data[4];
+
+        $.ajax({
+          url: 'fetch_dtr_data.php',
+          method: 'POST',
+          data: { empid: empid, date: date },
+          success: function(response) {
+            var dtrData = JSON.parse(response);
+
+            $('#dtr_view_id').val(dtrData.id);
+            $('#view_empid').val(dtrData.empid);
+            $('#view_date_input').val(dtrData.date);
+            $('#view_time_input').val(dtrData.time);
+            $('#view_type_select').val(dtrData.type);
+            $('#view_status_id').val(dtrData.status);
+            $('#view_floatingTextarea2').val(dtrData.reason);
+            $('#view_inputGroupFile02').val(dtrData.file_attach);
+          }
+        });
+      });
+    });
+</script>
+<!---------------------------------End ng Script para sa whole view data ng request sa modal------------------------------------------>
 
 <!-----------------------------Script sa pagremove ng message sa link------------------------------------>
 <script>
@@ -451,42 +555,34 @@
 
 <!----------------------------------FOR VIEW TRANSFER MODAL END------------------------------------------------>
 <script>
-            $(document).ready(function(){
-                                    $('.cancelbtn').on('click', function(){
-                                        $('#cancelmodal').modal('show');
-                                        $tr = $(this).closest('tr');
+    $(document).ready(function() {
+      $('.cancelbtn').on('click', function() {
+        $tr = $(this).closest('tr');
 
-                                        var data = $tr.children("td").map(function () {
-                                            return $(this).text();
-                                        }).get();
+        var data = $tr.children("td").map(function() {
+          return $(this).text();
+        }).get();
 
-                                        console.log(data);
-                                        //id_colId
-                                        $('#id_DTR').val(data[0]);
-                                        $('#empid_dtr').val(data[1]);
-                                    });
-                                });
+        // Fetch additional data from emp_dtr_tb table
+        var empid = data[1];
+        var date = data[4];
+
+        $.ajax({
+          url: 'fetch_dtr_data.php',
+          method: 'POST',
+          data: { empid: empid, date: date },
+          success: function(response) {
+            var dtrData = JSON.parse(response);
+
+            $('#id_DTR').val(dtrData.id);
+            $('#empid_dtr').val(dtrData.empid);
+          }
+        });
+      });
+    });
 </script>
 <!----------------------------------FOR VIEW TRANSFER MODAL END------------------------------------------------>
 
-
-
-<!------------------------------------Script para lumabas ang modal------------------------------------------------->
-<script>
-     $(document).ready(function(){
-               $('.viewbtn').on('click', function(){
-                 $('#view_dtr_modal').modal('show');
-                      $tr = $(this).closest('tr');
-
-                    var data = $tr.children("td").map(function () {
-                    return $(this).text();
-                    }).get();
-                   console.log(data);
-                   $('#view_reason1').val(data[6]);
-               });
-             });
-</script>
-<!---------------------------------End ng Script para lumabas ang modal------------------------------------------>
 
 
 <!---------------------------- Script para lumabas ang warning message na PDF File lang inaallow------------------------------------------>

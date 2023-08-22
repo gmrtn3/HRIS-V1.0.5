@@ -188,7 +188,7 @@ session_start();
                   </div>
                   <div class="modal-body">
                       <div class="form-floating">
-                          <input type="text" id="approve_ut_id" name="approve_name_ut">
+                          <input type="hidden" id="approve_ut_id" name="approve_name_ut">
                           <textarea class="form-control" name="ut_approve_marks" placeholder="Approval message..." id="floatingTextarea"></textarea>
                           <label for="floatingTextarea">Remarks:</label>
                       </div>
@@ -214,7 +214,7 @@ session_start();
                   </div>
                   <div class="modal-body">
                       <div class="form-floating">
-                          <input type="text" id="reject_ut_id" name="reject_name_ut">
+                          <input type="hidden" id="reject_ut_id" name="reject_name_ut">
                           <textarea class="form-control" name="ut_reject_remarks" placeholder="Reject message..." id="floatingTextarea" required></textarea>
                           <label for="floatingTextarea">Remarks:</label>
                       </div>

@@ -4,7 +4,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                     *
                                     FROM 
                                     `attendances` 
-                                    WHERE `empid` =  '$emp_ID' AND `date` = '$valid_holiday'");
+                                    WHERE `empid` =  '$EmployeeID' AND `date` = '$valid_holiday'");
 
                                     $row_emp_holiday_att = mysqli_fetch_assoc($result_valid_holiday);
 
@@ -28,7 +28,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                             if($row_Sched['mon_timein'] == NULL || $row_Sched['mon_timein'] == '')
                                             {
                                                                                               
-                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
+                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
 
                                             
                                                 if(mysqli_num_rows($result_restDay_worked) > 0)
@@ -47,7 +47,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
 
                                                 if(mysqli_num_rows($result_holiday_OT_restday) > 0) {
                                                     $row_holiday_OT_restday = mysqli_fetch_assoc($result_holiday_OT_restday);
@@ -77,7 +77,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
     
                                                 if(mysqli_num_rows($result_holiday_OT) > 0) {
                                                     $row_holiday_OT = mysqli_fetch_assoc($result_holiday_OT);
@@ -105,7 +105,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                             if($row_Sched['tues_timein'] == NULL || $row_Sched['tues_timein'] == '')
                                             {
                                               
-                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
+                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
 
                                             
                                                 if(mysqli_num_rows($result_restDay_worked) > 0)
@@ -124,7 +124,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
 
                                                 if(mysqli_num_rows($result_holiday_OT_restday) > 0) {
                                                     $row_holiday_OT_restday = mysqli_fetch_assoc($result_holiday_OT_restday);
@@ -149,7 +149,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
     
                                                 if(mysqli_num_rows($result_holiday_OT) > 0) {
                                                     $row_holiday_OT = mysqli_fetch_assoc($result_holiday_OT);
@@ -177,7 +177,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                             if($row_Sched['wed_timein'] == NULL || $row_Sched['wed_timein'] == '')
                                             {
                                                 //if restday  at pumasok siya
-                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
+                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
 
                                             
                                                 if(mysqli_num_rows($result_restDay_worked) > 0)
@@ -196,7 +196,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
 
                                                 if(mysqli_num_rows($result_holiday_OT_restday) > 0) {
                                                     $row_holiday_OT_restday = mysqli_fetch_assoc($result_holiday_OT_restday);
@@ -223,7 +223,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                    *
                                                FROM 
                                                    `overtime_tb` 
-                                               WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                               WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
    
                                                if(mysqli_num_rows($result_holiday_OT) > 0) {
                                                    $row_holiday_OT = mysqli_fetch_assoc($result_holiday_OT);
@@ -254,7 +254,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                             if($row_Sched['thurs_timeout'] === NULL || $row_Sched['thurs_timeout'] === '')
                                             {                                                            
                                                 //IF restday at pumasok
-                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
+                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
 
                                             
                                                 if(mysqli_num_rows($result_restDay_worked) > 0)
@@ -273,7 +273,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
 
                                                 if(mysqli_num_rows($result_holiday_OT_restday) > 0) {
                                                     $row_holiday_OT_restday = mysqli_fetch_assoc($result_holiday_OT_restday);
@@ -299,7 +299,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                      *
                                                  FROM 
                                                      `overtime_tb` 
-                                                 WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                 WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
      
                                                  if(mysqli_num_rows($result_holiday_OT) > 0) {
                                                      $row_holiday_OT = mysqli_fetch_assoc($result_holiday_OT);
@@ -327,7 +327,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
 
                                             if($row_Sched['fri_timein'] == NULL || $row_Sched['fri_timein'] == '')
                                             {
-                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
+                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
 
                                             
                                                 if(mysqli_num_rows($result_restDay_worked) > 0)
@@ -346,7 +346,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
 
                                                 if(mysqli_num_rows($result_holiday_OT_restday) > 0) {
                                                     $row_holiday_OT_restday = mysqli_fetch_assoc($result_holiday_OT_restday);
@@ -372,7 +372,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
     
                                                 if(mysqli_num_rows($result_holiday_OT) > 0) {
                                                     $row_holiday_OT = mysqli_fetch_assoc($result_holiday_OT);
@@ -402,7 +402,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
 
                                             if($row_Sched['sat_timein'] == NULL || $row_Sched['sat_timein'] == '')
                                             {
-                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
+                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
 
                                             
                                                 if(mysqli_num_rows($result_restDay_worked) > 0)
@@ -421,7 +421,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
 
                                                 if(mysqli_num_rows($result_holiday_OT_restday) > 0) {
                                                     $row_holiday_OT_restday = mysqli_fetch_assoc($result_holiday_OT_restday);
@@ -447,7 +447,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                      *
                                                  FROM 
                                                      `overtime_tb` 
-                                                 WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                 WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
      
                                                  if(mysqli_num_rows($result_holiday_OT) > 0) {
                                                      $row_holiday_OT = mysqli_fetch_assoc($result_holiday_OT);
@@ -476,7 +476,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                             if($row_Sched['sun_timein'] == NULL || $row_Sched['sun_timein'] == '')
                                             {
 
-                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$emp_ID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
+                                                $result_restDay_worked = mysqli_query($conn, " SELECT * FROM `attendances` WHERE `empid` = '$EmployeeID' AND `date` = '$valid_holiday' AND `status` = 'Present'");
 
                                             
                                                 if(mysqli_num_rows($result_restDay_worked) > 0)
@@ -495,7 +495,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                     *
                                                 FROM 
                                                     `overtime_tb` 
-                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
 
                                                 if(mysqli_num_rows($result_holiday_OT_restday) > 0) {
                                                     $row_holiday_OT_restday = mysqli_fetch_assoc($result_holiday_OT_restday);
@@ -521,7 +521,7 @@ $result_valid_holiday = mysqli_query($conn, " SELECT
                                                         *
                                                     FROM 
                                                         `overtime_tb` 
-                                                    WHERE work_schedule =  '$valid_holiday' AND `empid` = '$emp_ID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                                                    WHERE work_schedule =  '$valid_holiday' AND `empid` = '$EmployeeID'  AND `work_schedule` BETWEEN '$str_date' AND  '$end_date' AND `status` = 'Approved'");
         
                                                     if(mysqli_num_rows($result_holiday_OT) > 0) {
                                                         $row_holiday_OT = mysqli_fetch_assoc($result_holiday_OT);

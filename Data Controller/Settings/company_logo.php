@@ -15,11 +15,12 @@ session_start();
     // }else{
     //     $salary_settings = 'Days Worked';
     // }
-    $salary_settings = $conn->real_escape_string($_POST["btnradio"]);
+    // $salary_settings = $conn->real_escape_string($_POST["btnradio"]);
     $CompanyPhoto = $_FILES['photo']['tmp_name'] ? addslashes(file_get_contents($_FILES['photo']['tmp_name'])) : '';
     $CompanyName = $_POST['company_name'];
     $CompanyAddress = $_POST['company_address'];
     $CompanyZipcode = $_POST['company_zipcode'];
+    $salary_settings = $_POST['col_salary_settings'];
    
     @$piece_rate_toggle = $_POST['piece_rate_toggle'];
 
@@ -43,7 +44,7 @@ session_start();
             }
         } else {
             // User did not upload a photo, update other columns only
-            $update_query = "UPDATE settings_company_tb SET `cmpny_name` = '$CompanyName', `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
+            $update_query = "UPDATE settings_company_tb SET `cmpny_name` = '$CompanyName',  `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' ,  `col_salary_settings` = '$salary_settings',  `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
             $update_run = mysqli_query($conn, $update_query);
 
             if($update_run){

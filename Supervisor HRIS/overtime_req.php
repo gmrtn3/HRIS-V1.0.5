@@ -212,75 +212,6 @@ session_start();
   </div>
 <!-----------------Modal kapag naclick ang Approve all button-------------------------->
 
-<!------------------------------------------------View ng whole data Modal ---------------------------------------------------->
-<!-- <div class="modal fade" id="view_ot_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Employee Details</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-                <div class="modal-body">
-                    <div class="row" >
-                     <div class="col-6">
-                            <label for="" class="form-label">Employee ID</label>
-                            <input type="text" name="empid_view" class="form-control" id="view_empid" readonly>
-                        </div>
-                        <div class="col-6">
-                            <label for="company" class="form-label">OT Date</label>
-                            <input type="date" name="view_date_choose" class="form-control" id="view_date_id" readonly>
-                        </div>
-                    </div>
-                    
-                    <div class="row mt-2">
-                       <div class="col-6">
-                            <label for="start" class="form-label">Time In</label>
-                            <input type="time" name="view_time_start" class="form-control" id="view_start_time_id" readonly>
-                        </div>
-                        <div class="col-6">
-                           <label for="end" class="form-label">Time Out</label>
-                           <input type="time" name="view_time_end" class="form-control" id="view_end_time_id" readonly>
-                        </div>
-                    </div>
-
-                    <div class="form-group mt-2">
-                        <label for="ot_hours" class="form-label">Overtime Hours</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="view_total_overtime" id="view_ot_id" readonly>
-                            <span class="input-group-text">hrs</span>
-                       </div>
-                    </div>
-
-                    <div class="mb-3">
-                            <label for="text_area" class="form-label">Reason</label>
-                            <textarea class="form-control" name="view_reason" id="view_reason_id" readonly></textarea>
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <input type="text" name="view_file_upload" class="form-control" id="view_file_id" readonly>
-                        <label class="input-group-text"  for="inputGroupFile02">Upload</label>
-                    </div>
-
-                  <div class="row" >
-                        <div class="col-6">
-                            <label for="" class="form-label">Date File</label>
-                            <input type="text" name="datefile_viewing" class="form-control" id="view_datefile" readonly>
-                        </div>
-                        <div class="col-6">
-                            <label for="" class="form-label">Status</label>
-                            <input type="text" name="view_status" class="form-control" id="view_status_id" readonly>
-                        </div>
-                    </div>
-
-                </div>
-        </div>
-    </div>
-</div> -->
-<!------------------------------------------------End ng View Modal ---------------------------------------------------->
-
-
-
-
 
 <!------------------------------------Main Panel of data table------------------------------------------------->
     <div class="main-panel mt-5">
@@ -609,31 +540,6 @@ session_start();
 </script>
 <!---------------------------------End ng Script para lumabas ang modal------------------------------------------>
 
-<!------------------------------------Script para sa whole view data ng modal------------------------------------------------->
-<!-- <script>
-     $(document).ready(function(){
-               $('.viewbtn').on('click', function(){
-                 $('#view_ot_modal').modal('show');
-                      $tr = $(this).closest('tr');
-
-                    var data = $tr.children("td").map(function () {
-                    return $(this).text();
-                    }).get();
-                   console.log(data);
-                   $('#view_empid').val(data[1]);
-                   $('#view_date_id').val(data[2]);
-                   $('#view_start_time_id').val(data[3]);
-                   $('#view_end_time_id').val(data[4]);
-                   $('#view_ot_id').val(data[5]);
-                   $('#view_reason_id').val(data[6]);
-                   $('#view_file_id').val(data[7]);
-                   var status = $tr.find('td:eq(8)').text();
-                   $('#view_status_id').val(status);
-                   $('#view_datefile').val(data[9]);    
-               });
-             });
-             </script> -->
-<!---------------------------------End ng Script whole view data ng modal------------------------------------------>
 
 <!---------------------------- Script para lumabas ang warning message na PDF File lang inaallow------------------------------------------>
 <script>

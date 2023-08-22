@@ -11,7 +11,7 @@
 <style>
     .card{
       box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.17);
-      width: 1500px;
+      width: 100%;
       height: 780px;
       padding: 20px;
       top: 75px;

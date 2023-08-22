@@ -10,10 +10,7 @@ if(!isset($_SESSION['username'])){
         session_destroy();
         header("Location: logout.php");
         exit();
-    }else {
-      include 'config.php';
-      include 'user-image.php';
-  }
+    }
 }
 
 
@@ -157,6 +154,58 @@ if(!isset($_SESSION['username'])){
   </div>
 <!----------------Modal kapag clinick ang reject button----------------------->
 
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+<div class="modal fade" id="approve_all_OB" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Official Business/ob_approve_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="ob_approve_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="OB_approve_all" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+
+
+<!-----------------Modal kapag naclick ang reject all button-------------------------->
+<div class="modal fade" id="reject_all_OB" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Official Business/ob_reject_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="ob_reject_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="ob_reject_all" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang reject all button-------------------------->
+
+
 <!---------------------------------------Main Panel Start Here --------------------------------------->
     <div class="main-panel mt-5" style="margin-left: 15%; position: absolute; top:0;">
         <div class="content-wrapper mt-4" style="background-color: #f4f4f4">
@@ -244,15 +293,8 @@ if(!isset($_SESSION['username'])){
 
 <!----------------------------------Button for Approve and Reject All------------------------------------------>
                 <div class="btn-section">
-                <form action="actions/Official Business/change_status.php" method="POST">
-                <input type="hidden" name="Approve" value="approved">
-                <button type="submit" name="approve_all" class="approve-btn">Approve All</button>
-                </form>
-
-                <form action="actions/Official Business/change_status.php" method="POST">
-                <!-- <input type="hidden" name="status" value="rejected"> -->
-                <button type="submit" name="reject_all" class="reject-btn">Reject All</button>
-                </form>
+                <button type="submit" name="approve_all" class="approve-btn" data-bs-toggle="modal" data-bs-target="#approve_all_OB">Approve All</button>
+                <button type="submit" name="reject_all" class="reject-btn" data-bs-toggle="modal" data-bs-target="#reject_all_OB">Reject All</button>
                 </div>
 <!--------------------------------End Button for Approve and Reject All---------------------------------------->   
 

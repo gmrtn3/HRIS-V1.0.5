@@ -1,5 +1,6 @@
 <?php
     session_start();
+    error_reporting(0);
     if (!isset($_SESSION['username'])) {
         header("Location: login.php");
     } else {
@@ -27,12 +28,15 @@
       $approverEmpIds = $_POST['approver'];
       $empid_update= $_GET['empid'];
 
+      echo $approverEmpIds;
+
       $query = "DELETE FROM approver_tb WHERE empid= $empid_update";
       $query_run = mysqli_query($conn, $query);
 
       if($query_run)
       {
           foreach ($approverEmpIds as $approverEmpId) {
+            echo $approverEmpId;
               $stmt2 = $conn->prepare("INSERT INTO approver_tb (`empid`, `approver_empid`)
                                       VALUES (?, ?)");
           
@@ -46,7 +50,7 @@
           
               if ($stmt2->errno) {
                   echo "<script>alert('Error: " . $stmt2->error . "');</script>";
-                  echo "<script>window.location.href = '../../empListForm.php';</script>";
+                  // echo "<script>window.location.href = '../../empListForm.php';</script>";
                   exit;
               }
           
@@ -81,8 +85,8 @@
   
       $stmt->close();
     
-      echo "<script> alert('Data Inserted Successfully')</script>";
-      echo "<script>window.location.href = 'EmployeeList';</script>";
+      // echo "<script> alert('Data Inserted Successfully')</script>";
+      // echo "<script>window.location.href = 'EmployeeList';</script>";
       exit;
     }
 ?>

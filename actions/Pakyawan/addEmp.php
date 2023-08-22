@@ -4,17 +4,7 @@
         $add_pakyawan_empid = $_POST['add_pakyawan_empid'];
 
         include '../../config.php';
-
-        // Iterate over each selected employee ID
-        foreach($pakyawan_empid as $empID) {
-            $result_dept = mysqli_query($conn, "SELECT * FROM `empschedule_tb` WHERE `empid` = $empID");
-
-            if(mysqli_num_rows($result_dept) <= 0) {
-                header("Location: ../../pakyawan_payroll?error=You cannot add an employee that has no schedule");
-                exit(); // Terminate further execution if an employee has no schedule
-            }
-        }
-
+      
         // Construct the SQL query using prepared statements
         $sql = "INSERT INTO pakyawan_payroll_tb (cutoff_id, pakyawan_empid) VALUES (?, ?)";
         $stmt = mysqli_prepare($conn, $sql);

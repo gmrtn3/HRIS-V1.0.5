@@ -289,6 +289,55 @@
     });
 </script>
 
+    <form action="actions/Pakyawan/approve.php" method="POST"> 
+        <!-- Approve Modal -->
+        <div class="modal fade" id="approveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Approve</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center align-items-center">
+                <p class="fs-3">Are you sure?</p>
+                <input type="hidden" id="id" name="id">
+                <input type="hidden" name="status" id="approve" value="Approved" >
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="submit" name="approve" class="btn btn-primary">Yes</button>
+            </div>
+            </div>
+        </div>
+        </div>
+    </form>
+
+<!-- Reject -->
+    <form action="actions/Pakyawan/reject.php" method="POST"> 
+        <div class="modal fade" id="rejectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Reject</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="ids" name="id">
+                    <input type="hidden" name="status" id="reject" value="Rejected">
+                    <p class="fs-3">Are you sure?</p><br>
+
+                    <label for="">Remarks:</label><br>
+                    <textarea name="remarks" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="submit" name="reject" class="btn btn-primary">Yes</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
 
 
 
@@ -301,7 +350,7 @@
                 <div></div>
             </div>
             <div class="loanreq-inputs d-flex" style="width: 95%; margin:auto;">
-                <button class="btn btn-primary p-3" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create New</button>
+                <!-- <button class="btn btn-primary p-3" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create New</button> -->
                 <!-- <input class="employeeList-search" type="text" placeholder="&#xF002; Search" style="font-family:Arial, FontAwesome" id="search"/> -->
             </div>
 
@@ -314,6 +363,9 @@
                     <th>Date Filed</th>
                     <th>Status</th>
                     <th>Action</th>
+                    <th class="d-none">id</th>
+                    <th class="d-none">approve</th>
+                    <th class="d-none">reject</th>
                 </thead>
                 <tbody>
                     <?php 
@@ -321,7 +373,7 @@
                         $empid = $_SESSION['empid'];
                         // echo $empid;
                        include 'config.php';
-                       $result = $conn->query("SELECT pakyaw.empid , pakyaw.status, pakyaw.cash_advance, pakyaw.date, pakyaw.timestamp, emp.empid, emp.fname, emp.lname FROM pakyaw_cash_advance_tb AS pakyaw
+                       $result = $conn->query("SELECT pakyaw.empid , pakyaw.status, pakyaw.cash_advance, pakyaw.date, pakyaw.timestamp, pakyaw.id, emp.empid, emp.fname, emp.lname FROM pakyaw_cash_advance_tb AS pakyaw
                                                 INNER JOIN employee_tb AS emp ON pakyaw.empid = emp.empid");
                                 
                         
@@ -329,16 +381,51 @@
                             while($row = $result->fetch_assoc()){ 
                                
                     ?>
-                    <tr>  
+                    <tr >  
                         <td style="font-weight: 400"><?php echo $row['fname']?> <?php echo $row['lname'] ?></td> 
                         <td style="font-weight: 400"><?php echo $row['cash_advance']?></td>
                         <td style="font-weight: 400"><?php echo $row['date']?></td>
                         
                         <td style="font-weight: 400"><?php echo date('Y-m-d', strtotime($row['timestamp'])); ?></td>
-                        <td style="font-weight: 400; <?php echo ($row['status'] === 'Pending') ? 'color: red;' : 'color: green;' ?>">
+                        <td style="font-weight: 400; <?php
+                            if ($row['status'] === 'Rejected') {
+                                echo 'color: red;';
+                            } elseif ($row['status'] === 'Approved') {
+                                echo 'color: green;';
+                            } elseif ($row['status'] === 'Pending') {
+                                echo 'color: orange;';
+                            }
+                        ?>">
                             <?php echo $row['status'] ?>
                         </td>
-                        <td style="font-weight: 400; outline:none;"><button style="border: none; background-color:inherit; outline:none;"><a href="editLoanRequestForm.php?id=<?php echo $row['empid']?>" style="text-decoration:none;">Edit</a></button></td>
+                        <td style="font-weight: 400; outline:none;">
+                            
+                            <?php 
+                                $status = $row['status'];
+                                if($status === 'Pending'){
+                                  ?>
+                                    <button style="height: 3em; width: 6em; color: #fff" class="btn btn-success approveModal" name="Approve" id="approveModal" data-bs-toggle="modal" data-bs-target="#approveModal">Approve</button>
+
+                                    <button style="color: #fff; height: 3em; width: 6em" class="btn btn-danger rejectModal" name="Reject" id="rejectModal" data-bs-toggle="modal" data-bs-target="#rejectModal">Reject</button>  
+                                
+                              <?php  }else{
+                                ?>
+                                    <button class="" style="height: 3em; width: 6em; color: #fff; background-color: inherit; border: none; cursor: default"></button>
+
+                                    <button class="" style="height: 3em; width: 6em; color: #fff; background-color: inherit; border: none; cursor: default"></button>  
+                                <?php    
+                                }        
+                                
+
+                            ?>
+
+                            
+                        
+                            
+                        </td>
+                        <td style="font-weight: 400; display:none"><?php echo $row['id']?></td>
+                        <td class="d-none">Approved</td>
+                        <td class="d-none">Rejected</td>
                     </tr>
                     <?php 
                             }
@@ -352,6 +439,42 @@
         </div>
     </div>
 
+
+    <script>
+        $(document).ready(function(){
+            $('.approveModal').on('click', function(){
+                $('#approveModal').modal('show');
+                $tr = $(this).closest('tr');
+
+                var data = $tr.children("td").map(function (){
+                    return $(this).text();
+                }).get();
+
+                console.log(data);
+                $('#id').val(data[6]);
+                $('#approve').val(data[7]);
+                
+            });
+        });
+    </script>
+
+<script>
+        $(document).ready(function(){
+            $('.rejectModal').on('click', function(){
+                $('#rejectModal').modal('show');
+                $tr = $(this).closest('tr');
+
+                var data = $tr.children("td").map(function (){
+                    return $(this).text();
+                }).get();
+
+                console.log(data);
+                $('#ids').val(data[6]);
+                $('#reject').val(data[8]);
+                
+            });
+        });
+    </script>
     
 <script type="text/javascript">
         $(document).ready(function(){

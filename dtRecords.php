@@ -119,7 +119,7 @@ if(!empty($_GET['status'])){
                 <div class="btn-section" style="margin-left:70px;">
                      <!-- Button trigger modal -->
                     <button class="up-btn" data-bs-toggle="modal" data-bs-target="#upload_dtr_btn">Upload DTR File</button>
-                    <button class="down-btn" id="downloadBtn"><a href="actions/Daily Time Records/export.php" class="dl_excel" style="text-decoration:none;"></i>Download Excel</a></button>
+                    <button class="down-btn" id="downloadBtn">Download CSV</button>
                   </div>
                   </div>
 <!------------------------------------------------- End Of Header -------------------------------------------> 
@@ -296,7 +296,42 @@ if(!empty($_GET['status'])){
    
       
 <!-------------------------------------------------TABLE END------------------------------------------->
+<!-- CSV -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+$(document).ready(function() {
+    // Export button click event
+    $('#downloadBtn').click(function() {
+        // Create a CSV content
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Status , Employee ID , Name, Date, Department , Time Entry, Time Out, Late, Undertime, Overtime, Total Hours\n";
 
+        // Loop through table rows and append data
+        $('#order-listing tbody tr').each(function() {
+            var status = $(this).find('td:nth-child(1)').text();
+            var empid = $(this).find('td:nth-child(2)').text();
+            var name = $(this).find('td:nth-child(3)').text();
+            var date = $(this).find('td:nth-child(4)').text();
+            var department = $(this).find('td:nth-child(5)').text();
+            var time_entry = $(this).find('td:nth-child(7)').text();
+            var time_out = $(this).find('td:nth-child(8)').text();
+            var late = $(this).find('td:nth-child(9)').text();
+            var under = $(this).find('td:nth-child(10)').text();
+            var ot = $(this).find('td:nth-child(11)').text();
+            var total = $(this).find('td:nth-child(12)').text();
+            csvContent += status + "," + empid + "," + name + ","  + date + ","  + department + ","  + time_entry + ","  + time_out + "," + late + "," + under + "," + ot + "," + total +"\n";
+        });
+
+        // Create a CSV blob and trigger a download
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Daily Time Records.csv");
+        document.body.appendChild(link);
+        link.click();
+    });
+});
+</script>
 <!----------------------Script sa dropdown chain--------------------------->        
 <script>
 // Kapag nagbago ang pagpili sa select department dropdown

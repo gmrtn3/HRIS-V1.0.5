@@ -85,6 +85,7 @@
         color: #fff;
         background-color: #000;
         border-color: #000;
+        margin-top: 20px;
     }
 
     
@@ -178,9 +179,15 @@
   function filterDates() {
     var dateFrom = document.getElementById('start_date').value;
     var dateTo = document.getElementById('end_date').value;
+    var applyfilt = document.getElementById('applyfilt');
 
-    var url = 'attendance.php?date_from=' + dateFrom + '&date_to=' + dateTo;
-    window.location.href = url;
+    if(dateFrom == '' && dateTo ==''){
+        var url = 'attendance.php';
+        window.location.href = url;  
+    }else{
+        var url = 'attendance.php?date_from=' + dateFrom + '&date_to=' + dateTo;
+        window.location.href = url;   
+    }
   }
 </script>
 
