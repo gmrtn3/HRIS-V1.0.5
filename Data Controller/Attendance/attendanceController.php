@@ -299,7 +299,38 @@ if(isset($_POST['importSubmit'])){
                         } else {
                             // Set the late time to 00:00:00
                             $late = '00:00:00';
-                        }                  
+                        }         
+                        
+                        $half_day = strtotime('13:00:00');
+                        $og_time_formatteds = date('H:i', $half_day);
+                        
+                        // Convert time strings to DateTime objects for accurate comparison
+                        $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                        $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                        
+                        if ($time_in_obj >= $og_time_obj) {
+                            echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                        
+                            $grace_period_minutes = intval($grace_period_minutes);
+                            $og_time = strtotime('13:00:00');
+                            $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                        
+                            $grace_period_time = date('H:i', $grace_period_total);
+                        
+                            // Convert grace period string to DateTime object
+                            $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                        
+                            // Compare DateTime objects
+                            if ($time_in_obj > $grace_period_obj) {
+                                $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                                echo "The $time_in is greater than $grace_period_time. Late by $late";
+                            } else {
+                                echo "Inside the statement, but not exceeding grace period";
+                            }
+                        } else {
+                            echo "Outside the statement";
+                        }
+   
 
                         
                         if ($time_out) {
@@ -624,6 +655,36 @@ if(isset($_POST['importSubmit'])){
                             $late = '00:00:00';
                         }                  
                         
+                        $half_day = strtotime('13:00:00');
+                        $og_time_formatteds = date('H:i', $half_day);
+                        
+                        // Convert time strings to DateTime objects for accurate comparison
+                        $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                        $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                        
+                        if ($time_in_obj >= $og_time_obj) {
+                            echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                        
+                            $grace_period_minutes = intval($grace_period_minutes);
+                            $og_time = strtotime('13:00:00');
+                            $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                        
+                            $grace_period_time = date('H:i', $grace_period_total);
+                        
+                            // Convert grace period string to DateTime object
+                            $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                        
+                            // Compare DateTime objects
+                            if ($time_in_obj > $grace_period_obj) {
+                                $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                                echo "The $time_in is greater than $grace_period_time. Late by $late";
+                            } else {
+                                echo "Inside the statement, but not exceeding grace period";
+                            }
+                        } else {
+                            echo "Outside the statement";
+                        }
+   
 
                         if ($time_out) {
                             // Convert time_in and time_out to DateTime objects
@@ -752,7 +813,7 @@ if(isset($_POST['importSubmit'])){
                          $get_tues_timeout = $time['tues_timeout'];
                          $get_tues_timein = $time['tues_timein'];
 
-                         $convert_wed_timeout = new DateTime($get_tues_timeout);
+                         $convert_tues_timeout = new DateTime($get_tues_timeout);
                          $convert_time_in = new DateTime($time_in);
 
                          $convert_time_out = new DateTime($time_out);
@@ -934,7 +995,7 @@ if(isset($_POST['importSubmit'])){
                         }
                 }elseif($currentDayOfWeek == $wednesday){
                      // Check if the employee is late
-                     echo "it is wednesday";
+                    //  echo "it is wednesday";
                      $grace_period_total = new DateTime($time['wed_timein']);
                      $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
                      
@@ -945,6 +1006,7 @@ if(isset($_POST['importSubmit'])){
                      
                      // Get the minutes from wed_timein and grace_period
                      $wed_timein_minutes = (int)date('i', strtotime($time['wed_timein']));
+                     $my_time_in = (int)date('i', strtotime($time_in));
                      $grace_period_minutes = isset($time['grace_period']) ? (int)$time['grace_period'] : 0;
 
                      // Convert time_in to DateTime object
@@ -960,7 +1022,36 @@ if(isset($_POST['importSubmit'])){
                          // Set the late time to 00:00:00
                          $late = '00:00:00';
                      }                  
+
+                     $half_day = strtotime('13:00:00');
+                     $og_time_formatteds = date('H:i', $half_day);
                      
+                     // Convert time strings to DateTime objects for accurate comparison
+                     $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                     $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                     
+                     if ($time_in_obj >= $og_time_obj) {
+                         echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                     
+                         $grace_period_minutes = intval($grace_period_minutes);
+                         $og_time = strtotime('13:00:00');
+                         $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                     
+                         $grace_period_time = date('H:i', $grace_period_total);
+                     
+                         // Convert grace period string to DateTime object
+                         $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                     
+                         // Compare DateTime objects
+                         if ($time_in_obj > $grace_period_obj) {
+                             $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                             echo "The $time_in is greater than $grace_period_time. Late by $late";
+                         } else {
+                             echo "Inside the statement, but not exceeding grace period";
+                         }
+                     } else {
+                         echo "Outside the statement";
+                     }
 
                      if ($time_out) {
                          // Convert time_in and time_out to DateTime objects
@@ -1198,7 +1289,7 @@ if(isset($_POST['importSubmit'])){
                      }
 
                      if(!empty($time_in)){
-                       echo "hindi gumana";
+                    //    echo "hindi gumana";
                      }else{
                         // Convert wed_timein and time_out to DateTime objects
                             $convert_wed_timein = new DateTime($get_wed_timein);
@@ -1292,7 +1383,38 @@ if(isset($_POST['importSubmit'])){
                        } else {
                            // Set the late time to 00:00:00
                            $late = '00:00:00';
-                       }                  
+                       }         
+                       
+                       $half_day = strtotime('13:00:00');
+                       $og_time_formatteds = date('H:i', $half_day);
+                       
+                       // Convert time strings to DateTime objects for accurate comparison
+                       $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                       $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                       
+                       if ($time_in_obj >= $og_time_obj) {
+                           echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                       
+                           $grace_period_minutes = intval($grace_period_minutes);
+                           $og_time = strtotime('13:00:00');
+                           $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                       
+                           $grace_period_time = date('H:i', $grace_period_total);
+                       
+                           // Convert grace period string to DateTime object
+                           $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                       
+                           // Compare DateTime objects
+                           if ($time_in_obj > $grace_period_obj) {
+                               $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                               echo "The $time_in is greater than $grace_period_time. Late by $late";
+                           } else {
+                               echo "Inside the statement, but not exceeding grace period";
+                           }
+                       } else {
+                           echo "Outside the statement";
+                       }
+  
                        
   
                        if ($time_out) {
@@ -1610,7 +1732,38 @@ if(isset($_POST['importSubmit'])){
                 } else {
                     // Set the late time to 00:00:00
                     $late = '00:00:00';
-                }                  
+                } 
+                
+                $half_day = strtotime('13:00:00');
+                $og_time_formatteds = date('H:i', $half_day);
+                
+                // Convert time strings to DateTime objects for accurate comparison
+                $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                
+                if ($time_in_obj >= $og_time_obj) {
+                    echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                
+                    $grace_period_minutes = intval($grace_period_minutes);
+                    $og_time = strtotime('13:00:00');
+                    $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                
+                    $grace_period_time = date('H:i', $grace_period_total);
+                
+                    // Convert grace period string to DateTime object
+                    $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                
+                    // Compare DateTime objects
+                    if ($time_in_obj > $grace_period_obj) {
+                        $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                        echo "The $time_in is greater than $grace_period_time. Late by $late";
+                    } else {
+                        echo "Inside the statement, but not exceeding grace period";
+                    }
+                } else {
+                    echo "Outside the statement";
+                }
+
                 
 
                 if ($time_out) {
@@ -1928,7 +2081,38 @@ if(isset($_POST['importSubmit'])){
                 } else {
                     // Set the late time to 00:00:00
                     $late = '00:00:00';
-                }                  
+                }  
+
+                 $half_day = strtotime('13:00:00');
+                     $og_time_formatteds = date('H:i', $half_day);
+                     
+                     // Convert time strings to DateTime objects for accurate comparison
+                     $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                     $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                     
+                     if ($time_in_obj >= $og_time_obj) {
+                         echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                     
+                         $grace_period_minutes = intval($grace_period_minutes);
+                         $og_time = strtotime('13:00:00');
+                         $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                     
+                         $grace_period_time = date('H:i', $grace_period_total);
+                     
+                         // Convert grace period string to DateTime object
+                         $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                     
+                         // Compare DateTime objects
+                         if ($time_in_obj > $grace_period_obj) {
+                             $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                             echo "The $time_in is greater than $grace_period_time. Late by $late";
+                         } else {
+                             echo "Inside the statement, but not exceeding grace period";
+                         }
+                     } else {
+                         echo "Outside the statement";
+                     }
+                
                 
 
                 if ($time_out) {
@@ -2247,7 +2431,38 @@ if(isset($_POST['importSubmit'])){
                 } else {
                     // Set the late time to 00:00:00
                     $late = '00:00:00';
-                }                  
+                }             
+                
+                $half_day = strtotime('13:00:00');
+                $og_time_formatteds = date('H:i', $half_day);
+                
+                // Convert time strings to DateTime objects for accurate comparison
+                $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                
+                if ($time_in_obj >= $og_time_obj) {
+                    echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                
+                    $grace_period_minutes = intval($grace_period_minutes);
+                    $og_time = strtotime('13:00:00');
+                    $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                
+                    $grace_period_time = date('H:i', $grace_period_total);
+                
+                    // Convert grace period string to DateTime object
+                    $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                
+                    // Compare DateTime objects
+                    if ($time_in_obj > $grace_period_obj) {
+                        $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                        echo "The $time_in is greater than $grace_period_time. Late by $late";
+                    } else {
+                        echo "Inside the statement, but not exceeding grace period";
+                    }
+                } else {
+                    echo "Outside the statement";
+                }
+
                 
 
                 if ($time_out) {
@@ -2637,6 +2852,6 @@ if (isset($_SESSION['alert_msg'])) {
     unset($_SESSION['alert_msg']);
 }
 // Redirect to the listing page
-header("Location: ../../attendance.php");
+// header("Location: ../../attendance.php");
 
 

@@ -282,7 +282,6 @@ else
                                             <option value="<?php echo $row['cstatus']?>" selected="selected" class="selectTag" style="color: gray;"><?php echo $row['cstatus']?></option>
                                                 <option value="Single" >Single</option>
                                                 <option value="Married">Married</option>
-                                                <option value="Other">Other</option>
                                             </select>
                                     </div>
                                     <div class="emp-email">

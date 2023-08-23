@@ -127,7 +127,7 @@ if(!isset($_SESSION['username'])){
                                     <option value="Pending" <?php if($status =='Pending') echo 'selected';?>>Pending</option>
                                     <option value="Approved" <?php if($status == 'Approved') echo 'selected';?>>Approved</option>
                                     <option value="Rejected" <?php if($status == 'Rejected') echo 'selected';?>>Rejected</option>
-                                    <option value="Rejected" <?php if($status == 'Cancelled') echo 'selected';?>>Cancelled</option>
+                                    <option value="Cancelled" <?php if($status == 'Cancelled') echo 'selected';?>>Cancelled</option>
                         </select>
                 </div>
 

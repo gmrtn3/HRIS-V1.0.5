@@ -237,9 +237,9 @@
                                 <div class="emp-info-cstatus">
                                         <label for="cstatus">Civil Status</label><br>
                                         <select name="cstatus" id="" placeholdber="Select Status" required>
+                                            <option value selected disabled>Select Status</option>
                                             <option value="Single" <?php echo isset($_GET['cstatus']) && $_GET['cstatus'] === 'Single' ? 'selected' : ''; ?>>Single</option>
                                             <option value="Married" <?php echo isset($_GET['cstatus']) && $_GET['cstatus'] === 'Married' ? 'selected' : ''; ?>>Married</option>
-                                            <option value="Other" <?php echo isset($_GET['cstatus']) && $_GET['cstatus'] === 'Other' ? 'selected' : ''; ?>>Other</option>
                                         </select>
                                 </div>
                                 <div class="emp-info-gender">

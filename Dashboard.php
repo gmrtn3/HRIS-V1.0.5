@@ -744,6 +744,494 @@ if(mysqli_num_rows($result) <= 0) {
 </script>
 <!--------------------------------------------------- EDIT MODAL  ------------------------------------------------------------------->
 
+              
+                            <!-- Modal of view all Present Employee Start Here --------------------------------------->
+                            <div class="modal fade" id="IDmodal_ViewPresent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Present Employees</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            <div class="table-responsive mt-2" style=" overflow-x: hidden; height: 300px;">
+                                                <table id="order-listing" class="table" style="width: 100%; " >
+                                                    <thead style="background-color: #ececec">
+                                                
+                                                        <tr> 
+                                                            <th> Status  </th>  
+                                                            <th> Employee ID </th>
+                                                            <th> Fullname </th>
+                                                            <th> Time In </th>
+                                                            <th> Time Out </th>
+                                                            <th> Late </th>                           
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        include 'config.php';
+                                                        date_default_timezone_set('Asia/Manila');
+                                                        $approver_ID = $_SESSION['empid'];
+                                                        $currentDate = date('Y-m-d');
+
+                                                        // Query the department table to retrieve department names
+                                                        $present_query = "SELECT * FROM attendances 
+                                                        INNER JOIN employee_tb ON attendances.empid = employee_tb.empid
+                                                        WHERE attendances.status = 'Present' AND employee_tb.classification != 3 AND DATE(`date`) = '$currentDate'";
+                                                        $present_result = mysqli_query($conn, $present_query);
+                                                        
+                                                        // Generate the HTML table header
+                                                        
+                                                        // Loop over the departments and count the employees
+                                                        while ($present_row = mysqli_fetch_assoc($present_result)) {
+                                                            $status = $present_row['status'];
+                                                            $empid = $present_row['empid'];
+
+                                                            $query_emp_tb = "SELECT  CONCAT(
+                                                                                    employee_tb.`fname`,
+                                                                                    ' ',
+                                                                                    employee_tb.`lname`
+                                                                                ) AS `full_name`
+                                                                            FROM employee_tb
+                                                                            WHERE empid = $empid";
+                                                                            $result_emp_tb = mysqli_query($conn, $query_emp_tb);
+
+                                                                            $row_emp_tb = mysqli_fetch_assoc($result_emp_tb);
+
+
+                                                            $fullname = $row_emp_tb['full_name'];
+                                                            $time_in = $present_row['time_in'];
+                                                            $time_out =  $present_row['time_out'];
+                                                            $late = $present_row['late'];                                                            
+                                                            
+                                                            // Generate the HTML table row
+                                                            echo "<tr>
+                                                                    <td>$status</td>
+                                                                    <td>$empid</td>
+                                                                    <td>$fullname</td>
+                                                                    <td>$time_in</td>
+                                                                    <td>$time_out</td>
+                                                                    <td>$late</td>
+                                                                    
+                                                                    
+                                                            </tr>";
+                                                        }
+                                                        ?>
+                                                    </tbody>
+
+                                                </table>        
+                                            </div> <!--table my-3 end--> 
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                            <!--------------------------- Modal of view all Present Employee End Here ---------------------------------->
+
+                              <!-- Modal of view all Absent Employee Start Here --------------------------------------->
+                              <div class="modal fade" id="IDmodal_ViewAbsent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Absent Employees</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            <div class="table-responsive mt-2" style=" overflow-x: hidden; height: 300px;">
+                                                <table id="order-listing" class="table" style="width: 100%; ">
+                                                    <thead style="background-color: #ececec">
+                                                
+                                                        <tr> 
+                                                            <th> Status  </th>  
+                                                            <th> Employee ID </th>
+                                                            <th> Fullname </th>
+                                                            <th> Time In </th>
+                                                            <th> Time Out </th>
+                                                            <th> Late </th>                           
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        include 'config.php';
+                                                        date_default_timezone_set('Asia/Manila');
+                                                        $approver_ID = $_SESSION['empid'];
+                                                        $currentDate = date('Y-m-d');
+
+                                                        // Query the department table to retrieve department names
+                                                        $present_query = "SELECT * FROM attendances 
+                                                                            INNER JOIN employee_tb ON attendances.empid = employee_tb.empid
+                                                                            WHERE attendances.status = 'Absent' AND employee_tb.classification != 3 AND DATE(`date`) = '$currentDate'";
+                                                        $present_result = mysqli_query($conn, $present_query);
+                                                        
+                                                        // Generate the HTML table header
+                                                        
+                                                        // Loop over the departments and count the employees
+                                                        while ($present_row = mysqli_fetch_assoc($present_result)) {
+                                                            $status = $present_row['status'];
+                                                            $empid = $present_row['empid'];
+
+                                                            $query_emp_tb = "SELECT  CONCAT(
+                                                                                    employee_tb.`fname`,
+                                                                                    ' ',
+                                                                                    employee_tb.`lname`
+                                                                                ) AS `full_name`
+                                                                            FROM employee_tb
+                                                                            WHERE empid = $empid";
+                                                                            $result_emp_tb = mysqli_query($conn, $query_emp_tb);
+
+                                                                            $row_emp_tb = mysqli_fetch_assoc($result_emp_tb);
+
+
+                                                            $fullname = $row_emp_tb['full_name'];
+                                                            $time_in = $present_row['time_in'];
+                                                            $time_out =  $present_row['time_out'];
+                                                            $late = $present_row['late'];                                                            
+                                                            
+                                                            // Generate the HTML table row
+                                                            echo "<tr>
+                                                                    <td>$status</td>
+                                                                    <td>$empid</td>
+                                                                    <td>$fullname</td>
+                                                                    <td>$time_in</td>
+                                                                    <td>$time_out</td>
+                                                                    <td>$late</td>
+                                                                    
+                                                                    
+                                                            </tr>";
+                                                        }
+                                                        ?>
+                                                    </tbody>
+
+                                                </table>        
+                                            </div> <!--table my-3 end--> 
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                            <!--------------------------- Modal of view all Absent Employee End Here ---------------------------------->
+
+                             <!-- Modal of view all On-Leave Employee Start Here --------------------------------------->
+                             <div class="modal fade" id="IDmodal_ViewOnleave" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">On-Leave Employees</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            <div class="table-responsive mt-2" style=" overflow-x: hidden; height: 300px;">
+                                                <table id="order-listing" class="table" style="width: 100%; ">
+                                                    <thead style="background-color: #ececec">
+                                                
+                                                        <tr> 
+                                                            <th> Status  </th>  
+                                                            <th> Employee ID </th>
+                                                            <th> Fullname </th>
+                                                            <th> Time In </th>
+                                                            <th> Time Out </th>
+                                                            <th> Late </th>                           
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        include 'config.php';
+                                                        date_default_timezone_set('Asia/Manila');
+                                                        $approver_ID = $_SESSION['empid'];
+                                                        $currentDate = date('Y-m-d');
+
+                                                        // Query the department table to retrieve department names
+                                                        $present_query = "SELECT * FROM attendances 
+                                                        INNER JOIN employee_tb ON attendances.empid = employee_tb.empid
+                                                        WHERE attendances.status = 'On-Leave' AND employee_tb.classification != 3 AND DATE(`date`) = '$currentDate'";
+                                                        $present_result = mysqli_query($conn, $present_query);
+                                                        
+                                                        // Generate the HTML table header
+                                                        
+                                                        // Loop over the departments and count the employees
+                                                        while ($present_row = mysqli_fetch_assoc($present_result)) {
+                                                            $status = $present_row['status'];
+                                                            $empid = $present_row['empid'];
+
+                                                            $query_emp_tb = "SELECT  CONCAT(
+                                                                                    employee_tb.`fname`,
+                                                                                    ' ',
+                                                                                    employee_tb.`lname`
+                                                                                ) AS `full_name`
+                                                                            FROM employee_tb
+                                                                            WHERE empid = $empid";
+                                                                            $result_emp_tb = mysqli_query($conn, $query_emp_tb);
+
+                                                                            $row_emp_tb = mysqli_fetch_assoc($result_emp_tb);
+
+
+                                                            $fullname = $row_emp_tb['full_name'];
+                                                            $time_in = $present_row['time_in'];
+                                                            $time_out =  $present_row['time_out'];
+                                                            $late = $present_row['late'];                                                            
+                                                            
+                                                            // Generate the HTML table row
+                                                            echo "<tr>
+                                                                    <td>$status</td>
+                                                                    <td>$empid</td>
+                                                                    <td>$fullname</td>
+                                                                    <td>$time_in</td>
+                                                                    <td>$time_out</td>
+                                                                    <td>$late</td>
+                                                                    
+                                                                    
+                                                            </tr>";
+                                                        }
+                                                        ?>
+                                                    </tbody>
+
+                                                </table>        
+                                            </div> <!--table my-3 end--> 
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                            <!--------------------------- Modal of view all On-Leave Employee End Here ---------------------------------->
+
+                            <!-- Modal of view all Working Home Employee Start Here --------------------------------------->
+<div class="modal fade" id="IDmodal_ViewWFH" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Employees Working Home</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            <div class="table-responsive mt-2" style=" overflow-x: hidden; height: 300px;">
+                                                <table id="order-listing" class="table" style="width: 100%; ">
+                                                    <thead style="background-color: #ececec">
+                                                
+                                                        <tr> 
+                                                            <th> Status  </th>  
+                                                            <th> Employee ID </th>
+                                                            <th> Fullname </th>
+                                                            <th> Time In </th>
+                                                            <th> Time Out </th>
+                                                            <th> Late </th>                           
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        include 'config.php';
+                                                        date_default_timezone_set('Asia/Manila');
+                                                        $approver_ID = $_SESSION['empid'];
+                                                        $currentDate = date('Y-m-d');
+                
+                
+                
+                
+                                                        // Run code 
+                                                        $query_approver = "SELECT empid from approver_tb WHERE approver_empid = '$approver_ID'";
+                                                        $result_approver = mysqli_query($conn, $query_approver);
+                                                        
+                                                        // Check if any rows are fetched
+                                                        if (mysqli_num_rows($result_approver) > 0) {
+                                                            $empid_Assigned = array(); // Array to store the employee assigned to the log in supervisor
+                                                        
+                                                            // Loop through each row
+                                                            while($row = $result_approver->fetch_assoc()) 
+                                                            {
+                                                                $empid = $row['empid'];
+                                                                                                    
+                                                                $empid_Assigned[] = array('empid' => $empid);
+                                                            }
+                
+                                                            $employeeWFH_bool = false;
+                                                            
+                                                            
+                
+                                                            
+                                                            foreach ($empid_Assigned as $empid_Assign) {
+                                                                $timestamp = strtotime($currentDate);
+                                                                $today = date("l", $timestamp);
+                                                                $emp_array_ID =  $empid_Assign['empid'];
+
+                                                                $query_empSched = "SELECT * FROM empschedule_tb
+                                                                                INNER JOIN schedule_tb ON empschedule_tb.schedule_name = schedule_tb.schedule_name
+                                                                                WHERE empschedule_tb.empid = '$emp_array_ID' 
+                                                                                AND empschedule_tb.sched_from <= '$currentDate' 
+                                                                                AND empschedule_tb.sched_to >= '$currentDate'";
+                                                                $result_empSched = mysqli_query($conn, $query_empSched);
+
+                                                                if (mysqli_num_rows($result_empSched) > 0) {
+                                                                    $row_empSched = mysqli_fetch_assoc($result_empSched);
+
+                                                                    // Modify the condition to use logical AND (&&) and strict comparison (===)
+                                                                    if ($today === 'Monday' && ($row_empSched['mon_wfh'] !== NULL && $row_empSched['mon_wfh'] !== '')) {
+                                                                        $employeeWFH_bool = true;
+                                                                    } else if ($today === 'Tuesday' && ($row_empSched['tues_wfh'] !== NULL && $row_empSched['tues_wfh'] !== '')) {
+                                                                        $employeeWFH_bool = true;
+                                                                    } else if ($today === 'Wednesday' && ($row_empSched['wed_wfh'] !== NULL && $row_empSched['wed_wfh'] !== '')) {
+                                                                        $employeeWFH_bool = true;
+                                                                    } else if ($today === 'Thursday' && ($row_empSched['thurs_wfh'] !== NULL && $row_empSched['thurs_wfh'] !== '')) {
+                                                                        $employeeWFH_bool = true;
+                                                                    } else if ($today === 'Friday' && ($row_empSched['fri_wfh'] !== NULL && $row_empSched['fri_wfh'] !== '')) {
+                                                                        $employeeWFH_bool = true;
+                                                                    } else if ($today === 'Saturday' && ($row_empSched['sat_wfh'] !== NULL && $row_empSched['sat_wfh'] !== '')) {
+                                                                        $employeeWFH_bool = true;
+                                                                    } else if ($today === 'Sunday' && ($row_empSched['sun_wfh'] !== NULL && $row_empSched['sun_wfh'] !== '')) {
+                                                                        $employeeWFH_bool = true;
+                                                                    } else{
+                                                                        $employeeWFH_bool = false;
+                                                                    }
+
+                                                                    if ($employeeWFH_bool === true) {
+                                                                        $empid = $row_empSched['empid'];
+                                                                        
+                                                                        $query_emp_tb = "SELECT 
+                                                                                           attendances.status,
+                                                                                           attendances.empid,
+                                                                                           employee_tb.fname,
+                                                                                           employee_tb.lname,
+                                                                                           attendances.time_in,
+                                                                                           attendances.time_out,
+                                                                                           attendances.late                                                
+                                                                                        FROM attendances
+                                                                                        INNER JOIN employee_tb ON attendances.empid = employee_tb.empid
+                                                                                        WHERE DATE(attendances.`date`) = '$currentDate' AND attendances.empid = '$empid'";
+                                                                        $result_emp_tb = mysqli_query($conn, $query_emp_tb);
+
+                                                                        $row_emp_tb = mysqli_fetch_assoc($result_emp_tb);
+                                                                        $empidss =  $row_emp_tb['empid'];
+                                                                        $status = $row_emp_tb['status'];
+                                                                        $fullname = $row_emp_tb['fname'] . " " . $row_emp_tb['lname'];
+                                                                        $time_in = $row_emp_tb['time_in'];
+                                                                        $time_out = $row_emp_tb['time_out'];
+                                                                        $late = $row_emp_tb['late'];
+                                                                        echo "<tr>
+                                                                                <td>$status</td>
+                                                                                <td>$empidss</td>
+                                                                                <td>$fullname</td>
+                                                                                <td>$time_in</td>
+                                                                                <td>$time_out</td>
+                                                                                <td>$late</td>                                                                          
+                                                                            </tr>";
+                                                                    } 
+                                                                }
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </tbody>
+
+                                                </table>        
+                                            </div> <!--table my-3 end--> 
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                            <!--------------------------- Modal of view all Working Home Employee End Here ---------------------------------->
+
+                            <!-- Modal of view all LATE Employee Start Here --------------------------------------->
+<div class="modal fade" id="IDmodal_ViewLate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Employees with Late</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            <div class="table-responsive mt-2" style=" overflow-x: hidden; height: 300px;">
+                                                <table id="order-listing" class="table" style="width: 100%; ">
+                                                    <thead style="background-color: #ececec">
+                                                
+                                                        <tr> 
+                                                            <th> Status  </th>  
+                                                            <th> Employee ID </th>
+                                                            <th> Fullname </th>
+                                                            <th> Time In </th>
+                                                            <th> Time Out </th>
+                                                            <th> Late </th>                           
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        include 'config.php';
+                                                        date_default_timezone_set('Asia/Manila');
+                                                        $approver_ID = $_SESSION['empid'];
+                                                        $currentDate = date('Y-m-d');
+
+                                                        // Query the department table to retrieve department names
+                                                        $present_query = " SELECT * FROM attendances 
+                                                        INNER JOIN employee_tb ON attendances.empid = employee_tb.empid
+                                                        WHERE `late` != '00:00:00' AND `late` != ''  AND employee_tb.classification != 3 AND DATE(`date`) = '$currentDate'
+                                                                       ";
+                                                                        
+                                                        $present_result = mysqli_query($conn, $present_query);
+                                                        
+                                                        // Generate the HTML table header
+                                                        
+                                                        // Loop over the departments and count the employees
+                                                        while ($present_row = mysqli_fetch_assoc($present_result)) {
+                                                            $status = $present_row['status'];
+                                                            $empid = $present_row['empid'];
+
+                                                            $query_emp_tb = "SELECT  CONCAT(
+                                                                                    employee_tb.`fname`,
+                                                                                    ' ',
+                                                                                    employee_tb.`lname`
+                                                                                ) AS `full_name`
+                                                                            FROM employee_tb
+                                                                            WHERE empid = $empid";
+                                                                            $result_emp_tb = mysqli_query($conn, $query_emp_tb);
+
+                                                                            $row_emp_tb = mysqli_fetch_assoc($result_emp_tb);
+
+
+                                                            $fullname = $row_emp_tb['full_name'];
+                                                            $time_in = $present_row['time_in'];
+                                                            $time_out =  $present_row['time_out'];
+                                                            $late = $present_row['late'];                                                            
+                                                            
+                                                            // Generate the HTML table row
+                                                            echo "<tr>
+                                                                    <td>$status</td>
+                                                                    <td>$empid</td>
+                                                                    <td>$fullname</td>
+                                                                    <td>$time_in</td>
+                                                                    <td>$time_out</td>
+                                                                    <td>$late</td>
+                                                                    
+                                                                    
+                                                            </tr>";
+                                                        }
+                                                        ?>
+                                                    </tbody>
+
+                                                </table>        
+                                            </div> <!--table my-3 end--> 
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                            <!--------------------------- Modal of view all LAte Employee End Here ---------------------------------->
+
+
+
+                            
+
     <div class="dashboard-container" id="dashboard-container">
         <div class="dashboard-content" style="margin-left: 320px;">
             <div class="dashboard-title" style="">
@@ -757,7 +1245,7 @@ if(mysqli_num_rows($result) <= 0) {
                             <p>Real time status</p>
                         </div>
                         <div class="emp-status-container">
-                            <div>
+                            <div  data-bs-toggle="modal" data-bs-target="#IDmodal_ViewPresent" style="cursor: pointer;">
                                     <?php 
                                         include 'config.php';
                                         date_default_timezone_set('Asia/Manila');
@@ -784,7 +1272,7 @@ if(mysqli_num_rows($result) <= 0) {
                                     <p style="margin-top: -7px;">of <span style="color: red;"><?php echo $employee_count; ?></span></p>
                                     <label for="present" style="margin-top: 3px;"><i class="mdi mdi-alarm-check"></i>Present</label>   
                                 </div>
-                            <div>
+                            <div data-bs-toggle="modal" data-bs-target="#IDmodal_ViewAbsent" style="cursor: pointer;"> 
                                 <?php 
                                         include 'config.php';
                                         date_default_timezone_set('Asia/Manila');
@@ -811,7 +1299,7 @@ if(mysqli_num_rows($result) <= 0) {
                                 <p style="margin-top: -7px; ">of <span style="color: red;"><?php echo $employee_count?> </span></p>
                                 <label for="absent" style="margin-top: 3px;" ><i class="mdi mdi-alarm-off"></i> Absent</label>
                             </div>
-                            <div>
+                            <div  data-bs-toggle="modal" data-bs-target="#IDmodal_ViewOnleave" style="cursor: pointer;">
                                  <?php 
                                         include 'config.php';
                                         date_default_timezone_set('Asia/Manila');
@@ -838,7 +1326,7 @@ if(mysqli_num_rows($result) <= 0) {
                                 <p style="margin-top: -7px; ">of <span style="color: red;"><?php echo $employee_count?> </span></p>
                                 <label for="on_leave" style="margin-top: 3px;" ><i class="mdi mdi-airplane-takeoff"></i>On Leave</label>
                             </div>
-                            <div>
+                            <div data-bs-toggle="modal" data-bs-target="#IDmodal_ViewWFH" style="cursor: pointer;">
                                 <?php 
                                         include 'config.php';
                                         date_default_timezone_set('Asia/Manila');
@@ -862,7 +1350,7 @@ if(mysqli_num_rows($result) <= 0) {
                                 <p style=" ">of <span class="wfh-color" style="color: red;"><?php echo $employee_count?> </span></p>
                                 <label for="wfh" style="margin-top: -6px; margin-bottom: 20px"><i class="mdi mdi-home"></i> <span style="font-size: 16px;">Working Home</span></label>
                             </div>
-                            <div>
+                            <div  data-bs-toggle="modal" data-bs-target="#IDmodal_ViewLate" style="cursor: pointer;">
                                 <?php
                                 include 'config.php';
                                 date_default_timezone_set('Asia/Manila');
