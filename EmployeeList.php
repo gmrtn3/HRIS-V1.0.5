@@ -255,9 +255,9 @@ include 'config.php';
                             }
 
                             if ($employee->IsEmployeeExist($row['empid'])) {
-                                echo "<button style='text-decoration:none; text-align:center;' onclick='addBiometrics(" . strval($row['empid'] !== null ? $row['empid'] : '0') . ")'> Add </button>";
+                                echo "<button style='text-decoration:none; text-align:center;' onclick='updateBiometrics(" . strval($row['empid'] !== null ? $row['empid'] : '0') . ")'> Update </button>";
                             } else if (!$employee->IsEmployeeExist($row['empid'])) {
-                                echo "<button style='text-decoration:none; text-align:center;' onclick='updateBiometrics(" . strval($row['empid'] !== null ? $row['empid'] : 0) . ")'> Update </button>";
+                                echo "<button style='text-decoration:none; text-align:center;' onclick='addBiometrics(" . strval($row['empid'] !== null ? $row['empid'] : 0) . ")'> Add </button>";
                             } else if ($employee->IsEmployeeExist($row['empid']) == null) {
                                 echo "Biometrics error";
                             }
@@ -358,7 +358,7 @@ include 'config.php';
 
                     console.log("Empid: ", empid);
                     modal.style.display = 'block';
-                    fetch(`/SpecialFolders/BiometricsData/addBiometrics?empid=${empid}`)
+                    fetch(`SpecialFolders/BiometricsData/addBiometrics?empid=${empid}`)
                         .then(res => res.text())
                         .then(resData => {
                             console.log(resData)
