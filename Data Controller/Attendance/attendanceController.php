@@ -46,11 +46,12 @@ if(isset($_POST['importSubmit'])){
                 $empQuery = "SELECT * FROM employee_tb WHERE empid = '$empid'";
                 $empResult = $db->query($empQuery);
                 if(mysqli_num_rows($empResult) < 1) {
-                    echo '<script>alert("Error: Unable to insert data for non-existing Employee ID because the Employee ID does not exist in the database.")</script>';
-                    echo "<script>window.location.href = '../../attendance';</script>";
+                    // echo '<script>alert("Error: Unable to insert data for non-existing Employee ID because the Employee ID does not exist in the database.")</script>';
+                    echo "<script>window.location.href = '../../attendance?noEmpid';</script>";
                     exit;
                 }else  {
                 
+                    
 
     
                 $conn = mysqli_connect("localhost", "root", "", "hris_db");
@@ -90,7 +91,7 @@ if(isset($_POST['importSubmit'])){
               
 
                 } else{
-                    echo '<script> alert("Employee has no schedule!"); </script>';
+                    // echo '<script> alert("Employee has no schedule!"); </script>';
                     header("Location: ../../attendance.php?noSchedule");
                     exit;
                 }
@@ -152,9 +153,20 @@ if(isset($_POST['importSubmit'])){
                 $sunday_timeout = $time['sun_timeout'];
 
                 $currentTimestamp = time();
+                $currentDate = date('Y-m-d', $currentTimestamp); 
 
                 // Get the current day of the week
                 $currentDayOfWeek = date('l', $currentTimestamp);
+
+                // echo "<br> <br>",$date;
+                // echo "<br>", $currentDate ,"<br>" ;
+                
+                if($date !== $currentDate){
+                    // echo '<script>alert("Error: Unable to insert a past or future date.")</script>';
+                    echo "<script>window.location.href = '../../attendance?wrongDate';</script>";
+                    exit;
+                }else{
+                    
                 
                 // Now $currentDayOfWeek holds the full textual representation of the current day of the week (e.g., "Monday", "Tuesday", etc.).
                 
@@ -296,6 +308,7 @@ if(isset($_POST['importSubmit'])){
                             $late = '00:00:00';
                         }         
                         
+                       
                         $half_day = strtotime('13:00:00');
                         $og_time_formatteds = date('H:i', $half_day);
                         
@@ -303,8 +316,14 @@ if(isset($_POST['importSubmit'])){
                         $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
                         $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
                         
+                        //for ot
+                        $time_out_obj = DateTime::createFromFormat("H:i", $time_out);
+                        $sched_timeout = DateTime::createFromFormat("H:i", $monday_timeout);
+    
+    
+                        
                         if ($time_in_obj >= $og_time_obj) {
-                            echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                            echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                         
                             $grace_period_minutes = intval($grace_period_minutes);
                             $og_time = strtotime('13:00:00');
@@ -320,11 +339,24 @@ if(isset($_POST['importSubmit'])){
                                 $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
                                 echo "The $time_in is greater than $grace_period_time. Late by $late";
                             } else {
-                                echo "Inside the statement, but not exceeding grace period";
+                                echo "Inside the statement, but not exceeding grace period <br>";
                             }
+    
+                            if($time_out > $monday_timeout){
+                                 $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
+                                 echo "you are OT <br>";
+                                
+                                 echo $time_out ,"<br>";
+                                
+    
+                            }else{
+                                 $overtime = '00:00:00';
+                            }
+    
                         } else {
                             echo "Outside the statement";
                         }
+                        
    
 
                         
@@ -650,36 +682,55 @@ if(isset($_POST['importSubmit'])){
                             $late = '00:00:00';
                         }                  
                         
-                        $half_day = strtotime('13:00:00');
-                        $og_time_formatteds = date('H:i', $half_day);
-                        
-                        // Convert time strings to DateTime objects for accurate comparison
-                        $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
-                        $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
-                        
-                        if ($time_in_obj >= $og_time_obj) {
-                            echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
-                        
-                            $grace_period_minutes = intval($grace_period_minutes);
-                            $og_time = strtotime('13:00:00');
-                            $grace_period_total = $og_time + ($grace_period_minutes * 60);
-                        
-                            $grace_period_time = date('H:i', $grace_period_total);
-                        
-                            // Convert grace period string to DateTime object
-                            $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
-                        
-                            // Compare DateTime objects
-                            if ($time_in_obj > $grace_period_obj) {
-                                $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                                echo "The $time_in is greater than $grace_period_time. Late by $late";
-                            } else {
-                                echo "Inside the statement, but not exceeding grace period";
-                            }
-                        } else {
-                            echo "Outside the statement";
-                        }
+                         
+                       $half_day = strtotime('13:00:00');
+                       $og_time_formatteds = date('H:i', $half_day);
+                       
+                       // Convert time strings to DateTime objects for accurate comparison
+                       $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                       $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                       
+                       //for ot
+                       $time_out_obj = DateTime::createFromFormat("H:i", $time_out);
+                       $sched_timeout = DateTime::createFromFormat("H:i", $tuesday_timeout);
    
+   
+                       
+                       if ($time_in_obj >= $og_time_obj) {
+                           echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
+                       
+                           $grace_period_minutes = intval($grace_period_minutes);
+                           $og_time = strtotime('13:00:00');
+                           $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                       
+                           $grace_period_time = date('H:i', $grace_period_total);
+                       
+                           // Convert grace period string to DateTime object
+                           $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                       
+                           // Compare DateTime objects
+                           if ($time_in_obj > $grace_period_obj) {
+                               $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                               echo "The $time_in is greater than $grace_period_time. Late by $late";
+                           } else {
+                               echo "Inside the statement, but not exceeding grace period <br>";
+                           }
+   
+                           if($time_out > $tuesday_timeout){
+                                $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
+                                echo "you are OT <br>";
+                               
+                                echo $time_out ,"<br>";
+                               
+   
+                           }else{
+                                $overtime = '00:00:00';
+                           }
+   
+                       } else {
+                           echo "Outside the statement";
+                       }
+                       
 
                         if ($time_out) {
                             // Convert time_in and time_out to DateTime objects
@@ -1019,34 +1070,52 @@ if(isset($_POST['importSubmit'])){
                      }                  
 
                      $half_day = strtotime('13:00:00');
-                     $og_time_formatteds = date('H:i', $half_day);
-                     
-                     // Convert time strings to DateTime objects for accurate comparison
-                     $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
-                     $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
-                     
-                     if ($time_in_obj >= $og_time_obj) {
-                         echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
-                     
-                         $grace_period_minutes = intval($grace_period_minutes);
-                         $og_time = strtotime('13:00:00');
-                         $grace_period_total = $og_time + ($grace_period_minutes * 60);
-                     
-                         $grace_period_time = date('H:i', $grace_period_total);
-                     
-                         // Convert grace period string to DateTime object
-                         $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
-                     
-                         // Compare DateTime objects
-                         if ($time_in_obj > $grace_period_obj) {
-                             $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                             echo "The $time_in is greater than $grace_period_time. Late by $late";
-                         } else {
-                             echo "Inside the statement, but not exceeding grace period";
-                         }
-                     } else {
-                         echo "Outside the statement";
-                     }
+                       $og_time_formatteds = date('H:i', $half_day);
+                       
+                       // Convert time strings to DateTime objects for accurate comparison
+                       $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                       $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                       
+                       //for ot
+                       $time_out_obj = DateTime::createFromFormat("H:i", $time_out);
+                       $sched_timeout = DateTime::createFromFormat("H:i", $wednesday_timeout);
+   
+   
+                       
+                       if ($time_in_obj >= $og_time_obj) {
+                           echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
+                       
+                           $grace_period_minutes = intval($grace_period_minutes);
+                           $og_time = strtotime('13:00:00');
+                           $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                       
+                           $grace_period_time = date('H:i', $grace_period_total);
+                       
+                           // Convert grace period string to DateTime object
+                           $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                       
+                           // Compare DateTime objects
+                           if ($time_in_obj > $grace_period_obj) {
+                               $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                               echo "The $time_in is greater than $grace_period_time. Late by $late";
+                           } else {
+                               echo "Inside the statement, but not exceeding grace period <br>";
+                           }
+   
+                           if($time_out > $wednesday_timeout){
+                                $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
+                                echo "you are OT <br>";
+                               
+                                echo $time_out ,"<br>";
+                               
+   
+                           }else{
+                                $overtime = '00:00:00';
+                           }
+   
+                       } else {
+                           echo "Outside the statement";
+                       }
 
                      if ($time_out) {
                          // Convert time_in and time_out to DateTime objects
@@ -1352,7 +1421,7 @@ if(isset($_POST['importSubmit'])){
                     
                      
                 }elseif($currentDayOfWeek == $thursday){
-                    echo "it is thursday";
+                    // echo "it is thursday";
                        // Check if the employee is late
                        $grace_period_total = new DateTime($time['thurs_timein']);
                        $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
@@ -1378,7 +1447,7 @@ if(isset($_POST['importSubmit'])){
                        } else {
                            // Set the late time to 00:00:00
                            $late = '00:00:00';
-                       }         
+                       }    
                        
                        $half_day = strtotime('13:00:00');
                        $og_time_formatteds = date('H:i', $half_day);
@@ -1387,8 +1456,14 @@ if(isset($_POST['importSubmit'])){
                        $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
                        $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
                        
+                       //for ot
+                       $time_out_obj = DateTime::createFromFormat("H:i", $time_out);
+                       $sched_timeout = DateTime::createFromFormat("H:i", $thursday_timeout);
+   
+   
+                       
                        if ($time_in_obj >= $og_time_obj) {
-                           echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                        //    echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                        
                            $grace_period_minutes = intval($grace_period_minutes);
                            $og_time = strtotime('13:00:00');
@@ -1404,12 +1479,23 @@ if(isset($_POST['importSubmit'])){
                                $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
                                echo "The $time_in is greater than $grace_period_time. Late by $late";
                            } else {
-                               echo "Inside the statement, but not exceeding grace period";
+                            //    echo "Inside the statement, but not exceeding grace period <br>";
                            }
+   
+                           if($time_out > $thursday_timeout){
+                                $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
+                                echo "you are OT <br>";
+                               
+                                echo $time_out ,"<br>";
+                               
+   
+                           }else{
+                                $overtime = '00:00:00';
+                           }
+   
                        } else {
-                           echo "Outside the statement";
+                        //    echo "Outside the statement";
                        }
-  
                        
   
                        if ($time_out) {
@@ -1638,7 +1724,7 @@ if(isset($_POST['importSubmit'])){
                     }
 
                     if(!empty($time_in)){
-                      echo "hindi gumana";
+                    //   echo "hindi gumana";
                     }else{
                        // Convert wed_timein and time_out to DateTime objects
                            $convert_week_timein = new DateTime($get_week_timein);
@@ -1658,7 +1744,7 @@ if(isset($_POST['importSubmit'])){
 
                        $total_work = '00:00:00';
                        $late = '00:00:00';
-                       echo "walang time_in";
+                    //    echo "walang time_in";
                     }
 
                     if($time_out < $time['thurs_timeout']){
@@ -1693,13 +1779,14 @@ if(isset($_POST['importSubmit'])){
                            $early_out = '00:00:00';
                        }
                        
-                       echo $early_out; // Display the calculated early out time
-                       echo $total_work; // Display the calculated total work time
+                    //    echo $early_out; // Display the calculated early out time
+                    //    echo $total_work; // Display the calculated total work time
 
                        //  echo $total_work;
                     } else { 
                         $early_out = '00:00:00';
                     }
+
             }elseif($currentDayOfWeek == $friday){
                 echo "it is friday";
                 // Check if the employee is late
@@ -1736,8 +1823,14 @@ if(isset($_POST['importSubmit'])){
                 $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
                 $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
                 
+                //for ot
+                $time_out_obj = DateTime::createFromFormat("H:i", $time_out);
+                $sched_timeout = DateTime::createFromFormat("H:i", $friday_timeout);
+
+
+                
                 if ($time_in_obj >= $og_time_obj) {
-                    echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                    echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                 
                     $grace_period_minutes = intval($grace_period_minutes);
                     $og_time = strtotime('13:00:00');
@@ -1753,8 +1846,20 @@ if(isset($_POST['importSubmit'])){
                         $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
                         echo "The $time_in is greater than $grace_period_time. Late by $late";
                     } else {
-                        echo "Inside the statement, but not exceeding grace period";
+                        echo "Inside the statement, but not exceeding grace period <br>";
                     }
+
+                    if($time_out > $friday_timeout){
+                         $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
+                         echo "you are OT <br>";
+                        
+                         echo $time_out ,"<br>";
+                        
+
+                    }else{
+                         $overtime = '00:00:00';
+                    }
+
                 } else {
                     echo "Outside the statement";
                 }
@@ -2078,35 +2183,53 @@ if(isset($_POST['importSubmit'])){
                     $late = '00:00:00';
                 }  
 
-                 $half_day = strtotime('13:00:00');
-                     $og_time_formatteds = date('H:i', $half_day);
-                     
-                     // Convert time strings to DateTime objects for accurate comparison
-                     $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
-                     $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
-                     
-                     if ($time_in_obj >= $og_time_obj) {
-                         echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
-                     
-                         $grace_period_minutes = intval($grace_period_minutes);
-                         $og_time = strtotime('13:00:00');
-                         $grace_period_total = $og_time + ($grace_period_minutes * 60);
-                     
-                         $grace_period_time = date('H:i', $grace_period_total);
-                     
-                         // Convert grace period string to DateTime object
-                         $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
-                     
-                         // Compare DateTime objects
-                         if ($time_in_obj > $grace_period_obj) {
-                             $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                             echo "The $time_in is greater than $grace_period_time. Late by $late";
-                         } else {
-                             echo "Inside the statement, but not exceeding grace period";
-                         }
-                     } else {
-                         echo "Outside the statement";
-                     }
+                $half_day = strtotime('13:00:00');
+                $og_time_formatteds = date('H:i', $half_day);
+                
+                // Convert time strings to DateTime objects for accurate comparison
+                $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
+                $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
+                
+                //for ot
+                $time_out_obj = DateTime::createFromFormat("H:i", $time_out);
+                $sched_timeout = DateTime::createFromFormat("H:i", $saturday_timeout);
+
+
+                
+                if ($time_in_obj >= $og_time_obj) {
+                    echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
+                
+                    $grace_period_minutes = intval($grace_period_minutes);
+                    $og_time = strtotime('13:00:00');
+                    $grace_period_total = $og_time + ($grace_period_minutes * 60);
+                
+                    $grace_period_time = date('H:i', $grace_period_total);
+                
+                    // Convert grace period string to DateTime object
+                    $grace_period_obj = DateTime::createFromFormat("H:i", $grace_period_time);
+                
+                    // Compare DateTime objects
+                    if ($time_in_obj > $grace_period_obj) {
+                        $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
+                        echo "The $time_in is greater than $grace_period_time. Late by $late";
+                    } else {
+                        echo "Inside the statement, but not exceeding grace period <br>";
+                    }
+
+                    if($time_out > $saturday_timeout){
+                         $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
+                         echo "you are OT <br>";
+                        
+                         echo $time_out ,"<br>";
+                        
+
+                    }else{
+                         $overtime = '00:00:00';
+                    }
+
+                } else {
+                    echo "Outside the statement";
+                }
                 
                 
 
@@ -2435,8 +2558,14 @@ if(isset($_POST['importSubmit'])){
                 $time_in_obj = DateTime::createFromFormat("H:i", $time_in);
                 $og_time_obj = DateTime::createFromFormat("H:i", $og_time_formatteds);
                 
+                //for ot
+                $time_out_obj = DateTime::createFromFormat("H:i", $time_out);
+                $sched_timeout = DateTime::createFromFormat("H:i", $sunday_timeout);
+
+
+                
                 if ($time_in_obj >= $og_time_obj) {
-                    echo "The $time_in is greater than or equal to $og_time_formatteds<br>";
+                    echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                 
                     $grace_period_minutes = intval($grace_period_minutes);
                     $og_time = strtotime('13:00:00');
@@ -2452,8 +2581,20 @@ if(isset($_POST['importSubmit'])){
                         $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
                         echo "The $time_in is greater than $grace_period_time. Late by $late";
                     } else {
-                        echo "Inside the statement, but not exceeding grace period";
+                        echo "Inside the statement, but not exceeding grace period <br>";
                     }
+
+                    if($time_out > $sunday_timeout){
+                         $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
+                         echo "you are OT <br>";
+                        
+                         echo $time_out ,"<br>";
+                        
+
+                    }else{
+                         $overtime = '00:00:00';
+                    }
+
                 } else {
                     echo "Outside the statement";
                 }
@@ -2808,7 +2949,7 @@ if ($empResult->num_rows < 1) {
             $updateStmt = $db->prepare($updateQuery);
             $updateStmt->bind_param("ssssssssss", $status, $time_in, $time_out, $late, $early_out, $overtime, $total_work, $total_rest, $currentEmpid, $currentDate);
             $updateStmt->execute();
-            echo "<br>data update";
+            // echo "<br>data update";
         } else {
             // Insert a new record
             $insertQuery = "INSERT INTO attendances (status, empid, date, time_in, time_out, late, early_out, overtime, total_work, total_rest)
@@ -2825,7 +2966,7 @@ if ($empResult->num_rows < 1) {
 }
 
 
-
+                }
                     
             }       
         }              
@@ -2847,6 +2988,6 @@ if (isset($_SESSION['alert_msg'])) {
     unset($_SESSION['alert_msg']);
 }
 // Redirect to the listing page
-// header("Location: ../../attendance.php");
+header("Location: ../../attendance.php");
 
 

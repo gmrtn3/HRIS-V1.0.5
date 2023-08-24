@@ -216,10 +216,24 @@
                                    
                                 </div>
                             </div>
+
+                            <!-- for employee id Auto Increment -->
+                              <?php 
+                                 include 'config.php';
+
+                                    $sql = "SELECT MAX(sample_ai) AS sample_id FROM sample_AI";
+                                    $resulta = mysqli_query($conn, $sql);
+                                    $rowa = mysqli_fetch_assoc($resulta);
+                                    
+                                    $next_employee_id = $rowa['sample_id'] + 1;
+                                    
+                                    $employee_id_with_zero = sprintf("%03d", $next_employee_id);
+                              ?>
                             <div class="emp-info-first-input">
                                 <div class="emp-info-fname">
                                         <label for="fname">First Name</label><br>
-                                        <input id="form-fname" type="text" name="fname" placeholder="First Name" id="fname" onkeyup='saveValue(this);' value="<?php echo isset($_GET['fname']) ? $_GET['fname'] : ''; ?>" required>
+                                        <input type="text" class="d-none" value="<?php echo $employee_id_with_zero; ?>" readonly>
+                                        <input class="" id="form-fname" type="text" name="fname" placeholder="First Name" id="fname" onkeyup='saveValue(this);' value="<?php echo isset($_GET['fname']) ? $_GET['fname'] : ''; ?>" required>
                                         
                                 </div>
                                 <div class="emp-info-mname">
@@ -290,10 +304,10 @@
                                     }
                                     ?>
                                     <div style="display:flex; flex-direction: row">
-                                    <select name="company_code" id=""  style="display: flex; align-items: center; justify-content: center;width: 20%; padding: 0.2em; margin-right: 2%; height: 40px">
+                                    <select name="company_code" id=""  style="display: flex; align-items: center; justify-content: center;width: 25%; padding: 0.2em; margin-right: 2%; height: 40px">
                                         <?php echo $options; ?>
                                     </select>
-                                    <input type="text" name="empid" id="form-empid" class="p-1" placeholder="Employee ID" required maxlength="6" style="width: 78%">  
+                                    <input type="text" name="empid" id="form-empid" class="p-1" placeholder="Employee ID" required maxlength="6" style="width: 73%">  
                                     </div>
                                     <span id="empid-error" style="color: red;"></span>
                                 </div>

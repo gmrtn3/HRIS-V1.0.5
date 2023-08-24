@@ -106,11 +106,18 @@ if(mysqli_num_rows($result_attendance) > 0){
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/attendance.css">
     <!-- <link rel="stylesheet" href="css/attendanceResponsive.css"> -->
-    
-   
-    
-    
+
     <title>HRIS | Employee List</title>
+    <script>
+        function closeErrorMessage() {
+            document.getElementById('error-message').style.display = 'none';
+            window.history.replaceState({}, document.title, 'attendance.php');
+        }
+       
+
+// Call the checkReload function when the page loads
+window.onload = checkReload;
+    </script>
 </head>
 <script>
       // Function to display the current date in the specified format
@@ -141,8 +148,8 @@ if(mysqli_num_rows($result_attendance) > 0){
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
-                max-height: 350px;
-                height: 350px;
+                max-height: 330px;
+                height: 330px;
                 
                 
             } 
@@ -474,8 +481,9 @@ if(mysqli_num_rows($result_attendance) > 0){
 
 
     <div class="attendace-container" id="attendace-container">
-        <div class="attendance-title">
+        <div class="attendance-title d-flex flex-row justify-content-between">
             <h1>Attendance</h1>
+           
         </div>
 
         <div class="attendance-input">
@@ -550,14 +558,45 @@ if(mysqli_num_rows($result_attendance) > 0){
 
         </div>
 
-        <div id="att-listing" class="att-date">
+        <div id="att-listing" class="att-date d-flex flex-row justify-content-between">
             <h1 id="current-date"></h1>
         </div>
-        
 
+        <?php
+                if(isset($_GET['noSchedule'])){
+                    echo ' <div class="error-handler w-100 mb-3" style="height: 3em" id="error-message">';
+                        echo '<div class="w-100 d-flex flex-row align-items-center justify-content-between pl-4 pr-4" style="height: 100%; background-color: brown;">';
+                            echo '<p class="error-message" style="font-size: 0.9em; color: #fff;">No Schedule! </p>';
+                            echo '<button style="background-color: inherit; border: none; color: #fff; font-size: 1.1em"onclick="closeErrorMessage()"> <i class="fa-solid fa-x"></i> </button>';
+                        echo '</div>';
+                    echo '</div>';
+                }
+                ?>
+
+<?php
+                if(isset($_GET['noEmpid'])){
+                    echo ' <div class="error-handler w-100 mb-3" style="height: 3em" id="error-message">';
+                        echo '<div class="w-100 d-flex flex-row align-items-center justify-content-between pl-4 pr-4" style="height: 100%; background-color: brown;">';
+                            echo '<p class="error-message" style="font-size: 0.9em; color: #fff;">You insert non-existing employee ID. </p>';
+                            echo '<button style="background-color: inherit; border: none; color: #fff; font-size: 1.1em"onclick="closeErrorMessage()"> <i class="fa-solid fa-x"></i> </button>';
+                        echo '</div>';
+                    echo '</div>';
+                }
+                ?>
+
+<?php
+                if(isset($_GET['wrongDate'])){
+                    echo ' <div class="error-handler w-100 mb-3" style="height: 3em; margin:auto;" id="error-message">';
+                        echo '<div class="w-100 d-flex flex-row align-items-center justify-content-between pl-4 pr-4" style="height: 100%;  border-radius: 0.5em; background-color: brown;">';
+                            echo '<p class="error-message" style="font-size: 0.9em; color: #fff;">You cannot input past or future date in the attendance! </p>';
+                            echo '<button style="background-color: inherit; border: none; color: #fff; font-size: 1.1em"onclick="closeErrorMessage()"> <i class="fa-solid fa-x"></i> </button>';
+                        echo '</div>';
+                    echo '</div>';
+                }
+                ?>
       
         <div class="table-responsive p-2" id="table-responsiveness">
-        <div style="overflow-x: hidden; overflow-y: hidden;">
+        <div style="overflow-x: hidden; overflow-y: hidden; width: 98%; margin:auto">
             <table id="order-listing" class="table table-responsive" style="width: 100%;">
                 <thead>
                         <th>Status</th>
@@ -599,7 +638,7 @@ $sql = "SELECT attendances.status,
         attendances.total_rest, 
         CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`
         FROM attendances
-        INNER JOIN employee_tb ON employee_tb.empid = attendances.empid";
+        INNER JOIN employee_tb ON employee_tb.empid = attendances.empid ";
 
 // Add filters based on the user inputs
 if (!empty($empid) && $empid != 'All Employee') {
@@ -623,7 +662,13 @@ if (!empty($dateFrom) && !empty($dateTo)) {
     $sql .= " AND DATE_FORMAT(attendances.date, '%m') = '$currentMonth'";
 }
 
-$sql .= " ORDER BY date ASC";
+$sql .= "ORDER BY CASE WHEN `attendances`.`status` = 'Present' THEN 1
+WHEN `attendances`.`status` = 'Absent' THEN 2
+WHEN `attendances`.`status` = 'LWOP' THEN 3
+WHEN `attendances`.`status` = 'On-Leave' THEN 4
+WHEN `attendances`.`status` = 'Restday' THEN 5
+END, `attendances`.`date` DESC";
+
 // For debugging, echo the SQL query
 
 $result = $conn->query($sql);

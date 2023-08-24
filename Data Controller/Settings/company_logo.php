@@ -33,7 +33,7 @@ session_start();
 
         // Check if user uploaded a photo
         if (!empty($CompanyPhoto)) {
-            $update_query = "UPDATE settings_company_tb SET `cmpny_logo` = '$CompanyPhoto', `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `cmpny_code` = '$CompanyCode', `col_salary_settings` = '$salary_settings', `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
+            $update_query = "UPDATE settings_company_tb SET `cmpny_logo` = '$CompanyPhoto', `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `col_salary_settings` = '$salary_settings', `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
             $update_run = mysqli_query($conn, $update_query);
 
             if($update_run){

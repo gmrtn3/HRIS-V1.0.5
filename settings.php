@@ -137,7 +137,7 @@ session_start();
                     <div class="first-flex">
                       <div class="">
                         <label for="" class="form-label comp_text">Zipcode</label>
-                        <input name="company_zipcode" type="number" maxlength="4" class="form-control input_zipcode" id="zipcode_id" value="<?php echo $row['cmpny_zipcode']?>">
+                        <input name="company_zipcode" type="text" class="form-control input_zipcode" id="zipcode_id" value="<?php echo $row['cmpny_zipcode']?>" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 4) this.value = this.value.slice(0, 4);">
                       </div>
 
                       
