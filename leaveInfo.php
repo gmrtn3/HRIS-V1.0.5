@@ -1,22 +1,39 @@
 <?php
-
 session_start();
-if(!isset($_SESSION['username'])){
-    header("Location: login.php"); 
+//    $empid = $_SESSION['empid'];
+   if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
 } else {
     // Check if the user's role is not "admin"
-    if($_SESSION['role'] != 'admin'){
+    if ($_SESSION['role'] != 'admin') {
         // If the user's role is not "admin", log them out and redirect to the logout page
         session_unset();
         session_destroy();
         header("Location: logout.php");
         exit();
-    }else {
+    } else{
         include 'config.php';
-        include 'user-image.php';
-    }
-}
+        $userId = $_SESSION['empid'];
+       
+        $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
+        $iconRow = mysqli_fetch_assoc($iconResult);
 
+        if ($iconRow) {
+            $image_url = $iconRow['emp_img_url'];
+        } else {
+            // Handle the case when the user ID is not found in the database
+            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
+        }
+        
+
+    //    echo $image_url;
+    }
+
+    // echo $userId;
+    // echo $_SESSION['empid'];
+
+    
+}
 
 ?>
 
@@ -52,12 +69,34 @@ if(!isset($_SESSION['username'])){
 </head>
 <body>
 
+
 <!--MODAL BOOTSTRAP-->
 <header>
     <?php
     include 'header.php';
     ?>
 </header>
+<style>
+         table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 350px;
+                height: 350px;
+                
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+    </style>
+
 
 <!-- Modal -->
 <div class="modal fade" id="add_leaveMDL" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -162,9 +201,9 @@ if(!isset($_SESSION['username'])){
                                     <p style="font-size: 25px; padding: 10px">Leave Credits</p>
                                 </div>
                                 
-                                <div class="col-6 text-end">
+                                <div class="col-6 text-end btn-hover">
                                 <!-- Button trigger modal -->
-                                <button class="btn_addLeave" data-bs-toggle="modal" data-bs-target="#add_leaveMDL">
+                                <button class="btn_addLeave" data-bs-toggle="modal" data-bs-target="#add_leaveMDL" style="background-color: black; color: white"> 
                                     Add Leave
                                 </button>
                             </div>
@@ -224,8 +263,8 @@ if(!isset($_SESSION['username'])){
                         ?>
                         <!-------------------- para sa message na error ENd --------------------->
 
-                    <div class="table-responsive" id="table-responsiveness">
-                             <table id="order-listing" class="table mt-2">
+                        <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                                    <table id="order-listing" class="table mt-2" style="width: 100%">
                                 <thead>
                                     <tr>
                                         <th style= 'display: none;' id="header">ID</th>

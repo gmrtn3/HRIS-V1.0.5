@@ -1,21 +1,32 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['username'])) {
-        header("Location: login.php");
-    } else {
-        // Check if the user's role is not "admin"
-        if ($_SESSION['role'] != 'admin') {
-            // If the user's role is not "admin", log them out and redirect to the logout page
-            session_unset();
-            session_destroy();
-            header("Location: logout.php");
-            exit();
-        } else {
-            include 'config.php';
-            include 'user-image.php';
-        }
-    }
-
+  session_start();
+  //    $empid = $_SESSION['empid'];
+     if (!isset($_SESSION['username'])) {
+      header("Location: login.php");
+  } else {
+      // Check if the user's role is not "admin"
+      if ($_SESSION['role'] != 'admin') {
+          // If the user's role is not "admin", log them out and redirect to the logout page
+          session_unset();
+          session_destroy();
+          header("Location: logout.php");
+          exit();
+      } else{
+          include 'config.php';
+          $userId = $_SESSION['empid'];
+         
+          $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
+          $iconRow = mysqli_fetch_assoc($iconResult);
+  
+          if ($iconRow) {
+              $image_url = $iconRow['emp_img_url'];
+          } else {
+              // Handle the case when the user ID is not found in the database
+              $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
+          }
+      
+      }
+  }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Make sure the status and ID are provided in the form submission
         if (isset($_POST['status']) && isset($_POST['id'])) {
@@ -187,7 +198,8 @@
                 <div></div>
             </div>
             <div class="loanreq-input">
-                <button><a style="color:white; text-decoration:none; outline:none;" href="loanRequestForm.php">Create New</a></button>
+                <!-- <button><a style="color:white; text-decoration:none; outline:none;" href="loanRequestForm.php">Create New</a></button> -->
+                <a href="loanRequestForm.php" style="color:white; text-decoration:none; outline:none; background-color:#000; height: 3.3em; width: 7em; border-radius: 0.4em" class="d-flex justify-content-center align-items-center" > Create New</a>
                 <!-- <input class="employeeList-search" type="text" placeholder="&#xF002; Search" style="font-family:Arial, FontAwesome" id="search"/> -->
             </div>
 

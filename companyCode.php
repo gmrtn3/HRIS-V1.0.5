@@ -1,22 +1,32 @@
 <?php
-    session_start();
-    if(!isset($_SESSION['username'])){
-        header("Location: login.php"); 
-    } else {
-        // Check if the user's role is not "admin"
-        if($_SESSION['role'] != 'admin'){
-            // If the user's role is not "admin", log them out and redirect to the logout page
-            session_unset();
-            session_destroy();
-            header("Location: logout.php");
-            exit();
-        }
-        else {
-            include 'config.php';
-            include 'user-image.php';
+session_start();
+//    $empid = $_SESSION['empid'];
+   if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+} else {
+    // Check if the user's role is not "admin"
+    if ($_SESSION['role'] != 'admin') {
+        // If the user's role is not "admin", log them out and redirect to the logout page
+        session_unset();
+        session_destroy();
+        header("Location: logout.php");
+        exit();
+    } else{
+        include 'config.php';
+        $userId = $_SESSION['empid'];
+       
+        $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
+        $iconRow = mysqli_fetch_assoc($iconResult);
+
+        if ($iconRow) {
+            $image_url = $iconRow['emp_img_url'];
+        } else {
+            // Handle the case when the user ID is not found in the database
+            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
         }
     
     }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -221,7 +231,7 @@
                         <form action="View_company_code" method="post">
                                 <input id="id_deptname_tb" name="id" type="text" style="display: none;">
                                 <input id="id_textdept" name="company_code" type="text" style="display: none;">
-                                <div class="table-responsive mt-5" style=" overflow-x: hidden; width: 100%">
+                                <div class="table-responsive mt-5" style=" overflow: hidden; width: 100%">
                         <table id="order-listing" class="table" style="width: 100%; " >
                             <thead style="background-color: #ececec" >
 

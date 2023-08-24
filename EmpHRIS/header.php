@@ -717,7 +717,7 @@
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-emp" aria-expanded="false" aria-controls="ui-emp" style="margin-top: 5px; color:white">
               <i class=" fa-solid fa-users" ></i>
-              <span class="nav-title"  style="font-size: 21px; margin-left: 15px; font-family: Arial, sans-serif; font-weight: 400; height: 35px" >LEAVES</span>
+              <span class="nav-title"  style="font-size: 21px; margin-left: 15px; font-family: Arial, sans-serif; font-weight: 400; height: 35px" >LEAVE INFORMATION</span>
               <i class="menu-arrow" style="color: white"></i>
             </a>
             <div class="collapse" id="ui-emp">

@@ -37,6 +37,13 @@
     #sidebar::-webkit-scrollbar-thumb {
       background-color: #888;
     }
+    .dropdown{
+            background-color: inherit !important;
+            border: none !important;
+        }
+        #notificationDropdown:hover{
+            background-color: inherit !important;
+        }
 </style>
     <!-- UPPER NAV -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row custom-navbar" id="upper-nav"> <!-- UPPER NAV MOTHER -->
@@ -604,7 +611,7 @@
               <li class="nav-item"> <a class="nav-link" href="#">CALENDAR</a></li>
               <li class="nav-item"> <a class="nav-link" href="dtRecords">DAILY TIME RECORDS</a></li>
               <li class="nav-item"> <a class="nav-link" href="dtr_admin">DTR CORRECTION</a></li>
-              <li class="nav-item"> <a class="nav-link" href="leaveInfo">LEAVES INFORMATION</a></li>
+              <li class="nav-item"> <a class="nav-link" href="leaveInfo">LEAVE CREDIT</a></li>
               <li class="nav-item"> <a class="nav-link" href="leaveReq">LEAVE REQUEST</a></li>
               <li class="nav-item"> <a class="nav-link" href="official_business">OFFICIAL BUSINESS</a></li>
               <li class="nav-item"> <a class="nav-link" href="Schedules">SCHEDULES</a></li>
@@ -734,7 +741,7 @@
           <li class="nav-item" id="piece_hide_show" >
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-pakyawan" aria-expanded="false" aria-controls="ui-pakyawan" style="margin-top: 5px; color:white">
               <i class="fa-solid fa-gear"></i>
-              <span class="nav-title"  style="font-size: 21px; margin-left: 15px; font-family: Arial, sans-serif; font-weight: 400" >PIECE RATE</span>
+              <span class="nav-title"  style="font-size: 21px; margin-left: 15px; font-family: Arial, sans-serif; font-weight: 400" >PAKYAWAN</span>
               <i class="menu-arrow" style="color: white"></i>
             </a>
             <div class="collapse" id="ui-pakyawan">

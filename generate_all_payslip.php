@@ -1,6 +1,7 @@
 <?php
-  session_start();
-  if (!isset($_SESSION['username'])) {
+session_start();
+//    $empid = $_SESSION['empid'];
+   if (!isset($_SESSION['username'])) {
     header("Location: login.php");
 } else {
     // Check if the user's role is not "admin"
@@ -10,9 +11,20 @@
         session_destroy();
         header("Location: logout.php");
         exit();
-    } else {
+    } else{
         include 'config.php';
-        include 'user-image.php';
+        $userId = $_SESSION['empid'];
+       
+        $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
+        $iconRow = mysqli_fetch_assoc($iconResult);
+
+        if ($iconRow) {
+            $image_url = $iconRow['emp_img_url'];
+        } else {
+            // Handle the case when the user ID is not found in the database
+            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
+        }
+    
     }
 }
 ?>
@@ -1750,7 +1762,7 @@ if(isset($_POST['printAll'])){
                                             </div>
 
                                             <div class="div_mdlcontnt_left3">
-                                                <p class="lbl_bsc_pay">PAID LEAVES</p>
+                                                <p class="lbl_bsc_pay">PAID LEAVE</p>
                                                 <p class="p_Thrs"></p>
                                                 <p class="p_Tamount" id="leaveAmount"><?php echo $PaidLeaves?></p>
                                             </div>

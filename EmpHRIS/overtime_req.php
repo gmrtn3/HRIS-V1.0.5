@@ -224,8 +224,8 @@ session_start();
 
       <form action="actions/Overtime Request/download_ot.php" method="POST">
       <div class="modal-body">
-        <input type="text" name="table_id" id="id_table">
-        <input type="text" name="table_name" id="name_table">
+        <input type="hidden" name="table_id" id="id_table">
+        <input type="hidden" name="table_name" id="name_table">
         <h3>Are you sure you want download the PDF File?</h3>
       </div>
       <div class="modal-footer">

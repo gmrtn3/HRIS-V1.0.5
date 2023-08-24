@@ -120,7 +120,7 @@ else
             $image_url = $iconRow['emp_img_url'];
         } else {
             // Handle the case when the user ID is not found in the database
-            $image_url = 'img/user.jpg'; // Set a default image or handle the situation accordingly
+            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
         }
         
 

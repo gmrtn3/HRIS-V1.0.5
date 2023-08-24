@@ -919,7 +919,7 @@
                                             <i class="fa-solid fa-chevron-right"></i>
                                             </div>
                                             <div style="margin-top: 5px;">
-                                                <a href="leaveReq.php">Request Vacation Leave</a>
+                                                <a href="leaveReq.php">Leave Request</a>
                                             </div>
                                         </div>
                                         <div class="emp-dash2-shortcut-card">

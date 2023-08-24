@@ -1,21 +1,32 @@
 <?php 
 session_start();
-if(!isset($_SESSION['username'])){
-    header("Location: login.php"); 
+//    $empid = $_SESSION['empid'];
+   if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
 } else {
     // Check if the user's role is not "admin"
-    if($_SESSION['role'] != 'admin'){
+    if ($_SESSION['role'] != 'admin') {
         // If the user's role is not "admin", log them out and redirect to the logout page
         session_unset();
         session_destroy();
         header("Location: logout.php");
         exit();
-    }else {
+    } else{
         include 'config.php';
-        include 'user-image.php';
+        $userId = $_SESSION['empid'];
+       
+        $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
+        $iconRow = mysqli_fetch_assoc($iconResult);
+
+        if ($iconRow) {
+            $image_url = $iconRow['emp_img_url'];
+        } else {
+            // Handle the case when the user ID is not found in the database
+            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
+        }
+    
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -127,6 +138,14 @@ if(!isset($_SESSION['username'])){
 	        max-width: 100%;
 	        width: 100%;
         }
+
+        .dropdown{
+            background-color: inherit !important;
+            border: none !important;
+        }
+        #notificationDropdown:hover{
+            background-color: inherit !important;
+        }
 </style>
 <!-- Modal -->
 <div class="modal fade" id="modal_create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -191,7 +210,7 @@ if(!isset($_SESSION['username'])){
                             <select id="" required name="name_Month" class='form-select form-select-m' aria-label='.form-select-sm example' style='cursor: pointer;'>
                                 <option disabled selected value=''>Pick a Month</option>
                                 <option value='January'>January</option>
-                                <option value='Febuary'>Febuary</option>
+                                <option value='February'>February</option>
                                 <option value='March'>March</option>
                                 <option value='April'>April</option>
                                 <option value='May'>May</option>
@@ -274,7 +293,7 @@ if(!isset($_SESSION['username'])){
                             }
                         ?>
                             <select name="department" id="departmentDropdown" class="form-select">
-                            <option value selected>Select Department</option>
+                            <option value selected disabled>Select Department</option>
                             <option value='All'>All</option>
                             <?php echo $option ?>
                         </select>
@@ -464,7 +483,7 @@ if(!isset($_SESSION['username'])){
                             }
                         ?>
                         <select name="department" id="departmentDropdowns" class="form-select">
-                            <option value selected>Select Department</option>
+                            <option value selected disabled>Select Department</option>
                             <option value='All'>All</option>
                             <?php echo $option ?>
                         </select>

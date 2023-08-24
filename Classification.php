@@ -1,19 +1,31 @@
 <?php
 session_start();
-if(!isset($_SESSION['username'])){
-    header("Location: login.php"); 
+//    $empid = $_SESSION['empid'];
+   if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
 } else {
     // Check if the user's role is not "admin"
-    if($_SESSION['role'] != 'admin'){
+    if ($_SESSION['role'] != 'admin') {
         // If the user's role is not "admin", log them out and redirect to the logout page
         session_unset();
         session_destroy();
         header("Location: logout.php");
         exit();
-    }else {
-      include 'config.php';
-      include 'user-image.php';
-  }
+    } else{
+        include 'config.php';
+        $userId = $_SESSION['empid'];
+       
+        $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
+        $iconRow = mysqli_fetch_assoc($iconResult);
+
+        if ($iconRow) {
+            $image_url = $iconRow['emp_img_url'];
+        } else {
+            // Handle the case when the user ID is not found in the database
+            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
+        }
+    
+    }
 }
 include 'config.php';
 

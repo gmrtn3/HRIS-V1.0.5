@@ -87,12 +87,7 @@ if(isset($_POST['importSubmit'])){
                     sched_ot
                 FROM schedule_tb
                 WHERE schedule_name = '".$row1['schedule_name']."'";
-        
-
-        
-        
-
-        
+              
 
                 } else{
                     echo '<script> alert("Employee has no schedule!"); </script>';

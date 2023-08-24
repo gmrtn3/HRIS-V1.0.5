@@ -1,29 +1,33 @@
 
 <?php
-    session_start();
-    if(isset($_SESSION['alert_msg'])){
-        $alert_msg = $_SESSION['alert_msg'];
-        echo "<script>alert('$alert_msg');</script>";
-        unset($_SESSION['alert_msg']);
-    }
-
-    
-    if(!isset($_SESSION['username'])){
-        header("Location: login.php"); 
-    } else {
-        // Check if the user's role is not "admin"
-        if($_SESSION['role'] != 'admin'){
-            // If the user's role is not "admin", log them out and redirect to the logout page
-            session_unset();
-            session_destroy();
-            header("Location: logout.php");
-            exit();
-        }else {
-            include 'config.php';
-            include 'user-image.php';
-        }
-    }
-
+   session_start();
+   //    $empid = $_SESSION['empid'];
+      if (!isset($_SESSION['username'])) {
+       header("Location: login.php");
+   } else {
+       // Check if the user's role is not "admin"
+       if ($_SESSION['role'] != 'admin') {
+           // If the user's role is not "admin", log them out and redirect to the logout page
+           session_unset();
+           session_destroy();
+           header("Location: logout.php");
+           exit();
+       } else{
+           include 'config.php';
+           $userId = $_SESSION['empid'];
+          
+           $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
+           $iconRow = mysqli_fetch_assoc($iconResult);
+   
+           if ($iconRow) {
+               $image_url = $iconRow['emp_img_url'];
+           } else {
+               // Handle the case when the user ID is not found in the database
+               $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
+           }
+       
+       }
+   }
  
     // $server = "localhost";
     // $user = "root";
@@ -118,7 +122,7 @@ if(mysqli_num_rows($result_attendance) > 0){
         const dateFormat = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
 
         // Update the content of the h1 element with the current date
-        document.getElementById("current-date").innerHTML = `Today's date is <strong style=" color: #C37700">${dateFormat}</strong>`;
+        document.getElementById("current-date").innerHTML = `Date today is <strong style=" color: #C37700">${dateFormat}</strong>`;
       }
     </script>
 
@@ -194,6 +198,11 @@ if(mysqli_num_rows($result_attendance) > 0){
 }
     #table-reposiveness{
         width: 95%; height: 100%; margin:auto; margin-top: 30px;
+    }
+    
+    .attendance-input button:hover{
+        background-color: #b882ee !important;
+        transition: ease-in-out 0.3s !important;
     }
 @media(max-width: 1350px){
     html{
@@ -429,6 +438,7 @@ if(mysqli_num_rows($result_attendance) > 0){
    }
    
 }
+
 
     </style>
 
