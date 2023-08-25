@@ -1,0 +1,75 @@
+.pr-container{
+    width: 78%;
+    height: 81%;
+    background-color: #fff;
+    position: absolute;
+    left: 18%;
+    top: 14%;
+    border-radius: 10px;
+    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.4), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.header-title{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    padding: 1em;
+}
+
+#table-responsive{
+    width: 95%;
+    height: 100%;
+    margin: auto;
+    overflow-y: hidden;
+}
+
+#order-listing{
+    width: 100%;
+}
+
+table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    max-height: 450px;
+    height: 450px;
+    
+    
+}
+tbody {
+    display: table;
+    width: 100%;
+}
+tr {
+    width: 100% !important;
+    display: table !important;
+    table-layout: fixed !important;
+}
+th, td {
+    text-align: left !important;
+    width: 14.28% !important;
+}
+.pagination{
+margin-right:78px !important;
+}
+
+.pagination li a{
+    color: #c37700;
+}
+
+    .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+    z-index: 3;
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+
+
+
+#order-listing_next{
+    margin-right: 28px !important;
+    margin-bottom: -16px !important;
+
+}
+

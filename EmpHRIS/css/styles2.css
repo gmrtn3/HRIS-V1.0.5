@@ -1,0 +1,3053 @@
+@import url('https://fonts.googleapis.com/css2?famiiy=Mulish:wght@400;700&family=0vo&display=swap');
+
+:root {
+    --line-border-fill: #7F7FDD;
+    --line-border-empty: #bdbdbd
+}
+
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+   
+    
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    color: black;
+     
+}
+
+/* Validation */
+.error-message{
+    font-size: 13px;
+    height: 20px;
+}
+
+.form-error{
+    color: red;
+}
+
+.form-success{
+    color: green;
+}
+
+.input-error{
+    box-shadow: 0 0 5px red;
+}
+
+/* header */
+header{
+    width: 100%;
+    height: 10%;
+}
+
+.header-container{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f4f4f4;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    z-index: 5;
+}
+.header-logo{
+    margin-left: 50px
+}
+
+.header-logo h1{
+    letter-spacing: 3px;
+    font-size: 35px;
+    font-weight: 700;
+}
+
+.header-user{
+    display: flex;
+    flex-direction: row;
+    margin-right: 70px;
+    align-items: center;
+    width: 500px;
+    justify-content: space-evenly;
+}
+
+.header-notif span{
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.header-head img{
+    height: 60px;
+    border-radius: 50%;
+    margin-right: -10px;
+}
+
+.header-type{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 200px;
+    justify-content: center;
+}
+
+.header-type h1{
+    font-size: 25px;
+    color: gray;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.header-type p{
+    font-size: 20px;
+    font-style: italic;
+    margin-top: -17px;
+}
+
+.header-dropdown{
+    margin-left: -70px;
+    width: 150px;
+    height: 100px;
+    /* border: black 1px solid; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: inherit;
+}
+
+.header-dropdown button{
+    border: none;
+    outline: none;
+    background-color: inherit;
+    cursor: pointer;
+}
+
+.header-dropdown-menu{
+    position: absolute;
+    height: 75px;
+    width: 170px;
+    background-color: #f4f4f4;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    top: 75px;
+    border-radius: 10px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-dropdown-menu a{
+    text-decoration: none;
+    color: black;
+    margin-left: 40px;
+    font-weight: 500;
+}
+
+.header-dropdown-menu a:hover{
+    color: red;
+    transition: ease-in .2s;
+}
+
+.header-dropdown .header-dropdown-menu{
+    display: none;
+}
+
+.header-dropdown .header-dropdown-menu.show-header-dd{
+    display: block;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Side bar*/
+
+.sidebars{
+    position: absolute;
+    left: 0;
+    height: 120vh;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    line-height: 50px;
+    align-items: center;
+    background-color: #f4f4f4;
+    box-shadow: 5px 8px 10px 0 rgba(0, 0, 0, 0.3), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.sidebars a{
+    text-decoration: none;
+    color: black;
+    
+}
+
+.sidebars .first-ul{
+    width: 100%;
+    margin-top: 120px;
+    height: 100%;
+}
+
+.sidebars li{
+    width: 100%;
+    list-style: none;
+}
+
+
+.sidebars ul .hoverable{
+    width: 100%;
+}
+
+.sidebars ul .hoverable:hover{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+    transition: .2s ease-in;
+}
+
+.sidebars ul li ul{
+    line-height: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sidebars ul li ul li{
+    margin-left: 80px;
+}
+
+.sidebars ul li ul li a{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.sidebars li a{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.sidebars li div span{
+    margin-right: 15px;
+    margin-left: 20px;
+}
+
+.sidebars .fa-chevron-right{
+    margin-right: 20px;
+    font-size: 13px;
+}
+
+.sidebars ul ul{
+    position: static;
+    display: none;
+}
+.sidebars ul .timekeep-dd-show{
+    display: none;
+}
+
+
+.sidebars ul .timekeep-dd-show.show{
+    display: block;
+}
+
+.sidebars ul .payroll-dd-show{
+    display: none;
+}
+
+.sidebars ul .payroll-dd-show.show2{
+    display: block;
+}
+
+
+.sidebars ul .employees-dd-show{
+    display: none;
+}
+
+.sidebars ul .employees-dd-show.show3{
+    display: block;
+}
+
+.sidebars ul .report-dd-show{
+    display: none;
+}
+
+.sidebars ul .report-dd-show.show4{
+    display: block;
+}
+
+.sidebars ul .development-dd-show{
+    display: none;
+}
+
+.sidebars ul .development-dd-show.show5{
+    display: block;
+}
+
+.sidebars ul .performance-dd-show{
+    display: none;
+}
+
+.sidebars ul .performance-dd-show.show6{
+    display: block;
+}
+
+.sidebars ul .acquisition-dd-show{
+    display: none;
+}
+
+.sidebars ul .acquisition-dd-show.show7{
+    display: block;
+}
+
+.sidebars ul .org-dd-show{
+    display: none;
+}
+
+.sidebars ul .org-dd-show.show7{
+    display: block;
+}
+
+.sidebars ul .sett-dd-show{
+    display: none;
+}
+
+.sidebars ul .sett-dd-show.show8{
+    display: block;
+}
+
+.timekeep-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.employees-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.payroll-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.report-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.performance-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.development-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+
+.acquisition-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.org-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+/* employeelist */
+
+.empList-container{
+    width: 1500px;
+    height: 820px;
+    position: absolute;
+    right: 60px;
+    bottom: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    /* margin-top: 100px;
+    margin-left: 320px; */
+}
+
+.empList-title{
+    width: 100%;
+    margin-top:20px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.empList-title h1{
+    margin-left: 20px;
+    font-size: 40px;
+    font-weight: 700;
+}
+.empList-title button{
+    height: 45px;
+    width: 200px;
+    margin-right: 50px;
+    outline:none;
+    border:none;
+    /* box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17); */
+    border-radius: 5px;
+    background-color:rgb(157, 157, 247);
+}
+
+.empList-title button a{
+    color:white;
+    font-weight:500;
+    outline:none;
+   text-decoration: none;
+   font-size: 20px;
+}
+
+.empList-create-search{
+    width: 1450px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 30px;
+
+}
+
+.empList-create-search a{
+    height: 50px;
+    width: 120px;
+    border: none;
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    margin-left: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+   
+}
+
+.empList-create-search input{
+    padding: 15px;
+    width: 300px;
+    margin-right: 30px;
+    font-size: 18px;
+}
+
+.empList-create-search select{
+    height: 50px;
+    width: 400px;
+}
+
+
+.table tbody button a:hover{
+    color:black;
+}
+
+.emplist-create-search button{
+    height: 50px;
+    width: 100px;
+}
+
+.empList-create-search label{
+    font-size: 23px;
+}
+
+.emplistBtn{
+    height: 50px;
+    width: 100px;
+    border: none;
+    background-color:rgb(157, 157, 247) ;
+    color: white;
+    border-radius: 8px;
+    margin-right: 10px;
+    margin-top: 40px;
+}
+
+
+
+/* emp list form */
+
+.empListForm-container{
+    width: 1500px;
+    top: 13%;
+    height: 820px;
+    position: absolute;
+    right: 60px;
+    bottom: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    overflow:scroll;
+    overflow-x: hidden;
+    
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+.employeeList-modal{
+    display: flex;
+    flex-direction: column;
+}
+
+.employeeList-info-container{
+    display: flex;
+    flex-direction: column;
+}
+.employeeList-govern-container{
+    display: flex;
+    flex-direction: column;
+}
+.employeeList-empDetail-container{
+    display: flex;
+    flex-direction: column;
+}
+.employeeList-allowance-container{
+    display: flex;
+    flex-direction: column;
+}
+.employeeList-schedule-container{
+    display: flex;
+    flex-direction: column;
+}
+.employeeList-empAccess-container{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.emp-title{
+    margin-top: 20px;
+    border-radius: 10px;
+    margin-left: 30px;
+    background-color: #ccc;
+    width: 95%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.emp-title h1{
+    margin-left: 10px;
+    font-size: 25px;
+}
+
+.employeeList-modal-content label{
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/* Emp form personal info */
+.emp-info-first-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+.emp-info-first-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+
+.emp-info-second-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.emp-info-second-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+.emp-info-second-input .emp-info-address input{
+    width: 850px;
+    
+}
+
+.emp-info-third-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.emp-info-third-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+.emp-info-third-input select{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+/* emp form government info */
+
+.emp-govern-first-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.emp-govern-first-input input{
+    width: 615px;
+    padding: 10px;
+    outline: none;
+}
+
+.emp-govern-second-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.emp-govern-second-input input{
+    width: 615px;
+    padding: 10px;
+    outline: none;
+}
+
+/* employee detail */
+.emp-empDetail-first-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+.emp-empDetail-first-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+.emp-empDetail-first-input select{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+
+
+.emp-empDetail-second-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.emp-empDetail-second-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+.emp-empDetail-second-input select{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+
+.emp-empDetail-third-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 40px;
+}
+
+.emp-empDetail-third-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+/* emp form allowance */
+.emp-allowance-first-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.emp-allowance-first-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+/* emp form schedule */
+
+.emp-schedule-first-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.emp-schedule-first-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+.emp-schedule-first-input select{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+/* emp form Access */
+.emp-Access-first-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.emp-Access-first-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+.emp-Access-first-input select{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+.emp-Access-second-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.emp-Access-second-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+.empList-save-btn{
+    height: 90px;
+    display: flex;
+    align-items: center;
+
+}
+
+.empList-save-btn div{
+    margin-left: 40px;
+}
+
+.empList-save-btn .closeModal{
+    margin: 20px;
+    margin-right: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    color:cornflowerblue;
+    
+}
+
+.empList-save-btn .modalSave input{
+    font-size: 20px;
+    height: 45px;
+    width: 100px;
+    border: none;
+    background-color: cornflowerblue;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+/* edit employee */ 
+
+
+.emp-info-first-container{
+    width: 1000px;
+    
+    margin-left: 60px;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 370px;
+}
+
+.emp-fname label{
+    font-size: 17px;
+    
+    font-weight: 400;
+    margin-bottom: -10px;
+}
+
+.emp-fname input{
+    width: 450px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+}
+
+.emp-lname label{
+    font-size: 17px;
+    
+    font-weight: 400;
+    margin-bottom: -10px;
+    
+}
+
+.emp-lname input{
+    width: 450px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+}
+
+.emp-gender label{
+    font-size: 17px;
+   
+    font-weight: 400;
+    margin-bottom: -10px;
+    margin-top: 20px;
+}
+
+.emp-gender select{
+    width: 450px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+}
+
+.emp-dob label{
+    font-size: 17px;
+    
+    font-weight: 400;
+    margin-bottom: -10px;
+    margin-top: 20px;
+}
+
+.emp-dob input{
+    width: 450px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+}
+
+.emp-contact label{
+    font-size: 17px;
+   
+    font-weight: 400;
+    margin-bottom: -10px;
+    margin-top: 20px;
+}
+
+.emp-contact input{
+    width: 450px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+}
+
+.emp-cstatus label{
+    font-size: 17px;
+    
+    font-weight: 400;
+    margin-bottom: -10px;
+    margin-top: 20px;
+}
+
+.emp-cstatus select{
+    width: 450px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+}
+
+.emp-email label{
+    font-size: 17px;
+    
+    font-weight: 400;
+    margin-bottom: -10px;
+    margin-top: 20px;
+}
+
+.emp-email input{
+    width: 450px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+}
+
+.emp-datehired label{
+    font-size: 17px;
+   
+    font-weight: 400;
+    margin-bottom: -10px;
+    margin-top: 20px;
+}
+
+.emp-datehired input{
+    width: 450px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+}
+
+.emp-govern-first-container{
+    width: 1400px;
+    margin-left: 60px;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 170px;
+}
+
+.emp-govern-first-container input{
+    width: 340px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+    height: 50px;
+}
+
+.emp-govern-first-container label{
+    font-size: 17px;
+    margin-left: 3px;
+    font-weight: 400;
+    margin-bottom: -5px;
+    
+}
+
+.emp-allowance-first-container{
+    width: 1400px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.emp-allowance-first-container input{
+    width: 450px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+    height: 50px;
+}
+
+.emp-allowance-first-container label{
+    font-size: 17px;
+    margin-left: 3px;
+    font-weight: 400;
+    margin-bottom: -5px;    
+}
+
+.emp-empInfo-first-container{
+    width: 1400px;
+    margin-left: 60px;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 300px;
+}
+
+.emp-empInfo-first-container label{
+    font-size: 17px;
+    margin-left: 3px;
+    font-weight: 400;
+    margin-bottom: -5px; 
+}
+
+.emp-empInfo-first-container input{
+    width: 420px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+    height: 50px;
+    
+}
+
+.emp-empInfo-first-container select{
+    width: 420px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+    height: 50px;
+}
+
+.emp-worksched-first-container{
+    width: 1400px;
+    margin-left: 60px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.emp-worksched-first-container label{
+    font-size: 17px;
+    margin-left: 3px;
+    font-weight: 400;
+    margin-bottom: -5px; 
+}
+
+.emp-worksched-first-container input{
+    width: 420px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+    height: 50px;
+    
+}
+
+.emp-worksched-first-container select{
+    width: 420px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+    height: 50px;
+}
+.worksched-scedule{
+    margin-left: 45px;
+}
+
+.emp-payroll-first-container{
+    width: 920px;
+    margin-left: 60px;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100px;
+}
+
+.emp-payroll-first-container label{
+    font-size: 17px;
+    margin-left: 3px;
+    font-weight: 400;
+    margin-bottom: -5px; 
+}
+
+.emp-payroll-first-container input{
+    width: 420px;
+    padding: 9px;
+    font-size: 18px;
+    outline: none;
+    height: 50px;
+    
+}
+
+.emp-list-main{
+    display: flex;
+    flex-direction: row;
+
+}
+
+.emp-list-info-second-container{
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.emp-head img{
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    margin-top: 30px;
+    border: black 1px solid;
+}
+
+.emp-info{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.emp-info h1{
+    font-size: 30px;
+}
+
+.emp-info p{
+    font-size: 18px;
+    color: gray;
+    margin-top: -15px;
+}
+
+.emp-info .emp-stats{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-stats h4{
+    font-size: 16px;
+}
+
+.emp-modal{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 100;
+    overflow: hidden;
+    display: none;
+    
+}
+
+.allowance-modal{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 101;
+    overflow: hidden;
+    display: none;
+}
+
+.emp-modal-container{
+    position: absolute;
+    
+    width: 1100px;
+    background-color: #f4f4f4;
+    z-index: 101;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 15px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.allowance-modal-container{
+    position: absolute;
+    width: 1100px;
+    background-color: #f4f4f4;
+    z-index: 103;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 15px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.emp-modal-title{
+    margin-top: 20px;
+}
+
+.allowance-modal-title{
+    margin-top: 20px;
+
+}
+
+.emp-modal-title h1{
+    margin-left: 20px;
+    margin-top: 15px;
+    font-size: 27px;
+    font-weight: 400;
+}
+
+.allowance-modal-title h1{
+    margin-left: 20px;
+    margin-top: 15px;
+    font-size: 27px;
+    font-weight: 400;
+}
+
+.emp-modal-input{
+    display: flex;
+    margin-top: 40px;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+.allowance-modal-input{
+    display: flex;
+    margin-top: 40px;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+.emp-modal-input input{
+    padding: 8px;
+    outline: none;
+    font-size: 18px;
+}
+
+.allowance-modal-input input{
+    padding: 8px;
+    outline: none;
+    font-size: 18px;
+}
+
+.emp-modal-input .emp-desc{
+    width: 450px;  
+}
+
+.allowance-modal-input .allowance-desc{
+    width: 450px;  
+}
+
+.emp-modal-input .emp-amount{
+    width: 350px;
+    margin-right: 40px;
+}
+
+.allowance-modal-input .allowance-amount{
+    width: 350px;
+    margin-right: 40px;
+}
+
+
+.emp-modal-input label{
+    font-size: 20px;
+    margin-bottom: -8px;
+    margin-left: 3px;
+}
+
+.allowance-modal-input label{
+    font-size: 20px;
+    margin-bottom: -8px;
+    margin-left: 3px;
+}
+
+.emp-modal-input .govern-title{
+    width: 600px;
+}
+
+.allowance-modal-input .govern-title{
+    width: 600px;
+}
+
+.emp-modal-input .govern-amount{
+    width: 350px;
+}
+
+.allowance-modal-input .allowance-amount{
+    width: 350px;
+}
+
+.emp-modal-button{
+    height: 50px;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 43px;
+    align-items: center;
+}
+
+.allowance-modal-button{
+    height: 50px;  
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 43px;
+    align-items: center;
+}
+
+.emp-modal-button span{
+    font-size: 24px;
+    margin: 10px;
+    margin-right: 23px;
+    cursor: pointer;
+}
+
+.allowance-modal-button span{
+    font-size: 24px;
+    margin: 10px;
+    margin-right: 23px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+/* Schedules */
+.schedules-modal-update{
+    position: absolute;
+    z-index: 30;
+    height:100vh;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+   
+}
+
+.sched-container{
+    height: 65%;
+    width: 600px;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    animation-name:modalopen;
+    animation-duration: 1s;
+}
+
+.sched-content{
+    height: 97%;
+    width: 97%;
+    margin-left: 9px;
+    margin-top: 9px;
+ }
+
+.schedmodal-title{
+    width: 100%;
+    height: 70px;
+    margin-top: 25px;
+
+}
+.schedmodal-title h1{
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.schedmodal-title div{
+    width: 100%;
+    border: black 1px solid;
+}
+
+.schedmodal-emp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.schedmodal-emp h1{
+    font-size: 30px;
+    font-weight:400;
+}
+
+.schedule-type-update{
+    width: 100%;
+    height: 100px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+ 
+}
+
+.schedule-type-update label{
+    font-size: 23px;
+    margin-left: 30px;
+}
+
+.schedule-type-update select{
+    width: 90%;
+    height: 50px;
+    font-size: 19px;
+    padding: 10px;
+    margin-left: 30px;
+    outline: none;
+}
+
+.sched-update-date{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sched-update-date input{
+    padding: 10px;
+    font-size: 19px;
+    width: 90%;
+    margin-left: 30px;
+    outline: none;
+    margin-bottom: 20px;
+}
+
+.sched-update-date label{
+    font-size: 20px;
+    margin-left: 30px;
+}
+
+.sched-content button{
+    height: 50px;
+    width: 100px;
+}
+
+.sched-update-btn{
+    width: 100%;
+    height: 90px;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+}
+
+.sched-update-btn button{
+    margin: 10px;
+    font-size: 23px;
+    border: none;
+    background-color: cornflowerblue;
+    color: white;
+    border-radius: 10px;
+    outline: none;
+}
+
+.sched-update-btn button:nth-child(1){
+    margin: 10px;
+    border: none;
+    background-color: inherit;
+    font-size: 23px;
+    color: cornflowerblue;
+    outline: none;
+
+}
+
+
+
+/*schedule form*/
+#scheduleModal-form{
+    position: absolute; 
+    left: 752px; 
+    top: 183px;
+    width: 1300px; 
+    height: 800px; 
+    z-index: 100; 
+    background-color: transparent;
+    display: none;
+   
+}
+
+.schedule-form-show{
+    display: block;
+}
+
+.scheduleform-container{
+    width: 1500px;
+    height: 820px;
+    position: absolute;
+    right:60px;
+    bottom: 20px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* margin-top: 100px;
+    margin-left: 320px; */
+    
+}
+
+
+
+.schedulelist-container{
+    height: 92%;
+    width: 330px;
+    margin-top: 40px;
+    margin-left: 40px;
+    border: #ccc 1px solid;
+    display: flex;
+    flex-direction: column; 
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.schedule-table-container{
+    margin-top: -5px;
+    height: 590px;
+    width: 1080px;
+    border-radius: 10px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+#scheduleForm-table{
+    height: 450px;
+    width: 1050px;
+    background-color: white;
+    margin-left: 15px;   
+}
+#scheduleForm-table thead{
+    margin-top: 20px;
+}
+
+#scheduleForm-tables{
+    height: 450px;
+    width: 1050px;
+    background-color: white;
+    margin-left: 15px;  
+}
+#scheduleForm-tables thead{
+    margin-top: 20px;
+}
+
+
+
+.schedulelist-title{
+    width: 100%;
+    height: 50px;
+    background-color: #CCC;
+    display: flex;
+    align-items: center;
+}
+
+.schedulelist-title h1{
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.scheduletable-container{
+    height: 90%;
+    margin-top: 40px;
+    width: 1050px;
+    margin-right: 40px;
+}
+
+.schedulelist {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50px;
+}
+
+.schedulelist a{
+    text-decoration: none;
+    color: black;
+}
+
+.schedulelist h1{
+    font-size: 23px;
+    cursor: pointer;
+    margin: 12px;
+}
+
+.scheduletable-buttons{
+    width: 100%;
+    height: 60px; 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.scheduletable-container label{
+    font-size: 20px;
+}
+
+.scheduletable-container .schedule-input{
+    width: 350px ;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+
+.table td{
+    font-weight: 700;
+}
+
+.table td input{
+    margin-right: 10px;
+}
+
+.table .checkbox-lg{
+    width: 16px;
+    height: 16px;
+
+}
+
+
+.numbox{
+    width: 180px;
+    height: 40px;
+    outline:none;
+    margin-right: 5px;
+}
+
+.schedule-gracePeriod{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 50px;
+    margin-left: 15px;
+}
+
+.schedule-gracePeriod label{
+    font-size: 16px;
+}
+
+.schedule-ot {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 50px;
+    margin-left: 15px;
+}
+
+.schedule-ot label{
+    font-size: 16px;
+}
+
+.schedule-holiday{
+    margin-left: 15px;
+}
+
+.schedule-holiday label{
+    font-size: 16px;
+}
+
+.schedule-extra{
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.schedule-extra button{
+    height: 50px;
+    width: 100px;
+    border: none;
+    outline: none;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    background-color:rgb(113, 113, 207);
+    border-radius: 8px;
+    color: white;
+    margin-right: 20px;
+}
+
+.schedFormBtn{
+    width: 300px;
+    position: absolute;
+    height: 50px;
+    z-index: 10;
+    background-color: rgb(113, 113, 207);
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    right: 5%;
+    top: 16%;
+}
+
+
+/* edit schedule */
+
+.table td{
+    font-weight: 700;
+}
+
+.table td input{
+    margin-right: 10px;
+}
+
+.table .checkbox-lgs{
+    width: 16px;
+    height: 16px;
+
+}
+
+
+.numboxs{
+    width: 180px;
+    height: 40px;
+    outline:none;
+    margin-right: 5px;
+}
+
+.schedule-gracePeriods{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 50px;
+    margin-left: 15px;
+}
+
+.schedule-gracePeriods label{
+    font-size: 16px;
+}
+
+.schedule-ots {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 50px;
+    margin-left: 15px;
+}
+
+.schedule-ots label{
+    font-size: 16px;
+}
+
+.schedule-holidays{
+    margin-left: 15px;
+}
+
+.schedule-holidays label{
+    font-size: 16px;
+}
+
+.schedule-extras{
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.schedule-extras button{
+    height: 50px;
+    width: 100px;
+    border: none;
+    outline: none;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    background-color:rgb(113, 113, 207);
+    border-radius: 8px;
+    color: white;
+    margin-right: 20px;
+}
+
+.schedFormBtns{
+    width: 300px;
+    position: absolute;
+    height: 50px;
+    z-index: 10;
+    background-color: rgb(113, 113, 207);
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    right: 5%;
+    top: 16%;
+}
+
+.schedules{
+    width: 500px;
+    height: 100px;
+    
+    margin-top: -45px;
+}
+
+.schedule-name{
+    font-size: 20px;
+    
+
+}
+
+.schedule-inputs{
+    width: 350px ;
+    padding: 10px;
+    margin-top: -80px;
+}
+
+/* .scheduleform-containers{
+    
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+
+.schedulelist-containers{
+    height: 92%;
+    width: 330px;
+    margin-top: 40px;
+    margin-left: 40px;
+    border: #ccc 1px solid;
+    display: flex;
+    flex-direction: column; 
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.schedule-table-containers{
+    margin-top: -5px;
+    height: 590px;
+    width: 1080px;
+    border-radius: 10px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+#scheduleForm-tables{
+    height: 450px;
+    width: 1050px;
+    background-color: white;
+    margin-left: 15px;   
+}
+#scheduleForm-tables thead{
+    margin-top: 20px;
+}
+
+.schedulelist-titles{
+    width: 100%;
+    height: 50px;
+    background-color: #CCC;
+    display: flex;
+    align-items: center;
+}
+
+.schedulelist-titles h1{
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.scheduletable-containers{
+    height: 90%;
+    margin-top: 40px;
+    width: 1050px;
+    margin-right: 40px;
+}
+
+.schedulelists {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50px;
+}
+
+.schedulelists a{
+    text-decoration: none;
+    color: black;
+}
+
+.schedulelists h1{
+    font-size: 23px;
+    cursor: pointer;
+    margin: 12px;
+}
+
+.scheduletable-buttonss{
+    width: 100%;
+    height: 60px; 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+
+
+
+
+.scheduletable-containers label{
+    font-size: 20px;
+}
+
+.scheduletable-containers .schedule-input{
+    width: 350px ;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+
+.table td{
+    font-weight: 700;
+}
+
+.table td input{
+    margin-right: 10px;
+}
+
+.table .checkbox-lg{
+    width: 16px;
+    height: 16px;
+
+}
+
+
+.numbox{
+    width: 180px;
+    height: 40px;
+    outline:none;
+    margin-right: 5px;
+}
+
+.schedule-gracePeriods{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 50px;
+    margin-left: 15px;
+}
+
+.schedule-gracePeriods label{
+    font-size: 16px;
+}
+
+.schedule-ots {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 50px;
+    margin-left: 15px;
+}
+
+.schedule-ots label{
+    font-size: 16px;
+}
+
+.schedule-holidays{
+    margin-left: 15px;
+}
+
+.schedule-holidays label{
+    font-size: 16px;
+}
+
+.schedule-extras{
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.schedule-extras button{
+    height: 50px;
+    width: 100px;
+    border: none;
+    outline: none;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    background-color:rgb(113, 113, 207);
+    border-radius: 8px;
+    color: white;
+    margin-right: 20px;
+}
+
+.schedFormBtns{
+    width: 300px;
+    position: absolute;
+    height: 50px;
+    z-index: 10;
+    background-color: rgb(113, 113, 207);
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    right: 5%;
+    top: 16%;
+} */
+
+
+/* schedule modal */
+.schedule-modal{
+    height: 100vh;
+    width: 100%;
+    z-index: 100;
+    position: fixed;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+}
+
+.schedule-modal-container{
+    height: 70%;
+    width: 1050px;
+    background-color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 20px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    animation-name:modalopen;
+    animation-duration: 1s;
+}
+
+.schedule-modal-content{
+    height: 95%;
+    width: 95%;
+    margin:auto;
+    margin-top: 15px;
+}
+
+.sched-modal-title{
+    height: 70px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.sched-modal-title h1{
+    font-size: 30px;
+    
+}
+
+.sched-modal-title div{
+    width: 100%;
+    height: 1px;
+    background-color: black;
+}
+
+.schedule-select{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.schedule-select select{
+    width: 98%;
+    height: 60px;
+    font-size: 20px;
+    background-color: white;
+    border: 1px solid gray;
+
+}
+
+.schedule-select label{
+    font-size: 23px;
+    
+}
+
+.schedule-select div{
+    margin-left: 10px;
+}
+
+.schedule-select div:nth-child(2){
+    margin-top: 20px;
+}
+
+.sched-type{
+    width: 100%;
+    margin-top: 20px;
+}
+
+.sched-type select{
+    width: 45%;
+    height: 60px;
+    font-size: 20px;
+}
+
+.sched-type label{
+    font-size: 23px;
+}
+.sched-type div{
+    margin-left: 10px;
+}
+
+.sched-modal-date{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    width: 100%;
+    height: 140px;
+    justify-content: space-between;
+}
+
+.sched-modal-date div{
+    margin-left: 10px;
+}
+
+.sched-modal-date div:nth-child(2){
+    margin-right: 10px;
+}
+
+.sched-modal-date label{
+    font-size: 23px;
+}
+
+.sched-modal-date input{
+    width: 480px;
+    height: 60px;
+}
+
+.sched-modal-btn{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.sched-modal-btn input{
+    border: none;
+    height: 50px;
+    width: 90px;
+    border-radius: 5px;
+    background-color:rgb(113, 113, 207);
+    color: white;
+    font-size: 23px;
+}
+
+.sched-modal-btn input:nth-child(1){
+    border: none;
+    background-color: inherit;
+    color: rgb(113, 113, 207);
+    font-size: 23px;
+    margin-right: 20px;    
+}
+
+/* Attention */
+
+.attendace-container{
+    width: 1500px;
+    height: 820px;
+    position: absolute;
+    right: 60px;
+    bottom: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    
+   
+}
+
+.attendance-title{
+    width: 97%;
+    height: 60px;
+    margin-left: 25px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    
+}
+
+.attendance-title h1{
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.attendance-input{
+    width: 1460px;
+    height: 120px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.attendance-input div:nth-child(1){
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.attendance-input div:nth-child(1) select{
+    width: 300px;
+    height: 40px;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid gray;
+}
+
+.attendance-input div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+}
+
+.attendance-input div:nth-child(2) select{
+    width: 300px;
+    height: 40px;
+    padding: 10px;
+    margin-left: 35px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid gray;
+}
+
+.att-emp {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+}
+
+.att-emp label{
+    width: 450px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.att-emp label select{
+    background: inherit;
+}
+
+.att-emp label select option{
+    background-color: white;
+}
+
+.att-emp .stat-emp-sel{
+    margin-left: 30px;
+}
+
+
+.att-stat label{
+    width: 450px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}   
+
+
+.att-range{
+    display: flex;
+    flex-direction: row;
+}
+
+.att-range input{
+    width: 300px;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    margin-left: 20px;
+    border: 1px solid gray;
+}
+
+.att-end{
+    width: 300px;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    margin-left: 105px;
+    border: 1px solid gray;
+}
+
+.attendance-input button{
+    width: 100px;
+    height: 55px;
+    border:none;
+    outline: none;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 5px 0 rgba(0, 0, 0, 0.17);
+    background-color: cornflowerblue;
+    color: white;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.att-date{
+    height: 50px;
+    width: 95%;
+    margin-left: 35px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #ccc;
+}
+
+.att-date h1{
+    font-size: 22px;
+    font-weight: 400;
+    margin-left: 10px;
+}
+ 
+.att-date span{
+    color: rgb(154, 67, 224);
+    font-weight: 500;
+    font-size: 25px;
+    margin-left: 5px;
+}
+
+.att-search{
+    width: 1420px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content:end;
+    margin-bottom: 20px;
+    margin-left: 40px;
+    margin-top: 10px;
+}
+
+.att-search input{
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    font-size: 19px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+#att-table{
+    margin-top: -60px;
+}
+
+.att-export-btn{
+    position: absolute;
+    left: 50px;
+    bottom: 30px;
+}
+
+.att-export-btn p{
+    font-size: 18px;
+}
+
+.att-export-btn span{
+    margin: 2px;
+}
+
+.att-export-btn a {
+    text-decoration: none;
+}
+
+.att-export-btn a:hover{
+    color: gray;
+}
+
+
+/* generate payslip */
+
+.gen-payslip{
+    width: 1500px;
+    height: 820px;
+    position: absolute;
+    right: 60px;
+    bottom: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    /* margin-top: 100px;
+    margin-left: 320px; */
+}
+
+.gen-payslip-input-container{
+    height: 220px;
+    margin-top: 10px;
+}
+
+.gen-payslip-title{
+    height: 48px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.gen-payslip-title h1{
+    font-size: 27px;
+    margin-left: 30px;
+    color: rgb(40, 91, 185);
+}
+
+.payslip-input{
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 80px;
+}
+
+.payslip-input div:nth-child(1){
+    display: flex;
+    width: 520px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.payslip-input div:nth-child(1) select{
+    height: 55px;
+    font-size: 17px;
+    width: 380px;
+}
+
+.payslip-input div:nth-child(1) label{
+    font-size: 18px;
+    margin-bottom: -3px;
+    font-weight: 500;
+}
+
+/**/
+
+.payslip-input div:nth-child(2){
+    display: flex;
+    width: 550px;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 100px;
+   
+}
+
+.payslip-input div:nth-child(2) select{
+    height: 55px;
+    font-size: 17px;
+    width: 130px;
+}
+
+.payslip-input div:nth-child(2) label{
+    font-size: 18px;
+    margin-bottom: -3px;
+    font-weight: 500;
+    margin-right: 25px;
+}
+
+.payslip-input div:nth-child(3){
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.payslip-input div:nth-child(3) button{
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.payslip-info-2{
+    width: 600px;
+    display: flex;
+}
+
+.payslip-info-2 label{
+    margin-right: 45px;
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+.payslip-info-2 select{
+    width: 380px;
+     height: 55px;
+    font-size: 17px;
+}
+
+.gen-btn{
+    transition: ease-in 0.3s;
+    background-color: rgb(143, 87, 233);
+    color: white;
+}
+
+.gen-btn:hover{
+    background-color: #555;
+    color:white;
+}
+
+
+/* loan request */
+
+.loan-req{
+    width: 1500px;
+    height: 820px;
+    position: absolute;
+    right: 60px;
+    bottom: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    /* margin-top: 100px;
+    margin-left: 320px; */
+}
+
+.loanreq-title{
+    width: 100%;
+    margin-top: 20px;
+    height: 75px;
+    
+}
+
+.loanreq-title h1{
+    font-size: 32px;
+    margin-left: 45px;
+    margin-top: 10px;
+    font-weight: 400;
+}
+
+.loanreq-title div{
+    width: 100%;
+    border: #ccc 1px solid;
+    margin-top: 10px;
+}
+
+.loanreq-input{
+    width: 95%;
+
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.loanreq-input button{
+    height: 50px;
+    width: 120px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(143, 87, 233);
+    color: white;
+    transition: ease-in 0.2s;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.1), 0 3px 5px 0 rgba(0, 0, 0, 0.17);
+}
+
+.loanreq-input button:hover{
+    background-color: #555;
+}
+
+.loanreq-input input{
+    width: 300px;
+    padding: 10px;
+}
+
+table th:first-child{
+    border-radius:10px 0 0 10px;
+  }
+  
+  table th:last-child{
+    border-radius:0 10px 10px 0;
+  }
+
+
+  /* Loan request form */
+
+  .loan-req-form-container{
+    width: 1500px;
+    top: 13%;
+    height: 820px;
+    position: absolute;
+    right: 60px;
+    bottom: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    overflow:scroll;
+    overflow-x: hidden;
+  }
+
+.payroll-loan-title{
+    margin: 30px 0px 0px 50px;
+
+}
+
+.payroll-loan-title h1{
+    font-size: 29px;
+    
+    
+}  
+
+.cutoff-no{
+    display: flex;
+    flex-direction: row;
+   
+}
+
+.loan-req-btn{
+    height: 285px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    
+}
+
+.loan-req-btn button{
+    height: 50px;
+    width: 90px;
+    border: none;
+    background-color: inherit;
+    font-size: 22px;
+    outline: none;
+}
+
+.amortization-title{
+    margin: 30px 0px 0px 50px;
+   
+}
+
+.amortization-title h1{
+    font-size: 29px;
+    
+} 
+
+.amortization-table{
+    margin-bottom: 50px;
+}
+
+.loan-forecast-container{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(204, 204, 204, 0.4);;
+    z-index: 100;
+    display: none;
+}
+
+.loan-forecast-content{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 850px;
+    height: 650px;
+    background-color: white;
+    z-index: 102;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.loan-forecast-title{
+    width: 100%;
+}
+
+.loan-forecast-title h1{
+    font-size: 27px;
+    margin-top: 15px;
+    margin-left: 30px;
+    font-weight: 400;
+}
+
+.loan-forecast-title div{
+    border: #ccc 1px solid;
+    margin: 10px 0 10px 0;
+}
+
+.loan-forecast-balance{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.loan-forecast-balance p{
+    margin-right: 20px;
+    font-weight: 500;
+}
+
+.loan-forecast-table{
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.loan-forecast-bar{
+    width: 100%;
+    height: 80px;
+    background-color: #f4f4f4;
+    margin-top: 250px;
+}
+
+.loan-forecast-btn{
+    display: flex;
+    justify-content: flex-end;
+    height: 81px;
+    align-items: center;
+}
+
+.loan-forecast-btn button{
+    height: 50px;
+    background-color: inherit;
+    border: none;
+    margin-right: 20px;
+    font-weight: 400;
+    font-size: 21px;
+    outline: none;
+}
+
+.emp-dashboard-container{
+    width: 1630px;
+    height: 1080px;
+    position: absolute;
+    left: 295px;
+    top: 100px;
+    background-color: #f2ebeb;
+    /* margin-top: 100px;
+    margin-left: 320px; */
+}
+
+.emp-dashboard-content{
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px;
+    
+}
+
+.emp-dashboard-content .emp-dash-card{
+    height: 690px;
+    background-color: white;
+    width: 47%;
+    margin-left: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+}
+
+.emp-dashboard-content .emp-dash-card2{
+    height: 1000px;
+    background-color: white;
+    width: 47%;
+    margin-left: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+}
+
+.dash-schedule-card{
+    height: 250px;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(170,170,170,1) 0%, rgba(74,185,208,1) 47%);
+
+    width: 88%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.dash-schedule-content{
+    height: 70px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    width: 88%;
+    margin: auto;
+}
+
+.dash-schedule-content h1{
+    font-size: 24px;
+}
+
+.dash-schedule-content{
+    margin-top: 20px;
+}
+
+.dash-barrier{
+    width: 5px;
+    background-color: blue;
+    height: 80%;
+}
+
+.dash-employment-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 300px;
+    margin-top: 40px;
+
+}
+
+.dash-employment-content{
+    display: flex;
+    flex-direction: row;
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+
+.dash-employment-content h1{
+    font-size: 23px;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.dash-employment-content p{
+    font-size: 14px;
+    margin-top: -10px;
+    font-weight: 400;
+}
+.dash-emp-icon{
+    height: 50px;
+    width: 60px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    margin-right: 20px;
+}
+
+.dash-emp-icon i {
+    font-size: 30px;
+    color: white;
+        
+}
+
+.emp-dash2-announcement{
+    width: 93%;
+    height: 260px;
+    border: #9e9494 1px solid;
+    margin: auto;
+    border-radius: 8px;
+    margin-top: 20px;
+    background: linear-gradient(30deg, rgba(2,0,36,0.2) 0%, rgba(255,255,255,1) 0%, rgb(187, 204, 207) 100%);
+    overflow-y: auto;
+    position: relative;
+    
+}
+.emp-dash2-announcement h1{
+    font-size: 20px;
+    font-weight: 400;
+    color: rgb(255, 255, 255);
+}
+
+
+.emp-dash2-announcement-title{
+    border-bottom: #9e9494 1px solid;
+    padding: 5px;
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    background-color: #838383;
+}
+
+.emp-dash2-announcement-title h1{
+    font-size: 20px;
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    background-color: #838383;
+}
+
+
+.prev-next_btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.previous,
+.next-step {
+  bottom: 0;
+  width: 50px;
+  height: 50px;
+  border: none;
+  color: black;
+  font-size: 24px;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  background-color: transparent;
+  margin-top: 40px;
+  position: absolute;
+  z-index: 2;
+}
+
+.previous {
+  left: 0;
+}
+
+.next-step {
+  right: 0;
+}
+
+.announcement-slide {
+    display: none;
+}
+
+.emp-dash2-chart{
+    width: 93%;
+    margin: auto;
+    margin-top: 40px;
+    border: 1px solid rgb(44, 94, 59);
+    border-radius: 4px;
+    overflow-y: auto;
+    height: 300px;
+}
+
+.emp-dash2-shortcut{
+    width: 93%;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.emp_chart_son{
+    width: 100%;
+    background-color: #CECECE;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.emp-dash2-shortcut-title{
+    margin-bottom: 20px;
+}
+
+.emp-dash2-shortcut-title h1{
+    font-size: 23px;
+}
+
+.emp-dash2-shortcut-card{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.emp-dash2-shortcut-card p {
+    font-weight: 500;
+    margin-top: 3px;
+}
+
+
+.emp-dash2-shortcut-icon{
+    height: 30px;
+    width: 35px;
+    background-color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    margin-right: 10px;
+
+}
+
+.emp-dash2-shortcut-icon i{
+    padding: 5px;
+    color: white;
+}
+/* Joseph Dashboard */
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-left: 20%;
+    margin-top: 10px;
+    max-width: 400px;
+    width: 100%;
+
+}
+
+.progress-container .steps {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.steps .circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 13px;
+    width: 13px;
+    color: #999;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    border: 4px solid #e0e0e0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.steps .progress-bar {
+    position: relative;
+    height: 7px;
+    width: 100%;
+    background-color: #e0e0e0;
+}
+
+.progress-bar .indicator {
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background-color: #7F7FDD;
+}
+
+.progress-container .buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.buttons button {
+    padding: 5px 20px;
+    border-radius: 4px;
+    border: none;
+    background-color: #7B7BDC;
+    color: #FFFFFF;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+#current_time {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+.schedule-for {
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+  }
+
+.firstbtn_content {
+    display: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #7B7BDC;
+    color: #FFFFFF;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+  
+.secondbtn_content{
+    display: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #7B7BDC;
+    color: #FFFFFF;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}

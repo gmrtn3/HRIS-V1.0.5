@@ -1,0 +1,218 @@
+
+html{
+    overflow: hidden !important;
+  }
+  .card{
+    width: 1500px;
+    height: 780px;
+
+  }
+  .pagination{
+      margin-right: 73px !important;
+      
+  }
+
+  .pagination li a{
+      color: #c37700;
+  }
+
+      .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+      z-index: 3;
+      color: #fff;
+      background-color: #000;
+      border-color: #000;
+  }
+
+  
+  
+  #order-listing_next{
+      margin-right: 28px !important;
+      margin-bottom: -16px !important;
+
+  }
+  #table-responsiveness{
+  overflow-y: hidden !important;
+  
+  }
+  #order-listing{
+  width: 99% !important;
+  margin: auto !important; 
+  }
+
+.container{
+    position: absolute; 
+    top: 8%; 
+    left: 19%;
+}
+
+.card-body{
+    border-radius: 8px;
+    background-color: #F4F5F7;
+}
+
+.setting_text{
+    margin-left: 10px;
+}
+
+.for-header{
+ height: 70%;
+ position: relative;
+ background-color: #FFFFFF;
+ box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
+ border-radius: 6px;
+ padding-top: 15px;
+}
+
+.setting_content{
+    display: flex;
+    flex-direction: row;
+}
+
+.first_cont{
+    width: 70%;
+    height: 25%;
+    
+    
+}
+
+.logo_text {
+    text-align: center;
+    margin-top: 30px;
+    background-color: #F4F5F7;
+    border-radius: 6px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.logo_text h3 {
+    padding: 20px;
+}
+
+.comp_text {
+    margin-left: 25px;
+    margin-top: 15px;
+}
+
+.input_company {
+    width: 50%;
+    margin-left: 25px;
+}
+
+.input_address {
+    width: 50%;
+    margin-left: 25px;
+}
+
+.input_zipcode {
+    width: 70%;
+    margin-left: 25px;
+}
+
+.input_code {
+    width: 70%;
+    margin-left: 25px;
+}
+
+.first-flex{
+    display: flex;
+    flex-direction: row;
+   
+    width: 50%;
+}
+
+
+.bootsrow {
+    margin-top: 20px;
+    margin-left: 1px;
+    width: 100%;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 6px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+
+}
+
+.file_guidance{
+    margin-top: 2px;
+}
+
+.emp_logo_second_cont{
+    width: 30%;
+}
+
+.logo_emp_head img{
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    margin-left: 25%;
+    border: rgb(0, 0, 0) 1px solid;
+}
+
+.photo_upload {
+    margin-left: 25%;
+    margin-top: 10%;
+}
+
+.holiday{
+    width: 20%;
+}
+
+.readonly-input {
+    width: 200px; /* I-adjust ang lapad na nais mo */
+}
+
+.update_btn {
+    width: 7%;
+    padding: 15px;
+    border: none;
+    margin-left: 25px;
+    margin-bottom: 5px;
+}
+.custom_btn{
+    border: none;
+    width: 8%;
+    padding: 15px;
+}
+
+
+.text_col {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+.check_before_holiday{
+    width: 25%;
+}
+
+.check_after_holiday{
+    width: 25%;
+}
+
+.check_both_holiday{
+    width: 25%;
+}
+
+.holiday_pay_role {
+    text-align: center;
+    background-color: #F4F5F7;
+    border-radius: 6px;
+    margin-left: 10px;
+    width: 98.5%;
+}
+
+.bootsrow h3{
+    padding: 20px;
+}
+.lbl_slary{
+    margin-left: 25px;
+}
+.btn-group{
+    margin-left: 25px;
+}
+.radio_btn{
+    width: 200px ;
+}

@@ -1,0 +1,18 @@
+.add_off_btn {
+    border: none;
+    padding: 10px;
+    background-color: #7B7BDC;
+    color: #FFFFFF;
+    border-radius: 4px;
+
+}
+
+.add_off_btn:hover {
+    /* background-color: #0CDD40; */
+    color: white;
+    box-shadow: 10px 10px 8px #888888;
+}
+
+tr:hover td {
+    background-color: #ECECEC;
+  }

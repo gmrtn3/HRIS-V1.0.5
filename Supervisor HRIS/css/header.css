@@ -1,0 +1,38 @@
+.header-container{
+    background-color: #000 !important;
+}
+
+.header-logo img{
+    height: 100px;
+}
+
+.header-type{
+
+    height: 80px !important;
+}
+
+.sidebars{
+    background-color: #ccc;
+   
+}
+
+.sidebars a{
+    color: #000;
+}
+
+/* .header_userProfile{
+    width: 100%;
+}
+
+.logo_userProfile img{
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    margin-left: 20%;
+    border: rgb(0, 0, 0) 1px solid;
+}
+
+.photo_user {
+    margin-left: 20%;
+    margin-top: 10%;
+} */

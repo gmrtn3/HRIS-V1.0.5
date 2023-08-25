@@ -1,0 +1,680 @@
+.login-pass-container{
+    position: relative;
+    
+
+}
+
+.login-pass-container #eye{
+    font-size: 23px;
+    position: absolute;
+    right: 30px;
+    bottom: 35px;
+}
+
+
+@media(max-width: 1350px){
+    /* .login-container{
+        overflow-x: hidden !important;
+    }
+     */
+     /* body{
+        background-color: #f4f4f4 !important;
+     } */
+
+    .form-container{
+        transition: ease-in-out 1s;
+        margin-left: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    #login-pass, #username, #signin-btn{
+        width: 480px;
+        margin-left: 50px;
+        transition: ease-in-out 1s;
+        
+
+    }
+    .remember-forgot{
+        width: 480px !important; 
+        transition: ease-in-out 1s;
+    }
+
+    .signin-btn{
+        width: 480px !important;
+        transition: ease-in-out 1s;
+    }
+    .waves{
+        margin-right: 43px !important;
+        margin-top: 325px;
+        transition: ease-in-out 1s;
+    }
+    #eye{
+        position: absolute;
+        right: 40px;
+        transition: ease-in-out 1s;
+        margin-top: 30px;
+    }
+    .signin-logo-img{
+        background-color: #000;
+        margin-left: 190px;
+        box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+        border-radius: 10px;
+        width: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: ease-in-out 1s;
+
+    }
+
+    .signin-logo-img img{
+        height: 100px;
+        transition: ease-in-out 1s;
+    }
+
+}
+
+@media(max-width: 1280px) and (max-height: 720px){
+    body{
+        overflow: hidden !important;
+    }
+    .container{
+        height: 720px !important;
+        overflow: hidden !important;
+        transition: ease-in-out 1s;
+    }
+    .logo-img{
+        width: 600px !important;
+        height: 680px !important;
+        transition: ease-in-out 1s;
+    }
+    .signin-container{
+        margin-left: 10px;
+       margin-top: 50px;
+        height: 580px !important;
+        transition: ease-in-out 1s;
+        
+    }
+
+    
+}
+/* 
+@media(max-width: 769px){
+    body{
+        background-color: #f4f4f4 !important;
+        transition: ease-in-out 1s;
+       
+    }
+    .signin-container{
+        position: absolute;
+        transition: ease-in-out 1s;
+    }
+
+    .waves{
+        display: none !important;
+        
+    }
+    .logo-img img{
+        display: none !important;
+    }
+    .signin-logo-img{
+        position: absolute !important;
+        top: 0 !important;
+        width: 770px !important;
+        left: 0 !important;
+        margin-left: -1px;
+        border-radius: 0px !important;
+   
+        transition: ease-in-out 1s;
+    }
+    .signin-logo-img img{
+        height: 80px !important;
+        margin-left: -450px;
+        transition: ease-in-out 1s;
+    }
+    .form-container{
+        margin-left: 490px !important;
+        transition: ease-in-out 1s;
+       
+    }
+
+    .input-text{
+        width: 600px !important;
+        transition: ease-in-out 1s;
+    }
+
+    #signin-btn{
+        width: 600px !important;
+        transition: ease-in-out 1s;
+    }
+
+    .login-pass-container #eye{
+        position: absolute;
+        right: 30px;
+        top: 10px;
+        transition: ease-in-out 1s;
+     }
+     .remember-forgot{
+       margin-left: 50px !important;
+       width: 600px !important;
+       transition: ease-in-out 1s;
+        
+    }
+} */
+
+
+@media only screen and (max-width: 767px) {
+    html{
+        background-color: #f4f4f4 !important;
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+    body{
+        background-color: #f4f4f4 !important;
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+    .waves{
+        display: none !important;
+        
+    }
+    .logo-img{
+        display: none !important;
+    }
+    .logo-img img{
+        display: none !important;
+    }
+
+   
+
+    .container{
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+
+    .signin-container{
+        width: 767px !important;
+    }
+    .signin-container{
+        width: 767px !important;
+        overflow: hidden !important;
+    }
+
+    .signin-logo-img{
+        background-color: black !important;
+        width: 767px !important;
+        position: fixed !important;
+        top: 0 !important;
+       
+        height: 4em !important
+    }
+
+    .signin-logo-img img{
+        height: 3em !important;
+        width: 10em !important;
+        position: absolute !important;
+        left: 25% !important;
+      
+    }
+
+    .form-container{
+        position: absolute !important;
+        margin-right: 6% !important;
+        
+        width: 90% !important;
+
+        
+    }
+
+    .form-container input{
+        width: 100% !important;
+        margin-left: 0% !important;
+       
+    }
+
+    .login-pass-container input{
+        width: 100% !important;
+        margin-left: 0% !important;
+        height: 15% !important;
+    }
+
+    #eye{
+        top: 0.6em !important;
+        right: 0.5em !important;
+    }
+
+    .remember-forgot{
+       width: 100% !important;
+       margin-left: 0% !important;
+        font-size: 1em !important;
+    }
+
+    .chkbox-container{
+      
+        width: 45% !important;
+      
+        margin-left: -1% !important;
+    }
+
+  
+
+    .chkbox-container input{
+        height: 20px !important;
+        margin-top: 5% !important;
+        
+    }
+
+    .chkbox-container p{
+       
+        
+    }
+    
+    #signin-btn{
+       width: 100% !important;
+       margin-left: 0% !important;
+    }
+}
+
+/* 
+@media(max-height: 724px){
+    .waves{
+        margin-left: -50px;
+    }
+    .signin-logo-img{
+        width: 400px !important;
+        height: 80px !important;
+        margin-left: 200px !important;
+    }
+    .signin-logo-img img{
+        height: 90px !important;
+    }
+    .logo-img img{
+        height: 110% !important;
+    }
+}
+
+
+@media(max-width: 720px){
+    html{
+        overflow-x: hidden !important;
+    }
+    body{
+        background-color: #f4f4f4 !important;
+        overflow-x: hidden;
+    }
+    .signin-container{
+        position: absolute;
+    }
+
+    .waves{
+        display: none !important;
+    }
+    .logo-img img{
+        display: none !important;
+    }
+    .signin-logo-img{
+        position: absolute !important;
+        top: 0 !important;
+        width: 740px !important;
+        left: 0 !important;
+        border-radius: 0px !important;
+        margin-left: -20px !important;
+    }
+    .signin-logo-img img{
+        height: 80px !important;
+        margin-left: -400px;
+    }
+    .form-container{
+        margin-left: 550px !important;
+        margin-top: 100px;
+       
+       
+        
+    }
+}
+
+@media (max-width: 500px){
+    html{
+        overflow-x: hidden !important; 
+    }
+    body{
+        background-color: #f4f4f4 !important;
+        height: 876px !important;
+        width: 500px !important;
+        overflow-x: hidden !important;
+    }
+    
+   
+    .container{
+        overflow: hidden !important;
+        height: 876px !important;
+        width: 500px !important;
+        overflow-x: hidden !important;
+        
+        
+    }
+   
+    .signin-container{
+        position: absolute;
+    }
+
+    .waves{
+        display: none !important;
+    }
+
+    .logo-img{
+        background-color: #f4f4f4 !important;
+
+    }
+    .logo-img img{
+        display: none !important;
+    }
+    .signin-logo-img{
+        position: absolute !important;
+        top: 0 !important;
+        width: 528px !important;
+        left: 0 !important;
+        border-radius: 0px !important;
+        margin-left: 0px !important;
+        height: 60px !important;
+        
+    }
+    .signin-logo-img img{
+        height: 40px !important;
+        margin-left: -400px;
+    }
+    .form-container{
+        margin-left: 300px !important;
+        margin-top: -200px !important;
+
+        
+    }
+   
+    .form-container .input-text{
+        width: 350px !important;
+        height: 60px !important;
+        margin-left: 60px !important;
+        height: 50px !important;
+        
+        
+    }
+    #signin-btn{
+        width: 350px !important;
+        margin-left: 60px !important;
+    }
+    .remember-forgot{
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        
+        width: 350px !important;
+        margin-left: 60px !important;
+        
+    }
+    .login-pass-container #eye{
+       position: absolute;
+       right: 20px;
+       top: 5px;
+       
+     
+    }
+
+    
+
+}
+
+@media (max-width: 414px){
+    html{
+        overflow-x: hidden !important; 
+        width: 414px !important;
+        
+    }
+    body{
+        background-color: #f4f4f4 !important;
+        height: 876px !important;
+        width: 500px !important;
+        overflow-x: hidden !important;
+        width: 414px !important;
+    }
+    
+   
+    .container{
+        overflow: hidden !important;
+        height: 876px !important;
+        width: 414px !important;
+        overflow-x: hidden !important;
+        
+        
+    }
+   
+    .signin-container{
+        position: absolute;
+    }
+
+    .waves{
+        display: none !important;
+    }
+
+    .logo-img{
+        background-color: #f4f4f4 !important;
+
+    }
+    .logo-img img{
+        display: none !important;
+    }
+    .signin-logo-img{
+        position: absolute !important;
+        top: 0 !important;
+        width: 528px !important;
+        left: 0 !important;
+        border-radius: 0px !important;
+        margin-left: 0px !important;
+        height: 60px !important;
+        
+    }
+    .signin-logo-img img{
+        height: 40px !important;
+        margin-left: -400px;
+    }
+    .form-container{
+        margin-left: 300px !important;
+        margin-top: -200px !important;
+        
+        width: 100% !important;
+
+        
+    }
+   
+    .form-container .input-text{
+        width: 350px !important;
+        height: 60px !important;
+        margin-left: -2% !important;
+        height: 50px !important;
+        
+        
+    }
+    #signin-btn{
+        width: 350px !important;
+        margin-left: -2% !important;
+        height: 50px !important;
+    }
+    .remember-forgot{
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        
+        width: 350px !important;
+        margin-left: -2% !important;
+        
+    }
+    .login-pass-container #eye{
+       position: absolute;
+       right: 20px;
+       top: 5px;
+       
+     
+    }
+    #eye{
+        margin-right: 5% !important;
+    }
+
+}
+
+
+
+
+@media (max-width: 390px){
+    html{
+        width: 390px !important;
+        overflow-x: hidden !important;
+    }
+    body{
+       
+        overflow-x: hidden !important;
+     
+        width: 390px !important;
+    }
+
+    
+    .container{
+        overflow: hidden !important;
+        height: 876px !important;
+        width: 390px !important;
+        
+        
+    }
+   
+    .signin-container{
+        position: absolute;
+    }
+
+    .waves{
+        display: none !important;
+    }
+
+    .logo-img{
+        background-color: #f4f4f4 !important;
+
+    }
+    .logo-img img{
+        display: none !important;
+    }
+    .signin-logo-img{
+        position: absolute !important;
+        top: 0 !important;
+        width: 528px !important;
+        left: 0 !important;
+        border-radius: 0px !important;
+        margin-left: 0px !important;
+        height: 60px !important;
+        
+    }
+    .signin-logo-img img{
+        height: 40px !important;
+        margin-left: -400px;
+    }
+    .form-container{
+        margin-left: 300px !important;
+        margin-top: -200px !important;
+
+        
+    }
+   
+    .form-container .input-text{
+        width: 350px !important;
+        height: 60px !important;
+        margin-left: 60px !important;
+        height: 50px !important;
+        
+        
+    }
+    #signin-btn{
+        width: 350px !important;
+        margin-left: 60px !important;
+    }
+    .remember-forgot{
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        
+        width: 350px !important;
+        margin-left: 60px !important;
+        
+    }
+    .login-pass-container #eye{
+       position: absolute;
+       right: 20px;
+       top: 5px;
+       
+     
+    }
+
+    
+
+}
+
+
+
+@media (max-width: 375px) and (max-height: 812px){
+    html{
+        width: 375px !important;
+    }
+    body{
+        background-color: #f4f4f4 !important;
+        height: 812px !important;
+        width: 375px !important;
+        
+    }
+    .container{
+        overflow: hidden !important;
+        height: 812px !important;
+        width: 375px !important;
+        
+    }
+   
+    .signin-container{
+        position: absolute;
+    }
+
+    .waves{
+        display: none !important;
+    }
+    .logo-img img{
+        display: none !important;
+    }
+    .signin-logo-img{
+        position: absolute !important;
+        top: 0 !important;
+        width: 415px !important;
+        left: 0 !important;
+        border-radius: 0px !important;
+        margin-left: 0px !important;
+        height: 90px !important;
+    }
+    .signin-logo-img img{
+        height: 60px !important;
+        margin-left: -190px;
+    }
+    .form-container{
+        margin-left: 240px !important;
+        margin-top: 1px !important;
+        
+    }
+    .form-container .input-text{
+        width: 360px !important;
+    }
+    #signin-btn{
+        width: 360px !important;
+    }
+    .remember-forgot{
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        background-color: yellow !important;
+        width: 360px !important;
+        
+    }
+} */

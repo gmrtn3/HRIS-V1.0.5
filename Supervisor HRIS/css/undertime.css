@@ -1,0 +1,225 @@
+.alert {
+    width: 50%;
+    margin-top: 5px;
+  }
+  
+  .btn-section {
+    background-color: #FFFFFF;
+    flex-direction: row;
+    display: flex;
+    margin-left: 78.7%;
+    margin-top: 5px;
+  }
+  
+  .approve-btn {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px ;
+    border: none;
+    height: 35px;
+    width: 150px;
+    cursor: pointer;
+    background-color: #70C170;
+    color: white;
+  }
+  
+  .approve-btn:hover {
+    background-color: #0cdd40;
+    color: #FFFFFF;
+    box-shadow: 10px 10px 8px #888888;
+  }
+  
+  .reject-btn {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: none;
+    background-color: #FF4747;
+    cursor: pointer;
+    height: 35px;
+    width: 160px;
+    color: white;   
+  }
+  
+  .reject-btn:hover {
+    background-color: #ff0000;
+    color: #FFFFFF;
+    box-shadow: 10px 10px 8px #888888;
+  }
+  
+  
+  .undertime_panel{
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    height: 90px;
+    background-color: #F2F2F2;
+    display: flex;
+    margin-top: 50px;
+    flex-direction: row;
+  }
+  
+  .dropdown_panel{
+      border-top-left-radius: 7px;
+      background-color: #F2F2F2;
+      margin-right: 20px;
+  }
+    
+  p {
+      margin: 0;
+      
+  }
+  
+  .drop_text{
+    background-color: #F2F2F2;
+    margin-left: 30px;
+  }
+  
+  .notif {
+    flex-direction: row;
+    display: flex;
+    background-color: #F2F2F2;
+  }
+  
+
+  .select_custom{
+    background-color:#ffffff;
+    margin-left: 30px;
+    margin-top: 5px;
+    padding: 10px;
+    width: 330px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #date {
+        height: 18px;
+  }
+  
+  .btn_go {
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    width: 10%;
+    background-color: #4B49AC;
+    border: none;
+    border-radius: 5px;
+    height: 50px;
+    font-size: 18px;
+    box-shadow: 1.5px 1.5px 9px #888888;
+    color: #FFFFFF;
+    cursor: pointer;
+  }
+  
+  .btn_go:hover{
+    /* background-color: #0cdd40; */
+    color: #FFFFFF;
+    box-shadow: 10px 10px 8px #888888;
+  }
+  
+  
+  tr:hover td {
+    background-color: #ECECEC;
+  }
+  
+  h2{
+    font-size: 23px; 
+    font-weight: bold;
+  }
+
+  .card{
+    background-color: #fff; 
+    left: 18.7%; 
+    position: absolute; 
+    top: 13.5%;  
+    border-radius: 25px; 
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17); 
+    width:1500px; 
+    height:780px;
+  }
+
+  thead{
+    background-color: #f2f2f2;
+  }
+
+  .pagination li a{
+    color: #c37700;
+}
+
+.page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+    z-index: 3;
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+
+
+
+#order-listing_next{
+    margin-top: 20px;
+    margin-right: 4px !important;
+    margin-bottom: -15.5px !important;
+    
+}
+
+#order-listing_previous{
+    margin-top: 20px;
+    margin-left: 12px !important;
+}  
+
+/* Search Bar */
+
+#order-listing_filter label input{
+       
+  width: 278px;
+  font-size: 17px;
+  
+}
+
+/* Sorting Button Color */
+.dataTables_wrapper .dataTable thead .sorting:before, .dataTables_wrapper .dataTable thead .sorting_asc:before, .dataTables_wrapper .dataTable thead .sorting_desc:before, .dataTables_wrapper .dataTable thead .sorting_asc_disabled:before, .dataTables_wrapper .dataTable thead .sorting_desc_disabled:before {
+  
+  right: 1.2em;
+  bottom: 0;
+  color: #c0c1c2 !important;
+  opacity: 1;
+} 
+
+.dataTables_wrapper .dataTable thead .sorting:after, .dataTables_wrapper .dataTable thead .sorting_asc:after, .dataTables_wrapper .dataTable thead .sorting_desc:after, .dataTables_wrapper .dataTable thead .sorting_asc_disabled:after, .dataTables_wrapper .dataTable thead .sorting_desc_disabled:after {
+
+  right: 1.2em;
+  top: 0;
+  color: #c0c1c2 !important;
+  opacity: 1;
+}
+
+.btn-section{
+  margin-top: 30px;
+}
+
+.dataTables_length{
+  margin-top: 25px;
+}
+
+.dataTables_filter{
+  margin-top: 25px;
+}
+
+@media(max-width: 1350px) {
+  .card{
+    width: 70.5% !important;
+    margin-left: 7.1% !important;
+    margin-top: 0.25em !important;
+    height: 821px !important;
+    transition: ease-in-out 1s !important;
+  }
+
+  .btn-section{
+    margin-left: 66% !important;
+  }
+
+  .btn_go{
+    width: 100% !important;
+    margin-left: 0.2%
+    
+  }
+
+}

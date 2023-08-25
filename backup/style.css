@@ -1,0 +1,961 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: black;
+    list-style: none;   
+}
+
+.login-container{
+    overflow: hidden;
+}
+
+body{
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f4;
+    text-decoration: none;
+    color: black;
+    list-style: none;
+    position: relative;
+}
+
+body a{
+    text-decoration: none;
+    color: black;
+    list-style: none;
+}
+
+body li a {
+    list-style: none;
+}
+
+main{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 90%;
+    width: 83%;
+    background-color: #ccc;
+}
+/* 
+#dtBasicExample{
+    width: 500px;
+    height: 600px;
+} */
+
+/* login */
+
+.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.logo-img{
+    height: 100%;
+    width: 1300px;
+    
+}
+
+.logo-img img{
+    height: 100%;
+    width: 100%;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    position: relative;
+    
+}
+
+.logo-img .waves{
+    display: block;
+    position: absolute;
+    top: 0;
+    transform: rotate(270deg);
+    left: 20% !important;
+    z-index: 3;
+    bottom: 0;
+    margin-top: 100px;
+    
+}
+
+.signin-container{
+    height: 100vh;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    margin-right: 130px;
+}
+
+.signin-container .remember-forgot{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 595px;
+    height: 50px;
+    margin-left: 27px;
+    margin-top: 10px;
+    align-items: center;
+    
+    
+}
+
+#password {
+  padding-right: 35px;
+}
+
+#eye {
+  position: absolute;
+  top: 50%;
+  right: 180px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.fa {
+    font-size: 20px;
+    color: #7a797e;
+}
+
+.remember-forgot .checkbox{
+    width: 20px;
+    height: 20px;
+   
+}
+
+.remember-forgot p a{
+    font-size: 18px;
+    
+}
+
+.remember-forgot a:hover{
+    color: red;
+
+}
+
+
+.signin-container .chkbox-container{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.signin-container .chkbox-container input{
+    margin-right: 15px;
+    font-size: 50px;
+    
+}
+
+.signin-container .signin-card{
+    height: 600px;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;   
+}
+
+.signin-logo-img h1{
+    font-size: 50px;
+    letter-spacing: 5px;
+}
+
+.form-container{
+    height: 400px;
+    width: 680px;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;    
+    justify-content: center;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    
+}
+
+.form-container .input-text{
+    width: 600px;
+    padding: 20px;
+    margin: 10px;
+    margin-left: 23px;
+
+    border: 1px #ccc solid;
+    border-radius: 5px;
+    outline: none;
+    font-size: 20px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+
+.signin-card button{
+    border: none;
+    background-color: black;
+    height: 40px;
+    width: 94%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    border-radius: 5px;
+    margin-left: 27px;
+    color: white;
+    font-size: 18px;
+    padding: 30px;
+    cursor: pointer;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    
+}
+
+.signin-card button:hover{
+    background-color: #C37700;
+    color: black;
+    transition: ease-in .2s;
+}
+
+/*top bar*/
+.topbar{ 
+    position: fixed;
+    height: 95px;
+    width: 100%;
+    top: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    z-index: 5;
+
+}
+
+.topbar-logo{
+    margin-left: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.topbar-logo{
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: 2px;
+}
+
+.user-tab{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 50px;
+    width: 500px;
+   
+   
+}
+
+.user-tab i{
+    cursor: pointer;
+}
+
+.user-tab .fa-bell{
+    font-size: 35px;
+}
+
+
+.user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: -20px;
+    margin-right: 50px;
+}
+
+.user-img{
+    height: 60px;
+    background-color: rgb(190, 128, 33);
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.user-img .fa-user{
+    font-size: 40px;
+    
+}
+
+.user-type h1{
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.user-type h2{
+    font-size: 18px;
+    font-style: italic;
+}
+
+.user-tab .fa-chevron-down{
+    font-size: 20px;
+}
+/* 
+.dashboard-info-user{
+    height: 50px;
+    width: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.dashboard-info-user span{
+    font-size: 30px;
+} */
+
+.dashboard-dd{
+    position: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 40px;
+    width: 30px;
+
+}
+
+.dashboard-dd-btn{
+    border: none;
+    background-color: #f4f4f4;
+    outline: none;
+    cursor: pointer;
+}
+
+.dashboard-dd-menu{
+    position: absolute;
+    height: 80px;
+    width: 200px;
+    top: 75px;
+    z-index: 10;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    right: 50px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.dashboard-dd-menu a{
+    margin: 5px;
+    font-weight: 700;
+    font-size: 18px;
+    outline: none;
+    text-decoration: none;
+}
+
+
+
+/* side bar*/
+.sidebar{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 90%;
+    width: 17%;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+}
+
+.sidebar .first-ul{
+    margin-top: 30px;
+    height: 100%;
+    width: 100%;
+}
+
+.sidebar ul li a{
+    
+    font-size: 20px;
+    font-weight: 500;
+    width: 100%;   
+}
+
+.sidebar ul li { 
+   line-height: 60px;
+   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .sidebar ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 55px;
+} */
+
+.sidebar ul li span{
+    margin-left: 30px;
+    margin-right: 10px;
+}
+
+.sidebar ul li .fa-chevron-right{
+    position: absolute;
+    right: 20px;
+    margin-top: 18px;
+}
+
+.sidebar ul li ul{
+    line-height: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: self-start;
+}
+
+
+.sidebar ul ul{
+    position: static;
+    display: none;
+}
+.sidebar ul ul li {
+    line-height: 40px;
+    margin-left: 100px; 
+}
+
+.sidebar ul li ul a{
+    font-size: 16px;
+}
+
+.sidebar .first-ul .hoverable:hover{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.sidebar ul .timekeep-dd-show{
+    display: none;
+}
+
+.sidebar ul .timekeep-dd-show.show{
+    display: block;
+}
+
+.sidebar ul .payroll-dd-show{
+    display: none;
+}
+
+.sidebar ul .payroll-dd-show.show2{
+    display: block;
+}
+
+
+.sidebar ul .employees-dd-show{
+    display: none;
+}
+
+.sidebar ul .employees-dd-show.show3{
+    display: block;
+}
+
+.sidebar ul .report-dd-show{
+    display: none;
+}
+
+.sidebar ul .report-dd-show.show4{
+    display: block;
+}
+
+.sidebar ul .development-dd-show{
+    display: none;
+}
+
+.sidebar ul .development-dd-show.show5{
+    display: block;
+}
+
+.sidebar ul .performance-dd-show{
+    display: none;
+}
+
+.sidebar ul .performance-dd-show.show6{
+    display: block;
+}
+
+.sidebar ul .acquisition-dd-show{
+    display: none;
+}
+
+.sidebar ul .acquisition-dd-show.show7{
+    display: block;
+}
+
+.sidebar ul .org-dd-show{
+    display: none;
+}
+
+.sidebar ul .org-dd-show.show7{
+    display: block;
+}
+
+.dashboard-dd .dashboard-dd-menu{
+    display: none;
+}
+
+
+.dashboard-dd .dashboard-dd-menu.show8{
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.timekeep-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.employees-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.payroll-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.report-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.performance-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.development-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+
+.acquisition-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.org-dd:focus{
+    background-color: #ccc;
+    border-left: rgb(241, 212, 48) 5px solid;
+}
+
+.error{
+    background: #f2dede;
+    color: #a94442;
+    padding: 10px;
+    width: 200px;
+    border-radius: 5px;
+}
+
+/* dashboard */
+
+.dashboard-container{
+    height: 89%;
+    width: 83%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboard-first-container{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.dashboard-title{
+    height: 60px;
+    width: 600px;
+    background-color: white;
+    margin-top: 15px ;
+    margin-left: 30px;
+    border-radius: 10px;
+    box-shadow: 5px 8px 10px 0 rgba(0, 0, 0, 0.5), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-title h1{
+    margin-left: 20px;
+    font-size: 25px;
+}
+
+.employee-status{
+    height: 200px;
+    width: 900px;
+    margin: 30px;
+    margin-top: 20px;
+    margin-left: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.5), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.employee-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 70px;
+}
+
+.employee-text h1{
+    font-size: 20px;
+    margin: 5px;
+    margin-left: 30px;
+}
+
+.employee-text p{
+    font-size: 14px;
+    margin-left: 30px;
+    color: gray;
+}
+
+.employee-text div{
+    width: 100px;
+    height: 3px;
+    background-color: rgb(124, 60, 207);
+    margin-top: 5px;
+    margin-left: 30px;
+}
+
+.employee-status-data{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 110px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.employee-active{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.employee-status-data h1{
+    font-weight: 500;
+    font-size: 45px;
+}
+
+.employee-status-data p{
+    color: gray;
+    font-size: 18px;
+}
+
+.emplyee-active{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.employee-request{
+    height: 500px;
+    width: 900px;
+    margin-left: 30px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.5), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.employee-request-title{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #f4f4f4;
+    background-color: #f8f5f5d7;
+}
+
+.employee-request-title a{
+    margin: 20px;
+    color: gray;
+    font-weight: 700;
+}
+
+.employee-list{
+    margin-left: -5px;
+    width: 300px;
+    display: flex;
+    flex-direction: row;
+    position: inherit;
+}
+
+.employee-list a{
+    color: black;
+    font-weight: 700;
+}
+
+.employee-border{
+    width: 250px;
+    height: 3px;
+    border-bottom: 2px solid black;
+    position: absolute;
+    bottom: 55%;
+    margin-left: 5px;
+}
+
+.employee-notif{
+    margin-left: -10px;
+    margin-top: 10px;
+    height: 40px;
+    width: 40px;
+    background-color: rgb(236, 43, 43);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#employeeTable{
+    width: 90%;
+    margin-left: 50px;
+}
+
+.dashboard-second-container{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-announcement{
+    width: 600px;
+    height: 350px;
+    background-color: white;
+    margin-top: 95px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.5), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+}
+
+.announcement-title{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.announcement-title div{
+    display: flex;
+    flex-direction: row;
+}
+
+.announcement-title span:nth-child(1){
+    font-size: 25px;
+    margin-left: 20px;
+}
+
+.announcement-title h1{
+    font-size: 25px;
+    margin-left: 20px;   
+}
+
+.announcement-title span:nth-child(2){
+    margin-top: -16px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 30px;
+}
+
+
+.dashboard-events{
+    width: 600px;
+    height: 350px;
+    background-color: white;
+    margin-top: 30px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.5), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+}
+
+/* Employee List*/
+
+.employeeList-container{
+    margin: auto;
+    margin-top: 40px;
+    width: 1500px;
+    height: 800px;
+    background-color: #fff;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.5), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+}
+
+.employeeList-title{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.employeeList-title h1{
+    margin-left: 20px;
+    font-size: 40px;
+}
+
+.employeeList-create-search{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.employeeList-create-search button{
+    height: 50px;
+    width: 120px;
+    border: none;
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    margin-left: 30px;
+}
+
+.employeeList-create-search input{
+    padding: 15px;
+    width: 300px;
+    margin-right: 30px;
+    font-size: 18px;
+}
+
+#employeeList-table{
+    width: 1400px;
+    margin-top: 30px;
+    margin-left: 50px;
+}
+
+.selectTag{
+    display: none;
+    color: gray;
+}
+
+.employeeList-btn{
+    height: 55px;
+    width: 130px;
+    border-radius: 8px;
+    background-color: blue;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 30px;
+}
+
+/* employee list modal form*/
+/* .employeeList-modal{
+   
+    background-color: white;
+    margin-left: 100px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+.employeeList-modal-content{
+
+} */
+
+.emp-info-first-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-info-second-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-info-third-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-govern-first-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-govern-second-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-empDetail-first-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-empDetail-second-input{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.emp-empDetail-third-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-allowance-first-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-allowance-second-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-schedule-first-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-Access-first-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.emp-Access-second-input{
+    display: flex;
+    flex-direction: row;
+}
+
+.empMain-container{
+   position: absolute;
+   height: 100%;
+   width: 80%;
+   top: 15%;
+   right: 0;
+   background-color: white;
+   border:1px solid black;
+}

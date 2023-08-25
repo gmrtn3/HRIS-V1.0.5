@@ -1,0 +1,625 @@
+/* @media(max-width: 1350px){
+    html{
+        background-color: #f4f4f4 !important;
+        overflow: scroll;
+    }
+    
+    
+    .dashboard-content{
+    background-color: #f4f4f4 !important;
+    }
+    
+    .sidebar{
+    background-color: #f4f4f4 !important;
+    }
+    
+    .header-user{
+    width: 400px;
+    margin-right: -50px;
+    transition: ease-in-out 1s;
+    }
+    
+    .header-notif{
+    margin-right: 30px;
+    transition: ease-in-out 1s;
+    }
+    .header-head{
+    margin-right: 25px;
+    transition: ease-in-out 1s;
+    
+    }
+    .header-head img{
+    height: 50px;
+    transition: ease-in-out 1s;
+    }
+    .header-type h1{
+    font-size: 20px;
+    transition: ease-in-out 1s;
+    }
+    .header-type p{
+    font-size: 16px;
+    }
+    
+
+    .empList-container{
+        width: 950px !important;
+        left: 330px !important;
+        top: 140px !important;
+        height: 820px !important;
+        transition: ease-in-out 1s !important;
+    }  
+
+     .table-responsive{
+        
+        height: 100% !important;
+        width: 95% !important;
+        margin: auto !important;
+        margin-top: 32px !important;
+     }
+
+     table{
+        width: 100% !important;
+        height: 100%;
+     }
+    
+
+    .pagination{
+        margin-right: 78px !important;
+
+        
+    }
+
+
+    .pagination li a{
+        color: #c37700;
+    }
+
+        .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+        z-index: 3;
+        color: #fff;
+        background-color: #000;
+        border-color: #000;
+    }
+
+    
+    
+    #order-listing_next{
+        margin-right: 28px !important;
+        margin-bottom: -15.5px !important;
+
+    }
+    
+    
+    
+    } */
+
+
+    html{
+        background-color: #f4f4f4 !important;
+    }
+    
+    
+    body{
+        overflow: hidden;
+        background-color: #f4f4f4;
+    }
+    
+    .pagination{
+        margin-right: 63px !important;
+    
+        
+    }
+    
+    .pagination li a{
+        color: #c37700;
+    }
+    
+        .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+        z-index: 3;
+        color: #fff;
+        background-color: #000;
+        border-color: #000;
+    }
+    
+    
+    
+    #order-listing_next{
+        margin-right: 20px !important;
+        margin-bottom: -15.5px !important;
+    
+    }
+    
+    @media(max-width: 1350px){
+        html{
+            background-color: #f4f4f4 !important;
+            overflow: scroll;
+            width: 100% !important;
+        }
+
+        body{
+            width: 100% !important;
+        }
+        
+        
+        .dashboard-content{
+        background-color: #f4f4f4 !important;
+        }
+        
+        .sidebar{
+        background-color: #f4f4f4 !important;
+        }
+        
+        .header-user{
+        width: 400px;
+        margin-right: -50px;
+        transition: ease-in-out 1s;
+        }
+        
+        .header-notif{
+        margin-right: 30px;
+        transition: ease-in-out 1s;
+        }
+        .header-head{
+        margin-right: 25px;
+        transition: ease-in-out 1s;
+        
+        }
+        .header-head img{
+        height: 50px;
+        transition: ease-in-out 1s;
+        }
+        .header-type h1{
+        font-size: 20px;
+        transition: ease-in-out 1s;
+        }
+        .header-type p{
+        font-size: 16px;
+        }
+        
+    
+        .empList-container{
+            width: 950px !important;
+            left: 26% !important;
+            top: 140px !important;
+            height: 820px !important;
+            transition: ease-in-out 1s !important;
+        }  
+    
+         .table-responsive{
+            
+            height: 100% !important;
+            width: 95% !important;
+            margin: auto !important;
+            margin-top: 32px !important;
+         }
+    
+         table{
+            width: 100% !important;
+            height: 100%;
+         }
+         .empList-create-search{
+            
+            margin-left: 0% !important;
+            width: 100% !important;
+         }
+
+         .empList-create-search div:nth-child(1){
+            
+            width: 60% !important;
+            padding-left: 3% !important;
+         }
+
+         .empList-create-search div:nth-child(1) select{
+            width: 90% !important;
+         }
+        
+         .empList-create-search div:nth-child(1) label{
+           font-size: 1em !important;
+         }
+
+         .empList-create-search div:nth-child(2){
+           
+            width: 60% !important;
+            padding-left: 1% !important;
+         }
+
+         .empList-create-search div:nth-child(2) select{
+            width: 90% !important;
+         }
+        
+         .empList-create-search div:nth-child(2) label{
+           font-size: 1em !important;
+           
+         }
+
+         .empList-create-search button{
+            margin-bottom: -3.8% !important;
+            margin-right: 5% !important;
+            width: 7em !important;
+            height: 3.5em !important;
+            
+            
+         }
+    
+        .pagination{
+            margin-right: 78px !important;
+    
+            
+        }
+    
+    
+        .pagination li a{
+            color: #c37700;
+        }
+    
+            .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+            z-index: 3;
+            color: #fff;
+            background-color: #000;
+            border-color: #000;
+        }
+    
+        
+        
+        #order-listing_next{
+            margin-right: 28px !important;
+            margin-bottom: -15.5px !important;
+    
+        }
+       
+    }
+    
+    @media only screen and (max-width: 767px) {
+        html{
+            overflow-x: hidden !important;
+            background-color: #f4f4f4 !important;
+            width: 100% !important;
+            
+            
+            }
+            body{
+            overflow-y: hidden !important;
+            background-color: #f4f4f4 !important;
+            width: 100% !important;
+            height: 185vh !important;
+            
+            }
+            #upper-nav{
+            background-color: black !important; 
+            width: 100% !important;
+            height: 75px;
+            position: fixed !important;
+            
+            }
+            
+            .navbar-menu-wrapper{
+            background-color: black !important;
+            width: 70% !important;
+            height: 60px !important;
+            position: fixed !important;
+            
+            margin-left: 10% !important;
+            
+            
+            }
+           #sidebarToggle{
+                background-color: black !important;
+                z-index: 200;
+                margin-right: 20px !important;
+            }
+        
+            .responsive-bars-btn span{
+                
+                z-index: 200;
+            }
+            
+            .navbar-brand-wrapper{
+            background-color: black !important;
+            position: absolute !important;
+            width: 80px !important;
+            box-shadow: none;
+            height: 60px !important;
+            z-index: 100;
+            }
+            
+            .navbar-brand-wrapper img{
+            height: 40px !important;
+            width: 50px !important;
+            margin-left: -20px !important;
+            }
+            
+            .sidebar{
+            position: fixed !important;
+            left: 0;
+            width: 20% !important;
+            margin-top: 0 !important;
+            height: 100% !important;
+            display: none !important;
+            transition: ease-in-out 1s !important;
+            
+            }
+            
+            #sidebar.active-sidebar {
+            display: block !important;
+            } 
+            
+            
+            .navbar-toggler{
+            display: none !important;
+            }
+            
+            .responsive-bars-btn{
+            display: block !important;
+            margin-right: 90px !important;
+            border: none !important;
+            
+            }
+    
+            #sub-menu{
+               margin-left: -5%;
+            }
+            
+            .responsive-bars-btn span{
+            color: white !important;
+            font-size: 18px !important;
+            }
+            
+            .header-user{
+            width: 9.8em !important;
+            margin-left: 3.7em !important;
+            transition: ease-in-out 1s;
+            background-color: black !important;
+            
+            }
+            .header-notif span{
+            font-size: 20px !important;
+            margin-right: -10px;
+            margin-left: 30px !important;
+            }
+            .header-head img{
+            height: 40px !important;
+            }
+            .header-type h1{
+            font-size: 19px !important;
+            }
+            .header-type p{
+            font-size: 14px !important;
+            margin-top: -25px !important;
+            }
+            .header-dropdown{
+            margin-left: 1.5em !important;
+            }
+            .header-dropdown-menu{
+            width: 130px !important;
+            margin-left: -55px !important;
+            
+            }
+            .header-dropdown-menu a{
+                margin-left: 2em !important;
+                margin-top: 0.4em !important;            
+            }
+            
+            .nav-title,.menu-arrow{
+            display: none !important;
+            }
+            
+            .nav-item{
+            margin-bottom: 15px !important;
+            }
+            
+            .collapse{
+            width: 250px !important;
+            position: fixed !important;
+            left: 85px !important;
+            }
+    
+            #schedule-list-container{
+                width: 90% !important;
+                margin-right: -10% !important;
+                margin-bottom: -170% !important;
+                height: 170% !important;
+                
+            }
+          
+            .empList-title h1{
+                font-size: 1.4em !important;
+                margin-right: 25% !important;
+            }
+    
+            .empList-title button{
+                width: 7em !important;
+               background-color: black !important;
+              
+            }
+    
+            .sched-button{
+                font-size: 0.9em !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+    
+               
+            }
+            .sched-list{
+                font-size: 0.9em !important;
+                margin-top: -4% !important;
+                text-decoration: none !important;
+            }
+    
+            
+    
+            .empList-create-search{
+                height: 20% !important;
+               
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100%  !important;
+                margin-left: 0% !important;
+                margin-bottom: 2em !important;
+            }
+            .select-department{
+                display: flex !important;
+                flex-direction:  column !important;
+                width: 100% !important;
+               
+                margin-left: 20% !important;
+                
+               
+            }
+            .select-department label{
+                font-size: 0.9em !important;
+            }
+    
+            .select-department select{
+                width: 80% !important;
+                height: 2.8em !important;
+                font-size: 0.8em !important;
+               
+            }
+    
+            .select-employee{
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                margin-left: 20% !important;
+                
+            }
+    
+            .select-employee label{
+                font-size: 0.9em !important;
+            }
+    
+            .select-employee select{
+                width: 80% !important;
+                height: 2.8em !important;
+                font-size: 0.8em !important;
+                
+            }
+    
+            .sched-go{
+                margin-left: 20% !important;
+                margin-top: 0 !important;
+            }
+    
+    
+    
+            .table-responsive{
+                margin-top: -20px !important;
+                
+            }
+            thead th:nth-child(1){
+                    width: 120px !important;
+                   }
+            
+                   tr td:nth-child(1){
+                    width: 125px !important;
+                   }
+            
+                   thead th:nth-child(2){
+                    width: 85px !important;
+                   }
+            
+                   tr td:nth-child(2){
+                    width: 88px !important;
+                   }
+            
+                   thead th:nth-child(3){
+                    width: 85px !important;
+                   }
+            
+                   tr td:nth-child(3){
+                    width: 85px !important;
+                   }
+            
+                   thead th:nth-child(4){
+                    width: 85px !important;
+                   }
+            
+                   tr td:nth-child(4){
+                    width: 93px !important;
+                   }
+            
+                   thead th:nth-child(5){
+                    width: 85px !important;
+                   }
+            
+                   tr td:nth-child(5){
+                    width: 88px !important;
+                   }
+            
+                   thead th:nth-child(6){
+                    width: 95px !important;
+                   }
+            
+                   tr td:nth-child(6){
+                    width: 90px !important;
+                   }
+            
+                   thead th:nth-child(7){
+                    width: 85px !important;
+                   }
+            
+                   tr td:nth-child(7){
+                    width: 100px !important;
+                   }
+            
+                   thead th:nth-child(8){
+                    width: 75px !important;
+                   }
+            
+                   tr td:nth-child(8){
+                    width: 75px !important;
+                   }
+            
+                   .pagination {
+                    display: flex !important;
+                    position: inherit !important;
+                    margin-top: 40px !important;
+                    border: none !important;
+                    padding: 0; /* Remove default padding */
+                    width: 100% !important;
+                    }
+                    
+                    .pagination li {
+                    width: 40px !important;
+                    text-align: center;
+                    border: none !important;
+                    
+                    }
+                    
+                    .pagination li a{
+                    border: none !important;
+                    
+                    }
+                    
+                    
+                    
+                    .pagination li:nth-child(1) {
+                    width: 80px !important;
+                    text-align: center;
+                    position: absolute !important;
+                    left: 10px !important;
+                    border: 1px #ccc !important;
+                    }
+                    
+                    .pagination #order-listing_next{
+                    width: 80px !important;
+                    text-align: center;
+                    position: absolute !important;
+                    margin-right: 0px !important;
+                    bottom: -4px !important;
+                    border: 1px #ccc !important;
+                    }
+                    
+                    .pagination .paginate_button {
+                    margin: 0 5px !important;
+                    }
+                    
+                    .pagination #order-listing_next {
+                    margin-inline-start: 10px !important;
+                    }
+                #order-listing{
+                    padding: 10px !important;
+                }
+            
+    }

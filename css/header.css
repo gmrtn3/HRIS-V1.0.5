@@ -1,0 +1,21 @@
+.header-container{
+    background-color: #000 !important;
+}
+
+.header-logo img{
+    height: 100px;
+}
+
+.header-type{
+
+    height: 80px !important;
+}
+
+.sidebars{
+    background-color: #ccc;
+   
+}
+
+.sidebars a{
+    color: #000;
+}

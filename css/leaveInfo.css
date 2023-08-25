@@ -1,0 +1,156 @@
+*{
+  margin: 0;
+}
+.header{
+  display: flex;
+  flex-direction: row;
+  color: #787BDB;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+.btn_addLeave{
+  background-color: rgb(63, 63, 63);
+  border: none;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 5px;
+  height: 40px;
+  font-size: 15px;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: small;
+  margin-right: 3%;
+
+
+}
+.btn_addLeave:hover{
+    background-color: #000;
+    color: #fff;
+
+}
+.leave_select_dept {
+  height: 90px;
+  display: flex;
+  margin-top: 25px;
+  flex-direction: row;
+  }
+  
+  .container_leave {
+    border-top-left-radius: 7px;
+    background-color: #fff !important;
+    margin-right: 20px;
+  }
+  
+  /* p {
+    margin: 0; 
+  }
+  
+  .demm-text {
+  margin-left: 30px;
+  } */
+  
+.dropdown_dept {
+  width: 400px;
+  margin-left: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  }
+  
+  #id_btngo {
+    /* background: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
+    radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%); */
+  background-color: rgb(63, 63, 63);
+  color: white;
+  border-radius: 5px;
+  width: 120px;
+  height: 40px;
+  margin-top: 8px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  }
+  
+  #id_btngo:hover{
+  background-color: #000000;
+  color: #FFFFFF;
+  /* box-shadow: 10px 10px 8px #888888; */
+  }
+
+  tr:hover td {
+    background-color: #ECECEC;
+    }
+    
+    thead{
+      background-color: #ECECEC;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    
+    table {
+      display: block;
+      overflow-y: auto;
+      overflow-x: hidden;
+      white-space: nowrap;
+      max-height: 75%;
+      /* height: 250px; */
+    } 
+    
+    tr {
+      width: 100% !important;
+      display: table !important;
+      table-layout: fixed !important;
+    }
+    
+    .table-responsive{
+      overflow-x: hidden;
+      margin-top: 8px;  
+      max-height: 80%;
+      min-height: 80%;
+    }
+    
+    .dl_excel:hover{
+      color: white;
+    }
+    
+    .pagination{
+      margin-right: 78px !important;
+    }
+    
+    .pagination li a{
+      color: #c37700;
+      
+    }
+    
+      .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+      z-index: 3;
+      color: #fff;
+      background-color: #000;
+      border-color: #000;
+    }
+    
+    
+    
+    #order-listing_next{
+      margin-right: 28px !important;
+      margin-bottom: -17px !important;
+    
+    }
+    
+    .input-container{
+      background-color: inherit !important;
+    }
+    
+    .dataTables_paginate{
+      position: fixed;
+      bottom: 70px;
+      right: 30px;
+    }
+    
+    .dataTables_info{
+      position: fixed;
+      bottom: 70px;
+    }

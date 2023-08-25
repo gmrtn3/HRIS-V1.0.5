@@ -1,0 +1,115 @@
+
+
+.official_panel{
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    height: 90px;
+    background-color: #F2F2F2;
+    display: flex;
+    margin-top: 50px;
+    flex-direction: row;
+    
+    
+}
+
+
+
+.child_panel{
+      border-top-left-radius: 7px;
+      background-color: #F2F2F2;
+      margin-right: 50px;
+      
+
+}
+
+.empo_date_text{
+    margin-left: 30px;
+}
+
+p {
+      margin: 0;
+      
+}
+ 
+.notif {
+    flex-direction: row;
+    display: flex;
+    background-color: #F2F2F2;
+}
+  
+.validation {
+    margin-left: 10px;
+    background-color: #F2F2F2;
+    color: red;
+    visibility: hidden;
+}
+  
+.select_custom{
+    background-color:#ffffff;
+    margin-left: 30px;
+    margin-top: 5px;
+    padding: 10px;
+    width: 330px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+  
+#date {
+        height: 18px;
+}
+  
+.btn_go {
+    margin-top: 20px;
+    margin-right: 20px;
+    width: 100px;
+    background-color: mediumvioletred;
+    border: none;
+    border-radius: 5px;
+    height: 50px;
+    font-size: 18px;
+    color: #FFFFFF;
+    cursor: pointer;
+    margin-left: 5px;
+
+}
+
+.btn_go:hover{
+    /* background-color: #0cdd40; */
+    color: #FFFFFF;
+    box-shadow: 10px 10px 8px #888888;
+}
+
+tr:hover td {
+    background-color: #ECECEC;
+  }
+
+.main-panel{
+    margin-left: 18.7%; 
+    position: absolute; 
+    top: 8.5%;
+}
+
+h2{
+    font-size: 23px; 
+    font-weight: bold;
+    
+}
+
+.card{
+    width:1500px; 
+    height: 780px; 
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17); 
+    
+    
+    
+}
+
+.card-body{
+    border-radius: 25px;
+    
+}
+
+.col-12{
+    padding-top: 39.5px;
+}
