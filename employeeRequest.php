@@ -196,7 +196,7 @@ session_start();
                         <th> Date Filed </th>
                         <th> Request Type </th>
                         <th> Status </th>
-                        <th>Name</th>                                            
+                        <!-- <th>Name</th>                                             -->
                     </thead>
                         <tbody>
                             <?php
@@ -339,7 +339,7 @@ session_start();
                                             echo "<td style='font-weight: 400'>" . $row['datefiled'] . "</td>";
                                             echo "<td style='font-weight: 400'>" . $row['request_type'] . "</td>";
                                             echo "<td style='font-weight: 400'>" . $row['col_status'] . "</td>";
-                                            echo "<td style='font-weight: 400'>" . $row['full_name'] . "</td>";
+                                            // echo "<td style='font-weight: 400'>" . $row['full_name'] . "</td>";
                                             echo "</tr>";
                                         }
                                     }
@@ -349,7 +349,7 @@ session_start();
             </div>
         </form>    
         <div class="mt-3 p-3">
-            <p class="fs-5">Export Options: <button style="border:none; background-color: inherit; color: green">CSV</button> | <button style="border:none; background-color: inherit; color: red">PDF</button></p>
+            <p class="fs-5">Export Options: <button style="border:none; background-color: inherit; color: green" id="export-csv-btn">CSV</button> | <button style="border:none; background-color: inherit; color: red">PDF</button></p>
         </div>
     </div>
 

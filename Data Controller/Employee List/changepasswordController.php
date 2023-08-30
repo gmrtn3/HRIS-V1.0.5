@@ -1,11 +1,18 @@
 <?php
 // changepassword.php
 
+include '../../config.php';
+
 // Step 2: Retrieve form data
 $username = $_POST['username'];
 $oldPassword = $_POST['password']; // Use $_POST['oldPassword'] for the old password
 $newPassword = $_POST['newPassword']; // Use $_POST['newPassword'] for the new password
 $confirmPassword = $_POST['cpassword'];
+
+$hashOldPassword = mysqli_real_escape_string($conn, md5($oldPassword));
+
+// $hashNewPassword = mysqli_real_escape_string($conn, md5($newPassword));
+
 
 // Step 3: Validate form data
 if (empty($username) || empty($oldPassword) || empty($newPassword) || empty($confirmPassword)) {
@@ -15,6 +22,8 @@ if (empty($username) || empty($oldPassword) || empty($newPassword) || empty($con
     header("Location: ../../empChangePassword.php");
     exit;
 }
+
+
 
 // Step 4: Connect to the database and query for employee data
 // Replace DB_HOST, DB_USERNAME, DB_PASSWORD, and DB_NAME with your database credentials
@@ -43,18 +52,34 @@ if (!$result || mysqli_num_rows($result) === 0) {
 }
 
 $employee = mysqli_fetch_assoc($result);
-$storedPassword = $employee['password'];
+// $storedPassword = $employee['password'];
 
 // Step 5: Compare old password
-$oldPasswordMatch = password_verify($oldPassword, $storedPassword);
-if (!$oldPasswordMatch) {
-    echo '<script type="text/javascript">';
-    echo 'alert("Incorrect old password.");';
-    echo 'window.location.href = "../../empChangePassword.php";';
-    echo '</script>';
-    mysqli_close($connection);
-    exit;
+// $oldPasswordMatch = password_verify($oldPassword, $storedPassword);
+include '../../config.php';
+$sql = "SELECT * FROM employee_tb WHERE `username` = '$username' AND `password` = '$hashOldPassword'";
+$result = mysqli_query($conn, $sql);
+
+
+// $oldPasswordMatch = $row['password'];
+
+if(mysqli_num_rows($result) >0){
+    $row = mysqli_fetch_assoc($result);
+    
+    $oldiePassword = $row['password'];
+
+
+    if ($oldiePassword !== $hashOldPassword ) {
+        echo '<script type="text/javascript">';
+        echo 'alert("Incorrect old password.");';
+        // echo 'window.location.href = "../../empChangePassword.php";';
+        echo '</script>';
+        mysqli_close($connection);
+        // exit;
+    }
+    
 }
+
 
 // Step 6: Check if new passwords match
 if ($newPassword !== $confirmPassword) {
@@ -67,12 +92,14 @@ if ($newPassword !== $confirmPassword) {
 }
 
 // Step 7: Update password in the database
-$newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+// $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+$newPasswordHash = mysqli_real_escape_string($conn, md5($newPassword));
 $updateQuery = "UPDATE employee_tb SET password = '$newPasswordHash' WHERE username = '$username'";
 
 if (mysqli_query($connection, $updateQuery)) {
     mysqli_close($connection);
-    header("Location: ../../login.php");
+    // header("Location: ../../login.php");
+    echo "success";
     exit;
 } else {
     echo "Error updating password: " . mysqli_error($connection);
