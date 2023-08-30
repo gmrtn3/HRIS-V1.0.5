@@ -24,6 +24,27 @@ $end_undertime = $_POST['under_time_to'];
 $total_undertime = $_POST['total_undertime'];
 $reason_undertime = $_POST['undertime_reason'];
 
+include '../../config.php';
+
+$sql = "SELECT * FROM overtime_tb WHERE `empid` = '$employee_id' AND `work_schedule` = '$date_undertime' ";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+
+$empid =  $row['empid'];
+$date = $row['work_schedule'];
+
+echo $empid, "<br>"; 
+echo $employee_id, "<br>"; 
+echo $date, "<br>";
+echo $date_undertime, "<br>";
+
+
+if($empid == $employee_id && $date == $date_undertime){
+    // echo "hehe";
+    header("Location: ../../undertime_req?error=You can't file an undertime when you have overtime with same date");
+    exit;
+}else{
+
 
 if(isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] == 0) {
     $contents = file_get_contents($_FILES['file_upload']['tmp_name']);
@@ -118,5 +139,5 @@ if(isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] == 0) {
         }    
 
 }
-
+}
 ?>

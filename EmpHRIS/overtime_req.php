@@ -118,10 +118,31 @@ session_start();
         color: #c0c1c2 !important;
         opacity: 1;
     }
+    .file_overtime:hover{
+    box-shadow: 10px 10px 8px #888888 !important;
+    }
+    table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 100%;
+                height: 320px;
+                /* border: black 1px solid; */
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
 </style>
 
 <!------------------------------------Modal Start Here----------------------------------------------->
-<div class="modal fade" id="file_overtime" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="file_overtime" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -241,7 +262,7 @@ session_start();
 
 <!------------------------------------------------View ng whole data Modal ---------------------------------------------------->
 
-<div class="modal fade" id="view_ot_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="view_ot_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -321,7 +342,7 @@ session_start();
                                 </div>
                                 <div class="col-6 mt-1 text-end">
                                 <!-- Button trigger modal -->
-                                <button type="button" class="file_overtime btn btn-primary" data-bs-toggle="modal" data-bs-target="#file_overtime">
+                                <button type="button" style="background-color: black" class="file_overtime btn btn-primary" data-bs-toggle="modal" data-bs-target="#file_overtime">
                                     File Overtime
                                     </button>
                                 </div>
@@ -358,8 +379,8 @@ session_start();
         <div class="row" >
             <div class="col-12 mt-5">
                 <!-- <input style="display: none;" type="text" id="input_id" name="input"> -->
-                     <div class="table-responsive" style="max-height: 590px; overflow-y: auto;">
-                        <table id="order-listing" class="table" style="width: 100%; max-height: 590px;">
+                <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                    <table id="order-listing" class="table" style="width: 100%">
                             <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
                             <tr>
                                 <th style="display: none;">ID</th>

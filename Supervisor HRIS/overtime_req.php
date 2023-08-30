@@ -81,6 +81,25 @@ session_start();
 
     }
 
+    table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 100%;
+                height: 320px;
+                /* border: black 1px solid; */
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+
 </style>
 
 <!---------------------------------------Download Modal Start Here -------------------------------------->
@@ -313,8 +332,8 @@ session_start();
 <!------------------------------------------Syntax ng Table-------------------------------------------------->
         <div class="row" >
             <div class="col-12 mt-2">
-                  <div class="table-responsive" style="max-height: 590px; overflow-y: auto;">
-                    <table id="order-listing" class="table" style="width: 100%; max-height: 590px;">
+                  <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                    <table id="order-listing" class="table" style="width: 100%">
                       <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
                             <tr>
                                 <th style="display: none;">ID</th>

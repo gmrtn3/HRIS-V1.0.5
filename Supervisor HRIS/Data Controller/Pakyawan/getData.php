@@ -26,13 +26,13 @@
         $int_unit_rates = intval($calcRows['unit_rate']);
         $int_unit_quantitys = intval($calcRows['unit_quantity']);
     
-        $subtotals += $int_unit_rates / $int_unit_quantitys;
+        @$subtotals += $int_unit_rates / $int_unit_quantitys;
     
         // echo $subtotal;
     
-        $workpays = $unit_work * $subtotals;
+        @$workpays = $unit_work * $subtotals;
     
-        echo $workpays;
+        echo @$workpays;
 
 
         $sql ="UPDATE `pakyawan_based_work_tb` SET `employee`='$employee', `work_frequency` = '$work_frequency', `start_date` = '$start_date', `end_date` = '$end_date' , `unit_type` = '$unit_type' , `unit_work` = '$unit_work', `work_pay` = $workpays  WHERE `id` = $id";

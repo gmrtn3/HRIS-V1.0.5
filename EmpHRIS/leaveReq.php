@@ -171,7 +171,7 @@ session_start();
 <!-------------------------------------------------------------- BREAK  for add  credits modal start------------------------------------------------------------------------------->
 
                     <!-- Modal -->
-                        <div class="modal fade" id="id_apply_leave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="id_apply_leave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
                             <div class="modal-dialog">
                             <form action="actions/Leave Request/insert.php" method="post" enctype="multipart/form-data">
                                     <div class="modal-content">
@@ -345,6 +345,7 @@ session_start();
                             </button>
                           
                         </div>
+                        
                     </div> <!-- row end -->
 
 
@@ -429,7 +430,39 @@ session_start();
           
         <!----------------------------------Break------------------------------------->   
         
-        
+        <div class="form-group d-flex flex-row justify-content-between" style="width: 60%">
+                <label for="" style="margin-right: 18px; margin-top: 10px; margin-left: 40px;">Date Range</label>
+
+                <?php
+                    $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
+                    $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
+                    
+                ?>
+                
+                    <input type="date" class="form-control" name="date_from" id="start_date" style="width: 250px; height: 50px; margin-right: 30px;" value="<?php echo $dateFrom; ?>">
+                    <input type="date" class="form-control" name="date_to" id="end_date" style="width: 250px; height: 50px; " value="<?php echo $dateTo; ?>">
+
+                    <button id="applyfilt" onclick="filterDates()" class="btn btn-primary" style="width: 20%; font-size: 1.2em; font-weight: 400">Apply Filter</button> <!--margin-left: 60px;-->
+               
+            </div>
+
+            <script>
+                function filterDates() {
+                    var dateFrom = document.getElementById('start_date').value;
+                    var dateTo = document.getElementById('end_date').value;
+                    var applyfilt = document.getElementById('applyfilt');
+
+                    if(dateFrom == '' && dateTo ==''){
+                        var url = 'attendance.php';
+                        window.location.href = url;  
+                    }else{
+                        var url = 'attendance.php?date_from=' + dateFrom + '&date_to=' + dateTo;
+                        window.location.href = url;   
+                    }
+                }
+                </script>
+                
+
                     <div id="data_table" class="table table-responsive "  style="height: 400px; overflow-y: auto;">
                         <form action="actions/Leave Request/action.php" method="post">
                         <input id="id_ID_tb" name="name_ID_tb" type="text" style="display: none;">  <!--received the id of selected data in datatble and pass to calss action-->   

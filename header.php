@@ -44,6 +44,8 @@
         #notificationDropdown:hover{
             background-color: inherit !important;
         }
+
+
 </style>
     <!-- UPPER NAV -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row custom-navbar" id="upper-nav"> <!-- UPPER NAV MOTHER -->
@@ -628,6 +630,7 @@
             <div class="collapse" id="ui-payroll">
               <ul class="nav flex-column sub-menu" style=" width: 100%;">
                 <li class="nav-item"> <a class="nav-link" href="loanRequest">LOAN REQUEST</a></li>
+                <li class="nav-item"> <a class="nav-link" href="Dailycompute.php">DAILY COMPUTATION</a></li>
                 <li class="nav-item"> <a class="nav-link" href="cutoff">GENERATE PAYROLL</a></li>
                 <li class="nav-item"> <a class="nav-link" href="generatePayslip">GENERATE PAYSLIP</a></li>
               </ul>

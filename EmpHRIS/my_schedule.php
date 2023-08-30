@@ -230,6 +230,8 @@
                                         AND empschedule_tb.sched_to >= '$dateFrom';";
 
                                 $result = mysqli_query($conn, $query);
+                                
+                                $todayDate = date('Y-m-d'); // Get the current date
 
                                 while ($row = mysqli_fetch_assoc($result)) {
                                 $schedFrom = $row['sched_from'];
@@ -307,21 +309,21 @@
                                         $workingHours = number_format($workingSeconds / 3600, 2); // format as 0.00
                                     }
                                     ?>
-                                    <tr>
+                                    <tr  <?php if($date == $todayDate){ echo "style='background-color: #CCCCFF;' "; }else{ echo "background-color: inherit";} ?>>
                                         <td style="display: none;"><?php echo $row['id'] ?></td>
                                         <td style="display: none;"><?php echo $row['empid'] ?></td>
-                                        <td><?php echo $date ?></td>
-                                        <td><?php echo $dayOfWeek ?></td>
+                                        <td style="font-weight: 400" ><?php echo $date ?></td>
+                                        <td style="font-weight: 400" id="date_today"><?php echo $dayOfWeek ?></td>
                                         <?php if (($startTime === null || $startTime === '') && ($endTime === null || $endTime === '')) : ?>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>Restday</td>
-                                        <td>0.00</td>
+                                        <td style='font-weight: 400'>-</td>
+                                        <td style='font-weight: 400'>-</td>
+                                        <td style='font-weight: 400'>Restday</td>
+                                        <td style='font-weight: 400'>0.00</td>
                                         <?php else : ?>
-                                        <td><?php echo !is_null($startTime) ? date("h:i A", strtotime($startTime)) : '-' ?></td>
-                                        <td><?php echo !is_null($endTime) ? date("h:i A", strtotime($endTime)) : '-' ?></td>
-                                        <td><?php echo $row['schedule_name'] ?></td>
-                                        <td><?php echo $workingHours ?></td>
+                                        <td style='font-weight: 400'><?php echo !is_null($startTime) ? date("h:i A", strtotime($startTime)) : '-' ?></td>
+                                        <td style='font-weight: 400'><?php echo !is_null($endTime) ? date("h:i A", strtotime($endTime)) : '-' ?></td>
+                                        <td style='font-weight: 400'><?php echo $row['schedule_name'] ?></td>
+                                        <td style='font-weight: 400'><?php echo $workingHours ?></td>
                                         <?php endif; ?>
                                     </tr>
                                 <?php

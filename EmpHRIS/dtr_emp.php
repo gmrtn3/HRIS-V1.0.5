@@ -120,13 +120,24 @@
       box-shadow: 10px 10px 10px 8px #888888;
     }
 
-    .table{
-       width: 99.7%;
-    }
-
-    .content-wrapper{
-       width: 85%
-    }
+    table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 100%;
+                height: 320px;
+                /* border: black 1px solid; */
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
 </style>
 <!----------------------------------------------Modal Start Here-------------------------------------------------------------->
 
@@ -358,8 +369,8 @@
                         <div class="row">
                             <div class="col-12 mt-3">
                              
-                                <div class="table-responsive" style="overflow: hidden;">
-                                    <table id="order-listing" class="table">
+                            <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px; overflow-x:hidden">
+                    <table id="order-listing" class="table" style="width: 100%">
                                       <thead>
                                             <tr>
                                                 <th style="display: none;">ID</th>

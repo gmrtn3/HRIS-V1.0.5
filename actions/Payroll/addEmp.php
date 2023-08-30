@@ -15,21 +15,16 @@
         $endDate = $row['col_endDate'];
     
         $employeesToAdd = []; // Array to store employee IDs with attendance data
-
-        echo $cutOff_emp;
     
         // Iterate over each selected employee ID
         foreach($cutOff_emp as $empID) {
-            // Check if the employee has a schedule
-            $result_dept = mysqli_query($conn, "SELECT * FROM `empschedule_tb` WHERE `empid` = $empID");
-            
-            
-
-            if(mysqli_num_rows($result_dept) <= 0) {
-                header("Location: ../../cutoff.php?error=You cannot add an employee that has no schedule");
+            // // Check if the employee has a schedule
+            // $result_dept = mysqli_query($conn, "SELECT * FROM `empschedule_tb` WHERE `empid` = $empID");
+            // if(mysqli_num_rows($result_dept) <= 0) {
+            //     header("Location: ../../cutoff.php?error=You cannot add an employee that has no schedule");
                 
-                exit();
-            }
+            //     exit();
+            // }
     
             // Check if the employee is already in the empcutoff_tb
             $CheckExisting = "SELECT * FROM empcutoff_tb WHERE `cutOff_ID` = '$cutOffID' AND `emp_ID` = '$empID'";
@@ -46,8 +41,23 @@
             $Runattendance = mysqli_query($conn, $AttendanceExist);
     
             if(mysqli_num_rows($Runattendance) > 0){
-                // Add the employee ID to the list of employees to add
-                $employeesToAdd[] = $empID;
+                $hasPresentStatus = false;
+                
+
+                while ($attendanceRow = mysqli_fetch_assoc($Runattendance)) {
+                    if ($attendanceRow['status'] === 'Present') {
+                        $hasPresentStatus = true;
+                        break;
+                    }
+                }
+
+                if ($hasPresentStatus) {
+                    $employeesToAdd[] = $empID; // Store the selected employee ID
+                } else {
+                    header("Location: ../../cutoff.php?error=No 'Present' attendance found for employee on $strDate to $endDate");
+                    exit();
+                }
+
             }
         }
     

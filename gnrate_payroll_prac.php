@@ -1,30 +1,15 @@
 <?php
 session_start();
-//    $empid = $_SESSION['empid'];
-   if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+if(!isset($_SESSION['username'])){
+    header("Location: login.php"); 
 } else {
     // Check if the user's role is not "admin"
-    if ($_SESSION['role'] != 'admin') {
+    if($_SESSION['role'] != 'admin'){
         // If the user's role is not "admin", log them out and redirect to the logout page
         session_unset();
         session_destroy();
         header("Location: logout.php");
         exit();
-    } else{
-        include 'config.php';
-        $userId = $_SESSION['empid'];
-       
-        $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
-        $iconRow = mysqli_fetch_assoc($iconResult);
-
-        if ($iconRow) {
-            $image_url = $iconRow['emp_img_url'];
-        } else {
-            // Handle the case when the user ID is not found in the database
-            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
-        }
-    
     }
 }
 
@@ -1622,8 +1607,8 @@ session_start();
                                     ) AS total_hours_minutestotalHours
                             FROM
                                 employee_tb
-                                INNER JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
                                 INNER JOIN attendances ON employee_tb.empid = attendances.empid
+                                LEFT JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
                                 LEFT JOIN payroll_loan_tb ON employee_tb.empid = payroll_loan_tb.empid
 
                             WHERE (attendances.status = 'Present' OR attendances.status = 'On-Leave')  AND employee_tb.empid = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
@@ -1696,14 +1681,15 @@ session_start();
                                     ) AS total_hours_minutestotalHours
                             FROM
                                 employee_tb
-                                INNER JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
                                 INNER JOIN attendances ON employee_tb.empid = attendances.empid
+                                LEFT JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
                                 LEFT JOIN payroll_loan_tb ON employee_tb.empid = payroll_loan_tb.empid
 
                             WHERE (attendances.status = 'Present' OR attendances.status = 'On-Leave')  AND employee_tb.empid = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
                         }
                         $result = $conn->query($sql);
                
+                      
                                     
                                     
                                         //read data
@@ -2008,6 +1994,27 @@ session_start();
                                 <div class="modal-body" id="modal-body" style="height: 667px;">
                                 <input type="hidden" name="table_frequency" id="id_table_frequency" >
                                 <input type="hidden" name="table_cutoffnum" id="id_table_cutoffnum"> 
+                                <input type="hidden" name="monthcut" id="cutoffmonth">
+                                <input type="hidden" name="col_strCutoff" id="cutoffstarts">
+                                <input type="hidden" name="col_endCutoff" id="cutoffends">
+                                <input type="hidden" id="emptotalworks">
+                                <input type="hidden" id="empAmounts">
+                                <input type="hidden" id="empOThour">
+                                <input type="hidden" id="OTamounts">
+                                <input type="hidden" id="allowanceAmounts">
+                                <input type="hidden" id="leaveAmounts">
+                                <input type="hidden" id="holidayAmounts">
+                                <input type="hidden" id="totalEarns">
+                                <input type="hidden" id="deduct_SSS">
+                                <input type="hidden" id="deduct_phil">
+                                <input type="hidden" id="deduct_TIN">
+                                <input type="hidden" id="deduct_Pagibig">
+                                <input type="hidden" id="deduct_Other">
+                                <input type="hidden" id="deduct_Late">
+                                <input type="hidden" id="deduct_UT">
+                                <input type="hidden" id="deduct_LWOP">
+                                <input type="hidden" id="totalDeductions">
+                                <input type="hidden" id="netpayslips">
 
                                     <div class="header_view">
                                         <img src="icons/logo_hris.png" width="70px" alt="">
@@ -2016,12 +2023,13 @@ session_start();
 
                                     <div class="div1_mdl">
                                         <p class="comp_name">Slash Tech Solutions Inc.</p>
+   
                                         <p class="lbl_payPeriod">Pay Period :</p>
                                         <p class="dt_mdl_from" id="cutoffstart" name="col_strCutoff"></p>
-                                            <input type="text" name="col_strCutoff" id="cutoffstart" style="display: none;">
+                                            
                                         <p class="lbl_to">TO</p>
                                         <p class="dt_mdl_TO" id="cutoffend" name="col_endCutoff"></p>
-                                            <input type="text" name="col_endCutoff" id="cutoffend" style="display: none;">
+
 
                                         <p class="lbl_stats">Employee Status :</p>
                                         <p class="p_statss" id="empstatus"></p>
@@ -2092,6 +2100,7 @@ session_start();
                                                 <p class="lbl_bsc_pay">Basic Pay</p>
                                                 <p class="p_Thrs" id="empTotalwork" name="basic_total_work"></p>
                                                 <p class="p_Tamount" id="empAmount" name="basic_salary_amount"></p>
+
                                             </div>
 
                                              <div class="div_mdlcontnt_left1">
@@ -2204,7 +2213,61 @@ session_start();
             </div>
          </div>
    
-      
+<!---------------Script para sa pagpindot ng print all button at mapaginsert papuntang insert payslip--------------------->
+<script>
+document.getElementById("pdfPrint").addEventListener("click", function () {
+
+    const dataToSend = {
+                table_frequency: document.getElementById("id_table_frequency").value,
+                table_cutoffnum: document.getElementById("id_table_cutoffnum").value,
+                table_employeeId: document.getElementById("id_employeeid").value,
+                table_cutmonth: document.getElementById("cutoffmonth").value,
+                table_cutoffstart: document.getElementById("cutoffstarts").value,
+                table_cutoffend: document.getElementById("cutoffends").value,
+                table_fullname: document.getElementById("id_p_emp_name").value,
+                table_basictotalwork: document.getElementById("emptotalworks").value,
+                table_basicempAmount: document.getElementById("empAmounts").value,
+                table_othours: document.getElementById("empOThour").value,
+                table_otamount: document.getElementById("OTamounts").value,
+                table_allowanceAmount: document.getElementById("allowanceAmounts").value,
+                table_leaveAmount: document.getElementById("leaveAmounts").value,
+                table_holidayAmount: document.getElementById("holidayAmounts").value,
+                table_totalEarn: document.getElementById("totalEarns").value,
+                table_deductSSS: document.getElementById("deduct_SSS").value,
+                table_deductphil: document.getElementById("deduct_phil").value,
+                table_deductTIN: document.getElementById("deduct_TIN").value,
+                table_deductPagibig: document.getElementById("deduct_Pagibig").value,
+                table_deductOther: document.getElementById("deduct_Other").value,
+                table_deductLate: document.getElementById("deduct_Late").value,
+                table_deductUT: document.getElementById("deduct_UT").value,
+                table_deductLWOP: document.getElementById("deduct_LWOP").value,
+                table_totalDeduction: document.getElementById("totalDeductions").value,
+                table_netpayslip:document.getElementById("netpayslips").value,
+                table_id_workdays: document.getElementById("id_workdays").value,
+                table_cutoff_id: document.getElementById("id_cutoff_id").value
+    };
+
+    fetch("solo_payslip.php", {
+        method: "POST",
+        body: JSON.stringify(dataToSend),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle response if needed
+        console.log(data);
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+});
+
+</script>
+
+<!---------------Script para sa pagpindot ng print all button at mapaginsert papuntang insert payslip--------------------->      
+
 <!-------------------------------------------------TABLE END------------------------------------------->
 <script>
 window.html2canvas = html2canvas;
@@ -2319,7 +2382,8 @@ $(document).ready(function(){
 
         // Assuming the employee ID is in data[0]
         var employeeID = data[0];
-        var empName = data[1]
+        var empName = data[1];
+        var cutoffMonth = data[2];
         var cutstart = data[4];
         var cutend = data[5];
         var CutoffNumber = data[6];
@@ -2348,11 +2412,7 @@ $(document).ready(function(){
 
 
         // Set the value of the <p> tag
-        $('#id_table_frequency').val(cutoffFrequency);
-        $('#id_table_cutoffnum').val(CutoffNumber);
-        $('#id_employeeid').val(employeeID);
-        $('#id_workdays').val(Totalworkingdays);
-        $('#id_cutoff_id').val(CuttoffID);
+
 
         $('#employeeID').text(employeeID);
         $('#id_p_emp_name').text(empName);
@@ -2377,6 +2437,38 @@ $(document).ready(function(){
         $('#totalEarn').text(EarnTotal);
         $('#totalDeduction').text(DeductTotal);
         $('#empstatus').text(EmployeeStats);
+
+
+        //input hidden value para maipasa ko sa ajax
+        $('#id_table_frequency').val(cutoffFrequency);
+        $('#id_table_cutoffnum').val(CutoffNumber);
+        $('#id_employeeid').val(employeeID);
+        $('#cutoffmonth').val(cutoffMonth);
+        $('#cutoffstarts').val(cutstart);
+        $('#cutoffends').val(cutend);
+        $('#emptotalworks').val(totalWork);
+        $('#empAmounts').val(Amount);
+        $('#empOThour').val(OThours);
+        $('#OTamounts').val(OTAmount);
+        $('#allowanceAmounts').val(totalAllowance);
+        $('#leaveAmounts').val(Paidleaves);
+        $('#holidayAmounts').val(Payholiday);
+        $('#totalEarns').val(EarnTotal);
+        $('#deduct_SSS').val(dSSS);
+        $('#deduct_phil').val(Philhealth);
+        $('#deduct_TIN').val(Tin);
+        $('#deduct_Pagibig').val(Pagibig);
+        $('#deduct_Other').val(otherDeduct);
+        $('#deduct_Late').val(Latededuction);
+        $('#deduct_UT').val(UTDeduction);
+        $('#deduct_LWOP').val(LWOPDeduction);
+        $('#totalDeductions').val(DeductTotal);
+        $('#netpayslips').val(Netpayslip);
+        $('#id_workdays').val(Totalworkingdays);
+        $('#id_cutoff_id').val(CuttoffID);
+
+
+
     });
 });
 </script>

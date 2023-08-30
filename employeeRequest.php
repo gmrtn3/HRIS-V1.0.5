@@ -76,6 +76,8 @@ session_start();
     }
      .pagination{
         margin-right: 63px !important;
+        /* margin-top: px !important; */
+        /* border: black 1px solid; */
 
         
     }
@@ -94,7 +96,7 @@ session_start();
     
     
     #order-listing_next{
-        margin-right: 28px !important;
+        margin-right: 15px !important;
         margin-bottom: -16px !important;
 
     }

@@ -169,8 +169,14 @@
             <div class="attendance-date form-group">
                 <label for="" style="margin-right: 18px; margin-top: 10px; margin-left: 40px;">Date Range</label>
 
-                <input type="date" class="form-control" name="date_from" id="start_date" style="width: 250px; height: 50px; margin-right: 30px;">
-                <input type="date" class="form-control" name="date_to" id="end_date" style="width: 250px; height: 50px; ">
+                <?php
+                    $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
+                    $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
+                    
+                ?>
+
+                <input type="date" class="form-control" name="date_from" id="start_date" style="width: 250px; height: 50px; margin-right: 30px;" value="<?php echo $dateFrom; ?>">
+                <input type="date" class="form-control" name="date_to" id="end_date" style="width: 250px; height: 50px; " value="<?php echo $dateTo; ?>">
 
                 <button id="applyfilt" onclick="filterDates()">Apply Filter</button> <!--margin-left: 60px;-->
             </div>

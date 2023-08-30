@@ -469,15 +469,24 @@
                       </div>
                       <div class="form-group col">
                         <?php
-                            include 'config.php';
+                          include 'config.php';
 
-                            $sql = "SELECT * FROM piece_rate_tb";
-                            $result = mysqli_query($conn, $sql);
-
-                            $options = "";
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $options .= "<option value='" . $row['id'] . "' style='display:flex; font-size: 16px; font-style:normal;'>".$row['unit_type']."</option>";
-                            }
+                          $sql = "SELECT * FROM piece_rate_tb";
+                          $result = mysqli_query($conn, $sql);
+                          
+                          $options = "";
+                          while ($row = mysqli_fetch_assoc($result)) {
+                            
+                              $work_basedSQL = "SELECT * FROM employee_pakyawan_work_tb 
+                                                WHERE employee_pakyawan_work_tb.empid = $empid AND piece_rate_id = " . $row['id'];
+                              $work_basedResult = mysqli_query($conn, $work_basedSQL);
+                          
+                              // Check if the piece rate item is not assigned to the employee
+                              if (mysqli_num_rows($work_basedResult) == 0) {
+                                  $options .= "<option value='" . $row['id'] . "' style='display:flex; font-size: 16px; font-style:normal;'>".$row['unit_type']."</option>";
+                              }
+                          }
+                          
 
                           
                           

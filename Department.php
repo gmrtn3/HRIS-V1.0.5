@@ -66,7 +66,25 @@
 </head>
 <body>
     
-<style>
+<style> 
+        table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 450px;
+                height: 450px;
+                
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
     
     .pagination{
         margin-right: 63px !important;
@@ -208,12 +226,13 @@
                     ?>
                         <!-------------------- para sa message na error ENd --------------------->
 
-                    <div class="table-responsive mt-5" style=" overflow-x: hidden; height: 300px;">
+                    <!-- <div class="table-responsive mt-5" style=" overflow-x: hidden; height: 300px;"> -->
                                       
                         <form action="departmentEmployee.php" method="post">
                                 <input id="id_deptname_tb" name="name_deptID_tb" type="text" style="display: none;">
                                 <input id="id_textdept" name="name_deptname_tb" type="text" style="display: none;">
-                        <table id="order-listing" class="table" style="width: 100%; " >
+                                <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 2em">
+                                    <table id="order-listing" class="table" style="width: 100%;">
                             <thead style="background-color: #ececec" >
 
                                 <tr> 

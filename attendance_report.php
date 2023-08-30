@@ -129,60 +129,102 @@ session_start();
 <!----------------------------------------select button and text input--------------------------------------->
 <div class="container-select">
             <div class="input-container">
-              <p class="demm-text">Department</p>
+              <p class="demm-text">Select Department</p>
               <?php
-                        include 'config.php';
+                include('config.php');
 
-                        // Fetch all values of empid and date from the database
-                        $sql = "SELECT `col_deptname` FROM dept_tb";
-                        $result = mysqli_query($conn, $sql);
-
-                        // Generate the dropdown list
-                        echo "<select class='select-btn form-select-m' aria-label='.form-select-sm example' name='name_emp''>";
-                        echo "<option value='Select All Department' default>Select Department</option>"; // Add a default option
-                        while ($row = mysqli_fetch_array($result)) {
-                        $department = $row['col_deptname'];
-                        echo "<option value='$department'>$department</option>"; // Set the value to emp_id|date
-                        }
-                        echo "</select>";
-                      ?>
-                </div>
+                $sql = "SELECT col_ID, col_deptname FROM dept_tb";
+                $result = mysqli_query($conn, $sql);
                 
-                <div class="input-container">
-                <p class="demm-text">Employee</p>
-                    <?php
-                            include 'config.php';
+                $Department = isset($_GET['department_name']) ? ($_GET['department_name']) : '';
 
-                            // Fetch all values of empid and date from the database
-                            $sql = "SELECT `empid` FROM employee_tb";
-                            $result = mysqli_query($conn, $sql);
-
-                            // Generate the dropdown list
-                            echo "<select class='select-btn form-select-m' aria-label='.form-select-sm example' name='name_emp''>";
-                            echo "<option value='Select All Employee' default>Select Employee</option>"; // Add a default option
-                            while ($row = mysqli_fetch_array($result)) {
-                            $employee_id = $row['employee_id'];
-                            echo "<option value='$employee_id'>$employee_id</option>"; // Set the value to emp_id|date
-                            }
-                            echo "</select>";
-                        ?>
-                </div>
-
-                <div class="input-container">
-                <p class="demm-text">Month From</p>
-                <input class="select-btn" type="date" name="" id="datestart" required>
-                </div>
-                <div class="input-container">
-                <div class="notif">
-                <p class="demm-text">Month To</p>
-                <!-- <p id="validate" class="validation" style="display:none;">End date must beyond the start date</p> -->
-                </div>
-                <input class="select-btn" type="date" id="enddate" onchange="datefunct()" required>
-                </div>
-                <button id="arrowBtn">Apply Filter</button>
+                $options = "";
+                $options .= "<option class='select-btn form-select-m' aria-label='.form-select-sm example' value='All Department'" .($Department == 'All Department' ? ' selected' : '').">All Department</option>";
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $selected = ($Department == $row['col_ID']) ? 'selected' : '';
+                    $options .= "<option value='" . $row['col_ID'] . "' " . $selected . ">" . $row['col_deptname'] . "</option>";
+                }
+                ?>
+                  <select class="select-btn form-select-m" aria-label=".form-select-sm example" name="department" id="select_department" style="padding: 10px;">
+                      <option value="" disabled selected>Select Department</option>
+                      <?php echo $options; ?>
+                  </select>
             </div>
-<!----------------------------------------select button and text input--------------------------------------->
+                
+            <div class="input-container">
+                <p class="demm-text">Select Employee</p>
+                  <label for="employee"></label>
+                    <select  class="select-btn form-select-m" aria-label=".form-select-sm example" name="employee" id="select_employee" style="padding: 10px;" disabled>
+                        <option value="" disabled selected>Select Employee</option>
+                    </select>
+              </div>
 
+                <div class="input-container">
+                    <p class="demm-text">Month From</p>
+                    <input class="select-btn" type="date" name="date_from" id="datestart" required>
+                </div>
+                <div class="input-container">
+                    <div class="notif">
+                    <p class="demm-text">Month To</p>
+                    </div>
+                    <input class="select-btn" type="date" name="date_to" id="enddate" onchange="datefunct()" required>
+                </div>
+                <button id="arrowBtn" onclick="filterAttReport()"> &rarr; Apply Filter</button>
+ </div> <!--Container Select-->
+<!----------------------------------------select button and text input--------------------------------------->
+<script>
+// Kapag nagbago ang pagpili sa select department dropdown
+document.getElementById("select_department").addEventListener("change", function() {
+    var departmentID = this.value; // Kunin ang value ng selected department
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var employees = JSON.parse(this.responseText);
+            var employeeDropdown = document.getElementById("select_employee");
+            employeeDropdown.innerHTML = ""; // I-clear ang current options
+
+            // I-update ang employee dropdown base sa mga nakuha na empleyado
+            if (departmentID == "All Department") {
+                // Kapag "All Department" ang napili, ipakita ang "All Employee" kasama ang detalye ng bawat empleyado
+                var allEmployeeOption = document.createElement("option");
+                allEmployeeOption.value = "All Employee";
+                allEmployeeOption.text = "All Employee";
+                employeeDropdown.appendChild(allEmployeeOption);
+
+                employees.forEach(function(employee) {
+                    var option = document.createElement("option");
+                    option.value = employee.empid;
+                    option.text = employee.empid + " - " + employee.fname + " " + employee.lname;
+                    employeeDropdown.appendChild(option);
+                });
+            } else {
+                // Kapag ibang department ang napili, ipakita ang mga empleyado base sa department
+                employees.forEach(function(employee) {
+                    var option = document.createElement("option");
+                    option.value = employee.empid;
+                    option.text = employee.empid + " - " + employee.fname + " " + employee.lname;
+                    employeeDropdown.appendChild(option);
+                });
+            }
+
+            // I-enable ang employee dropdown
+            employeeDropdown.disabled = false;
+        }
+    };
+    xhttp.open("GET", "get_employees.php?departmentID=" + departmentID, true);
+    xhttp.send();
+});
+
+function filterAttReport() {
+        var department = document.getElementById('select_department').value;
+        var employee = document.getElementById('select_employee').value;
+        var dateFrom = document.getElementById('datestart').value;
+        var dateTo = document.getElementById('enddate').value;
+        var url = 'dtRecords.php?col_deptname=' + department + '&empid=' + employee + '&date=' + dateFrom + '&date=' + dateTo;
+        window.location.href = url;
+    }
+</script>
 
 
 

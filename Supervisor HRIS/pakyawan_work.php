@@ -269,6 +269,7 @@
             <th style='display: none;'>ID</th>
             <th style='display: none;'>Employee ID</th> 
             <th style='display: none;'>unit type</th>
+            <th>Pakyawan ID</th>
             <th>Name</th>
             <th>Unit Type</th>
             <th>Unit Work</th>
@@ -286,7 +287,13 @@
 
         $approverEmpid = $_SESSION['empid'];
 
-        $sql = "SELECT pakyaw.id, emp.fname, emp.lname, peice.unit_type, approver.empid, approver.approver_empid, pakyaw.unit_work, pakyaw.start_date, pakyaw.end_date, pakyaw.work_frequency, pakyaw.employee, pakyaw.work_pay, peice.id AS id_piece FROM pakyawan_based_work_tb AS pakyaw INNER JOIN employee_tb AS emp ON pakyaw.employee = emp.empid INNER JOIN piece_rate_tb AS peice ON pakyaw.unit_type = peice.id INNER JOIN approver_tb AS approver ON emp.empid = approver.empid WHERE approver.approver_empid = $approverEmpid";
+        $sql = "SELECT pakyaw.id, emp.fname, emp.lname, peice.unit_type, approver.empid, approver.approver_empid, pakyaw.unit_work, pakyaw.start_date, pakyaw.end_date, pakyaw.work_frequency, pakyaw.employee, pakyaw.work_pay, peice.id AS id_piece, assigned.company_code_id, assigned.empid AS assign_empid, comp.company_code, comp.id AS com_id FROM pakyawan_based_work_tb AS pakyaw 
+        INNER JOIN employee_tb AS emp ON pakyaw.employee = emp.empid 
+        INNER JOIN piece_rate_tb AS peice ON pakyaw.unit_type = peice.id 
+        INNER JOIN approver_tb AS approver ON emp.empid = approver.empid
+        INNER JOIN assigned_company_code_tb AS assigned ON emp.empid = assigned.empid
+        INNER JOIN company_code_tb AS comp ON assigned.company_code_id = comp.id 
+        WHERE approver.approver_empid = $approverEmpid";
           // $sql ="SELECT * FROM pakyawan_based_work_tb";
         $result = mysqli_query($conn, $sql);
 
@@ -296,13 +303,19 @@
                 echo "<td style='display: none'>" . $row['id'] . "</td>";
                 echo "<td style='display: none'>" . $row['employee'] . "</td>";
                 echo "<td style='display: none'>" . $row['id_piece'] . "</td>";
+
+                echo "<td style='font-weight: 400;'>";
+                $company = $row['company_code'] ?? null;
+                echo $company !== null ? $company . " - " .$row['empid'] : $row['empid'];
+                echo "</td>";
+
                 echo "<td style='font-weight: 400'>" . $row['fname'] . " " . $row['lname'] . "</td>";
                 echo "<td style='font-weight: 400'>" . $row['unit_type'] . "</td>";
                 echo "<td style='font-weight: 400'>" . $row['unit_work'] . "</td>";
                 echo "<td style='font-weight: 400'>" . $row['start_date'] . "</td>";
                 echo "<td style='font-weight: 400'>".$row['end_date']."</td>";
                 // echo "<td style='font-weight: 400'>".$row['unit_quantity']."</td>";
-                echo "<td style='font-weight: 400'>".$row['work_pay']."</td>";
+                echo "<td style='font-weight: 400'>₱ ".$row['work_pay']."</td>";
                 echo "<td style='font-weight: 400'>
                             <button class='editbtn' style='margin-right: 0.6em; border: none; background-color: inherit'>
                                 <i class='fa-solid fa-pen-to-square' style='font-size: 1.4em' title='Edit' data-bs-toggle='modal' data-bs-target='#updateModal'></i>
@@ -506,12 +519,13 @@ handleFrequencyChange();
                                     $('#id').val(data[0]);
                                     $('#employee_ids').val(data[1]);
                                     $('#unit_types').val(data[2]);
-                                    $('#employee_name').val(data[3]);
-                                    $('#unit_type').val(data[4]);
-                                    $('#unit_work').val(data[5]);
-                                    $('#start_date').val(data[6]);
-                                    $('#end_date').val(data[7]);
-                                    $('#work_frequency').val(data[10]);
+                                    $('#employee_name').val(data[4]);
+                                    $('#unit_type').val(data[5]);
+                                    $('#unit_work').val(data[6]);
+                                    $('#start_date').val(data[7]);
+                                    $('#end_date').val(data[8]);
+                                    $('#work_frequency').val(data[11]);
+                                    
                                    
                                    
                                 });

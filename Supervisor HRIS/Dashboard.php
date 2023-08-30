@@ -169,6 +169,9 @@
         }
 
 
+        .user-icon{
+            height: 100em !important;
+        }
     
     @media(max-width: 1350px){
         html{
@@ -1447,6 +1450,7 @@ font-size: 19px !important;
                                 <th>Details</th>
                                 <th style="display: none;">View Button</th>
                                 <th>Attachment</th>
+                                <th class="d-none">ID</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1480,6 +1484,7 @@ font-size: 19px !important;
                                 <td>
                                 <button type="button" class="btn btn-outline-success downloadbtn" data-bs-toggle="modal" data-bs-target="#download">Download</button>
                                 </td>
+                                <td class="d-none"><?php echo $row['id'];?></td>
                                 <?php else: ?>
                                 <td>None</td> <!-- Show an empty cell if there is no file attachment -->
                                 <?php endif; ?>
@@ -1532,12 +1537,12 @@ font-size: 19px !important;
 
       <form action="actions/Announcement/download.php" method="POST">
       <div class="modal-body">
-        <input type="text" name="table_id" id="id_table_announce">
-        <input type="text" name="table_name" id="name_table_announce">
+        <input type="hidden" name="table_id" id="id_table_announce">
+        <input type="hidden" name="table_name" id="name_table_announce">
         <h3>Are you sure you want download the PDF File?</h3>
       </div>
       <div class="modal-footer">
-        <button type="submit" name="yes_dl" class="btn btn-primary">Yes</button>
+        <button type="submit" name="yes_download" class="btn btn-primary">Yes</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
       </div>
       </form>
@@ -3013,7 +3018,7 @@ function changeTab(tabIndex) {
                     return $(this).text();
                     }).get();
                    console.log(data);
-                   $('#id_table_announce').val(data[0]);
+                   $('#id_table_announce').val(data[6]);
                    $('#name_table_announce').val(data[2]);
                });
              });

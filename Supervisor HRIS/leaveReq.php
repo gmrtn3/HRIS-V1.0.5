@@ -105,10 +105,99 @@ session_start();
     
     
     #order-listing_next{
-        margin-right: 28px !important;
+        margin-right: 20px !important;
         margin-bottom: -17px !important;
 
     }
+
+    thead th:nth-child(1){
+    width: 8% !important;
+   }
+
+   tr td:nth-child(1){
+    width: 8% !important;
+   }
+
+   thead th:nth-child(2){
+    width: 6.5% !important;
+   }
+
+   tr td:nth-child(2){
+    width: 6.5% !important;
+   }
+   
+   thead th:nth-child(3){
+    width: 15% !important;
+   }
+
+   tr td:nth-child(3){
+    width: 15% !important;
+   }
+
+   thead th:nth-child(4){
+    width: 10% !important;
+   }
+
+   tr td:nth-child(4){
+    width: 10% !important;
+   }
+   
+   thead th:nth-child(5){
+    width: 8% !important;
+   }
+
+   tr td:nth-child(5){
+    width: 8% !important;
+   }
+   thead th:nth-child(6){
+    width: 8% !important;
+   }
+
+   tr td:nth-child(6){
+    width: 8% !important;
+   }
+
+   thead th:nth-child(7){
+    width: 8% !important;
+   }
+
+   tr td:nth-child(7){
+    width: 8% !important;
+   }
+
+    thead th:nth-child(8){
+    width: 8% !important;
+   }
+
+   tr td:nth-child(8){
+    width: 8% !important;
+   }
+   thead th:nth-child(9){
+    width: 8% !important;
+   }
+
+   tr td:nth-child(9){
+    width: 8% !important;
+   }
+   thead th:nth-child(10){
+    width: 8% !important;
+   }
+
+   tr td:nth-child(10){
+    width: 8% !important;
+   }
+
+   table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    max-height: 100%;
+    height: 320px;
+    
+    /* border: black 1px solid; */
+                
+    }
+         
 
 
 </style>
@@ -216,11 +305,12 @@ session_start();
         <!----------------------------------Break------------------------------------->   
         
         
-                    <div id="data_table" class="table table-responsive "  >
+                    <!-- <div id="data_table" class="table table-responsive "  > -->
                         <form action="actions/Leave Request/action.php" method="post">
                         <input id="id_ID_tb" name="name_ID_tb" type="hidden">  <!--received the id of selected data in datatble and pass to calss action-->   
                         <input id="id_IDemp_tb" name="name_empID_tb" type="hidden"> <!--received the employee_id of selected data in datatble and pass to calss action-->  
-                        <table id="order-listing" class="table table-sortable " >
+                        <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                                    <table id="order-listing" class="table" style="width: 100%">
 
                                     <thead>
                                         <tr>
@@ -228,7 +318,7 @@ session_start();
                                             <th scope="col">Employee ID</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Leave Type</th>
-                                            <th style="col" >Credits</th>
+                                            <th scope="col" >Credits</th>
                                             <th scope="col">Leave Date</th>
                                             <th scope="col">Leave End</th>
                                             <th scope="col">Date Filled</th>

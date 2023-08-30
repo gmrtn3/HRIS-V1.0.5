@@ -3219,3 +3219,6 @@ table th:first-child{
   right: 0;
 } */
 
+.user-icon{
+    margin-left:100px !important;
+}

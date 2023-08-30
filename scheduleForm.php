@@ -375,7 +375,7 @@
                     <div>
                         <div class="schedule-gracePeriod">
                                 <div>
-                                    <input type="checkbox" id="enable-number-input" class="checkbox-lg" value="true" >
+                                    <input type="checkbox" id="enable-number-input" name="enable_grace_period" class="checkbox-lg" value="true" >
                                     <label for="grace_period">Grace Period</label>
                                 </div>
                                 <div>
@@ -386,7 +386,7 @@
                             </div>
                             <div class="schedule-ot">
                                 <div>
-                                    <input type="checkbox" id="enable-number-input2" class="checkbox-lg" value="true">
+                                    <input type="checkbox" id="enable-number-input2" name="enable_sched_ot" class="checkbox-lg" value="true">
                                     <label for="ob_ot">Enable OT</label>
                                 </div>
                                 <div>

@@ -24,6 +24,31 @@ if (isset($_POST['add_overtime'])) {
     $total_time = $_POST['total_overtime'];
     $reason = $_POST['file_reason'];
 
+    include '../../config.php';
+
+    $sql = "SELECT * FROM undertime_tb WHERE `empid` = '$employee_id' AND `date` = '$work_schedule' ";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    $empid =  $row['empid'];
+    $date = $row['date'];
+
+    echo $empid, "<br>"; 
+    echo $employee_id, "<br>"; 
+    echo $date, "<br>";
+    echo $work_schedule, "<br>";
+    
+    
+
+    if($empid == $employee_id && $date == $work_schedule){
+        // echo "hehe";
+        header("Location: ../../overtime_req?error=You can't file an overtime when you have undertime with same date");
+        exit;
+    }else{
+
+    
+    
+
     if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] == 0) {
         $contents = file_get_contents($_FILES['file_upload']['tmp_name']);
         $escaped_contents = mysqli_real_escape_string($conn, $contents);
@@ -158,5 +183,6 @@ if (isset($_POST['add_overtime'])) {
             }
          }
     }
+}
 }
 ?>

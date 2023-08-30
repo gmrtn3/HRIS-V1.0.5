@@ -337,6 +337,7 @@ if(mysqli_num_rows($result) <= 0) {
                                 <th>Details</th>
                                 <th style="display: none;">View Button</th>
                                 <th>Attachment</th>
+                                <th class="d-none">ID</th>
                                 
                             </tr>
                         </thead>
@@ -370,6 +371,7 @@ if(mysqli_num_rows($result) <= 0) {
                                 <td>
                                 <button type="button" class="btn btn-outline-success downloadbtn" data-bs-toggle="modal" data-bs-target="#download">Download</button>
                                 </td>
+                                <td class="d-none"><?php echo $row['id'] ?></td>
                                 <?php else: ?>
                                 <td>None</td> <!-- Show an empty cell if there is no file attachment -->
                                 <?php endif; ?>
@@ -2017,7 +2019,7 @@ function changeTab(tabIndex) {
                     return $(this).text();
                     }).get();
                    console.log(data);
-                   $('#id_table').val(data[0]);
+                   $('#id_table').val(data[6]);
                    $('#name_table').val(data[2]);
                });
              });

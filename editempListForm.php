@@ -674,11 +674,11 @@ else
                             <div class="emp-payroll-first-container">
                                 <div class="payroll-bank-name">
                                     <label for="bank_name">Bank Name</label><br>
-                                    <input type="text" name="bank_name" id="" value="<?php echo $row['bank_name']?>" placeholder="N/A" style="border: black 1px solid;">
+                                    <input type="text" name="bank_name" id="" placeholder="N/A" value="<?php echo $row['bank_name']?>" style="border: black 1px solid;">
                                 </div>
                                 <div class="payroll-bank_no">
                                     <label for="bank_number">Bank Account Number</label><br>
-                                    <input type="text" name="bank_number" id=""  value="<?php echo $row['bank_number']?>" placeholder="N/A" style="border: black 1px solid;">
+                                    <input type="text" name="bank_number" id="" placeholder="N/A"  value="<?php echo $row['bank_number']?>" style="border: black 1px solid;">
                                 </div>
                             </div>
                         </div>

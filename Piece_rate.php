@@ -141,15 +141,15 @@ if (isset($_POST["import"])) {
                   <div class="modal-body">
                       <div class="form-group">
                           <label for="">Unit Type:</label><br>
-                          <input type="text" name="unit_type" class="form-control"><br>
+                          <input type="text" name="unit_type" class="form-control" required><br>
                           <label for="">Unit Quantity:</label><br>
-                          <input type="text" name="unit_quantity" class="form-control"  oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);">
+                          <input type="text" name="unit_quantity" class="form-control"  oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);" required>
                           <label for="" class="mt-3">Unit Rate:</label><br>
                         <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" style="height: 50%">&#8369;</span>
                         </div>
-                        <input type="text" name="unit_rate" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);">
+                        <input type="text" name="unit_rate" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);" required>
                         </div>
                       </div>
                   </div>
@@ -182,7 +182,11 @@ if (isset($_POST["import"])) {
                           <label for="" class="mt-3">Unit Quantity:</label><br>
                           <input type="text" name="unit_quantity" class="form-control" id="unit_quantity" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);">
                           <label for="" class="mt-3">Unit Rate:</label><br>
-                          <input type="text" name="unit_rate" class="form-control" id="unit_rate" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);">
+                          <div class="d-flex flex-row">
+                          <span class="input-group-text" style="height: 100%; padding: 0.8em; padding-top: 0.7em" >&#8369;</span>
+                            <input type="text" name="unit_rate" class="form-control" id="unit_rate" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);">
+                          </div>
+                          
                       </div>
                   </div>
                   <div class="modal-footer">
@@ -374,27 +378,28 @@ $(document).ready(function() {
             });
         </script>
 
-    <script> //FOR UPDATE TRANSFER MODAL 
-        $(document).ready(function(){
-                                $('.editbtn').on('click', function(){
-                                    $('#updateModal').modal('show');
-                                    $tr = $(this).closest('tr');
+<script>
+    $(document).ready(function(){
+        $('.editbtn').on('click', function(){
+            $('#updateModal').modal('show');
+            $tr = $(this).closest('tr');
 
-                                    var data = $tr.children("td").map(function () {
-                                        return $(this).text();
-                                    }).get();
+            var data = $tr.children("td").map(function () {
+                return $(this).text();
+            }).get();
 
-                                    console.log(data);
-                                    //id_colId
-                                    $('#id').val(data[0]);
-                                    $('#unit_quantity').val(data[1]);
-                                    $('#unit_type').val(data[2]);
-                                    $('#unit_rate').val(data[3]);
-                                });
-                            });
-            //FOR UPDATE TRANSFER MODAL END
-    </script> 
+            console.log(data);
+            //id_colId
+            $('#id').val(data[0]);
+            $('#unit_type').val(data[1]);
+            $('#unit_quantity').val(data[2]);
 
+            // Remove the "₱" symbol and then set the value
+            var unitRate = data[3].replace('₱', '');
+            $('#unit_rate').val(unitRate);
+        });
+    });
+</script>
     <script>
 // sched form modal
 

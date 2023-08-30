@@ -76,6 +76,24 @@ session_start();
         margin-bottom: -17px !important;
 
     }
+    table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 100%;
+                height: 320px;
+                /* border: black 1px solid; */
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
     
 </style>
 
@@ -369,8 +387,8 @@ session_start();
 
         <div class="row">
             <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table id="order-listing" class="table" style="width: 100%; max-height: 400px;">
+            <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                    <table id="order-listing" class="table" style="width: 100%">
                       <thead>
                             <tr>
                                 <th style="display: none;">ID</th>
