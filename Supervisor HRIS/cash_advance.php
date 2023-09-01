@@ -171,8 +171,8 @@
 </style>
 
     <!-- Modal -->
-    <form action="Data Controller/Pakyawan/cash_advance_insert.php" method="POST">
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    
+        <!-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> -->
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -223,9 +223,9 @@
                 </div>
             </div>
         </div>
-    </form>
-
-    <div class="modal fade" id="loanForecastModal" tabindex="-1" aria-labelledby="loanForecastModalLabel" aria-hidden="true">
+  
+        <form action="Data Controller/Pakyawan/cash_advance_insert.php" method="POST">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -233,14 +233,23 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-        <label for="empid">Select Pakyawan Employee</label><br>
-        <select name="empid" id="empid" class="form-select">
-            <option value="" disabled selected>Select Employee</option>
-            <?php echo $options ?>
-        </select>
-        
-        <div id="forecastContainer"></div>
-        <input type="hidden" name="selected_empid" id="selectedEmpidInput" value="" readonly>
+                    <div class="form-group">
+                        <label for="empid">Select Pakyawan Employee</label><br>
+                        <select name="empid" id="empid" class="form-select">
+                            <option value="" disabled selected>Select Employee</option>
+                            <?php echo $options ?>
+                        </select><br>
+
+                        <label for="">Date</label>
+                        <input type="date" name="date" id="" class="form-control"><br>
+                        
+                        <label for="">Cash</label><br>
+                        <input type="text" name="cash_advance" id="" class="form-control" required oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);">
+                        <input type="hidden" name="status" value="Pending">
+                
+                        <div id="forecastContainer"></div>
+                        <input type="hidden" name="selected_empid" id="selectedEmpidInput" value="" readonly>
+                    </div>
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
@@ -278,10 +287,12 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" id="btn_save" name="btn_save" class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>
 </div>
+</form>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -391,7 +402,7 @@
                     ?>
                     <tr>  
                         <td style="font-weight: 400"><?php echo $row['fname']?> <?php echo $row['lname'] ?></td> 
-                        <td style="font-weight: 400"><?php echo $row['cash_advance']?></td>
+                        <td style="font-weight: 400">₱ <?php echo $row['cash_advance']?></td>
                         <td style="font-weight: 400"><?php echo $row['date']?></td>
                         
                         <td style="font-weight: 400"><?php echo date('Y-m-d', strtotime($row['timestamp'])); ?></td>
@@ -435,7 +446,10 @@
 
                 console.log(data);
                 $('#name').val(data[0]);
-                $('#cash').val(data[1]);
+                var cashValue = data[1].replace('₱', '').trim();
+        
+                // Set the value in the input field
+                $('#cash').val(cashValue);
                 $('#caDate').val(data[2]);
                 $('#id').val(data[6]);
                 $('#pakyaw').val(data[7]);

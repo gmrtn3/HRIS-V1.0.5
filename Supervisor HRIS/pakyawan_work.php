@@ -49,7 +49,12 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/piece_rate.css">
     <title>HRIS | Schedule</title>
-    
+    <script>
+        function closeErrorMessage() {
+            document.getElementById('error-message').style.display = 'none';
+            window.history.replaceState({}, document.title, 'cash_advance');
+        }
+    </script>
 </head>
 <body>
 
@@ -61,6 +66,13 @@
       .odd .dataTables_empty{
         font-weight: 400;
       }
+      .pending {
+        color: red;
+    }
+
+    .approved {
+        color: green;
+    }
     </style>
     
 
@@ -119,22 +131,28 @@
                             <option value="" disabled selected>Select Unit Type</option> 
                         </select><br>
 
-                        <script>
-                            const employeeDropdown = document.getElementById("employeeDropdown");
-                            const unitTypeDropdown = document.getElementById("unitTypeDropdown");
+                   
 
-                            employeeDropdown.addEventListener("change", function() {
-                                const selectedEmployeeId = employeeDropdown.value;
+                    <script>
+                        const employeeDropdown = document.getElementById("employeeDropdown");
+                        const unitTypeDropdown = document.getElementById("unitTypeDropdown");
+                        const selectedPieceDisplay = document.getElementById("selectedPieceDisplay"); // Added this line
 
-                                fetch('get_unit_types.php?empid=' + selectedEmployeeId)
-                                    .then(response => response.text())
-                                    .then(data => {
-                                        unitTypeDropdown.innerHTML = data;
-                                    })
-                                    .catch(error => console.error('Error:', error));
-                            });
-                        </script>
+                        employeeDropdown.addEventListener("change", function() {
+                            const selectedEmployeeId = employeeDropdown.value;
 
+                            fetch('get_unit_types.php?empid=' + selectedEmployeeId)
+                                .then(response => response.text())
+                                .then(data => {
+                                    unitTypeDropdown.innerHTML = data;
+                                })
+                                .catch(error => console.error('Error:', error));
+                        });
+                    </script>
+
+              
+
+                    
                   
                     <label for="frequency">Frequency</label><br>
                     <input type="text" id="frequencyInput" name="work_frequency" readonly class="form-control" ><br>
@@ -145,10 +163,74 @@
                     <label for="">End Date</label><br>
                     <input type="date" required name="end_date" class="form-control" id="endDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="endDate">   
 
-    
-
                     <label for="" class="mt-3">Unit Work:</label><br>
-                    <input type="text" name="unit_work" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);">
+                    <input type="text" name="unit_work" id="unit_work" class="form-control" oninput="updateWorkPay(this.value)" disabled>
+
+                    
+                    
+                    <p id="workPay" class="mt-2"></p>
+                    
+                    <script>
+                        const unitTypeDropdowns = document.getElementById("unitTypeDropdown");
+                        const unitWorkInput = document.getElementById("unit_work");
+
+                        unitTypeDropdown.addEventListener("change", function() {
+                            if (unitTypeDropdown.value !== "") {
+                                unitWorkInput.removeAttribute("disabled");
+                            } else {
+                                unitWorkInput.setAttribute("disabled", "disabled");
+                            }
+                        });
+
+                        function updateWorkPay(value) {
+                            // Your updateWorkPay function logic here
+                        }
+                    </script>
+                      
+                    <script>
+                          document.getElementById("unit_work").addEventListener("input", function(event) {
+                            var inputValue = event.target.value;
+                            var sanitizedValue = inputValue.replace(/[-a-zA-Z]/g, ''); // Remove hyphens and alphabetic characters
+
+                            if (inputValue !== sanitizedValue) {
+                                event.target.value = sanitizedValue;
+                                updateWorkPay(sanitizedValue); // Call your updateWorkPay function with sanitized value
+                            }
+                        });
+                    </script>
+                    <script>
+                          function updateWorkPay(unit_work) {
+                          
+
+                          let unit_type = document.getElementById("unitTypeDropdown").value;
+                          let selectedPiece = document.getElementById("selectedPiece");
+                          let selectedWork = document.getElementById("selectedWork");
+                          let workPay = document.getElementById("workPay");
+
+                          const xhr = new XMLHttpRequest();
+                          xhr.onreadystatechange = function() {
+                              if (xhr.readyState === 4 && xhr.status === 200) {
+                                  var response = this.responseText;
+                                  console.log(response);   
+                                  workPay.textContent = response;                     
+                                  selectedPiece.textContent = unit_type;
+                                  selectedWork.textContent = unit_work;
+                              }
+                          };
+
+                          xhr.open("POST", "process_selected_piece.php", true);
+                          var formData = new FormData();
+                          formData.append("unit_work", unit_work);
+                          formData.append("unit_type", unit_type);
+                          xhr.send(formData);
+                      }                 
+
+                    </script>
+
+                 
+
+                    <!-- Total of the unit type and unit work -->
+                    <!-- <input type="text" name="" id="">  -->
                 </div>
                 </div>
                   <div class="modal-footer">
@@ -261,6 +343,16 @@
             echo '<div class="alert alert-danger validation-message d-flex flex-row justify-content-between" role="alert"><p> Validation Failed: The start date is within the range of an existing record.</p><button type="button" class="btn-close" onclick="removeValidationMessage()"></button></div>';
         }
         ?>
+           <?php
+                if(isset($_GET['error'])){
+                    echo ' <div class="error-handler w-100 mb-3 mt-3" style="height: 3em" id="error-message">';
+                        echo '<div class="w-100 bg-danger d-flex flex-row align-items-center justify-content-between pl-4 pr-4" style="height: 100%">';
+                            echo '<p class="error-message" style="font-size: 0.9em; color: #fff;">There was an error in the input. </p>';
+                            echo '<button style="background-color: inherit; border: none; color: #fff; font-size: 1.1em"onclick="closeErrorMessage()"> <i class="fa-solid fa-x"></i> </button>';
+                        echo '</div>';
+                    echo '</div>';
+                }
+                ?>
     </div>
         <div class="table mt-5">
       <div class="table-responsive" id="table-responsive">

@@ -57,79 +57,55 @@
     <header>
         <?php include("header.php")?>
     </header>
+    <?php
+// Assume you have a variable $status that determines the current status
+$status = 'Active'; // Set this based on your data or logic
 
+// Simulate database update when the form is submitted
+if (isset($_POST['status'])) {
+    $status = $_POST['status'];
+    // Perform database update here
+}
+?>
+?>
+
+<style>
+    .toggle-circle {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      cursor: pointer;
+      background-color: <?= $status === 'Active' ? 'green' : 'red' ?>;
+      transition: background-color 0.3s;
+    }
+  </style>
     
 
     <div class="payslip-container" style="height: 82vh; width: 60%; background-color: #fff;position:absolute; left: 18%; top: 13%;  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17); border-radius: 0.8em">
-        <div class="payslip-header border-bottom border-black p-4">
-            <h3>PAYSLIP</h3>
-        </div>
-        <div class="header_view" style="width: 97%; margin:auto; margin-top: 2em">
-          <img src="icons/logo_hris.png" width="70px" alt="">
-          <p class="lbl_cnfdntial">CONFIDENTIAL SLIP</p>
-        </div>
+    <form method="post">
+      <label class="toggle-label" for="toggleCheckbox">
+        <input type="checkbox" id="toggleCheckbox" name="status" value="<?= $status ?>" <?= $status === 'Active' ? 'checked' : '' ?> style="display: none;">
+        <div id="toggleButton" class="toggle-circle"></div>
+      </label>
+      <!-- <button type="submit" class="btn btn-primary mt-3">Save</button> -->
+    </form>
 
-        <div class="container-fluid mt-3 ml-3" style="height: 5em">
-
-            <div class="d-flex flex-row justify-content-between" style="width: 65%">
-                <!-- backend to -->
-                <p>Slash Tech Solutions</p>
-
-                <!-- backend din -->
-                <p>Pay Period: <span style="color: #7F7EC4">2023-08-18</span> to <span style="color: #7F7EC4">2023-08-18</span> </p>
-
-                <!-- backend din -->
-                <p>Payout: <span style="color: #7F7EC4">2023/08/18</span></p>
-            </div>
-
-            <div class="d-flex flex-row justify-content-between  mt-4" style="width: 50%">
-                <!-- backend to -->
-                <p>Employee ID: <span style="color: #7F7EC4">STS - 035</span></p>
-
-                <!-- backend din -->
-                <p style="margin-right: 11em">Employee Name <span style="color: #7F7EC4">JOSEPH </span> </p>
-
-               
-            </div>
-            
-        </div>
-
-        <div class="container-fliud mt-3 border border-black" style="height: 60%; width: 95%; margin:auto; border-radius: 0.4em">
-            <div class="w-100" style="height: 2.1em; background-color: #ececec; border-radius: 0.4em 0.4em 0 0;">
-            </div>
-
-            <div class="payslip-container-header container-fliud d-flex flex-row" style="height: 3.5em; width: 100%; border-bottom: #ced4da 1px solid">
-                <div class="d-flex flex-row " style="width: 33.3%; height: 100%; border-right: #CED4DA 1px solid">
-                    <p class="d-flex flex-row align-items-center justify-content-center" style="width: 33.3%; height: 100%">Earnings</p>
-                    <p class="d-flex flex-row align-items-center justify-content-center" style="width: 33.3%; height: 100%">Hours</p>
-                    <p class="d-flex flex-row align-items-center justify-content-center" style="width: 33.3%; height: 100%">Amount</p>
-                </div>
-                <div class="d-flex flex-row " style="width: 33.3%; height: 100%; ">
-                    <p class="d-flex flex-row align-items-center justify-content-center" style="width: 50%; height: 100%">Earnings</p>
-                    <p class="d-flex flex-row align-items-center justify-content-center" style="width: 50%; height: 100%">Hours</p>
-                </div>
-                <div class="d-flex flex-row " style="width: 33.3%; height: 100%; border-left: #CED4DA 1px solid">
-                    <p class="d-flex flex-row align-items-center justify-content-center" style="width: 33.3%; height: 100%">Earnings</p>
-                    <p class="d-flex flex-row align-items-center justify-content-center" style="width: 33.3%; height: 100%">Hours</p>
-                    <p class="d-flex flex-row align-items-center justify-content-center" style="width: 33.3%; height: 100%">Amount</p>
-                </div>
-            </div>
-            <div class="payslip-container d-flex flex-row" style="height: 10em; width: 100%">
-                <div class="d-flex flex-row " style="width: 33.3%; height: 100%; border-right: #CED4DA 1px solid">
-                    
-                </div>
-                <div class="d-flex flex-row " style="width: 33.3%; height: 100%; ">
-                   
-                </div>
-                <div class="d-flex flex-row " style="width: 33.3%; height: 100%; border-left: #CED4DA 1px solid">
-                  
-                </div>
-            </div>
-        </div>
+    <input type="checkbox" name="" id="" style="height: 5em; width: 5em; border-radius: 50%">
         
 
     </div>
     
+    <script>
+    // JavaScript to toggle state and color
+    const toggleButton = document.getElementById('toggleButton');
+    const toggleCheckbox = document.getElementById('toggleCheckbox');
+    
+    toggleButton.addEventListener('click', function() {
+      toggleCheckbox.checked = !toggleCheckbox.checked;
+      toggleButton.style.backgroundColor = toggleCheckbox.checked ? 'green' : 'red';
+    });
+  </script>
 
     <!----------------------Script sa dropdown chain--------------------------->        
 <script>

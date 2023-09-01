@@ -557,7 +557,7 @@ session_start();
                                                                     echo "<div class='row'>
                                                                         <div class='col-12'>
                                                                             <button type='button' class='border-0 btn_view_file' title='View' data-bs-toggle='modal' data-bs-target='#id_view_file' style='background: transparent;'>
-                                                                                <img src='icons/view_file.png' alt='...'>
+                                                                                <p class='btn btn-primary pl-3 pr-3 pt-2 pb-2'> Download</p>
                                                                             </button>
                                                                         </div>
                                                                     </div>";

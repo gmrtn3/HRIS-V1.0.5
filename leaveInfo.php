@@ -81,8 +81,8 @@ session_start();
                 display: block;
                 overflow-x: hidden;
                 white-space: nowrap;
-                max-height: 350px;
-                height: 350px;
+                max-height: 450px;
+                height: 450px;
                 
                 
             }
@@ -153,7 +153,7 @@ session_start();
             <div class="mb-3">
                 <label for="vctn_lve" class="form-label">Vacation Leave</label>
                 <div class="input-group mb-3">
-                    <input type="text" name="name_vctn_lve" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 2) this.value = this.value.slice(0, 2);" class="form-control" aria-label="Amount (to the nearest dollar)" required>
+                <input type="text" name="name_vctn_lve" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value > 20) this.value = 20; if(this.value < 0) this.value = 1; if(this.value.length > 2) this.value = this.value.slice(0, 2);" class="form-control" aria-label="Amount (to the nearest dollar)" id="vleave" required>
                     <span class="input-group-text" > <input type="text" onclick="changeVal1()" id="id_addV" style="background-color: inherit; border: none; font-size: 15px; cursor: pointer;" title="CLick Me to change the decimal" name="name_vctn_lve1" readonly value=".0"></span>
                 </div>
 
@@ -163,15 +163,17 @@ session_start();
             <div class="mb-3">
                 <label for="sick_lve" class="form-label">Sick Leave</label>
                     <div class="input-group mb-3">
-                        <input type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 2) this.value = this.value.slice(0, 2);"  name="name_sick_lve" class="form-control" aria-label="Amount (to the nearest dollar)" required>
+                    <input type="text" name="name_vctn_lve" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value > 20) this.value = 20; if(this.value < 0) this.value = 1; if(this.value.length > 2) this.value = this.value.slice(0, 2);" class="form-control" aria-label="Amount (to the nearest dollar)" id="vleave" required>
                         <span class="input-group-text"><input type="text" onclick="changeVal2()" id="id_addS" style="background-color: inherit; border: none; font-size: 15px; cursor: pointer;" title="CLick Me to change the decimal" name="name_sick_lve1" readonly value=".0"></span>
                     </div>
+                    <p></p>
             </div>
+
             <!--              line break                     -->
             <div class="mb-3">
                 <label for="brvmnt_lve" class="form-label">Bereavement Leave</label>
                     <div class="input-group mb-3">
-                        <input type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 2) this.value = this.value.slice(0, 2);" name="name_brvmnt_lve" class="form-control" aria-label="Amount (to the nearest dollar)" required>
+                    <input type="text" name="name_vctn_lve" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value > 20) this.value = 20; if(this.value < 0) this.value = 1; if(this.value.length > 2) this.value = this.value.slice(0, 2);" class="form-control" aria-label="Amount (to the nearest dollar)" id="vleave" required>
                         <span class="input-group-text"><input type="text" onclick="changeVal3()" id="id_addB" style="background-color: inherit; border: none; font-size: 15px; cursor: pointer; " title="CLick Me to change the decimal" name="name_brvmnt_lve1"  readonly value=".0"></span>
                     </div>
             </div>
@@ -325,7 +327,7 @@ session_start();
                                             $_SESSION["id"] =  $row['col_ID'];
                                             echo "<tr>
                                                 <td style= 'display: none;'>" . $row['col_ID']. "</td>
-                                                <td>";
+                                                <td style='font-weight: 400'>";
                                                 $cmpny_code = $cmpny_row['company_code_name'] ?? null;
                                                 $empid = $row['empid'];
                                                 if (!empty($cmpny_code)) {
@@ -334,12 +336,12 @@ session_start();
                                                     echo $empid;
                                                 }
                                                 echo "</td>
-                                                <td>" . $row['full_name'] . "</td>
-                                                <td>" . $row['col_deptname'] . "</td>
-                                                <td class= 'text-center'>" . $row['col_vctionCrdt'] . "</td>
-                                                <td class= 'text-center'>" . $row['col_sickCrdt'] . "</td>
-                                                <td class= 'text-center'>" . $row['col_brvmntCrdt'] . "</td>
-                                                <td>
+                                                <td style='font-weight: 400'>" . $row['full_name'] . "</td>
+                                                <td style='font-weight: 400'>" . $row['col_deptname'] . "</td>
+                                                <td style='font-weight: 400' class= 'text-center'>" . $row['col_vctionCrdt'] . "</td>
+                                                <td style='font-weight: 400' class= 'text-center'>" . $row['col_sickCrdt'] . "</td>
+                                                <td style='font-weight: 400' class= 'text-center'>" . $row['col_brvmntCrdt'] . "</td>
+                                                <td style='font-weight: 400'>
                                                 <button style='background-color: inherit; border:none;' type='button' class= 'border-light editbtn' title = 'Edit' data-bs-toggle='modal' data-bs-target='#id_editmodal'>
                                                 <i class='fa-solid fa-pen-to-square fs-5 me-3' title='edit'></i>
                                                 </button>

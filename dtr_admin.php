@@ -75,9 +75,25 @@
 </header>
 
 <style>
-
-    
-</style>
+         table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 450px;
+                height: 450px;
+                
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+    </style>
 
 
 <!------------------------------------Header and Button------------------------------------------------->
@@ -234,8 +250,8 @@
 <!------------------------------------------Syntax ng Table-------------------------------------------------->
                         <form action="actions/DTR Correction/approval.php" method="POST">
                               <input type="hidden" id="input_id" name="input" value="<?php echo $row['id']; ?>">
-                                  <div class="table-responsive" id="table-responsiveness">
-                                    <table id="order-listing" class="table mt-3">
+                              <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                                    <table id="order-listing" class="table" style="width: 100%">
                                       <thead >
                                           <tr>
                                               <th style="display: none;">ID</th>
@@ -352,7 +368,7 @@
                                         <td><?php echo $row['date']?></td>
                                         <td><?php echo date('h:i A', strtotime($row['time'])) ?></td>
                                         <td><?php echo $row['type']?></td>
-                                        <td <?php if ($row['status'] == 'Approved') {echo 'style="color:blue;"';} elseif ($row['status'] == 'Rejected') {echo 'style="color:red;"';} elseif ($row['status'] == 'Pending') {echo 'style="color:orange;"';} elseif ($row['status'] == 'Cancelled') {echo 'style="color:red;"';}?>><?php echo $row['status']; ?></td>
+                                        <td <?php if ($row['status'] == 'Approved') {echo 'style="color:green;"';} elseif ($row['status'] == 'Rejected') {echo 'style="color:red;"';} elseif ($row['status'] == 'Pending') {echo 'style="color:Orange;"';} elseif ($row['status'] == 'Cancelled') {echo 'style="color:Gray;"';}?>><?php echo $row['status']; ?></td>
                                         <?php if(!empty($row['file_attach'])): ?>
                                         <td>
                                         <button type="button" class="btn btn-outline-success downloadbtn" data-bs-toggle="modal" data-bs-target="#download_dtr">Download</button>

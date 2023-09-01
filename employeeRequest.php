@@ -48,6 +48,10 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap4.min.css">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
         <!-- skydash -->
 
     <link rel="stylesheet" href="skydash/feather.css">
@@ -349,7 +353,7 @@ session_start();
             </div>
         </form>    
         <div class="mt-3 p-3">
-            <p class="fs-5">Export Options: <button style="border:none; background-color: inherit; color: green" id="export-csv-btn">CSV</button> | <button style="border:none; background-color: inherit; color: red">PDF</button></p>
+            <p class="fs-5">Export Options: <button style="border:none; background-color: inherit; color: green" id="export-csv-btn">CSV</button> | <button style="border:none; background-color: inherit; color: red" onclick="makePDF()">PDF</button></p>
         </div>
     </div>
 
@@ -370,6 +374,31 @@ session_start();
 
     
 <!-------------------------------------- BODY END CONTENT ------------------------------------------------>
+<script>
+
+window.html2canvas = html2canvas;
+window.jsPDF = window.jspdf.jsPDF;
+
+function makePDF() {
+    html2canvas(document.querySelector("#order-listing"), {
+        allowTaint: true,
+        useCORS: true,
+        scale: 0.7
+    }).then(canvas => {
+        var img = canvas.toDataURL("Employee Request Report");
+        
+        // Set the PDF to landscape mode
+        var doc = new jsPDF({
+            orientation: 'landscape'
+        });
+
+        doc.setFont('Arial');
+        doc.getFontSize(11);
+        doc.addImage(img, 'PNG', 10, 10, 0,0);
+        doc.save("Employee Request Report.pdf");
+    });
+}
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

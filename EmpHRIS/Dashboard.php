@@ -1,15 +1,19 @@
 <?php
-    session_start();
-    if(!isset($_SESSION['username'])){
-        header("Location: login.php"); 
-    }
- 
-    $server = "localhost";
-    $user = "root";
-    $pass ="";
-    $database = "hris_db";
-
-    $db = mysqli_connect($server, $user, $pass, $database);
+      session_start();
+      //    $empid = $_SESSION['empid'];
+         if (!isset($_SESSION['username'])) {
+          header("Location: ../login.php");
+      } else {
+          // Check if the user's role is not "admin"
+          if ($_SESSION['role'] != 'Employee') {
+              // If the user's role is not "admin", log them out and redirect to the logout page
+              session_unset();
+              session_destroy();
+              header("Location: logout.php");
+              exit();
+          } 
+          
+      }
 
 ?>
 

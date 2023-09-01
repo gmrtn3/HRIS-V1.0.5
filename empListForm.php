@@ -218,21 +218,11 @@
                             </div>
 
                             <!-- for employee id Auto Increment -->
-                              <?php 
-                                 include 'config.php';
-
-                                    $sql = "SELECT MAX(sample_ai) AS sample_id FROM sample_AI";
-                                    $resulta = mysqli_query($conn, $sql);
-                                    $rowa = mysqli_fetch_assoc($resulta);
-                                    
-                                    $next_employee_id = $rowa['sample_id'] + 1;
-                                    
-                                    $employee_id_with_zero = sprintf("%03d", $next_employee_id);
-                              ?>
+                           
                             <div class="emp-info-first-input">
                                 <div class="emp-info-fname">
                                         <label for="fname">First Name</label><br>
-                                        <input type="text" class="d-none" value="<?php echo $employee_id_with_zero; ?>" readonly>
+                                        
                                         <input class="" id="form-fname" type="text" name="fname" placeholder="First Name" id="fname" onkeyup='saveValue(this);' value="<?php echo isset($_GET['fname']) ? $_GET['fname'] : ''; ?>" required>
                                         
                                 </div>
@@ -307,7 +297,34 @@
                                     <select name="company_code" id=""  style="display: flex; align-items: center; justify-content: center;width: 25%; padding: 0.2em; margin-right: 2%; height: 40px">
                                         <?php echo $options; ?>
                                     </select>
-                                    <input type="text" name="empid" id="form-empid" class="p-1" placeholder="Employee ID" required maxlength="6" style="width: 73%">  
+
+                                    <?php 
+                                            include 'config.php';
+                                                $sql = "SELECT empid FROM employee_tb ORDER BY empid DESC LIMIT 1";
+                                                $result = mysqli_query($conn, $sql);
+                                                $row = mysqli_fetch_assoc($result);
+
+                                                $empid = '';
+
+                                                if ($row) {
+                                                    $lastEmpID = $row['empid'];
+
+                                                    // Calculate the next employee ID
+                                                    $nextEmpID = (int)$lastEmpID + 1;
+                                                    
+                                                    if ($nextEmpID < 10) {
+                                                        $nextEmpIDFormatted = sprintf("%03d", $nextEmpID); // Format for 001-009
+                                                    } elseif ($nextEmpID < 100) {
+                                                        $nextEmpIDFormatted = sprintf("%03d", $nextEmpID); // Format for 010-099
+                                                    } else {
+                                                        $nextEmpIDFormatted = $nextEmpID; // No leading zeros for 100 and beyond
+                                                    }
+                                                } else {
+                                                    // No existing employee IDs, start from '001'
+                                                    $nextEmpIDFormatted = '001';
+                                                }
+                                        ?>
+                                    <input type="text" name="empid" id="form-empid" class="p-1 form-control" placeholder="Employee ID" maxlength="6" style="width: 73%; height: 2.9em" value="<?php echo $nextEmpIDFormatted; ?>" readonly>  
                                     </div>
                                     <span id="empid-error" style="color: red;"></span>
                                 </div>
@@ -641,12 +658,12 @@
                                 </div>
                                 <div class="emp-Access-password">
                                     <label for="password">Password</label><br>
-                                    <input type="password"  pattern="[a-zA-Z0-9]{5,}" title="Must be at least 5 characters." onchange="Pass()" oninput="showPasswordIcon(this, 'eye')" name="password" id="pass" placeholder="Password" required>
+                                    <input type="password"  pattern="[a-zA-Z0-9]{5,}" title="Must be at least 5 characters." oninput="Pass()" oninput="showPasswordIcon(this, 'eye')" name="password" id="pass" placeholder="Password" required>
                                     <i class="fas fa-eye show-pass" aria-hidden="true" id="eye" style="display: none;" onclick="togglePassword()"></i>
                                 </div>
                                 <div class="emp-Access-cpassword">
                                     <label for="cpassword">Confirm Password</label><br>
-                                    <input type="password"  pattern="[a-zA-Z0-9]{5,}" title="Must be at least 5 characters." disabled onchange="matchPass()" oninput="showPasswordIcon(this, 'confirm-eye')" name="cpassword" id="cpass" placeholder="Confirm Password" required>
+                                    <input type="password"  pattern="[a-zA-Z0-9]{5,}" title="Must be at least 5 characters." disabled oninput="matchPass()" oninput="showPasswordIcon(this, 'confirm-eye')" name="cpassword" id="cpass" placeholder="Confirm Password" required>
                                     <i class="fas fa-eye show-pass" aria-hidden="true" id="confirm-eye" style="display: none;" onclick="toggleConfirmPassword()"></i>
                                 </div>
                             </div>

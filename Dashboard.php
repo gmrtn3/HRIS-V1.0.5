@@ -513,16 +513,21 @@ if(mysqli_num_rows($result) <= 0) {
                                         echo $employeeid;
                                     }?>" id="empid" readonly>
                         </div>
+                        
                         <div class="mb-3">
                             <label for="title" class="form-label">Holiday Title</label>
                             <input type="text" name="title_holiday" class="form-control" id="id_title_holiday" required>
                         </div>
 
+
                         <div class="mb-3">
                             <label for="event" class="form-label">Holiday Date</label>
                             <input type="date" name="date_holiday" class="form-control" id="id_holiday_date" required>
+                            <p style="color: red" id="holidayMsg"></p>
                         </div>
-
+                        
+                       
+                            
                         <div class="mb-3">
                             <label for="eventype" class="form-label">Type of Holiday</label>
                             <select class="form-select form-select-m" name="type_holiday" id="" aria-label=".form-select-sm example" style="height: 50px; cursor: pointer;">
@@ -534,7 +539,7 @@ if(mysqli_num_rows($result) <= 0) {
                         </div>
                     </div><!--Modal body Close tag--->
                     <div class="modal-footer">
-                <button type="submit" name="add_holiday" class="btn btn-primary">Add</button>
+                <button type="submit" name="add_holiday" class="btn btn-primary" id="btn_save">Add</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
          </form>
 
@@ -544,9 +549,40 @@ if(mysqli_num_rows($result) <= 0) {
 </div>
 <!-------------------------------------------Modal of Holiday End Here---------------------------------------------> 
 
+    <script>                      
+        let holidates = document.getElementById("id_holiday_date");
+        let holidate_msg = document.getElementById("holidayMsg");
+        let btn_save = document.getElementById("btn_save");
+
+            holidates.addEventListener("change", function(){
+            let holidate = holidates.value;
+            console.log(holidate);
+
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = this.responseText;
+                    console.log(response);
+                    holidate_msg.textContent = response;
+                        if(response != ''){
+                        btn_save.disabled = true;
+                        }else{
+                            btn_save.disabled = false;
+                        }
+                }
+                        
+                }
+
+                xhr.open("POST", "holiday_validation.php", true);
+                var formData = new FormData();
+                formData.append("holidate", holidate);
+                xhr.send(formData);
 
 
+            });
 
+                        
+    </script>
 
 <!-------------------------------- Modal of view all Holiday Start Here ----------------------->
 <div class="modal fade" id="view_holiday" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

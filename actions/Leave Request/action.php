@@ -54,7 +54,8 @@ session_start();
                                                         applyleave_tb.`col_status`,
                                                         applyleave_tb.`col_reason`,
                                                         applyleave_tb.`col_PAID_LEAVE`,
-                                                        applyleave_tb.col_approver
+                                                        applyleave_tb.col_approver,
+                                                        applyleave_tb.`col_LeavePeriod`
                                                         
                                                     FROM
                                                         applyleave_tb
@@ -131,7 +132,7 @@ session_start();
         <!-------------------------------------------------ROW1 Break------------------------------------------------------->
 
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-3">
                                 <div class="mb-3">
                                     <input type="text"  readonly class="form-control bg-light -subtle" value=" <?php echo $row['contact']?>"> 
                                     <label for="Select_dept" class="form-label ">Employee Phone Number :</label>
@@ -139,7 +140,7 @@ session_start();
                             </div> <!-- col-4 end-->
                             <!----------------------------------Break------------------------------------->
                             
-                            <div class="col-4">
+                            <div class="col-3">
                                 <div class="mb-3">
                                     <input type="text"  readonly class="form-control bg-light -subtle"  value=" <?php echo $row['col_LeaveType']?>">
                                     <label for="Select_dept" class="form-label">Leave Type:</label> 
@@ -147,12 +148,18 @@ session_start();
                             </div> <!-- col-4 end-->
                             <!----------------------------------Break------------------------------------->
 
-                            <div class="col-4">
+                            <div class="col-3">
                                 <div class="mb-3">
                                     <input type="text" readonly class="form-control bg-light -subtle" value=" <?php echo $row['_datetime']?>">
                                     <label for="Select_dept" class="form-label">Applied Date :</label>
                                 </div>  <!-- First mb-3 end-->
                             </div> <!-- col-4 end-->
+                            <div class="col-3">
+                                <div class="mb-3"> 
+                                    <input type="text" class="form-control bg-light -subtle" value="<?php echo $row['col_LeavePeriod']?>" readonly>
+                                    <label for="Select_dept" class="form-label">Leave Period :</label>
+                                </div>  <!-- First mb-3 end-->
+                            </div> <!-- col-3 end-->
                             <!----------------------------------Break------------------------------------->
                         </div> <!-- row end-->
 
@@ -240,6 +247,8 @@ session_start();
                                 </div>  <!-- First mb-3 end-->
                             </div> <!-- col-3 end-->
                         </div> <!-- row end-->
+                     
+
 
                         
 

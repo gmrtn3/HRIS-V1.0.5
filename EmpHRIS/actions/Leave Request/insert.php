@@ -97,8 +97,8 @@ session_start();
                                                                         }
                                                                         else{
                                                                              #sql query to insert into database
-                                                                             $sql = "INSERT into applyleave_tb(`col_req_emp`, `col_LeaveType`, `col_LeavePeriod`, `col_strDate`, `col_endDate`, `col_reason`, `col_file`, `col_PAID_LEAVE`, `col_status`) 
-                                                                             VALUES('$empname', '$leave_type', '$leave_period', '$str_date', '$end_date', '$reason_txt', '$escaped_contents','With Pay', 'Pending')";
+                                                                             $sql = "INSERT into applyleave_tb(`col_req_emp`, `col_LeaveType`, `col_LeavePeriod`, `col_strDate`, `col_endDate`, `col_reason`, `col_file`, `col_PAID_LEAVE`, `col_status`, `col_credit`) 
+                                                                             VALUES('$empname', '$leave_type', '$leave_period', '$str_date', '$end_date', '$reason_txt', '$escaped_contents','With Pay', 'Pending', '0.5')";
 
                                                                              if(mysqli_query($conn,$sql)){
                                                                              header("Location: ../../leavereq.php?msg=Successfully Added");
@@ -178,8 +178,8 @@ session_start();
                                                                         }
                                                                         else{
                                                                                 #sql query to insert into database
-                                                                                $sql = "INSERT into applyleave_tb(`col_req_emp`, `col_LeaveType`, `col_LeavePeriod`, `col_strDate`, `col_endDate`, `col_reason`, `col_file`, `col_PAID_LEAVE`, `col_status`) 
-                                                                                VALUES('$empname', '$leave_type', '$leave_period', '$str_date', '$end_date', '$reason_txt', '$escaped_contents','With Pay', 'Pending')";
+                                                                                $sql = "INSERT into applyleave_tb(`col_req_emp`, `col_LeaveType`, `col_LeavePeriod`, `col_strDate`, `col_endDate`, `col_reason`, `col_file`, `col_PAID_LEAVE`, `col_status` , `col_credit`) 
+                                                                                VALUES('$empname', '$leave_type', '$leave_period', '$str_date', '$end_date', '$reason_txt', '$escaped_contents','With Pay', 'Pending' ,'0.5' )";
 
                                                                                 if(mysqli_query($conn,$sql)){
                                                                                 header("Location: ../../leavereq.php?msg=Successfully Added");
@@ -259,8 +259,8 @@ session_start();
                                                                         }
                                                                         else{
                                                                                 #sql query to insert into database
-                                                                                $sql = "INSERT into applyleave_tb(`col_req_emp`, `col_LeaveType`, `col_LeavePeriod`, `col_strDate`, `col_endDate`, `col_reason`, `col_file`, `col_PAID_LEAVE`, `col_status`) 
-                                                                                VALUES('$empname', '$leave_type', '$leave_period', '$str_date', '$end_date', '$reason_txt', '$escaped_contents','With Pay', 'Pending')";
+                                                                                $sql = "INSERT into applyleave_tb(`col_req_emp`, `col_LeaveType`, `col_LeavePeriod`, `col_strDate`, `col_endDate`, `col_reason`, `col_file`, `col_PAID_LEAVE`, `col_status`, `col_credit`) 
+                                                                                VALUES('$empname', '$leave_type', '$leave_period', '$str_date', '$end_date', '$reason_txt', '$escaped_contents','With Pay', 'Pending', '0.5')";
 
                                                                                 if(mysqli_query($conn,$sql)){
                                                                                 header("Location: ../../leavereq.php?msg=Successfully Added");
@@ -337,8 +337,8 @@ session_start();
                                                                 }else{
                                                                     //else CAN LEAVE BUT NO PAY
                                                                     
-                                                                    $sql = "INSERT into applyleave_tb(`col_req_emp`, `col_LeaveType`, `col_LeavePeriod`, `col_strDate`, `col_endDate`, `col_reason`, `col_file`, `col_PAID_LEAVE`, `col_status`) 
-                                                                    VALUES('$empname', '$leave_type', '$leave_period', '$str_date', '$end_date', '$reason_txt', '$escaped_contents','Without Pay', 'Pending')";
+                                                                    $sql = "INSERT into applyleave_tb(`col_req_emp`, `col_LeaveType`, `col_LeavePeriod`, `col_strDate`, `col_endDate`, `col_reason`, `col_file`, `col_PAID_LEAVE`, `col_status` , `col_credit`) 
+                                                                    VALUES('$empname', '$leave_type', '$leave_period', '$str_date', '$end_date', '$reason_txt', '$escaped_contents','Without Pay', 'Pending', '0')";
 
                                                                         if(mysqli_query($conn,$sql)){
                                                                             header("Location: ../../leavereq.php?msg=Successfully Added");

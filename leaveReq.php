@@ -67,24 +67,38 @@ session_start();
 <body>
     
 <style>
-         table {
-                display: block;
-                overflow-x: hidden;
-                white-space: nowrap;
-                max-height: 450px;
-                height: 450px;
+ table {
+        display: block;
+        overflow-x: hidden;
+        white-space: nowrap;
+        max-height: 450px;
+        height: 450px;
                 
                 
-            }
-            tbody {
-                display: table;
-                width: 100%;
-            }
-            tr {
-                width: 100% !important;
-                display: table !important;
-                table-layout: fixed !important;
-            }
+    }
+    tbody {
+        display: table;
+        width: 100%;
+    }
+    tr {
+        width: 100% !important;
+        display: table !important;
+        table-layout: fixed !important;
+    }
+    thead th:nth-child(2){
+    width: 5% !important;
+   }
+
+   tr td:nth-child(2){
+    width: 5% !important;
+   }
+   thead th:nth-child(3){
+    width: 12% !important;
+   }
+
+   tr td:nth-child(3){
+    width: 12% !important;
+   }
     </style>
 
 <header>
@@ -171,7 +185,7 @@ session_start();
                             <div class="table-responsive" id="table-responsiveness" style="overflow-x: scroll" >
                                <table id="order-listing" class="table mt-2" style="width: 120%;">
                                     <thead>
-                                        <tr>
+                                      
                                             <th style="display: none;" scope="col">ID</th>
                                             <th scope="col">Employee ID</th>
                                             <th scope="col">Name</th>
@@ -184,7 +198,7 @@ session_start();
                                             <th scope="col">Approver</th>
                                             <th scope="col">File Attachment</th>
                                             <th scope="col">Status</th>
-                                        </tr>
+                                        
                                     </thead>
                                         <tbody id="table-body">
                                         <?php
@@ -311,7 +325,7 @@ session_start();
                                                                     echo "<div class='row'>
                                                                         <div class='col-12'>
                                                                             <button type='button' class='border-0 btn_view_file' title='View' data-bs-toggle='modal' data-bs-target='#id_view_file' style='background: transparent;'>
-                                                                                <img src='icons/view_file.png' alt='...'>
+                                                                                <p class='btn btn-primary pl-3 pr-3 pt-2 pb-2'> Download</p>
                                                                             </button>
                                                                         </div>
                                                                     </div>";

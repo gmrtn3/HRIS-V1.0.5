@@ -29,6 +29,14 @@
   }
 
     include 'config.php';
+
+
+    $sqla = "SELECT * FROM employee_tb";
+    $resultaa = mysqli_query($conn, $sqla);
+
+    $rowaa = mysqli_fetch_assoc($resultaa);
+
+    $status = $rowaa['status'];
     
 
  
@@ -105,6 +113,15 @@
 
     }
 
+    /* .toggle-circle {
+      width: 1.3em;
+      height: 1.3em;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      cursor: pointer;
+      background-color: <?= $status === 'Inactive' ? 'red' : 'green' ?>;
+      transition: background-color 0.3s;
+    } */
 </style>
 
     <div class="empList-container">
@@ -130,7 +147,7 @@
                 }
                 ?>
                 <select name="status_filter" id="status-filter-select" class="form-control" style="color: black">
-                    <option value="all"<?php if ($status_filter === 'all') echo ' selected'; ?>>All</option>
+                    <option value="All"<?php if ($status_filter === 'All') echo ' selected'; ?>>All</option>
                     <option value="Active"<?php if ($status_filter === 'Active') echo ' selected'; ?>>Active</option>
                     <option value="Inactive"<?php if ($status_filter === 'Inactive') echo ' selected'; ?>>Inactive</option>
                 </select>
@@ -168,6 +185,15 @@
                 text-align: left !important;
                 width: 14.28% !important;
             }
+            /* .toggle-circle {
+      width: 1.3em;
+      height: 1.3em;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      cursor: pointer;
+      background-color: <?= $status === 'Inactive' ? 'red' : 'green' ?>;
+      transition: background-color 0.3s;
+    } */
         </style>
         
         
@@ -186,7 +212,7 @@
     </thead>
     <tbody id="myTable">
         <?php
-       $conn = mysqli_connect("localhost", "root", "", "hris_db");
+        include 'config.php';
 
        // Check if the form is submitted and the status_filter value is set
        if (isset($_POST['status_filter'])) {
@@ -197,11 +223,10 @@
             $query = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
                       INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
                      AND employee_tb.status = '$status_filter'";
-        } else {
+        } elseif($status_filter === "All") {
             // If the selected filter is "All" or not set, show all employees
-            $query = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
-                      INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
-                      ";
+            $query = "SELECT * FROM employee_tb
+                       INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id";
         }
     } else {
         // Default filter status when the form is first loaded
@@ -217,6 +242,16 @@
             while ($row = $result->fetch_assoc()) {
 
                 $cmpny_empid = $row['empid'];
+                
+                include 'config.php';
+                
+                $sqls = "SELECT * FROM employee_tb WHERE empid = $cmpny_empid
+                         ";
+                $resulte = mysqli_query($conn, $sqls);
+
+                $rowe = mysqli_fetch_assoc($resulte);
+                
+                $status = $rowe['status'];
 
                 $sql = "SELECT employee_tb.company_code, 
                         employee_tb.empid, 
@@ -233,6 +268,7 @@
                         $cmpny_row = mysqli_fetch_assoc($cmpny_result);
 
                         // echo $cmpny_row['empid'];
+               
 
                 echo "<tr class='lh-1'>";
                 echo "<td style='font-weight: 400;'>";
@@ -247,12 +283,24 @@
                 echo "<td style='font-weight: 400;'>" . $row["contact"] . "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["role"] . " </td>";
 
-               
-                if ($row["status"] == "Active") {
-                    echo "<td style='font-weight: 400; color: green;'>" . $row["status"] . "</td>";
-                } else {
-                    echo "<td style='font-weight: 400; color: red;'>" . $row["status"] . "</td>";
-                }
+                echo "<td>
+                    <label class='toggle-label' for='toggleCheckbox'>
+                        <input type='checkbox' id='toggleCheckbox' name='status' value='".$status."' ".($status === 'Active' ? 'checked' : '')." style='display: none;'>
+
+                        "; ?> <?php if ($status === 'Active'){
+                            echo " <button type='button' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' class='toggle-circle d-flex align-items-center sched-update' style='margin-left: 0.8em; background-color: green'><span style='margin-left: 2em' id='status'>".$status."</span>
+                            </button>
+    
+                        </label>
+                    </td>";
+                        }else{
+                            echo " <button type='button' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' class='toggle-circle d-flex align-items-center sched-update' style='margin-left: 0.8em; background-color: red'><span style='margin-left: 2em' id='status'>".$status."</span>
+                            </button>
+    
+                        </label>
+                    </td>";
+                        }
+
 
                 // Custom mapping for data column names
                 $columnMapping = array(
@@ -342,6 +390,76 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal for status -->
+    <div class="modal fade" id="schedUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Employee Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center align-items-center">
+                    <h4 class="fs-4">Are you sure you want to change it?</h4>
+                </div>
+                <form action="actions/Employee List/empStatus.php" method="POST">
+                        <input class="d-none" type="text" name="empid" id="employID">
+                        <input class="d-none" type="text" name="status" id="statuses">
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" name="updatedata" class="btn btn-primary">Submit</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    </form>
+
+    <style>
+         .toggle-circle {
+      width: 1.3em;
+      height: 1.3em;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      cursor: pointer;
+      /* background-color: <?= $status === 'Inactive' ? 'red' : 'green' ?>; */
+      transition: background-color 0.3s;
+    }
+    </style>
+
+    <script>
+    // JavaScript to toggle state and color
+    const toggleButton = document.getElementById('toggleButton');
+    const toggleCheckbox = document.getElementById('toggleCheckbox');
+    
+    toggleButton.addEventListener('click', function() {
+      toggleCheckbox.checked = !toggleCheckbox.checked;
+      toggleButton.style.backgroundColor = toggleCheckbox.checked ? 'green' : 'red';
+    });
+  </script>
+
+
+    <script> 
+      $(document).ready(function() {
+    $('.sched-update').on('click', function() {
+        $('#schedUpdate').modal('show');
+        $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function() {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+        //id_colId
+        $('#employID').val(data[0]);
+        $('#statuses').val(data[6].trim()); // Remove spaces using trim()
+    });
+});
+
+    </script>
+
 
 
     

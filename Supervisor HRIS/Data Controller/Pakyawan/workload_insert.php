@@ -39,6 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $int_unit_rate = intval($calcRow['unit_rate']);
     $int_unit_quantity = intval($calcRow['unit_quantity']);
 
+    if($unit_work > $int_unit_quantity){
+        header("Location: ../../pakyawan_work?error");
+        exit;
+    }
+
     $subtotal += $int_unit_rate / $int_unit_quantity;
 
     // echo $subtotal;
@@ -67,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $existingQuery = mysqli_query($conn, $existingSql);
 
     if (mysqli_num_rows($existingQuery) > 0) {
-        header("Location: ../../pakyawan_work?validationFailed=1");
+        header("Location: ../../pakyawan_work?validationFailed");
         exit;
     }
 
@@ -83,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $startInRangeQuery = mysqli_query($conn, $startInRangeSql);
 
     if (mysqli_num_rows($startInRangeQuery) > 0) {
-        header("Location: ../../pakyawan_work?validationFailed=1");
+        header("Location: ../../pakyawan_work?validationFailed");
         exit;
     }
 

@@ -1,8 +1,5 @@
 <?php
-$server = "localhost";
-$user = "root";
-$pass = "";
-$database = "hris_db";
+include '../../config.php';
 
 $conn = mysqli_connect($server, $user, $pass, $database);
 

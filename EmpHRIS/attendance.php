@@ -5,12 +5,7 @@
         header("Location: login.php"); 
     }
  
-    $server = "localhost";
-    $user = "root";
-    $pass ="";
-    $database = "hris_db";
-
-    $db = mysqli_connect($server, $user, $pass, $database);
+   include 'config.php';
 
 ?>
 

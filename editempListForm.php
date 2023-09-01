@@ -34,7 +34,7 @@ if(count($_POST) > 0){
     $dailyRate_update = number_format($dailyRate_update, 2);
     $dailyRate_update = str_replace(',', '', $dailyRate_update); // Remove comma
 
-    mysqli_query($conn, "UPDATE employee_tb SET fname='".$_POST['fname']."',mname='".$_POST['mname']."', lname='".$_POST['lname']."',contact='".$_POST['contact']."',cstatus='".$_POST['cstatus']."',gender='".$_POST['gender']."',empdob='".$_POST['empdob']."',empsss='".$_POST['empsss']."',emptin='".$_POST['emptin']."',emppagibig='".$_POST['emppagibig']."',empphilhealth='".$_POST['empphilhealth']."',empbranch='".$_POST['empbranch']."',department_name='".$_POST['department_name']."',empbsalary='".$_POST['empbsalary']."', drate='". $dailyRate_update ."', otrate='".$_POST['otrate']."', empdate_hired='".$_POST['empdate_hired']."',emptranspo='".$_POST['emptranspo']."',empmeal='".$_POST['empmeal']."',empinternet='".$_POST['empinternet']."',empposition='".$_POST['empposition']."', role='".$_POST['role']."',email='".$_POST['email']."', sss_amount='".$_POST['sss_amount']."', tin_amount='".$_POST['tin_amount']."', pagibig_amount='".$_POST['pagibig_amount']."', philhealth_amount='".$_POST['philhealth_amount']."', classification='".$_POST['classification']."', bank_name='".$_POST['bank_name']."', bank_number='".$_POST['bank_number']."'".$emp_img_url.", status='".$_POST['status']."', company_code='".$_POST['company_code']."'
+    mysqli_query($conn, "UPDATE employee_tb SET fname='".$_POST['fname']."',mname='".$_POST['mname']."', lname='".$_POST['lname']."',contact='".$_POST['contact']."',cstatus='".$_POST['cstatus']."',gender='".$_POST['gender']."',empdob='".$_POST['empdob']."',empsss='".$_POST['empsss']."',emptin='".$_POST['emptin']."',emppagibig='".$_POST['emppagibig']."',empphilhealth='".$_POST['empphilhealth']."',empbranch='".$_POST['empbranch']."',department_name='".$_POST['department_name']."',empbsalary='".$_POST['empbsalary']."', drate='". $dailyRate_update ."', otrate='".$_POST['otrate']."', empdate_hired='".$_POST['empdate_hired']."',emptranspo='".$_POST['emptranspo']."',empmeal='".$_POST['empmeal']."',empinternet='".$_POST['empinternet']."',empposition='".$_POST['empposition']."', role='".$_POST['role']."',email='".$_POST['email']."', sss_amount='".$_POST['sss_amount']."', tin_amount='".$_POST['tin_amount']."', pagibig_amount='".$_POST['pagibig_amount']."', philhealth_amount='".$_POST['philhealth_amount']."', classification='".$_POST['classification']."', bank_name='".$_POST['bank_name']."', bank_number='".$_POST['bank_number']."'".$emp_img_url.", company_code='".$_POST['company_code']."'
     WHERE id ='".$_POST['id']."'");
 
     mysqli_query($conn, "UPDATE assigned_company_code_tb SET company_code_id='".$_POST['company_code']."' WHERE empid = '".$_POST['empid']."' ");
@@ -87,6 +87,8 @@ else
 
     $result = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid ='". $_GET['empid']. "'");
     $row = mysqli_fetch_assoc($result);  
+
+    $empid = $row['empid'];
 
     $restdayResult = mysqli_query($conn, "SELECT restday FROM employee_tb AS emp
                                         INNER JOIN empschedule_tb AS esched ON esched.empid = emp.empid
@@ -233,6 +235,11 @@ else
 
 }
 
+.emp-head img{
+    height: 250px;
+    width: 250px;
+}
+
 
     </style>
 
@@ -303,12 +310,39 @@ else
                                     </div>
                                 </div>
                                 <div class="emp-list-info-second-container"> 
-                                    <div class="emp-head">
+                                    <div class="emp-head mt-1">
                                         <?php
                                         if(!empty($row['emp_img_url'])) {
                                             $image_url = $row['emp_img_url'];
                                         } else {
-                                            $image_url = "default_image.png";
+                                            $employeeID = $_SESSION['empid'];
+
+                                            $Supervisor_Profile = "SELECT * FROM employee_tb WHERE `empid` = '$employeeID'";
+                                            $profileRun = mysqli_query($conn, $Supervisor_Profile);
+
+                                            $SuperProfile = mysqli_fetch_assoc($profileRun);
+                                            $visor_Profile = $SuperProfile['user_profile'];
+
+                                            $image_data = "";
+                                                            
+                                            if (!empty($visor_Profile)) {
+                                                $image_data = base64_encode($visor_Profile); // Convert blob to base64
+                                            } else {
+                                                // Set default image path when user_profile is empty
+                                                $image_data = base64_encode(file_get_contents("img/user.jpg"));
+                                            }
+                                            
+                                            $image_type = 'image/jpeg'; // Default image type
+                                            
+                                            // Determine the image type based on the blob data
+                                            if (substr($image_data, 0, 4) === "\x89PNG") {
+                                                $image_type = 'image/png';
+                                            } elseif (substr($image_data, 0, 2) === "\xFF\xD8") {
+                                                $image_type = 'image/jpeg';
+                                            } elseif (substr($image_data, 0, 4) === "RIFF" && substr($image_data, 8, 4) === "WEBP") {
+                                                $image_type = 'image/webp';
+                                            }
+                    
                                         }
                                         // Get file extension from image URL
                                         $file_ext = pathinfo($image_url, PATHINFO_EXTENSION);
@@ -320,13 +354,27 @@ else
                                     <div class="emp-info" style="margin-top: 10px;">
                                         <h1><?php echo $row['fname']; ?> <?php echo $row['lname'];?></h1>
                                         
+                                        <?php 
+                                            $sqle = "SELECT * FROM positionn_tb
+                                                    INNER JOIN employee_tb on positionn_tb.id = employee_tb.empposition
+                                                    WHERE employee_tb.empid = $empid";
+                                            $resulte = mysqli_query($conn, $sqle);
+                                            $rowe = mysqli_fetch_assoc($resulte);
+
+                                            $position = $rowe['position'];
+
+
+                                        ?> 
+                                        <h2 style="font-size: 1.3em; color: gray; font-style:italic"><?php echo $position ?></h2>
+                                        <p class="" style="margin-top: -3px; color: black; font-weight: 500">Status: <span style="<?php if($row['status'] == 'Active'){echo "color: green"; }else{echo "color:red"; } ?>"><?php echo $row['status'] ?></span></p>
+                                        
                                         <div class="emp-stats" style="">
                                         
-                                        <h4 style="margin-top: 9px; margin-left: 50px;">Status: </h4>
+                                        <!-- <h4 style="margin-top: 9px; margin-left: 50px;">Status: </h4>
                                         <input type="text" name="status" id="status" value="<?php if(isset($row['status']) && !empty($row['status'])) { echo $row['status']; } else { echo 'Inactive'; }?>" style="width: 65px; border: none; margin-top: 1px; margin-left: 4px; font-weight: 500; outline: none; color: <?php echo ($row['status'] === 'Active') ? 'green' : 'red'; ?>;" readonly>
-                                        <span onclick="changeWord()" class="fa-solid fa-rotate" style="cursor: pointer; margin-top: 9px;"></span>
+                                        <span onclick="changeWord()" class="fa-solid fa-rotate" style="cursor: pointer; margin-top: 9px;"></span> -->
 
-                                        <script>
+                                        <!-- <script>
                                             function changeWord() {
                                                 var statusInput = document.getElementById("status");
                                                 if (statusInput.value === "Inactive") {
@@ -337,12 +385,12 @@ else
                                                     statusInput.style.color = "red";
                                                 }
                                             }
-                                        </script>
+                                        </script> -->
                                         </div>
                                     </div>
                                     <div class="custom-file" style="width:300px; margin-top:10px;">
-                                        <input type="file" class="custom-file-input" id="customFile" name="emp_img" >
-                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                        <!-- <input type="file" class="custom-file-input" id="customFile" name="emp_img" > -->
+                                        <!-- <label class="custom-file-label" for="customFile">Choose file</label> -->
                                     </div>
 
                                     <script>

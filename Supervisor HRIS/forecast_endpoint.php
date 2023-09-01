@@ -39,10 +39,10 @@
     <div class="mt-3" >
     <?php if(!empty($work_pay)){
         ?>
-          <p style="font-size: 1.3em">You can cash advance <?php echo $fname ?> up to <?php echo $work_pay ?></p>
+          <p style="font-size: 1em; color:green">You can cash advance <?php echo $fname ?> up to <?php echo $work_pay ?></p>
     <?php      
     } else{
-        ?> <p style="font-size:  1.3em">No workload this week.</p> <?php
+        ?> <p style="font-size:  1em; color:red">No workload this week.</p> <?php
     }
     
     ?>
