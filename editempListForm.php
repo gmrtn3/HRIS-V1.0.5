@@ -315,9 +315,9 @@ else
                                         if(!empty($row['emp_img_url'])) {
                                             $image_url = $row['emp_img_url'];
                                         } else {
-                                            $employeeID = $_SESSION['empid'];
+                                           
 
-                                            $Supervisor_Profile = "SELECT * FROM employee_tb WHERE `empid` = '$employeeID'";
+                                            $Supervisor_Profile = "SELECT * FROM employee_tb WHERE `empid` = '$empid'";
                                             $profileRun = mysqli_query($conn, $Supervisor_Profile);
 
                                             $SuperProfile = mysqli_fetch_assoc($profileRun);
@@ -347,7 +347,8 @@ else
                                         // Get file extension from image URL
                                         $file_ext = pathinfo($image_url, PATHINFO_EXTENSION);
                                         ?>
-                                        <img src="uploads/<?php echo $image_url; ?>" alt="" srcset="" accept=".jpg, .jpeg, .png" title="<?php echo $image_url; ?>" >
+                                        <!-- src="uploads/<?php echo $image_url; ?>" -->
+                                        <img <?php if(!empty($image_url)){ echo "src='uploads/".$image_url."' "; } else{ echo "src='data:".$image_type.";base64,".$image_data."'";} ?> alt="" srcset="" accept=".jpg, .jpeg, .png" title="<?php echo $image_url; ?>" >
                                         <!-- Set hidden input value to image URL with file extension -->
                                         <input type="hidden" name="emp_img_url" value="<?php echo $image_url; ?>">
                                     </div>

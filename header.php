@@ -495,7 +495,37 @@
                 </div><!---header-notif-->
                 
                 <div class="header-head">
-                <img src="uploads/<?php echo $image_url;?>" alt="" srcset="" accept=".jpg,.jpeg,.png" title="<?php echo $image_url; ?>" style="height: 70px; width: 70px; border-radius: 50%;">
+                <?php 
+                        include 'config.php';
+                        $employeeID = $_SESSION['empid'];
+
+                        $Supervisor_Profile = "SELECT * FROM employee_tb WHERE `empid` = '$employeeID'";
+                        $profileRun = mysqli_query($conn, $Supervisor_Profile);
+
+                        $SuperProfile = mysqli_fetch_assoc($profileRun);
+                        $visor_Profile = $SuperProfile['user_profile'];
+
+                        $image_data = "";
+                                        
+                        if (!empty($visor_Profile)) {
+                            $image_data = base64_encode($visor_Profile); // Convert blob to base64
+                        } else {
+                            // Set default image path when user_profile is empty
+                            $image_data = base64_encode(file_get_contents("img/user.jpg"));
+                        }
+                        
+                        $image_type = 'image/jpeg'; // Default image type
+                        
+                        // Determine the image type based on the blob data
+                        if (substr($image_data, 0, 4) === "\x89PNG") {
+                            $image_type = 'image/png';
+                        } elseif (substr($image_data, 0, 2) === "\xFF\xD8") {
+                            $image_type = 'image/jpeg';
+                        } elseif (substr($image_data, 0, 4) === "RIFF" && substr($image_data, 8, 4) === "WEBP") {
+                            $image_type = 'image/webp';
+                        }
+                     ?>
+                    <img src="data:<?php echo $image_type; ?>;base64,<?php echo $image_data; ?>" alt="" srcset="" style="width: 5em; height:  5em;">
                 </div>
                 <div class="header-type">
                     <h1 style="color: white;margin-top: 15px; margin-bottom: 20px; text-transform: uppercase"><?php if(empty($_SESSION['username'])){
@@ -766,7 +796,7 @@
             <div class="collapse" id="ui-settings">
               <ul class="nav flex-column sub-menu" style=" width: 100%;">
                 <li class="nav-item"> <a class="nav-link" href="settings">GENERAL SETTINGS</a></li>
-                
+                <li class="nav-item"> <a class="nav-link" href="user_profile">USER PROFILE</a></li>
                 
               </ul>
             </div>

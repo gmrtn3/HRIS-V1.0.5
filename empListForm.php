@@ -349,7 +349,7 @@
                                         ?>
                                         
                                         <label for="classification">Employment Classification</label><br>
-                                        <select  name="classification" id="classification" placeholder="" >
+                                        <select  name="classification" id="classification" placeholder="" required>
                                         <option value disabled selected>Select Classification</option> 
                                             <?php echo $options; ?>
                                         </select>
@@ -362,12 +362,7 @@
                               
                                 <div class="emp-empDetail-depts" >
                                       <?php
-                                        $server = "localhost";
-                                        $user = "root";
-                                        $pass ="";
-                                        $database = "hris_db";
-
-                                        $conn = mysqli_connect($server, $user, $pass, $database);
+                                        include 'config.php';
                                         $sql = "SELECT * FROM branch_tb";
                                         $result = mysqli_query($conn, $sql);
 
@@ -402,12 +397,7 @@
                                 <div class="emp-empDetail-approver">
                                 <div>
                                     <?php
-                                        $server = "localhost";
-                                        $user = "root";
-                                        $pass ="";
-                                        $database = "hris_db";
-
-                                        $conn = mysqli_connect($server, $user, $pass, $database);
+                                        include 'config.php';
                                         $sql = "SELECT * FROM employee_tb WHERE `role` = 'Admin' OR `role` = 'Supervisor'";
                                         $result = mysqli_query($conn, $sql);
 
@@ -431,12 +421,7 @@
                                 <div class="emp-empDetail-piece_rate" style="display:none;">
                                 <div>
                                     <?php
-                                        $server = "localhost";
-                                        $user = "root";
-                                        $pass ="";
-                                        $database = "hris_db";
-
-                                        $conn = mysqli_connect($server, $user, $pass, $database);
+                                       include 'config.php';
                                         $sql = "SELECT * FROM piece_rate_tb";
                                         $result = mysqli_query($conn, $sql);
 
@@ -529,7 +514,7 @@
                                                      ?>
              
                                                  <label for="empposition">Select Positon</label><br>
-                                                     <select name="empposition" style="width: 380px; height: 45px;" id="position" value="<?php echo $row['position'];?>">
+                                                     <select required name="empposition" style="width: 380px; height: 45px;" id="position" value="<?php echo $row['position'];?>">
                                                      <option value disabled selected>Select Position</option> 
                                                        <?php echo $options; ?>
                                                      </select>
