@@ -173,7 +173,7 @@ session_start();
             <div class="mb-3">
                 <label for="brvmnt_lve" class="form-label">Bereavement Leave</label>
                     <div class="input-group mb-3">
-                    <input type="text" name="name_vctn_lve" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value > 20) this.value = 20; if(this.value < 0) this.value = 1; if(this.value.length > 2) this.value = this.value.slice(0, 2);" class="form-control" aria-label="Amount (to the nearest dollar)" id="vleave" required>
+                    <input type="text" name="name_vctn_lve"  oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value > 20) this.value = 20; if(this.value < 0) this.value = 1; if(this.value.length > 2) this.value = this.value.slice(0, 2);" class="form-control" aria-label="Amount (to the nearest dollar)" id="vleave" required>
                         <span class="input-group-text"><input type="text" onclick="changeVal3()" id="id_addB" style="background-color: inherit; border: none; font-size: 15px; cursor: pointer; " title="CLick Me to change the decimal" name="name_brvmnt_lve1"  readonly value=".0"></span>
                     </div>
             </div>
