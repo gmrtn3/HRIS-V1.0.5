@@ -1,37 +1,25 @@
 <?php
 session_start();
-//    $empid = $_SESSION['empid'];
-   if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+if(!isset($_SESSION['username'])){
+    header("Location: login.php"); 
 } else {
     // Check if the user's role is not "admin"
-    if ($_SESSION['role'] != 'admin') {
+    if($_SESSION['role'] != 'admin'){
         // If the user's role is not "admin", log them out and redirect to the logout page
         session_unset();
         session_destroy();
         header("Location: logout.php");
         exit();
-    } else{
+    }else {
         include 'config.php';
-        $userId = $_SESSION['empid'];
-       
-        $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
-        $iconRow = mysqli_fetch_assoc($iconResult);
-
-        if ($iconRow) {
-            $image_url = $iconRow['emp_img_url'];
-        } else {
-            // Handle the case when the user ID is not found in the database
-            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
-        }
-    
+        include 'user-image.php';
     }
 }
 
-
-
+include_once 'config.php';
 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -40,7 +28,7 @@ session_start();
 <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
@@ -48,12 +36,6 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap4.min.css">
-
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-
 
         <!-- skydash -->
 
@@ -68,11 +50,13 @@ session_start();
    
 
     <link rel="stylesheet" href="css/try.css">
-    <link rel="stylesheet" href="css/attendance_report.css"/>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/attendance_reportResponsives.css">
 
-    <title>Employee     Attendance Report</title>
+
+    <link rel="stylesheet" href="css/try.css">
+    <link rel="stylesheet" href="css/payroll_report.css"/>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/payroll_reportResponsive.css">
+    <title>Attendance Report</title>
 </head>
 <body>
 <header>
@@ -80,12 +64,32 @@ session_start();
         include 'header.php';
     ?>
 </header>
-
 <style>
-    .pagination{
-        margin-right: 73px !important;
+      table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                max-height: 330px;
+                height: 330px;
+                
+                
+            } 
 
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+     .pagination{
+        margin-right: 64px !important;
         
+    }
+    .sorting_asc{
+        color: black !important;
     }
 
     .pagination li a{
@@ -102,29 +106,27 @@ session_start();
     
     
     #order-listing_next{
-        margin-right: 24px !important;
-        margin-bottom: -15.5px !important;
+        margin-right: 20px !important;
+        margin-bottom: -16px !important;
 
-    }
-
-    .card-body{
-        width: 99.8%;
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17);
     }
 </style>
 
-
-<!------------------------------------------------- Header ------------------------------------------------------------->
-    <div class="main-panel mt-5" style="margin-left: 16.8%; position: absolute; top: 1.3%;">
-        <div class="content-wrapper mt-4">
-          <div class="card mt-3" style="width: 1500px; height: 780px; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.17); border-radius: 25px;">
+    <div class="main-panel mt-5" style="margin-left: 15%; position: absolute; top:0;">
+        <div class="content-wrapper mt-4" style="background-color: #f4f4f4">
+          <div class="card mt-3" style=" width: 1550px; height:790px; box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);">
             <div class="card-body">
-                <div class="pnl_home">
-                    <!-- <a href="dashboard.php">Home</a>
-                    <p class="header_slash">\</p> -->
-                    <h2 style="font-size: 23px; font-weight: bold;">Employee Attendance Report</h2>
-                </div>
-<!------------------------------------------------- End Of Header -------------------------------------------> 
+                             <div class="row">
+                                <div class="col-6">
+                                    <p style="font-size: 25px; padding: 10px">Attendance Report</p>
+                                </div>
+                                <div class="col-6 mt-1 text-end">
+                                <!-- Button trigger modal -->
+                                <!-- <button type="button" class="add_off_btn" data-bs-toggle="modal" data-bs-target="#file_off_btn">
+                                    File Official Business
+                                    </button> -->
+                                </div>
+                            </div>
 
 <!----------------------------------------select button and text input--------------------------------------->
 <div class="container-select">
@@ -172,6 +174,176 @@ session_start();
                 <button id="arrowBtn" onclick="filterAttReport()"> &rarr; Apply Filter</button>
  </div> <!--Container Select-->
 <!----------------------------------------select button and text input--------------------------------------->
+                
+                                    <div class="table-responsive" id="table-responsiveness">
+                                        <table id="order-listing" class="table mt-2">
+                                            <thead>
+                                                <tr>
+                                                    <th style="display: none;">ID</th>
+                                                    <th>Month</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                                <?php 
+                                                include 'config.php';    
+                                                $checkCO = mysqli_query($conn, "SELECT * FROM cutoff_tb");
+                                                
+                                                if ($checkCO && mysqli_num_rows($checkCO) > 0) {
+                                                    while ($co_row = $checkCO->fetch_assoc()){ 
+                                                ?>
+                                                    <tr>
+                                                        <td style="font-weight: 400; display: none;"><?php echo $co_row['col_ID']?></td>
+                                                        <td style="font-weight: 400;"><?php echo $co_row['col_month']?></td>
+                                                        <td style="font-weight: 400;"><?php echo $co_row['col_startDate']?></td>
+                                                        <td style="font-weight: 400;"><?php echo $co_row['col_endDate']?></td>
+                                                        <td>
+                                                        <button class="btn btn-primary view-report-att" data-bs-toggle="modal" data-bs-target="#ViewAttReport" data-cutoff-id="<?php echo $co_row['col_ID']; ?>" data-start-date="<?php echo $co_row['col_startDate']; ?>" data-end-date="<?php echo $co_row['col_endDate']; ?>">View Report</button>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                    }
+                                                }
+                                                ?>
+                                     </table>
+                               </div>    
+
+                               <div class="modal fade" id="ViewAttReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Attendance Report</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                                <div class="modal-body" id="report-modal-body">
+                                                    <div class="table-responsive" id="table-responsiveness">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <!-- Mga headers ng table -->
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <!-- Dito ilalagay ang mga data mula sa AJAX request -->
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                           </div>
+                                        </div>
+                                    </div>
+                            
+                        <div class="export-section">
+                            <div class="export-sec">
+                                <p class="export">Export Options:</p>
+                                <button class="excel" id="export-csv-btn">CSV</button>
+                                <p class="lbl_exprt_contnt">|</p>
+                                <button class="pdf" onclick="makePDF()">PDF</button>
+                            </div>
+                        </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+   
+
+<!----Kapag clinick ang view button magiging unique per employee--->
+<script>
+    $(document).ready(function () {
+        $('.view-report-att').click(function () {
+            var cutoffID = $(this).data('cutoff-id');
+            var startDate = $(this).data('start-date');
+            var endDate = $(this).data('end-date');
+
+            $.ajax({
+                url: 'get_report_att.php', // I-create ang PHP script na ito para sa pagkuha ng mga data mula sa database
+                method: 'POST',
+                data: { cutoffID: cutoffID, startDate: startDate, endDate: endDate },
+                success: function (response) {
+                    $('#report-modal-body').html(response);
+                }
+            });
+        });
+    });
+</script>
+
+
+<!--PDF Exporting-->
+<script>
+window.html2canvas = html2canvas;
+window.jsPDF = window.jspdf.jsPDF;
+
+function makePDF() {
+    html2canvas(document.querySelector("#order-listing"), {
+        allowTaint: true,
+        useCORS: true,
+        scale: 0.7
+    }).then(canvas => {
+        var img = canvas.toDataURL("Payroll Attendance Report");
+        
+        // Set the PDF to landscape mode
+        var doc = new jsPDF({
+            orientation: 'landscape'
+        });
+
+        doc.setFont('Arial');
+        doc.getFontSize(11);
+        doc.addImage(img, 'PNG', 10, 10, 0,0);
+        doc.save("Payroll Report.pdf");
+    });
+}
+</script>
+<!--CSV Exporting-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+$(document).ready(function() {
+    // Export button click event
+    $('#export-csv-btn').click(function() {
+        // Create a CSV content
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Employee ID, Name , Month, StartDate, EndDate , CutOffNumber, WorkingDays, Overtime, Allowance, LeavePay, HolidayPay, TotalSalary, SSSDeduction, Philhealth, TinDeduction, PagibigDeduction, OtherDeduction, Late, Undertime, Absences, TotalDeduction, FinalTotalSalary,\n";
+
+        // Loop through table rows and append data
+        $('#order-listing tbody tr').each(function() {
+            var EmployeeID = $(this).find('td:nth-child(1)').text();
+            var Name = $(this).find('td:nth-child(2)').text();
+            var Month = $(this).find('td:nth-child(3)').text();
+            var StartDate = $(this).find('td:nth-child(4)').text();
+            var EndDate = $(this).find('td:nth-child(5)').text();
+            var CutOffNumber = $(this).find('td:nth-child(6)').text();
+            var WorkingDays = $(this).find('td:nth-child(7)').text();
+            var Overtime = $(this).find('td:nth-child(8)').text();
+            var Allowance = $(this).find('td:nth-child(9)').text();
+            var LeavePay = $(this).find('td:nth-child(10)').text();
+            var HolidayPay = $(this).find('td:nth-child(11)').text();
+            var TotalSalary = $(this).find('td:nth-child(12)').text();
+            var SSSDeduction = $(this).find('td:nth-child(13)').text();
+            var Philhealth = $(this).find('td:nth-child(14)').text();
+            var TinDeduction = $(this).find('td:nth-child(15)').text();
+            var PagibigDeduction = $(this).find('td:nth-child(16)').text();
+            var OtherDeduction = $(this).find('td:nth-child(17)').text();
+            var Late = $(this).find('td:nth-child(18)').text();
+            var Undertime = $(this).find('td:nth-child(19)').text();
+            var Absences = $(this).find('td:nth-child(20)').text();
+            var TotalDeduction = $(this).find('td:nth-child(21)').text();
+            var FinalTotalSalary = $(this).find('td:nth-child(22)').text();
+            csvContent += EmployeeID + "," + Name + "," + Month + ","  + StartDate + ","  + EndDate + ","  + CutOffNumber + ","  + WorkingDays + "," + Overtime + "," + Allowance + "," + LeavePay + "," + HolidayPay + "," + TotalSalary + "," + SSSDeduction + "," + Philhealth + "," + TinDeduction + "," + PagibigDeduction + "," + OtherDeduction + "," + Late + "," + Undertime + "," + Absences + "," + TotalDeduction + "," + FinalTotalSalary + "," + other +"\n";
+        });
+
+        // Create a CSV blob and trigger a download
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Payroll Reports.csv");
+        document.body.appendChild(link);
+        link.click();
+    });
+});
+</script>
+
+<!----------------------Script sa dropdown chain--------------------------->        
 <script>
 // Kapag nagbago ang pagpili sa select department dropdown
 document.getElementById("select_department").addEventListener("change", function() {
@@ -225,224 +397,11 @@ function filterAttReport() {
         window.location.href = url;
     }
 </script>
+<!----------------------Script sa dropdown chain--------------------------->      
 
 
 
-<!-------------------------------------------------TABLE START------------------------------------------->
 
-                <div class="row">
-                    <div class="col-12 mt-5 tablet-col">
-                        <div class="table-responsive" style="overflow: hidden;">
-                            <table id="order-listing" class="table" style="width: 100%;">
-                                <thead style="background-color: #ececec;">
-                                        <tr>  
-                                            <th style="display: none;">ID</th>                                        
-                                            <th>Employee ID</th>
-                                            <th>Name</th>
-                                            <th>Overtime hours</th>
-                                            <th>Absences</th>
-                                            <th>Late</th>
-                                            <th>Undertime</th>
-                                            <th>Total Work Hours</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                            <?php
-                                            include 'config.php';
-                                            
-                                            // Set the time zone to Manila, Philippines
-                                            date_default_timezone_set('Asia/Manila');
-
-                                            // Get the current month and year
-                                            $currentMonth = date('m');
-                                            $currentYear = date('Y');
-
-                                            // Add JavaScript code to dynamically update the table
-                                            echo '<script>';
-                                            echo 'var currentDate = new Date();';
-                                            echo 'var currentMonth = currentDate.getMonth() + 1;';
-                                            echo 'var currentYear = currentDate.getFullYear();';
-                                            echo 'if (' . $currentMonth . ' !== currentMonth || ' . $currentYear . ' !== currentYear) {';
-                                            echo 'window.location.reload();'; // Reload the page if the month has changed
-                                            echo '}';
-                                            echo '</script>';
-
-                                            $query = "SELECT attendances.id,
-                                                employee_tb.empid,
-                                                CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`,
-                                                attendances.date, attendances.time_in,
-                                                attendances.time_out,        
-                                                SUM(CASE WHEN attendances.status = 'Absent' THEN 1 ELSE 0 END) AS absent_count,
-                                                SEC_TO_TIME(SUM(TIME_TO_SEC(attendances.overtime)))AS total_overtime,
-                                                SEC_TO_TIME(SUM(TIME_TO_SEC(attendances.late))) AS total_late,
-                                                SEC_TO_TIME(SUM(TIME_TO_SEC(attendances.early_out))) AS total_early_out,
-                                                SEC_TO_TIME(SUM(TIME_TO_SEC(attendances.total_work))) AS total_work 
-                                                FROM attendances
-                                                INNER JOIN employee_tb ON employee_tb.empid = attendances.empid
-                                                WHERE MONTH(attendances.date) = $currentMonth
-                                                AND YEAR(attendances.date) = $currentYear
-                                                GROUP BY employee_tb.empid;";
-                                            $result = mysqli_query($conn, $query);
-
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                $cmpny_empid = $row['empid'];
-
-                                                $sql = "SELECT employee_tb.company_code, 
-                                                        employee_tb.empid, 
-                                                        assigned_company_code_tb.company_code_id, 
-                                                        assigned_company_code_tb.empid, 
-                                                        company_code_tb.id, 
-                                                        company_code_tb.company_code AS company_code_name 
-                                                        FROM assigned_company_code_tb 
-                                                        INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
-                                                        INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
-                                                        WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
-                                                        
-                                                        $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
-                                                        $cmpny_row = mysqli_fetch_assoc($cmpny_result);
-                                            ?>
-                                                <tr>
-                                                    <td style="display: none;"><?php echo $row['id'] ?></td>
-                                                    <td><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
-                                                    $empid = $row['empid'];
-                                                    if (!empty($cmpny_code)) {
-                                                        echo $cmpny_code . " - " . $empid;
-                                                    } else {
-                                                        echo $empid;
-                                                    }  ?></td>
-                                                    <td><?php echo $row['full_name'] ?></td>
-                                                    <td><?php echo $row['total_overtime'] ?></td>
-                                                    <td><?php echo $row['absent_count'] ?></td>
-                                                    <td><?php echo $row['total_late'] ?></td>
-                                                    <td><?php echo $row['total_early_out'] ?></td>
-                                                    <td><?php echo $row['total_work'] ?></td>
-                                                </tr>
-                                            <?php
-                                            }
-                                            ?>
-                                </tbody>
-                            </table>
-                         </div>
-                      </div>
-                  </div>
-                    <div class="export-section">
-                        <div class="export-sec">
-                            <p class="export">Export Options:</p>
-                            <button class="excel" id="export-csv-btn">CSV</button>
-                            <p class="lbl_exprt_contnt"> | </p>
-                            <button class="pdf" onclick="makePDF()">PDF</button>
-                        </div>
-                    </div>
-
-            </div>
-         </div>
-     </div>
- </div><!---Main Panel Close Tag--->
-<!-------------------------------------------------TABLE END------------------------------------------->
-
-<script>
-
-window.html2canvas = html2canvas;
-window.jsPDF = window.jspdf.jsPDF;
-
-function makePDF() {
-    html2canvas(document.querySelector("#order-listing"), {
-        allowTaint: true,
-        useCORS: true,
-        scale: 0.7
-    }).then(canvas => {
-        var img = canvas.toDataURL("Payroll Attendance Report");
-        
-        // Set the PDF to landscape mode
-        var doc = new jsPDF({
-            orientation: 'landscape'
-        });
-
-        doc.setFont('Arial');
-        doc.getFontSize(11);
-        doc.addImage(img, 'PNG', 10, 10, 0,0);
-        doc.save("Attendance Report.pdf");
-    });
-}
-</script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-$(document).ready(function() {
-    // Export button click event
-    $('#export-csv-btn').click(function() {
-        // Create a CSV content
-        var csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Employee ID, Name ,Overtime hours, Absences, Late, Undertime, Total Work Hours\n";
-
-        // Loop through table rows and append data
-        $('#order-listing tbody tr').each(function() {
-            var empid = $(this).find('td:nth-child(2)').text();
-            var name = $(this).find('td:nth-child(3)').text();
-            var ot = $(this).find('td:nth-child(4)').text();
-            var absent = $(this).find('td:nth-child(5)').text();
-            var late = $(this).find('td:nth-child(6)').text();
-            var under = $(this).find('td:nth-child(7)').text();
-            var total_work = $(this).find('td:nth-child(8)').text();
-            csvContent += empid + "," + name + "," + ot + ","  + absent + ","  + late + ","  + under + ","  + total_work +"\n";
-        });
-
-        // Create a CSV blob and trigger a download
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Attendance Reports.csv");
-        document.body.appendChild(link);
-        link.click();
-    });
-});
-</script>
-
-
-<script> 
-     $('.header-dropdown-btn').click(function(){
-        $('.header-dropdown .header-dropdown-menu').toggleClass("show-header-dd");
-    });
-
-//     $(document).ready(function() {
-//     $('.navbar-toggler').click(function() {
-//     $('.nav-title').toggleClass('hide-title');
-//     $('.dashboard-container').toggleClass('move-content');
-  
-//   });
-// });
- $(document).ready(function() {
-    var isHamburgerClicked = false;
-
-    $('.navbar-toggler').click(function() {
-    $('.nav-title').toggleClass('hide-title');
-    // $('.dashboard-container').toggleClass('move-content');
-    isHamburgerClicked = !isHamburgerClicked;
-
-    if (isHamburgerClicked) {
-      $('#schedule-list-container').addClass('move-content');
-    } else {
-      $('#schedule-list-container').removeClass('move-content');
-
-      // Add class for transition
-      $('#schedule-list-container').addClass('move-content-transition');
-      // Wait for transition to complete before removing the class
-      setTimeout(function() {
-        $('#schedule-list-container').removeClass('move-content-transition');
-      }, 800); // Adjust the timeout to match the transition duration
-    }
-  });
-});
- 
-
-//     $(document).ready(function() {
-//   $('.navbar-toggler').click(function() {
-//     $('.nav-title').toggleClass('hide-title');
-//   });
-// });
-
-
-    </script>
 
 <script>
  //HEADER RESPONSIVENESS SCRIPT
@@ -486,26 +445,52 @@ $(document).ready(function() {
 
 </script>
 
-<script> 
-        $(document).ready(function(){
-                $('.sched-update').on('click', function(){
-                                    $('#schedUpdate').modal('show');
-                                    $tr = $(this).closest('tr');
 
-                                    var data = $tr.children("td").map(function () {
-                                        return $(this).text();
-                                    }).get();
 
-                                    console.log(data);
-                                    //id_colId
-                                    $('#empid').val(data[8]);
-                                    $('#sched_from').val(data[5]);
-                                    $('#sched_to').val(data[6]);
-                                });
-                            });
-            
+    <script> 
+     $('.header-dropdown-btn').click(function(){
+        $('.header-dropdown .header-dropdown-menu').toggleClass("show-header-dd");
+    });
+
+//     $(document).ready(function() {
+//     $('.navbar-toggler').click(function() {
+//     $('.nav-title').toggleClass('hide-title');
+//     $('.dashboard-container').toggleClass('move-content');
+  
+//   });
+// });
+ $(document).ready(function() {
+    var isHamburgerClicked = false;
+
+    $('.navbar-toggler').click(function() {
+    $('.nav-title').toggleClass('hide-title');
+    // $('.dashboard-container').toggleClass('move-content');
+    isHamburgerClicked = !isHamburgerClicked;
+
+    if (isHamburgerClicked) {
+      $('#schedule-list-container').addClass('move-content');
+    } else {
+      $('#schedule-list-container').removeClass('move-content');
+
+      // Add class for transition
+      $('#schedule-list-container').addClass('move-content-transition');
+      // Wait for transition to complete before removing the class
+      setTimeout(function() {
+        $('#schedule-list-container').removeClass('move-content-transition');
+      }, 800); // Adjust the timeout to match the transition duration
+    }
+  });
+});
+ 
+
+//     $(document).ready(function() {
+//   $('.navbar-toggler').click(function() {
+//     $('.nav-title').toggleClass('hide-title');
+//   });
+// });
+
+
     </script>
-
 
 
 <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>

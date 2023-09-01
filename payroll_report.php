@@ -57,8 +57,31 @@ include_once 'config.php';
     <title>Payroll Report</title>
 </head>
 <body>
-    <style>
-         .pagination{
+<header>
+    <?php
+        include 'header.php';
+    ?>
+</header>
+<style>
+     table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 350px;
+                height: 350px;
+                
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+            .pagination{
         margin-right: 64px !important;
         
     }
@@ -80,70 +103,11 @@ include_once 'config.php';
     
     
     #order-listing_next{
-        margin-right: 15px !important;
+        margin-right: 20px !important;
         margin-bottom: -16px !important;
 
     }
-    </style>
-<header>
-    <?php
-        include 'header.php';
-    ?>
-</header>
-
-<div class="modal fade" id="detailedPayslip" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Employee Payslip</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-            <div class="table">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Working Days</th>
-                            <th>Overtime</th>
-                            <th>Allowances</th>
-                            <th>Leave Pay</th>
-                            <th>Holiday Pay</th>
-                            <th>Total Salary</th>
-                            <th>SSS</th>
-                            <th>Philhealth</th>
-                            <th>TIN</th>
-                            <th>Pag-ibig</th>
-                            <th>Other</th>
-                            <th>Late</th>
-                            <th>Undertime</th>
-                            <th>Absences</th>
-                            <th>Total Deduction</th>
-                        </tr>
-                    </thead>
-                        <tr>
-                            <td id="workdays"></td>
-                            <td id="overtimedata"></td>
-                            <td id="allowancedata"></td>
-                            <td id="leavedata"></td>
-                            <td id="holidaydata"></td>
-                            <td id="salarytotal"></td>
-                            <td id="sssdata"></td>
-                            <td id="phildata"></td>
-                            <td id="tindata"></td>
-                            <td id="pagibigdata"></td>
-                            <td id="otherdata"></td>
-                            <td id="latedata"></td>
-                            <td id="undertimedata"></td>
-                            <td id="absentdata"></td>
-                            <td id="deduction"></td>
-                        </tr>
-                </table>
-            </div>
-      </div>
-
-    </div>
-  </div>
-</div>
+</style>
 
     <div class="main-panel mt-5" style="margin-left: 15%; position: absolute; top:0;">
         <div class="content-wrapper mt-4" style="background-color: #f4f4f4">
@@ -162,7 +126,7 @@ include_once 'config.php';
                             </div>
 
 <!----------------------------------------select button and text input--------------------------------------->
- <div class="container-select">
+<div class="container-select">
             <div class="input-container">
               <p class="demm-text">Select Department</p>
               <?php
@@ -208,134 +172,52 @@ include_once 'config.php';
  </div> <!--Container Select-->
 <!----------------------------------------select button and text input--------------------------------------->
                 
-                    <div class="table-responsive" id="table-responsiveness">
-                        <table id="order-listing" class="table mt-2">
-                            <thead>
-                                    <tr>  
-                                        <th style="display: none;">ID</th>                                        
-                                        <th>Employee ID</th>
-                                        <th>Name</th>
-                                        <th>Month</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
-                                        <th>Cut off Number</th>
-                                        <th style="display: none;">Working Days</th>
-                                        <th style="display: none;">Overtime</th>
-                                        <th style="display: none;">Allowances</th>
-                                        <th style="display: none;">Leave Pay</th>
-                                        <th style="display: none;">Holiday Pay</th>
-                                        <th style="display: none;">Total Salary</th>
-                                        <th style="display: none;">SSS</th>
-                                        <th style="display: none;">Philhealth</th>
-                                        <th style="display: none;">TIN</th>
-                                        <th style="display: none;">Pag-ibig</th>
-                                        <th style="display: none;">Other</th>
-                                        <th style="display: none;">Late</th>
-                                        <th style="display: none;">Undertime</th>
-                                        <th style="display: none;">Absences</th>
-                                        <th style="display: none;">Total Deduction</th>
-                                        <th>Salary Final Total</th>
-                                        <th>Action</th>
+                                <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                                    <table id="order-listing" class="table" style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Cut Off Month</th>
+                                                    <th>Cut Off Start</th>
+                                                    <th>Cut Off End</th>
+                                                    <th>Cut Off Number</th>
+                                                    <th>Date Generated</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <?php 
+                                                include 'config.php';
+                                                $check_prb = mysqli_query($conn, "SELECT * FROM payslip_report_tb GROUP BY `cutoff_ID`");
+                                                if ($check_prb && mysqli_num_rows($check_prb) > 0) {
+                                                    while ($prb_row = $check_prb->fetch_assoc()){                                                    
+                                                ?>
+                                                    <tr>
+                                                        <td style="font-weight: 400;"><?php echo $prb_row['cutoff_month']; ?></td>
+                                                        <td style="font-weight: 400;"><?php echo $prb_row['cutoff_startdate']; ?></td>
+                                                        <td style="font-weight: 400;"><?php echo $prb_row['cutoff_enddate']; ?></td>
+                                                        <td style="font-weight: 400;"><?php echo $prb_row['cutoff_num']; ?></td>
+                                                        <td style="font-weight: 400;"><?php echo $prb_row['date_time']; ?></td>
+                                                        <td><button class="btn btn-primary view-report-btn" data-bs-toggle="modal" data-bs-target="#ViewReport" data-cutoff-id="<?php echo $prb_row['cutoff_ID']; ?>" data-start-date="<?php echo $prb_row['cutoff_startdate']; ?>" data-end-date="<?php echo $prb_row['cutoff_enddate']; ?>">View Report</button></td>
+                                                    </tr>
+                                                    <?php
+                                                    }
+                                                  }
+                                                ?>
+                                     </table>
+                               </div>    
 
-                                    </tr>
-                            </thead>
-                                    <?php
-                                        include 'config.php';
-                                        date_default_timezone_set('Asia/Manila'); 
-                                        // Get the current month and year
-                                        $currentMonth = date('m');
-                                        $currentYear = date('Y');
-
-                                        $sql = "SELECT
-                                                payslip_report_tb.id,
-                                                employee_tb.empid,
-                                                CONCAT(employee_tb.fname, ' ', employee_tb.lname) AS full_name,
-                                                payslip_report_tb.cutoff_month,
-                                                payslip_report_tb.cutoff_startdate,
-                                                payslip_report_tb.cutoff_enddate,
-                                                payslip_report_tb.cutoff_num,
-                                                payslip_report_tb.working_days,
-                                                payslip_report_tb.basic_hours,
-                                                payslip_report_tb.basic_amount_pay,
-                                                payslip_report_tb.overtime_hours,
-                                                payslip_report_tb.overtime_amount,
-                                                payslip_report_tb.allowances,
-                                                payslip_report_tb.paid_leaves,
-                                                payslip_report_tb.holiday_pay,
-                                                payslip_report_tb.total_earnings,
-                                                payslip_report_tb.sss_contri,
-                                                payslip_report_tb.philhealth_contri,
-                                                payslip_report_tb.tin_contri,
-                                                payslip_report_tb.pagibig_contri,
-                                                payslip_report_tb.other_contri,
-                                                payslip_report_tb.tardiness_deduct,
-                                                payslip_report_tb.undertime_deduct,
-                                                payslip_report_tb.lwop_deduct,
-                                                payslip_report_tb.total_deduction,
-                                                payslip_report_tb.net_pay
-                                            FROM
-                                                payslip_report_tb
-                                            INNER JOIN
-                                                employee_tb ON employee_tb.empid = payslip_report_tb.empid";
-
-                                    $result = mysqli_query($conn, $sql);
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        $cmpny_empid = $row['empid'];
-
-                                        $sql = "SELECT employee_tb.company_code, 
-                                                employee_tb.empid, 
-                                                assigned_company_code_tb.company_code_id, 
-                                                assigned_company_code_tb.empid, 
-                                                company_code_tb.id, 
-                                                company_code_tb.company_code AS company_code_name 
-                                                FROM assigned_company_code_tb 
-                                                INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
-                                                INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
-                                                WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
-                                                
-                                                $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
-                                                $cmpny_row = mysqli_fetch_assoc($cmpny_result);
- 
-                                    ?>
-                                    <tr>
-                                        <td style="display: none;"><?php echo $row['id']?></td>
-                                        <td style='font-weight: 400'><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
-                                        $empid = $row['empid'];
-                                        if (!empty($cmpny_code)) {
-                                            echo $cmpny_code . " - " . $empid;
-                                        } else {
-                                            echo $empid;
-                                        }  ?></td>
-                                        <td><?php echo $row['full_name']?></td>
-                                        <td><?php echo $row['cutoff_month']?></td>
-                                        <td><?php echo $row['cutoff_startdate']?></td>
-                                        <td><?php echo $row['cutoff_enddate']?></td>
-                                        <td><?php echo $row['cutoff_num']?></td>
-                                        <td style="display: none;"><?php echo $row['working_days']?></td>
-                                        <td style="display: none;"><?php echo $row['overtime_amount']?></td>
-                                        <td style="display: none;"><?php echo $row['allowances']?></td>
-                                        <td style="display: none;"><?php echo $row['paid_leaves']?></td>
-                                        <td style="display: none;"><?php echo $row['holiday_pay']?></td>
-                                        <td style="display: none;"><?php echo $row['total_earnings']?></td>
-                                        <td style="display: none;"><?php echo $row['sss_contri']?></td>
-                                        <td style="display: none;"><?php echo $row['philhealth_contri']?></td>
-                                        <td style="display: none;"><?php echo $row['tin_contri']?></td>
-                                        <td style="display: none;"><?php echo $row['pagibig_contri']?></td>
-                                        <td style="display: none;"><?php echo $row['other_contri']?></td>
-                                        <td style="display: none;"><?php echo $row['tardiness_deduct']?></td>
-                                        <td style="display: none;"><?php echo $row['undertime_deduct']?></td>
-                                        <td style="display: none;"><?php echo $row['lwop_deduct']?></td>
-                                        <td style="display: none;"><?php echo $row['total_deduction']?></td>
-                                        <td><?php echo $row['net_pay']?></td>
-                                        <td><button type="button" class="btn btn-primary slipdetailed" data-bs-toggle="modal" data-bs-target="#detailedPayslip">
-                                        View
-                                        </button></td>
-                                    </tr>
-                                    <?php
-                                      }
-                                    ?>
-                          </table>    
-                    </div>    
+                               <div class="modal fade" id="ViewReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Payroll Report</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                                <div class="modal-body" id="report-modal-body" style="overflow-y:scroll;">
+                                                    
+                                                </div>
+                                           </div>
+                                        </div>
+                                    </div>
                             
                     <div class="export-section">
                         <div class="export-sec">
@@ -351,19 +233,78 @@ include_once 'config.php';
         </div>
       </div>
    
-      
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var viewReportButtons = document.querySelectorAll('.view-report-button');
+        viewReportButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var cutoffID = button.getAttribute('data-cutoff-id');
+                var cutoffStartDate = button.getAttribute('data-cutoff-startdate');
+                var cutoffEndDate = button.getAttribute('data-cutoff-enddate');
+                
+                document.getElementById('modal-cutoff-id').textContent = cutoffID;
+                document.getElementById('modal-cutoff-startdate').textContent = cutoffStartDate;
+                document.getElementById('modal-cutoff-enddate').textContent = cutoffEndDate;
+            });
+        });
+    });
+</script>       -->
+
+<script>
+    $(document).ready(function () {
+        $('.view-report-btn').click(function () {
+            var cutoffID = $(this).data('cutoff-id');
+            var startDate = $(this).data('start-date');
+            var endDate = $(this).data('end-date');
+
+            $.ajax({
+                url: 'get_report_data.php', // I-create ang PHP script na ito para sa pagkuha ng mga data mula sa database
+                method: 'POST',
+                data: { cutoffID: cutoffID, startDate: startDate, endDate: endDate },
+                success: function (response) {
+                    $('#report-modal-body').html(response);
+                }
+            });
+        });
+    });
+</script>
+
 <!-------------------------------------------------TABLE END------------------------------------------->
 
+<!--PDF Exporting-->
+<script>
+window.html2canvas = html2canvas;
+window.jsPDF = window.jspdf.jsPDF;
+
+function makePDF() {
+    html2canvas(document.querySelector("#order-listing"), {
+        allowTaint: true,
+        useCORS: true,
+        scale: 0.7
+    }).then(canvas => {
+        var img = canvas.toDataURL("Payroll Attendance Report");
+        
+        // Set the PDF to landscape mode
+        var doc = new jsPDF({
+            orientation: 'landscape'
+        });
+
+        doc.setFont('Arial');
+        doc.getFontSize(11);
+        doc.addImage(img, 'PNG', 10, 10, 0,0);
+        doc.save("Payroll Report.pdf");
+    });
+}
+</script>
 <!--CSV Exporting-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script>
+    <script>
 $(document).ready(function() {
     // Export button click event
     $('#export-csv-btn').click(function() {
-        console.log("hehe");
         // Create a CSV content
         var csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Employee ID, Name , Month, StartDate, EndDate , CutOffNumber, WorkingDays, Overtime, Allowance, LeavePay, HolidayPay, TotalSalary, SSSDeduction, Philhealth, TinDeduction, PagibigDeduction, OtherDeduction, Late, Undertime, Absences, TotalDeduction, FinalTotalSalary\n";
+        csvContent += "Employee ID, Name , Month, StartDate, EndDate , CutOffNumber, WorkingDays, Overtime, Allowance, LeavePay, HolidayPay, TotalSalary, SSSDeduction, Philhealth, TinDeduction, PagibigDeduction, OtherDeduction, Late, Undertime, Absences, TotalDeduction, FinalTotalSalary,\n";
 
         // Loop through table rows and append data
         $('#order-listing tbody tr').each(function() {
@@ -401,107 +342,7 @@ $(document).ready(function() {
         link.click();
     });
 });
-</script> -->
-<script>
-$(document).ready(function() {
-    // Export button click event
-    $('#export-csv-btn').click(function() {
-        // Create a CSV content
-        var csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Employee ID, Name , Month, Start Date, End Date, Cuttoff Number, Working Days, Overtime, Allowance, Leave Pay, Holiday Pay, Total Salary, SSS, Philhealth, Tin,Pag-ibig, Other, Late, Undertime, Absences, Total Deduction, Net Pay\n";
-
-        // Loop through table rows and append data
-        $('#order-listing tbody tr').each(function() {
-            var EmployeeID = $(this).find('td:nth-child(2)').text();
-            var Name = $(this).find('td:nth-child(3)').text();
-            var Month = $(this).find('td:nth-child(4)').text();
-            var StartDate = $(this).find('td:nth-child(5)').text();
-            var EndDate = $(this).find('td:nth-child(6)').text();
-            var CutOffNumber = $(this).find('td:nth-child(7)').text();
-            var WorkingDays = $(this).find('td:nth-child(8)').text();
-            var Overtime = $(this).find('td:nth-child(9)').text();
-            var Allowance = $(this).find('td:nth-child(10)').text();
-            var LeavePay = $(this).find('td:nth-child(11)').text();
-            var HolidayPay = $(this).find('td:nth-child(12)').text();
-            var TotalSalary = $(this).find('td:nth-child(13)').text();
-            var SSSDeduction = $(this).find('td:nth-child(14)').text();
-            var Philhealth = $(this).find('td:nth-child(15)').text();
-            var TinDeduction = $(this).find('td:nth-child(16)').text();
-            var PagibigDeduction = $(this).find('td:nth-child(17)').text();
-            var OtherDeduction = $(this).find('td:nth-child(18)').text();
-            var Late = $(this).find('td:nth-child(19)').text();
-            var Undertime = $(this).find('td:nth-child(20)').text();
-            var Absences = $(this).find('td:nth-child(21)').text();
-            var TotalDeduction = $(this).find('td:nth-child(22)').text();
-            var FinalTotalSalary = $(this).find('td:nth-child(23)').text().replace("₱ ", "");
-            csvContent += EmployeeID + "," + Name + "," + Month + ","  + StartDate + ","  + EndDate + ","  + CutOffNumber + ","  + WorkingDays + "," + Overtime + "," + Allowance + "," + LeavePay + "," + HolidayPay + "," + TotalSalary + "," + SSSDeduction + "," + Philhealth + "," + TinDeduction + "," + PagibigDeduction + "," + OtherDeduction + "," + Late + "," + Undertime + "," + Absences + "," + TotalDeduction + "," + FinalTotalSalary+"\n";
-        });
-
-        // Create a CSV blob and trigger a download
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Payroll Reports.csv");
-        document.body.appendChild(link);
-        link.click();
-    });
-});
 </script>
-
-<script>
-$(document).ready(function(){
-    $('.slipdetailed').on('click', function(){
-        $('#detailedPayslip').modal('show');
-        $tr = $(this).closest('tr');
-        var data = $tr.children("td").map(function () {
-            return $(this).text();
-        }).get();
-
-        $('#workdays').text(data[7]);
-        $('#overtimedata').text(data[8]);
-        $('#allowancedata').text(data[9]);
-        $('#leavedata').text(data[10]);
-        $('#holidaydata').text(data[11]);
-        $('#salarytotal').text(data[12]);
-        $('#sssdata').text(data[13]);
-        $('#phildata').text(data[14]);
-        $('#tindata').text(data[15]);
-        $('#pagibigdata').text(data[16]);
-        $('#otherdata').text(data[17]);
-        $('#latedata').text(data[18]);
-        $('#undertimedata').text(data[19]);
-        $('#absentdata').text(data[20]);
-        $('#deduction').text(data[21]);
-    });
-});
-</script>
-
-<!--PDF Exporting-->
-<script>
-window.html2canvas = html2canvas;
-window.jsPDF = window.jspdf.jsPDF;
-
-function makePDF() {
-    html2canvas(document.querySelector("#order-listing"), {
-        allowTaint: true,
-        useCORS: true,
-        scale: 0.7
-    }).then(canvas => {
-        var img = canvas.toDataURL("Payroll Attendance Report");
-        
-        // Set the PDF to landscape mode
-        var doc = new jsPDF({
-            orientation: 'landscape'
-        });
-
-        doc.setFont('Arial');
-        doc.getFontSize(11);
-        doc.addImage(img, 'PNG', 10, 10, 0,0);
-        doc.save("Payroll Report.pdf");
-    });
-}
-</script>
-
 
 <!----------------------Script sa dropdown chain--------------------------->        
 <script>

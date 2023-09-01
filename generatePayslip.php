@@ -349,7 +349,7 @@ function filterPayslip() {
 
                                 // read data
                                 while($row = $result->fetch_assoc()){
-                                    $cmpny_empid = $row['empid'];
+                                    $cmpny_empid = $row['col_empid'];
 
                                     $sql = "SELECT employee_tb.company_code, 
                                             employee_tb.empid, 

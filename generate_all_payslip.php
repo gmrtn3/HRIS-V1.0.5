@@ -980,6 +980,9 @@ if(isset($_POST['printAll'])){
                     employee_tb.`tin_amount`,
                     employee_tb.`pagibig_amount`,
                     employee_tb.`philhealth_amount`,
+                    employee_tb.`emptranspo`,
+                    employee_tb.`empmeal`,
+                    employee_tb.`empinternet`,
                     employee_tb.`emptranspo` + employee_tb.`empmeal` + employee_tb.`empinternet`  AS Total_allowanceStandard,
                     employee_tb.`sss_amount` + employee_tb.`tin_amount` + employee_tb.`pagibig_amount` + employee_tb.`philhealth_amount` AS Total_deduct_governStANDARD,
 
@@ -1002,7 +1005,7 @@ if(isset($_POST['printAll'])){
                             FLOOR(
                                 SUM(TIME_TO_SEC(attendances.overtime)) / 3600
                             ),
-                            ' Hour/s'
+                            'H'
                         ) AS total_hoursOT,
                     COUNT(attendances.`status`) AS Number_of_days_work
                     FROM
@@ -1017,6 +1020,9 @@ if(isset($_POST['printAll'])){
                     employee_tb.`tin_amount`,
                     employee_tb.`pagibig_amount`,
                     employee_tb.`philhealth_amount`,
+                    employee_tb.`emptranspo`,
+                    employee_tb.`empmeal`,
+                    employee_tb.`empinternet`,
                     employee_tb.`emptranspo` + employee_tb.`empmeal` + employee_tb.`empinternet`  AS Total_allowanceStandard,
                     employee_tb.`sss_amount` + employee_tb.`tin_amount` + employee_tb.`pagibig_amount` + employee_tb.`philhealth_amount` AS Total_deduct_governStANDARD,
 
@@ -1037,7 +1043,7 @@ if(isset($_POST['printAll'])){
                             FLOOR(
                                 SUM(TIME_TO_SEC(attendances.overtime)) / 3600
                             ),
-                            ' Hour/s'
+                            'H'
                         ) AS total_hoursOT,
                     COUNT(attendances.`status`) AS Number_of_days_work
                     FROM
@@ -1051,6 +1057,9 @@ if(isset($_POST['printAll'])){
                     $Totalwork = $row_atteeee['total_hoursWORK'];
                     $TotalworkDays = $row_atteeee['Number_of_days_work'];
                     $salary = $row_atteeee['Salary_of_Month'];
+                    $Transport = $row_atteeee['emptranspo'];
+                    $Meal = $row_atteeee['empmeal'];
+                    $Internet = $row_atteeee['empinternet'];
                     
 
                     } else {
@@ -1064,6 +1073,7 @@ if(isset($_POST['printAll'])){
                     `allowancededuct_tb` 
                     WHERE `id_emp`=  '$EmployeeID'");
                     $row_addAllowance = mysqli_fetch_assoc($result_allowance);
+                    $Otherallowance = $row_addAllowance['total_sum_addAllowance'];
 
                     //FOR ALLOWANCE TO COMPUTE THE TOTAL WORKING DAYS 
                     $startDate = new DateTime($str_date); //cutoff start date
@@ -1164,27 +1174,47 @@ if(isset($_POST['printAll'])){
 
                     if ($Frequency === 'Monthly'){
                         $allowance = ($row_atteeee['Total_allowanceStandard'] + $row_addAllowance['total_sum_addAllowance']) / $working_days;
-                        $allowance = number_format($allowance, 2); //convert into two decimal only
                         $allowance = str_replace(',', '', $allowance); // Remove comma
 
+                        $Transport = $row_atteeee['emptranspo'];
+                        $Meal = $row_atteeee['empmeal'];
+                        $Internet = $row_atteeee['empinternet'];
+                        $Otherallowance = $row_addAllowance['total_sum_addAllowance']; 
+
+                        
+
+                        $Total_allowances = $Transport + $Meal + $Internet + $Otherallowance;
                     } 
                     else if ($Frequency === 'Semi-Month'){
                         $allowance = (($row_atteeee['Total_allowanceStandard'] + $row_addAllowance['total_sum_addAllowance']) / 2) / $working_days;
-                        $allowance = number_format($allowance, 2); //convert into two decimal only
                         $allowance = str_replace(',', '', $allowance); // Remove comma
 
                         $first_cutOFf = '1';
-                        $last_cutoff = '2';                              
+                        $last_cutoff = '2';  
+                        
+                        $Transport = $row_atteeee['emptranspo'] / 2;
+                        $Meal = $row_atteeee['empmeal'] / 2;
+                        $Internet = $row_atteeee['empinternet'] / 2;
+                        $Otherallowance = $row_addAllowance['total_sum_addAllowance'] / 2;
+                        
+                        $Total_allowances = $Transport + $Meal + $Internet + $Otherallowance;
                     }
                     else if ($Frequency === 'Weekly'){
                         $allowance = (($row_atteeee['Total_allowanceStandard'] + $row_addAllowance['total_sum_addAllowance']) / 4) / $working_days;
-                        $allowance = number_format($allowance, 2); //convert into two decimal only
                         $allowance = str_replace(',', '', $allowance); // Remove comma
 
                         $first_cutOFf = '1';
                         $last_cutoff ='4';    
-                    }
 
+                        $Transport = $row_atteeee['emptranspo'] / 4;
+                        $Meal = $row_atteeee['empmeal'] / 4;
+                        $Internet = $row_atteeee['empinternet'] / 4;
+                        $Otherallowance = $row_addAllowance['total_sum_addAllowance'] / 4;
+
+                        $Total_allowances = $Transport + $Meal + $Internet + $Otherallowance;
+                    }
+                   
+                    
                      //CHECK IF REGULAR NA SIYA OR HINDI PARA SA HOLIDAY RATE
                      $result_EMP_classification = mysqli_query($conn, " SELECT
                      employee_tb.classification,
@@ -1284,32 +1314,52 @@ if(isset($_POST['printAll'])){
 
                     include 'Data Controller/Payroll/check_holiday_toDEduct.php'; //Para mag check ilan ang date ng may holiday para ma minus sa salary at d magdoble ang salary
 
-                    $row_holiday_to_deduct_holiday = $row_emp['drate'] * $num_days_holiday; // dito ako nahinto dapat mabawasan ko sa mga date daily mga pinasok na holiday
-                    //PARA SA PAG GET NG TOTAL UNDERTIME NG EMPLOYEE 
-                     $UT_time = "0 hour/s 0 minute/s";
-                     $result_table_UT = mysqli_query($conn, " SELECT
-                         CONCAT(
-                             FLOOR(
-                                 SUM(TIME_TO_SEC(total_undertime)) / 3600
-                                 ),
-                                 ' hour/s ',
-                             FLOOR(
-                                 (
-                                 SUM(TIME_TO_SEC(total_undertime)) % 3600
-                                 ) / 60
-                             ),
-                                 ' minute/s'
-                         ) AS total_hours_minutesUndertime
-                     FROM 
-                         `undertime_tb` 
-                     WHERE `empid` = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+                    $row_holiday_to_deduct_holiday = $row_emp['drate'] * $num_days_holiday; // dito ako nahinto dapat mabawasan ko sa mga date daily mga pinasok na holiday 
 
-                    if(mysqli_num_rows($result_table_UT) > 0) {
-                        $row_table_UT = mysqli_fetch_assoc($result_table_UT);
-                        $UT_time = $row_table_UT['total_hours_minutesUndertime'];  
+                    //  $result_table_UT = mysqli_query($conn, " SELECT
+                    //      CONCAT(
+                    //          FLOOR(
+                    //              SUM(TIME_TO_SEC(total_undertime)) / 3600
+                    //              ),
+                    //              'H:',
+                    //          FLOOR(
+                    //              (
+                    //              SUM(TIME_TO_SEC(total_undertime)) % 3600
+                    //              ) / 60
+                    //          ),
+                    //              'M'
+                    //      ) AS total_hours_minutesUndertime
+                    //  FROM 
+                    //      `undertime_tb` 
+                    //  WHERE `empid` = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date' AND `status` = 'Approved'");
 
-                    }
+                    // if(mysqli_num_rows($result_table_UT) > 0) {
+                    //     $row_table_UT = mysqli_fetch_assoc($result_table_UT);
+                    //     $UT_time = $row_table_UT['total_hours_minutesUndertime'];  
 
+                    // }else{
+                    //     $UT_time = "0H:0M";
+                    // }
+
+                    $result_table_UT = mysqli_query($conn, "
+                    SELECT
+                        IFNULL(
+                            CONCAT(
+                                FLOOR(SUM(TIME_TO_SEC(total_undertime)) / 3600), 'H:',
+                                FLOOR((SUM(TIME_TO_SEC(total_undertime)) % 3600) / 60), 'M'
+                            ),
+                            '0H:0M'
+                        ) AS total_hours_minutesUndertime
+                    FROM 
+                        `undertime_tb` 
+                    WHERE 
+                        `empid` = '$EmployeeID' 
+                        AND `date` BETWEEN '$str_date' AND '$end_date' 
+                        AND `status` = 'Approved'
+                ");
+                
+                $row_table_UT = mysqli_fetch_assoc($result_table_UT);
+                $UT_time = $row_table_UT['total_hours_minutesUndertime'];
 
                     if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
                         $sql = "SELECT
@@ -1337,39 +1387,39 @@ if(isset($_POST['printAll'])){
                                 FLOOR( 
                                     SUM(TIME_TO_SEC(attendances.late)) / 3600
                                 ),
-                                ' hour/s ',
+                                'H:',
                                 FLOOR(
                                     (
                                         SUM(TIME_TO_SEC(attendances.late)) % 3600
                                     ) / 60
                                 ),
-                                ' minute/s'
+                                'M'
                             ) AS total_hours_minutesLATE,
                         CONCAT(
                                 FLOOR(
                                     SUM(TIME_TO_SEC(attendances.early_out)) / 3600
                                 ),
-                                ' hour/s ',
+                                'H:',
                                 FLOOR(
                                     (
                                         SUM(TIME_TO_SEC(attendances.early_out)) % 3600
                                     ) / 60
                                 ),
-                                ' minute/s'
+                                'M'
                             ) AS total_hours_minutesUndertime,
                         CONCAT(
                                 FLOOR(
                                     SUM(TIME_TO_SEC(attendances.total_work)) / 3600
                                     
                                 ),
-                                ' hour/s ',
+                                'H:',
                                 FLOOR(
                                     (
                                         SUM(TIME_TO_SEC(attendances.total_work)) % 3600
                                        
                                     ) / 60
                                 ),
-                                ' minute/s'
+                                'M'
                             ) AS total_hours_minutestotalHours
                     FROM
                         employee_tb
@@ -1387,6 +1437,9 @@ if(isset($_POST['printAll'])){
                     $result_absent_count = mysqli_query($conn, $sql_absent_count);
                     $row_absent_count = mysqli_fetch_assoc($result_absent_count);
                     $number_of_absent =  $row_absent_count['Absent_count'];
+
+                    
+                    
                 }else{
                         $sql = "SELECT
                         payroll_loan_tb.loan_type,
@@ -1413,37 +1466,37 @@ if(isset($_POST['printAll'])){
                                 FLOOR( 
                                     SUM(TIME_TO_SEC(attendances.late)) / 3600
                                 ),
-                                ' hour/s ',
+                                'H:',
                                 FLOOR(
                                     (
                                         SUM(TIME_TO_SEC(attendances.late)) % 3600
                                     ) / 60
                                 ),
-                                ' minute/s'
+                                'M'
                             ) AS total_hours_minutesLATE,
                         CONCAT(
                                 FLOOR(
                                     SUM(TIME_TO_SEC(attendances.early_out)) / 3600
                                 ),
-                                ' hour/s ',
+                                'H:',
                                 FLOOR(
                                     (
                                         SUM(TIME_TO_SEC(attendances.early_out)) % 3600
                                     ) / 60
                                 ),
-                                ' minute/s'
+                                'M'
                             ) AS total_hours_minutesUndertime,
                         CONCAT(
                                 FLOOR(
                                     SUM(TIME_TO_SEC(attendances.total_work)) / 3600
                                 ),
-                                ' hour/s ',
+                                'H:',
                                 FLOOR(
                                     (
                                         SUM(TIME_TO_SEC(attendances.total_work)) % 3600
                                     ) / 60
                                 ),
-                                ' minute/s'
+                                'M'
                             ) AS total_hours_minutestotalHours
                     FROM
                         employee_tb
@@ -1453,8 +1506,13 @@ if(isset($_POST['printAll'])){
 
                     WHERE (attendances.status = 'Present' OR attendances.status = 'On-Leave')  AND employee_tb.empid = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
                 }
+                //deduct sa absent
+                $absence_Deductions = $EmpDrate * $number_of_absent;
                 $result = $conn->query($sql);
                 while($row = $result->fetch_assoc()){
+                 //Total Late   
+                 $empLate = $row['total_hours_minutesLATE'];
+                    
                     if ($Frequency === 'Monthly'){
 
                         @$salary_of_month = $salary;
@@ -1468,6 +1526,8 @@ if(isset($_POST['printAll'])){
                         $tin_amount = $row_atteeee['tin_amount'];
     
                         $total_government_deduct = $sss + $philHealth + $pagibig_amount + $tin_amount;
+
+                        $absence_Deducts = $EmpDrate * $number_of_absent;
     
                     } 
                     else if ($Frequency === 'Semi-Month'){
@@ -1484,7 +1544,7 @@ if(isset($_POST['printAll'])){
                         $tin_amount = $row_atteeee['tin_amount'] / 2;
                         $total_government_deduct = $sss + $philHealth + $pagibig_amount + $tin_amount;   
                         
-                        
+                        $absence_Deducts = $EmpDrate * $number_of_absent;
                     }
                     else if ($Frequency === 'Weekly'){
     
@@ -1500,7 +1560,7 @@ if(isset($_POST['printAll'])){
                         $tin_amount = $row_atteeee['tin_amount'] / 4; 
                         $total_government_deduct = $sss + $philHealth + $pagibig_amount + $tin_amount;
 
-                       
+                        $absence_Deducts = $EmpDrate * $number_of_absent;
                     }
                     @$cutoff_OT = ($time_OT_TOTAL);
                     
@@ -1534,6 +1594,7 @@ if(isset($_POST['printAll'])){
                         }else{
                             $number_ofLeave_attStatus = 0;
                         }
+
                         //Calculation ng basic pay sa payslip
                         $SalaryEmp = $salary_of_month - ($EmpDrate * $number_ofLeave_attStatus);
 
@@ -1594,7 +1655,6 @@ if(isset($_POST['printAll'])){
                                                                     
                         //calculation ng allowance
                         $formatted_value = $allowance * $row_atteeee['Number_of_days_work'];
-
 
                         if ($Frequency === 'Monthly'){
                             //FOR EVERY CUTOFF DEDUCTIONS
@@ -1681,7 +1741,7 @@ if(isset($_POST['printAll'])){
                         //deduction sa payslip
                         $totalDeduct = $sss + $philHealth +  $tin_amount +  $pagibig_amount +  $cutoff_deductGovern +  $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN;
                         
-
+                        
 ?>
 
 
@@ -1726,6 +1786,17 @@ if(isset($_POST['printAll'])){
                                         <p style="display:none;"><?php echo $cutoffMonth?></p>
                                         <p style="display:none;"><?php echo $Frequency?></p>
                                         <p style="display:none;"><?php echo $Id_cutoff?></p>
+                                        <p style="display:none;"><?php echo $number_of_absent?></p>
+                                        <p style="display:none;"><?php echo $row_settings_salary['col_salary_settings']?></p>
+                                        <p style="display:none;"><?php echo $number_ofLeave_attStatus ?></p>
+                                        <p style="display:none;"><?php echo $Transport?></p>
+                                        <p style="display:none;"><?php echo $Meal?></p>
+                                        <p style="display:none;"><?php echo $Internet?></p>
+                                        <p style="display:none;"><?php echo $Otherallowance?></p>
+                                        <p style="display:none;"><?php echo $absence_Deducts?></p>
+                                        <p style="display:none;"><?php echo $empLate?></p>
+                                        <p style="display:none;"><?php echo $UT_time?></p>
+                                        <p style="display:none;"><?php echo $number_LWOP_attStatus?></p>
                                     </div>
 
                                     <div class="headbody">
@@ -1862,7 +1933,7 @@ if(isset($_POST['printAll'])){
                       
     <?php
         }
-        $printAllslipArray[] = array('employeeId' => $EmployeeID, 'numbercutoff' => $cutoffNumber, 'worknumdays' => $TotalworkDays, 'monthcutoff' => $cutoffMonth, 'cutoffstart' => $str_date, 'cutoffend' => $end_date, 'basichours' => $Totalwork, 'basicpay' => $salary_of_month, 'othours' => $basic_OT_hours, 'otpay' => $OTamount, 'empAllowance' => $formatted_value, 'leavepay' => $PaidLeaves, 'holidayPay' => $HolidayPayment, 'sssdeduct' => $sss, 'phildeduct' => $philHealth, 'tindeduct' => $tin_amount, 'pagibigdeduct' => $pagibig_amount, 'otherdeduct' => $cutoff_deductGovern, 'latededuct' => $Late_rate_to_deduct, 'underdeduct' => $Undertime_rate_to_deduct, 'lwopdeduct' => $LWOPdeduct, 'empnetpay' => $PayslipNetpay, 'totalEarn' => $totalEarn, 'totalDeduct' => $totalDeduct,  'frequency'=> $Frequency, 'cutoffId'=> $Id_cutoff);
+        $printAllslipArray[] = array('employeeId' => $EmployeeID, 'numbercutoff' => $cutoffNumber, 'worknumdays' => $TotalworkDays, 'monthcutoff' => $cutoffMonth, 'cutoffstart' => $str_date, 'cutoffend' => $end_date, 'basichours' => $Totalwork, 'basicpay' => $salary_of_month, 'othours' => $basic_OT_hours, 'otpay' => $OTamount, 'empAllowance' => $formatted_value, 'leavepay' => $PaidLeaves, 'holidayPay' => $HolidayPayment, 'sssdeduct' => $sss, 'phildeduct' => $philHealth, 'tindeduct' => $tin_amount, 'pagibigdeduct' => $pagibig_amount, 'otherdeduct' => $cutoff_deductGovern, 'latededuct' => $Late_rate_to_deduct, 'underdeduct' => $Undertime_rate_to_deduct, 'lwopdeduct' => $LWOPdeduct, 'empnetpay' => $PayslipNetpay, 'totalEarn' => $totalEarn, 'totalDeduct' => $totalDeduct,  'frequency'=> $Frequency, 'cutoffId'=> $Id_cutoff, 'absences'=> $number_of_absent, 'payrule'=> $row_settings_salary['col_salary_settings'], 'leavecount'=> $number_ofLeave_attStatus, 'transpoallow'=> $Transport, 'mealallow'=> $Meal, 'netallowance'=> $Internet, 'otherallow'=> $Otherallowance, 'absdeductions'=> $absence_Deducts, 'latedeductions'=> $empLate, 'utHours'=> $UT_time, 'lwopcount'=> $number_LWOP_attStatus);
      }
      foreach ($printAllslipArray as $Employeeslip) {
         $Employee = $Employeeslip['employeeId'];
@@ -1891,6 +1962,17 @@ if(isset($_POST['printAll'])){
         $empTotaldeduct = $Employeeslip['totalDeduct'];
         $Frequency = $Employeeslip['frequency'];
         $CutoffiD = $Employeeslip['cutoffId'];
+        $Absences = $Employeeslip['absences'];
+        $Payrule = $Employeeslip['payrule'];
+        $Leaves = $Employeeslip['leavecount'];
+        $transportation = $Employeeslip['transpoallow'];
+        $meals = $Employeeslip['mealallow'];
+        $internet = $Employeeslip['netallowance'];
+        $addallowance = $Employeeslip['otherallow'];
+        $deductOf_absence = $Employeeslip['absdeductions'];
+        $deductsOf_late = $Employeeslip['latedeductions'];
+        $timeOf_UT = $Employeeslip['utHours'];
+        $countOf_lwop = $Employeeslip['lwopcount'];
      }
    }
 ?>

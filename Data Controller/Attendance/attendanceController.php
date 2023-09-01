@@ -280,7 +280,7 @@ if(isset($_POST['importSubmit'])){
                     // }
 
                     if ($currentDayOfWeek == $monday) {
-                        echo "it is monday hehe";
+                        // echo "it is monday hehe";
                         // Check if the employee is late
                         $grace_period_total = new DateTime($time['mon_timein']);
                         $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
@@ -323,7 +323,7 @@ if(isset($_POST['importSubmit'])){
     
                         
                         if ($time_in_obj >= $og_time_obj) {
-                            echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
+                            // echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                         
                             $grace_period_minutes = intval($grace_period_minutes);
                             $og_time = strtotime('13:00:00');
@@ -337,16 +337,16 @@ if(isset($_POST['importSubmit'])){
                             // Compare DateTime objects
                             if ($time_in_obj > $grace_period_obj) {
                                 $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                                echo "The $time_in is greater than $grace_period_time. Late by $late";
+                                // echo "The $time_in is greater than $grace_period_time. Late by $late";
                             } else {
-                                echo "Inside the statement, but not exceeding grace period <br>";
+                                // echo "Inside the statement, but not exceeding grace period <br>";
                             }
     
                             if($time_out > $monday_timeout){
                                  $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
-                                 echo "you are OT <br>";
+                                //  echo "you are OT <br>";
                                 
-                                 echo $time_out ,"<br>";
+                                //  echo $time_out ,"<br>";
                                 
     
                             }else{
@@ -354,7 +354,7 @@ if(isset($_POST['importSubmit'])){
                             }
     
                         } else {
-                            echo "Outside the statement";
+                            // echo "Outside the statement";
                         }
                         
    
@@ -588,7 +588,7 @@ if(isset($_POST['importSubmit'])){
                         }
    
                         if(!empty($time_in)){
-                          echo "hindi gumana";
+                        //   echo "hindi gumana";
                         }else{
                            // Convert wed_timein and time_out to DateTime objects
                                $convert_wed_timein = new DateTime($get_mon_timein);
@@ -608,7 +608,7 @@ if(isset($_POST['importSubmit'])){
    
                            $total_work = '00:00:00';
                            $late = '00:00:00';
-                           echo "walang time_in";
+                        //    echo "walang time_in";
                         }
    
                         if($time_out < $time['mon_timeout']){
@@ -643,8 +643,8 @@ if(isset($_POST['importSubmit'])){
                                $early_out = '00:00:00';
                            }
                            
-                           echo $early_out; // Display the calculated early out time
-                           echo $total_work; // Display the calculated total work time
+                        //    echo $early_out; // Display the calculated early out time
+                        //    echo $total_work; // Display the calculated total work time
    
                            //  echo $total_work;
                         } else { 
@@ -654,7 +654,7 @@ if(isset($_POST['importSubmit'])){
                         
 
                 }elseif($currentDayOfWeek == $tuesday){
-                    echo "it is tuesday";
+                    // echo "it is tuesday";
                         // Check if the employee is late
                         $grace_period_total = new DateTime($time['tues_timein']);
                         $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
@@ -697,7 +697,7 @@ if(isset($_POST['importSubmit'])){
    
                        
                        if ($time_in_obj >= $og_time_obj) {
-                           echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
+                        //    echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                        
                            $grace_period_minutes = intval($grace_period_minutes);
                            $og_time = strtotime('13:00:00');
@@ -711,16 +711,16 @@ if(isset($_POST['importSubmit'])){
                            // Compare DateTime objects
                            if ($time_in_obj > $grace_period_obj) {
                                $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                               echo "The $time_in is greater than $grace_period_time. Late by $late";
+                            //    echo "The $time_in is greater than $grace_period_time. Late by $late";
                            } else {
-                               echo "Inside the statement, but not exceeding grace period <br>";
+                            //    echo "Inside the statement, but not exceeding grace period <br>";
                            }
    
                            if($time_out > $tuesday_timeout){
                                 $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
-                                echo "you are OT <br>";
+                                // echo "you are OT <br>";
                                
-                                echo $time_out ,"<br>";
+                                // echo $time_out ,"<br>";
                                
    
                            }else{
@@ -728,7 +728,7 @@ if(isset($_POST['importSubmit'])){
                            }
    
                        } else {
-                           echo "Outside the statement";
+                        //    echo "Outside the statement";
                        }
                        
 
@@ -977,7 +977,7 @@ if(isset($_POST['importSubmit'])){
                         }
    
                         if(!empty($time_in)){
-                          echo "hindi gumana";
+                        //   echo "hindi gumana";
                         }else{
                            // Convert wed_timein and time_out to DateTime objects
                                $convert_wed_timein = new DateTime($get_week_timein);
@@ -997,7 +997,7 @@ if(isset($_POST['importSubmit'])){
    
                            $total_work = '00:00:00';
                            $late = '00:00:00';
-                           echo "walang time_in";
+                        //    echo "walang time_in";
                         }
    
                         if($time_out < $time['tues_timeout']){
@@ -1032,8 +1032,8 @@ if(isset($_POST['importSubmit'])){
                                $early_out = '00:00:00';
                            }
                            
-                           echo $early_out; // Display the calculated early out time
-                           echo $total_work; // Display the calculated total work time
+                        //    echo $early_out; // Display the calculated early out time
+                        //    echo $total_work; // Display the calculated total work time
    
                            //  echo $total_work;
                         } else { 
@@ -1083,7 +1083,7 @@ if(isset($_POST['importSubmit'])){
    
                        
                        if ($time_in_obj >= $og_time_obj) {
-                           echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
+                        //    echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                        
                            $grace_period_minutes = intval($grace_period_minutes);
                            $og_time = strtotime('13:00:00');
@@ -1097,16 +1097,16 @@ if(isset($_POST['importSubmit'])){
                            // Compare DateTime objects
                            if ($time_in_obj > $grace_period_obj) {
                                $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                               echo "The $time_in is greater than $grace_period_time. Late by $late";
+                            //    echo "The $time_in is greater than $grace_period_time. Late by $late";
                            } else {
-                               echo "Inside the statement, but not exceeding grace period <br>";
+                            //    echo "Inside the statement, but not exceeding grace period <br>";
                            }
    
                            if($time_out > $wednesday_timeout){
                                 $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
-                                echo "you are OT <br>";
+                                // echo "you are OT <br>";
                                
-                                echo $time_out ,"<br>";
+                                // echo $time_out ,"<br>";
                                
    
                            }else{
@@ -1114,7 +1114,7 @@ if(isset($_POST['importSubmit'])){
                            }
    
                        } else {
-                           echo "Outside the statement";
+                        //    echo "Outside the statement";
                        }
 
                      if ($time_out) {
@@ -1189,7 +1189,7 @@ if(isset($_POST['importSubmit'])){
                                       // Format the overtime as 'H:i:s'
                                       $overtime = $get_overtime->format('%H:%I:%S');
                                      //  var_dump($total_work ,'eto yung sa may late pero pasok sa grace period then nag ot');
-                                     echo "hoho";
+                                    //  echo "hoho";
                                  }else{
                                 $interval = $time_in_datetime->diff($time_out_datetime); 
  
@@ -1373,7 +1373,7 @@ if(isset($_POST['importSubmit'])){
 
                         $total_work = '00:00:00';
                         $late = '00:00:00';
-                        echo "walang time_in";
+                        // echo "walang time_in";
                      }
 
                      if($time_out < $time['wed_timeout']){
@@ -1408,8 +1408,8 @@ if(isset($_POST['importSubmit'])){
                             $early_out = '00:00:00';
                         }
                         
-                        echo $early_out; // Display the calculated early out time
-                        echo $total_work; // Display the calculated total work time
+                        // echo $early_out; // Display the calculated early out time
+                        // echo $total_work; // Display the calculated total work time
 
                         //  echo $total_work;
                      } else { 
@@ -1477,16 +1477,16 @@ if(isset($_POST['importSubmit'])){
                            // Compare DateTime objects
                            if ($time_in_obj > $grace_period_obj) {
                                $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                               echo "The $time_in is greater than $grace_period_time. Late by $late";
+                            //    echo "The $time_in is greater than $grace_period_time. Late by $late";
                            } else {
                             //    echo "Inside the statement, but not exceeding grace period <br>";
                            }
    
                            if($time_out > $thursday_timeout){
                                 $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
-                                echo "you are OT <br>";
+                                // echo "you are OT <br>";
                                
-                                echo $time_out ,"<br>";
+                                // echo $time_out ,"<br>";
                                
    
                            }else{
@@ -1788,7 +1788,7 @@ if(isset($_POST['importSubmit'])){
                     }
 
             }elseif($currentDayOfWeek == $friday){
-                echo "it is friday";
+                // echo "it is friday";
                 // Check if the employee is late
                 $grace_period_total = new DateTime($time['fri_timein']);
                 $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
@@ -1830,7 +1830,7 @@ if(isset($_POST['importSubmit'])){
 
                 
                 if ($time_in_obj >= $og_time_obj) {
-                    echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
+                    // echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                 
                     $grace_period_minutes = intval($grace_period_minutes);
                     $og_time = strtotime('13:00:00');
@@ -1844,16 +1844,16 @@ if(isset($_POST['importSubmit'])){
                     // Compare DateTime objects
                     if ($time_in_obj > $grace_period_obj) {
                         $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                        echo "The $time_in is greater than $grace_period_time. Late by $late";
+                        // echo "The $time_in is greater than $grace_period_time. Late by $late";
                     } else {
-                        echo "Inside the statement, but not exceeding grace period <br>";
+                        // echo "Inside the statement, but not exceeding grace period <br>";
                     }
 
                     if($time_out > $friday_timeout){
                          $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
-                         echo "you are OT <br>";
+                        //  echo "you are OT <br>";
                         
-                         echo $time_out ,"<br>";
+                        //  echo $time_out ,"<br>";
                         
 
                     }else{
@@ -1861,7 +1861,7 @@ if(isset($_POST['importSubmit'])){
                     }
 
                 } else {
-                    echo "Outside the statement";
+                    // echo "Outside the statement";
                 }
 
                 
@@ -2092,7 +2092,7 @@ if(isset($_POST['importSubmit'])){
                 }
 
                 if(!empty($time_in)){
-                  echo "hindi gumana";
+                //   echo "hindi gumana";
                 }else{
                    // Convert wed_timein and time_out to DateTime objects
                        $convert_week_timein = new DateTime($get_week_timein);
@@ -2112,7 +2112,7 @@ if(isset($_POST['importSubmit'])){
 
                    $total_work = '00:00:00';
                    $late = '00:00:00';
-                   echo "walang time_in";
+                //    echo "walang time_in";
                 }
 
                 if($time_out < $time['fri_timeout']){
@@ -2147,15 +2147,15 @@ if(isset($_POST['importSubmit'])){
                        $early_out = '00:00:00';
                    }
                    
-                   echo $early_out; // Display the calculated early out time
-                   echo $total_work; // Display the calculated total work time
+                //    echo $early_out; // Display the calculated early out time
+                //    echo $total_work; // Display the calculated total work time
 
                    //  echo $total_work;
                 } else { 
                     $early_out = '00:00:00';
                 }
             }elseif($currentDayOfWeek == $saturday){
-                echo "it is saturday";
+                // echo "it is saturday";
                 // Check if the employee is late
                 $grace_period_total = new DateTime($time['sat_timein']);
                 $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
@@ -2197,7 +2197,7 @@ if(isset($_POST['importSubmit'])){
 
                 
                 if ($time_in_obj >= $og_time_obj) {
-                    echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
+                    // echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                 
                     $grace_period_minutes = intval($grace_period_minutes);
                     $og_time = strtotime('13:00:00');
@@ -2211,16 +2211,16 @@ if(isset($_POST['importSubmit'])){
                     // Compare DateTime objects
                     if ($time_in_obj > $grace_period_obj) {
                         $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                        echo "The $time_in is greater than $grace_period_time. Late by $late";
+                        // echo "The $time_in is greater than $grace_period_time. Late by $late";
                     } else {
-                        echo "Inside the statement, but not exceeding grace period <br>";
+                        // echo "Inside the statement, but not exceeding grace period <br>";
                     }
 
                     if($time_out > $saturday_timeout){
                          $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
-                         echo "you are OT <br>";
-                        
-                         echo $time_out ,"<br>";
+                        //  echo "you are OT <br>";
+                        // 
+                        //  echo $time_out ,"<br>";
                         
 
                     }else{
@@ -2228,7 +2228,7 @@ if(isset($_POST['importSubmit'])){
                     }
 
                 } else {
-                    echo "Outside the statement";
+                    // echo "Outside the statement";
                 }
                 
                 
@@ -2460,7 +2460,7 @@ if(isset($_POST['importSubmit'])){
                 }
 
                 if(!empty($time_in)){
-                  echo "hindi gumana";
+                //   echo "hindi gumana";
                 }else{
                    // Convert wed_timein and time_out to DateTime objects
                        $convert_week_timein = new DateTime($get_week_timein);
@@ -2480,7 +2480,7 @@ if(isset($_POST['importSubmit'])){
 
                    $total_work = '00:00:00';
                    $late = '00:00:00';
-                   echo "walang time_in";
+                //    echo "walang time_in";
                 }
 
                 if($time_out < $time['sat_timeout']){
@@ -2515,15 +2515,15 @@ if(isset($_POST['importSubmit'])){
                        $early_out = '00:00:00';
                    }
                    
-                   echo $early_out; // Display the calculated early out time
-                   echo $total_work; // Display the calculated total work time
+                //    echo $early_out; // Display the calculated early out time
+                //    echo $total_work; // Display the calculated total work time
 
                    //  echo $total_work;
                 } else { 
                     $early_out = '00:00:00';
                 }
              }elseif($currentDayOfWeek == $sunday){
-                echo "it is sunday";
+                // echo "it is sunday";
                 // Check if the employee is late
                 $grace_period_total = new DateTime($time['sun_timein']);
                 $grace_period_minutes = isset($time['grace_period']) ? $time['grace_period'] : 0; // Retrieve grace period from $time array or set to 0 if not available
@@ -2565,7 +2565,7 @@ if(isset($_POST['importSubmit'])){
 
                 
                 if ($time_in_obj >= $og_time_obj) {
-                    echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
+                    // echo "<br> The $time_in is greater than or equal to $og_time_formatteds<br>";
                 
                     $grace_period_minutes = intval($grace_period_minutes);
                     $og_time = strtotime('13:00:00');
@@ -2579,16 +2579,16 @@ if(isset($_POST['importSubmit'])){
                     // Compare DateTime objects
                     if ($time_in_obj > $grace_period_obj) {
                         $late = $time_in_obj->diff($og_time_obj)->format('%H:%I:%S');
-                        echo "The $time_in is greater than $grace_period_time. Late by $late";
+                        // echo "The $time_in is greater than $grace_period_time. Late by $late";
                     } else {
-                        echo "Inside the statement, but not exceeding grace period <br>";
+                        // echo "Inside the statement, but not exceeding grace period <br>";
                     }
 
                     if($time_out > $sunday_timeout){
                          $overtime = $time_out_obj->diff($sched_timeout)->format('%H:%I:%S');
-                         echo "you are OT <br>";
+                        //  echo "you are OT <br>";
                         
-                         echo $time_out ,"<br>";
+                        //  echo $time_out ,"<br>";
                         
 
                     }else{
@@ -2596,7 +2596,7 @@ if(isset($_POST['importSubmit'])){
                     }
 
                 } else {
-                    echo "Outside the statement";
+                    // echo "Outside the statement";
                 }
 
                 
@@ -2828,7 +2828,7 @@ if(isset($_POST['importSubmit'])){
                 }
 
                 if(!empty($time_in)){
-                  echo "hindi gumana";
+                //   echo "hindi gumana";
                 }else{
                    // Convert wed_timein and time_out to DateTime objects
                        $convert_week_timein = new DateTime($get_week_timein);
@@ -2848,7 +2848,7 @@ if(isset($_POST['importSubmit'])){
 
                    $total_work = '00:00:00';
                    $late = '00:00:00';
-                   echo "walang time_in";
+                //    echo "walang time_in";
                 }
 
                 if($time_out < $time['sun_timeout']){
@@ -2883,8 +2883,8 @@ if(isset($_POST['importSubmit'])){
                        $early_out = '00:00:00';
                    }
                    
-                   echo $early_out; // Display the calculated early out time
-                   echo $total_work; // Display the calculated total work time
+                //    echo $early_out; // Display the calculated early out time
+                //    echo $total_work; // Display the calculated total work time
 
                    //  echo $total_work;
                 } else { 
@@ -2958,7 +2958,7 @@ if ($empResult->num_rows < 1) {
             $insertStmt->bind_param("ssssssssss", $status, $currentEmpid, $currentDate, $time_in, $time_out, $late, $early_out, $overtime, $total_work, $total_rest);
             $insertStmt->execute();
 
-            echo "<br>data insert";
+            // echo "<br>data insert";
         }
 
         // ... your other code ...

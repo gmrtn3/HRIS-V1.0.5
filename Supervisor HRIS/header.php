@@ -619,7 +619,16 @@
             </div>
           </li>
 
-          <li class="nav-item">
+          <?php 
+              include 'config.php';
+              $sql = "SELECT * FROM settings_company_tb";
+              $result = mysqli_query($conn, $sql);
+              $row = mysqli_fetch_assoc($result);
+
+              @$pakyaw_toggle = $row['piece_rate_toggle'];
+          ?>
+
+          <li class="nav-item" id="pakyawan_toggle">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-pakyawan" aria-expanded="false" aria-controls="ui-pakyawan" style="margin-top: 5px; color:white">
               <i class="fa-solid fa-gear"></i>
               <span class="nav-title"  style="font-size: 21px; margin-left: 15px; font-family: Arial, sans-serif; font-weight: 400; height: 35px" >PAKYAWAN</span>
@@ -629,6 +638,7 @@
               <ul class="nav flex-column sub-menu" style=" width: 100%;">
                 <li class="nav-item"> <a class="nav-link" href="pakyawan_work">SET WORK LOAD</a></li>
                 <li class="nav-item"> <a class="nav-link" href="cash_advance">CASH ADVANCE</a></li>
+                <input type="hidden" value="<?php echo $pakyaw_toggle ?>" id="pak_hide">
               </ul>
             </div>
           </li>
@@ -652,5 +662,16 @@
         </ul>
       </nav>
       
+      <script>
+          let pakyawan_toggle = document.getElementById("pakyawan_toggle");
+          let pak_hide = document.getElementById("pak_hide").value;
+
+          if(pak_hide == 'Hidden'){
+            pakyawan_toggle.style.display = "none";
+          }else{
+            pakyawan_toggle.style.display = "block";
+          }
+      </script>
+
 </body>
 </html>
