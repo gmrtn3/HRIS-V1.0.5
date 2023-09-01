@@ -594,7 +594,7 @@ window.onload = checkReload;
                     echo '</div>';
                 }
                 ?>
-      
+        
         <div class="table-responsive p-2" id="table-responsiveness">
         <div style="overflow-x: hidden; overflow-y: hidden; width: 98%; margin:auto">
             <table id="order-listing" class="table table-responsive" style="width: 100%;">

@@ -363,7 +363,7 @@ else
                                             $rowe = mysqli_fetch_assoc($resulte);
 
                                             $position = $rowe['position'];
-
+ 
 
                                         ?> 
                                         <h2 style="font-size: 1.3em; color: gray; font-style:italic"><?php echo $position ?></h2>

@@ -97,50 +97,6 @@ if(!isset($_SESSION['username'])){
   padding: 6px 12px;
   border-top: none;
 }
-table {
-                display: block;
-                overflow-x: hidden;
-                white-space: nowrap;
-                max-height: 350px;
-                height: 350px;
-                
-                
-            }
-            tbody {
-                display: table;
-                width: 100%;
-            }
-            tr {
-                width: 100% !important;
-                display: table !important;
-                table-layout: fixed !important;
-            }
-            .pagination{
-        margin-right: 64px !important;
-        
-    }
-    .sorting_asc{
-        color: black !important;
-    }
-
-    .pagination li a{
-        color: #c37700;
-    }
-
-        .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
-        z-index: 3;
-        color: #fff;
-        background-color: #000;
-        border-color: #000;
-    }
-
-    
-    
-    #order-listing_next{
-        margin-right: 20px !important;
-        margin-bottom: -16px !important;
-
-    }
 </style>
 
  <!-- Modal -->
@@ -317,8 +273,8 @@ table {
 
 
 <!-------------------------------------------------TABLE START------------------------------------------->
-                            <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
-                                <table id="order-listing" class="table" style="width: 100%">
+                        <div class="table-responsive mt-4" id="table-responsiveness">
+                             <table id="order-listing" class="table">
                                     <thead>
                                         <tr>
                                             <th>Employee ID</th>
@@ -376,6 +332,13 @@ table {
                                             <th style="display: none;">Absent Deduction</th>
                                             <th style="display: none;">Number of LWOP</th>
                                             <th style="display: none;">Pay Rule</th>
+                                            <th style="display: none;">Transport</th>
+                                            <th style="display: none;">Meal</th>
+                                            <th style="display: none;">Internet</th>
+                                            <th style="display: none;">Other Allowances</th>
+                                            <th style="display: none;">Total Late</th>
+                                            <th style="display: none;">Undertime Hours</th>
+                                            <th style="display: none;">Total LWOP</th>
                                             <th>View Details</th>
                                             <th>Print</th>
                                         </tr>
@@ -1477,7 +1440,6 @@ table {
                                         $Meal = $row_atteeee['empmeal'];
                                         $Internet = $row_atteeee['empinternet'];
                                         $Otherallowance = $row_addAllowance['total_sum_addAllowance']; 
-
                 
                                         $Total_allowances = $Transport + $Meal + $Internet + $Otherallowance;
                                     } 
@@ -1493,9 +1455,7 @@ table {
                                         $Internet = $row_atteeee['empinternet'] / 2;
                                         $Otherallowance = $row_addAllowance['total_sum_addAllowance'] / 2;
                                         
-                                       
-                                    
-                                        $Total_allowances = $transporti + $meali + $nterneti + $otherallowancei;
+                                        $Total_allowances = $Transport + $Meal + $Internet + $Otherallowance;
                                     }
                                     else if ($Frequency === 'Weekly'){
                                         $allowance = (($row_atteeee['Total_allowanceStandard'] + $row_addAllowance['total_sum_addAllowance']) / 4) / $working_days;
@@ -1638,29 +1598,50 @@ table {
                                
                                $row_holiday_to_deduct_holiday = $row_emp['drate'] * $num_days_holiday; // dito ako nahinto dapat mabawasan ko sa mga date daily mga pinasok na holiday
                                //PARA SA PAG GET NG TOTAL UNDERTIME NG EMPLOYEE 
-                                $UT_time = "0H:0M";
-                                $result_table_UT = mysqli_query($conn, " SELECT
-                                    CONCAT(
-                                        FLOOR(
-                                            SUM(TIME_TO_SEC(total_undertime)) / 3600
-                                            ),
-                                            'H:',
-                                        FLOOR(
-                                            (
-                                            SUM(TIME_TO_SEC(total_undertime)) % 3600
-                                            ) / 60
+                                // $UT_time = "0H:0M";
+                                // $result_table_UT = mysqli_query($conn, " SELECT
+                                //     CONCAT(
+                                //         FLOOR(
+                                //             SUM(TIME_TO_SEC(total_undertime)) / 3600
+                                //             ),
+                                //             'H:',
+                                //         FLOOR(
+                                //             (
+                                //             SUM(TIME_TO_SEC(total_undertime)) % 3600
+                                //             ) / 60
+                                //         ),
+                                //             'M'
+                                //     ) AS total_hours_minutesUndertime
+                                // FROM 
+                                //     `undertime_tb` 
+                                // WHERE `empid` = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date' AND `status` = 'Approved'");
+        
+                                // if(mysqli_num_rows($result_table_UT) > 0) {
+                                //    $row_table_UT = mysqli_fetch_assoc($result_table_UT);
+                                //     $UT_time = $row_table_UT['total_hours_minutesUndertime'];  
+    
+                                // }
+
+                                $result_table_UT = mysqli_query($conn, "
+                                SELECT
+                                    IFNULL(
+                                        CONCAT(
+                                            FLOOR(SUM(TIME_TO_SEC(total_undertime)) / 3600), 'H:',
+                                            FLOOR((SUM(TIME_TO_SEC(total_undertime)) % 3600) / 60), 'M'
                                         ),
-                                            'M'
+                                        '0H:0M'
                                     ) AS total_hours_minutesUndertime
                                 FROM 
                                     `undertime_tb` 
-                                WHERE `empid` = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date' AND `status` = 'Approved'");
-        
-                                if(mysqli_num_rows($result_table_UT) > 0) {
-                                   $row_table_UT = mysqli_fetch_assoc($result_table_UT);
-                                    $UT_time = $row_table_UT['total_hours_minutesUndertime'];  
-    
-                                }
+                                WHERE 
+                                    `empid` = '$EmployeeID' 
+                                    AND `date` BETWEEN '$str_date' AND '$end_date' 
+                                    AND `status` = 'Approved'
+                                ");
+                            
+                                $row_table_UT = mysqli_fetch_assoc($result_table_UT);
+                                $UT_time = $row_table_UT['total_hours_minutesUndertime'];
+
                                //PARA SA PAG GET NG TOTAL UNDERTIME NG EMPLOYEE END 
 
                                if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
@@ -1814,7 +1795,7 @@ table {
                                     
                                         //read data
                                         while($row = $result->fetch_assoc()){
-
+                                            $empLate = $row['total_hours_minutesLATE'];
                                             if ($Frequency === 'Monthly'){
 
                                                 @$salary_of_month = $row['Salary_of_Month'];
@@ -2100,7 +2081,13 @@ table {
                                             <td style="display: none;"><?php echo number_format($absenceDeduct, 2)?></td>
                                             <td style="display: none;"><?php echo $number_LWOP_attStatus?></td>
                                             <td style="display: none;"><?php echo $row_settings_salary['col_salary_settings']?></td>
-                                            
+                                            <td style="display: none;"><?php echo $Transport?></td>
+                                            <td style="display: none;"><?php echo $Meal?></td>
+                                            <td style="display: none;"><?php echo $Internet?></td>
+                                            <td style="display: none;"><?php echo $Otherallowance?></td>
+                                            <td style="display: none;"><?php echo $empLate?></td>
+                                            <td style="display: none;"><?php echo $UT_time?></td>
+                                            <td style="display: none;"><?php echo $number_LWOP_attStatus?></td>
                                             <td><button type="button" class="btn btn-primary payrolldetails" data-bs-toggle="modal" data-bs-target="#Payrollbootstrap">View</button></td>
                                             <td><button type="button" class="btn btn-success textempID" data-bs-toggle="modal" data-bs-target="#viewPayslip">Payslip</button></td>
                                         </tr>
@@ -2124,32 +2111,39 @@ table {
 
                                 <div class="modal-body" id="modal-body" style="height: 667px;">
                                 <input type="hidden" name="cuttoff_id" id="id_cutoff_id">
-                                <input type="text" id="rulePay">
+                                <input type="hidden" id="rulePay">
                                 <input type="hidden" name="employee_empid" id="id_employeeid">
                                 <input type="hidden" name="table_frequency" id="id_table_frequency">
                                 <input type="hidden" name="monthcut" id="cutoffmonth">
                                 <input type="hidden" name="col_strCutoff" id="cutoffstarts">
                                 <input type="hidden" name="col_endCutoff" id="cutoffends">
-                                <input type="hidden" name="employee_workdays" id="id_workdays">
-
-
                                 <input type="hidden" name="table_cutoffnum" id="id_table_cutoffnum"> 
-
+                                <input type="hidden" name="employee_workdays" id="id_workdays">
                                 <input type="hidden" id="emptotalworks">
                                 <input type="hidden" id="empAmounts">
                                 <input type="hidden" id="empOThour">
                                 <input type="hidden" id="OTamounts">
+                                <input type="hidden" id="transportss">
+                                <input type="hidden" id="meals">
+                                <input type="hidden" id="internets">
+                                <input type="hidden" id="otherallow">
                                 <input type="hidden" id="allowanceAmounts">
+                                <input type="hidden" id="leavecount">
                                 <input type="hidden" id="leaveAmounts">
                                 <input type="hidden" id="holidayAmounts">
                                 <input type="hidden" id="totalEarns">
+                                <input type="hidden" id="absentcount">
+                                <input type="hidden" id="absenceDeductions">
                                 <input type="hidden" id="deduct_SSS">
                                 <input type="hidden" id="deduct_phil">
                                 <input type="hidden" id="deduct_TIN">
                                 <input type="hidden" id="deduct_Pagibig">
                                 <input type="hidden" id="deduct_Other">
+                                <input type="hidden" id="lateNumber">
                                 <input type="hidden" id="deduct_Late">
+                                <input type="hidden" id="countUT">
                                 <input type="hidden" id="deduct_UT">
+                                <input type="hidden" id="numberLWOP">
                                 <input type="hidden" id="deduct_LWOP">
                                 <input type="hidden" id="totalDeductions">
                                 <input type="hidden" id="netpayslips">
@@ -2356,32 +2350,43 @@ document.getElementById("pdfPrint").addEventListener("click", function () {
     const dataToSend = {
                 table_cutoff_id: document.getElementById("id_cutoff_id").value,
                 table_pay_rule: document.getElementById("rulePay").value,
-                table_frequency: document.getElementById("id_table_frequency").value,
-                table_cutoffnum: document.getElementById("id_table_cutoffnum").value,
                 table_employeeId: document.getElementById("id_employeeid").value,
+                table_frequency: document.getElementById("id_table_frequency").value,
                 table_cutmonth: document.getElementById("cutoffmonth").value,
                 table_cutoffstart: document.getElementById("cutoffstarts").value,
                 table_cutoffend: document.getElementById("cutoffends").value,
-                table_fullname: document.getElementById("id_p_emp_name").value,
+                table_cutoffnum: document.getElementById("id_table_cutoffnum").value,
+                table_id_workdays: document.getElementById("id_workdays").value,
+                // table_fullname: document.getElementById("id_p_emp_name").value,
                 table_basictotalwork: document.getElementById("emptotalworks").value,
                 table_basicempAmount: document.getElementById("empAmounts").value,
                 table_othours: document.getElementById("empOThour").value,
                 table_otamount: document.getElementById("OTamounts").value,
+                table_transport: document.getElementById("transportss").value,
+                table_meals: document.getElementById("meals").value,
+                table_internett: document.getElementById("internets").value,
+                table_otherAllowance: document.getElementById("otherallow").value,
                 table_allowanceAmount: document.getElementById("allowanceAmounts").value,
+                table_leave_number: document.getElementById("leavecount").value,
                 table_leaveAmount: document.getElementById("leaveAmounts").value,
                 table_holidayAmount: document.getElementById("holidayAmounts").value,
                 table_totalEarn: document.getElementById("totalEarns").value,
+                table_absentnumber: document.getElementById("absentcount").value,
+                table_absentdeducts: document.getElementById("absenceDeductions").value,
                 table_deductSSS: document.getElementById("deduct_SSS").value,
                 table_deductphil: document.getElementById("deduct_phil").value,
                 table_deductTIN: document.getElementById("deduct_TIN").value,
                 table_deductPagibig: document.getElementById("deduct_Pagibig").value,
                 table_deductOther: document.getElementById("deduct_Other").value,
+                table_countLate: document.getElementById("lateNumber").value,
                 table_deductLate: document.getElementById("deduct_Late").value,
+                table_countUT: document.getElementById("countUT").value,
                 table_deductUT: document.getElementById("deduct_UT").value,
+                table_numberLWOP: document.getElementById("numberLWOP").value,
                 table_deductLWOP: document.getElementById("deduct_LWOP").value,
                 table_totalDeduction: document.getElementById("totalDeductions").value,
-                table_netpayslip:document.getElementById("netpayslips").value,
-                table_id_workdays: document.getElementById("id_workdays").value
+                table_netpayslip:document.getElementById("netpayslips").value
+                
                 
     };
 
@@ -2504,7 +2509,6 @@ $(document).ready(function(){
         $('#otherContributions').text(data[38]);
         $('#total_Deductions').text(data[44]);
 
-        //table2
 
 
         //table3
@@ -2550,11 +2554,15 @@ $(document).ready(function(){
         var OThours = data[33];
         var OTAmount = data[34];
         var totalAllowance = data[35];
+        var total_Leave = data[50];
         var Paidleaves = data[36];
         var Payholiday = data[37];
         var otherDeduct = data[38];
+        var countLate = data[59];
         var Latededuction = data[39];
+        var UTHours = data[60];
         var UTDeduction = data[40];
+        var LWOPcount = data[61];
         var LWOPDeduction = data[41];
         var Netpayslip = data[42];
         var EarnTotal = data[43];
@@ -2563,11 +2571,17 @@ $(document).ready(function(){
         var cutoffFrequency = data[46];
         var Totalworkingdays = data[47];
         var CuttoffID = data[48];
-        var Payrule = data[54];
+        var Payrules = data[54];
+        var Transports = data[55];
+        var Meals = data[56];
+        var InterNet = data[57];
+        var other_allowances = data[58];
+        var totalAbsence = data[51];
+        var Absent_deductions = data[52];
 
         // Set the value of the <p> tag
 
-        $('#rulePay').text(Payrule);
+        
         $('#employeeID').text(employeeID);
         $('#id_p_emp_name').text(empName);
         $('#cutoffstart').text(cutstart);
@@ -2594,6 +2608,7 @@ $(document).ready(function(){
 
 
         //input hidden value para maipasa ko sa ajax
+        $('#rulePay').val(Payrules);
         $('#id_table_frequency').val(cutoffFrequency);
         $('#id_table_cutoffnum').val(CutoffNumber);
         $('#id_employeeid').val(employeeID);
@@ -2604,17 +2619,27 @@ $(document).ready(function(){
         $('#empAmounts').val(Amount);
         $('#empOThour').val(OThours);
         $('#OTamounts').val(OTAmount);
+        $('#transportss').val(Transports);
+        $('#meals').val(Meals);
+        $('#internets').val(InterNet);
+        $('#otherallow').val(other_allowances);
         $('#allowanceAmounts').val(totalAllowance);
+        $('#leavecount').val(total_Leave);
         $('#leaveAmounts').val(Paidleaves);
         $('#holidayAmounts').val(Payholiday);
         $('#totalEarns').val(EarnTotal);
+        $('#absentcount').val(totalAbsence);
+        $('#absenceDeductions').val(Absent_deductions);
         $('#deduct_SSS').val(dSSS);
         $('#deduct_phil').val(Philhealth);
         $('#deduct_TIN').val(Tin);
         $('#deduct_Pagibig').val(Pagibig);
         $('#deduct_Other').val(otherDeduct);
+        $('#lateNumber').val(countLate);
         $('#deduct_Late').val(Latededuction);
+        $('#countUT').val(UTHours);
         $('#deduct_UT').val(UTDeduction);
+        $('#numberLWOP').val(LWOPcount);
         $('#deduct_LWOP').val(LWOPDeduction);
         $('#totalDeductions').val(DeductTotal);
         $('#netpayslips').val(Netpayslip);

@@ -1,7 +1,7 @@
 <?php
 
     $schedule_name = $_POST['schedule_name'];
-
+ 
     $monday = filter_input(INPUT_POST, "monday", FILTER_SANITIZE_STRING);
     $mon_timein = filter_input(INPUT_POST, "mon_timein", FILTER_SANITIZE_STRING);
     $mon_timeout = filter_input(INPUT_POST, "mon_timeout", FILTER_SANITIZE_STRING);

@@ -23,7 +23,8 @@ if (empty($_POST['lname'])) {
 }
 if (empty($_POST['empid'])) {
     $errors[] = 'Employee ID is required'; 
-}
+} 
+
 // Add more checks for other required fields
 
 // Check if the email is valid

@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $checkStmt->execute();
     $checkStmt->store_result();
 
+    
     if ($checkStmt->num_rows > 0) {
         echo "<script>alert('Duplicate employee ID. Please enter a unique employee ID.');</script>";
         echo "<script>window.location.href = '../../empListForm';</script>";

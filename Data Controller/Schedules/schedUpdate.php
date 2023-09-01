@@ -22,5 +22,6 @@ if (mysqli_query($conn, $sql)) {
     echo "Error updating schedule: " . mysqli_error($conn);
 }
 
+
 mysqli_close($conn);
 ?>

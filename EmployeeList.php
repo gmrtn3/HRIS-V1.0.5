@@ -282,7 +282,7 @@
                 echo "<td style='font-weight: 400;'>" . $row["classification"] . "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["contact"] . "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["role"] . " </td>";
-
+ 
                 echo "<td>
                     <label class='toggle-label' for='toggleCheckbox'>
                         <input type='checkbox' id='toggleCheckbox' name='status' value='".$status."' ".($status === 'Active' ? 'checked' : '')." style='display: none;'>

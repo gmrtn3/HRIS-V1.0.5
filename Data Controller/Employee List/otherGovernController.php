@@ -24,5 +24,6 @@ if (count($_POST) > 0) {
 
     header("Location: ../../editempListForm.php?empid=".$row['empid']);
 }
+
 mysqli_close($conn);
 ?>
