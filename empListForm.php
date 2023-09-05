@@ -514,7 +514,7 @@
                                                      ?>
              
                                                  <label for="empposition">Select Positon</label><br>
-                                                     <select required name="empposition" style="width: 380px; height: 45px;" id="position" value="<?php echo $row['position'];?>">
+                                                     <select name="empposition" style="width: 380px; height: 45px;" id="position" value="<?php echo $row['position'];?>">
                                                      <option value disabled selected>Select Position</option> 
                                                        <?php echo $options; ?>
                                                      </select>
@@ -915,7 +915,7 @@ document.getElementById("empdob").setAttribute("min", minDateFormatted);
   var empPosition = document.querySelector(".emp-empDetail-jposition");
   var pakyawan = document.querySelector(".emp-empDetail-piece_rate");
   var freq = document.querySelector(".emp-empDetail-work_frequency");
-//   var empDetailSecondInput = document.querySelector(".emp-empDetail-second-input");
+  var empDetailSecondInput = document.querySelector(".emp-empDetail-second-input");
 
     classificationSelect.addEventListener("change", function() {
       if (classificationSelect.value === "3") {
@@ -937,16 +937,16 @@ document.getElementById("empdob").setAttribute("min", minDateFormatted);
         empPosition.style.display = "none";
         pakyawan.style.display = "block";
         freq.style.display = "block";
-        // pass.removeAttribute("disabled");
-        // cpass.removeAttribute("disabled");
+        pass.removeAttribute("disabled");
+        cpass.removeAttribute("disabled");
         empbsalary.removeAttribute("required");
         department.removeAttribute("required");
         access_id.removeAttribute("required");
         username.removeAttribute("required");
         role.removeAttribute("required");
         formEmail.removeAttribute("required");
-        // pass.removeAttribute("required");
-        // cpass.removeAttribute("required");
+        pass.removeAttribute("required");
+        cpass.removeAttribute("required");
         
 
         btn.addEventListener("click", function() {
@@ -990,8 +990,8 @@ document.getElementById("empdob").setAttribute("min", minDateFormatted);
         username.removeAttribute("disabled");
         role.removeAttribute("disabled");
         formEmail.removeAttribute("disabled");
-        // pass.removeAttribute("disabled");
-        // cpass.removeAttribute("disabled");
+        pass.removeAttribute("disabled");
+        cpass.removeAttribute("disabled");
       } else {
         transpo.setAttribute("disabled", "disabled");
         meal.setAttribute("disabled", "disabled");
@@ -1014,8 +1014,8 @@ document.getElementById("empdob").setAttribute("min", minDateFormatted);
         username.setAttribute("disabled", "disabled");
         role.setAttribute("disabled", "disabled");
         formEmail.setAttribute("disabled", "disabled");
-        // pass.setAttribute("disabled", "disabled");
-        // cpass.setAttribute("disabled", "disabled");
+        pass.setAttribute("disabled", "disabled");
+        cpass.setAttribute("disabled", "disabled");
       }
     });
   });
