@@ -66,15 +66,7 @@
     </header>
 
     <style>
-        input{
-            border:black 1px solid !important;    
-        }
-        select{
-            border:black 1px solid !important;    
-        }
-        textarea{
-            border: black 1px solid !important;
-        }
+       
     </style>
 
     <form action="Data Controller/Loan Request/loanRequestFormController.php" method="POST">

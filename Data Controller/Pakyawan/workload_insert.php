@@ -16,7 +16,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $unit_type = $_POST["unit_type"];
     $unit_work = $_POST["unit_work"];
 
+    $validationSql = "SELECT * FROM pakyawan_based_work_tb WHERE `employee` = '$employee'";
+    $validationResult = mysqli_query($conn, $validationSql);
+    $validationRow = mysqli_fetch_assoc($validationResult);
+
+    $empid = $validationRow['employee'];
+    $startDate = $validationRow['start_date'];
+    $endDate = $validationRow['end_date'];
+
+    if($empid == $employee && $start_date == $startDate && $end_date == $endDate ){
+        header("Location: ../../pakyawan_work?error");
+        exit;
+    } else{
+
     
+
 
     // echo $employee;  
     
@@ -124,6 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         echo "Error inserting data: " . mysqli_error($conn);
     }
+}
 }
 
 mysqli_close($conn);

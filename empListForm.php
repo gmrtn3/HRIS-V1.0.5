@@ -831,46 +831,46 @@ document.getElementById("empdob").setAttribute("min", minDateFormatted);
     // Add an event listener to the date hired field
     dateHiredInput.addEventListener('change', toggleDateFields);
 
-function Pass(){
-    let pass = document.getElementById('pass').value;
-    let cpass = document.getElementById('cpass').value;
+// function Pass(){
+//     let pass = document.getElementById('pass').value;
+//     let cpass = document.getElementById('cpass').value;
    
-    if(pass === ""){
-        document.getElementById('cpass').disabled = true;
-    }
-    else{
-        document.getElementById('cpass').disabled = false;
+//     if(pass === ""){
+//         document.getElementById('cpass').disabled = true;
+//     }
+//     else{
+//         document.getElementById('cpass').disabled = false;
 
         
-    if(cpass != pass){
+//     if(cpass != pass){
         
-        document.getElementById('id_pValidate').style.display = "";
-        document.getElementById('btn_save').style.cursor = "no-drop";
-        document.getElementById('btn_save').disabled = true;
-    }
-    else{
-        document.getElementById('id_pValidate').style.display = "none";
-        document.getElementById('btn_save').style.cursor = "pointer";
-        document.getElementById('btn_save').disabled = false;
-    }
-    }
-}
-function matchPass(){
-    let pass = document.getElementById('pass').value;
-    let cpass = document.getElementById('cpass').value;
+//         document.getElementById('id_pValidate').style.display = "";
+//         document.getElementById('btn_save').style.cursor = "no-drop";
+//         document.getElementById('btn_save').disabled = true;
+//     }
+//     else{
+//         document.getElementById('id_pValidate').style.display = "none";
+//         document.getElementById('btn_save').style.cursor = "pointer";
+//         document.getElementById('btn_save').disabled = false;
+//     }
+//     }
+// }
+// function matchPass(){
+//     let pass = document.getElementById('pass').value;
+//     let cpass = document.getElementById('cpass').value;
 
-    if(pass != cpass){
+//     if(pass != cpass){
         
-        document.getElementById('id_pValidate').style.display = "";
-        document.getElementById('btn_save').style.cursor = "no-drop";
-        document.getElementById('btn_save').disabled = true;
-    }
-    else{
-        document.getElementById('id_pValidate').style.display = "none";
-        document.getElementById('btn_save').style.cursor = "pointer";
-        document.getElementById('btn_save').disabled = false;
-    }
-}
+//         document.getElementById('id_pValidate').style.display = "";
+//         document.getElementById('btn_save').style.cursor = "no-drop";
+//         document.getElementById('btn_save').disabled = true;
+//     }
+//     else{
+//         document.getElementById('id_pValidate').style.display = "none";
+//         document.getElementById('btn_save').style.cursor = "pointer";
+//         document.getElementById('btn_save').disabled = false;
+//     }
+// }
 
 
 </script>
@@ -937,16 +937,16 @@ function matchPass(){
         empPosition.style.display = "none";
         pakyawan.style.display = "block";
         freq.style.display = "block";
-        pass.removeAttribute("disabled");
-        cpass.removeAttribute("disabled");
+        // pass.removeAttribute("disabled");
+        // cpass.removeAttribute("disabled");
         empbsalary.removeAttribute("required");
         department.removeAttribute("required");
         access_id.removeAttribute("required");
         username.removeAttribute("required");
         role.removeAttribute("required");
         formEmail.removeAttribute("required");
-        pass.removeAttribute("required");
-        cpass.removeAttribute("required");
+        // pass.removeAttribute("required");
+        // cpass.removeAttribute("required");
         
 
         btn.addEventListener("click", function() {
@@ -990,8 +990,8 @@ function matchPass(){
         username.removeAttribute("disabled");
         role.removeAttribute("disabled");
         formEmail.removeAttribute("disabled");
-        pass.removeAttribute("disabled");
-        cpass.removeAttribute("disabled");
+        // pass.removeAttribute("disabled");
+        // cpass.removeAttribute("disabled");
       } else {
         transpo.setAttribute("disabled", "disabled");
         meal.setAttribute("disabled", "disabled");
@@ -1014,8 +1014,8 @@ function matchPass(){
         username.setAttribute("disabled", "disabled");
         role.setAttribute("disabled", "disabled");
         formEmail.setAttribute("disabled", "disabled");
-        pass.setAttribute("disabled", "disabled");
-        cpass.setAttribute("disabled", "disabled");
+        // pass.setAttribute("disabled", "disabled");
+        // cpass.setAttribute("disabled", "disabled");
       }
     });
   });

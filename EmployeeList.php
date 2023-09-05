@@ -278,9 +278,9 @@
 
                 echo "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["fname"] . " " . $row["lname"] . "</td>";
-                echo "<td style='font-weight: 400;' class='email-col'>" . $row["email"] . "</td>";
+                echo "<td style='font-weight: 400;' class='email-col'>" . $row  ["department"] . "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["classification"] . "</td>";
-                echo "<td style='font-weight: 400;'>" . $row["contact"] . "</td>";
+                echo "<td style='font-weight: 400;'>" . $row["position"] . "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["role"] . " </td>";
  
                 echo "<td>

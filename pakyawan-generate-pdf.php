@@ -318,8 +318,8 @@ session_start();
                           echo "
                           <div class='box-data w-100 mt-3 d-flex flex-row justify-content-between align-items-center pl-3 pr-3'>
                           <p style='color: #656464'>".$row['unit_type']."</p>
-                          <p style='color: #656464'> ".$unit_work." Unit</p>
-                          <p style='color: #656464' class='mr-4'>₱".$row['work_pay']."</p>
+                          <p style='color: #656464'> ".$unit_work." </p>
+                          <p style='color: #656464' class='mr-4'>₱ ".$row['work_pay']."</p>
                           </div>";
                         }
                       }
