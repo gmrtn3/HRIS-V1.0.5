@@ -119,12 +119,7 @@
                             </div>
                             <div class="mb-3 mt-4 form-group">
                                 <?php
-                                    $server = "localhost";
-                                    $user = "root";
-                                    $pass ="";
-                                    $database = "hris_db";
-
-                                    $conn = mysqli_connect($server, $user, $pass, $database);
+                                    include 'config.php';
                                     $sql = "SELECT schedule_name FROM schedule_tb";
                                     $result = mysqli_query($conn, $sql);
 
@@ -214,7 +209,8 @@
                                 <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
                                     <table id="order-listing" class="table" style="width: 100%">
                                         <thead>
-                                            <th>Employee</th>
+                                            <th>Employee ID</th>
+                                            <th>Employee Fullname</th>
                                             <th>Time Entry</th>
                                             <th>Time Out</th>
                                             <th>Rest Day(s)</th>
@@ -267,6 +263,7 @@
                                                 
                                                         echo "
                                                         <tr class='lh-1'>
+                                                            <td style='font-weight: 400;'>" . $row["empid"] . "</td>
                                                             <td style='font-weight: 400;'>" . $row["fname"] . " " . $row["lname"] . "</td>
                                                             <td style='font-weight: 400;'>{$timeEntry}</td>
                                                             <td style='font-weight: 400;'>{$timeOut}</td>
@@ -326,7 +323,7 @@
                                 <div class="schedmodal-emp">
                                     
                                 <?php  
-                                        $conn =mysqli_connect("localhost", "root", "" , "hris_db");
+                                        include 'config.php';
                                         $stmt = "SELECT * FROM employee_tb
                                                 AS emp
                                                 INNER JOIN empschedule_tb
@@ -343,12 +340,7 @@
                                 </div>
                                 <div class="schedule-type-update">
                                 <?php
-                                    $server = "localhost";
-                                    $user = "root";
-                                    $pass ="";
-                                    $database = "hris_db";
-
-                                    $conn = mysqli_connect($server, $user, $pass, $database);
+                                    include 'config.php';
                                     $sql = "SELECT schedule_name FROM schedule_tb";
                                     $result = mysqli_query($conn, $sql);
 
@@ -454,7 +446,7 @@ function filterSched() {
                     return $(this).text();
                     }).get();
                    console.log(data);
-                   $('#view_reason1').val(data[3]);
+                   $('#view_reason1').val(data[4]);
                });
              });
 </script>
@@ -462,8 +454,8 @@ function filterSched() {
     
     <script>
 function populateDateFields(row) {
-    var startDate = row.getElementsByTagName('td')[5].innerHTML;
-    var endDate = row.getElementsByTagName('td')[6].innerHTML;
+    var startDate = row.getElementsByTagName('td')[6].innerHTML;
+    var endDate = row.getElementsByTagName('td')[7].innerHTML;
 
     document.getElementById('sched_from').value = startDate;
     document.getElementById('sched_to').value = endDate;
@@ -643,10 +635,10 @@ $(document).ready(function() {
 
                                     console.log(data);
                                     //id_colId
-                                    $('#empid').val(data[9]);
-                                    $('#sched_from').val(data[6]);
-                                    $('#sched_to').val(data[7]);
-                                    $('#empName').val(data[0]);
+                                    $('#empid').val(data[10]);
+                                    $('#sched_from').val(data[7]);
+                                    $('#sched_to').val(data[8]);
+                                    $('#empName').val(data[1]);
                                 });
                             });
             
