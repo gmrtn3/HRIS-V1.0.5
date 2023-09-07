@@ -45,11 +45,11 @@
 
 
 // FOR ATTENDANCE AUTO REFRESHER ABSENT
-    $_query_attendance = "SELECT * FROM attendances";
-    $result_attendance = mysqli_query($conn, $_query_attendance);
-    if(mysqli_num_rows($result_attendance) > 0){
-        include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
-    }
+    // $_query_attendance = "SELECT * FROM attendances";
+    // $result_attendance = mysqli_query($conn, $_query_attendance);
+    // if(mysqli_num_rows($result_attendance) > 0){
+    //     include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
+    // }
 // FOR ATTENDANCE AUTO REFRESHER ABSENT END
    
 
