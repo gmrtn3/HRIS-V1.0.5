@@ -51,13 +51,13 @@
 
 
 //     // for payroll holiday rule for holiday computations
-//    $query_check = "SELECT * FROM settings_tb";
-//    $result = mysqli_query($conn, $query_check);
+   $query_check = "SELECT * FROM settings_tb";
+   $result = mysqli_query($conn, $query_check);
 
-//    if(mysqli_num_rows($result) <= 0){
-//     $query = "INSERT INTO settings_tb (`holiday_pay`) VALUES ('Default')";
-//     $query_run = mysqli_query($conn, $query);      
-//    } 
+   if(mysqli_num_rows($result) <= 0){
+    $query = "INSERT INTO settings_tb (`holiday_pay`) VALUES ('Default')";
+    $query_run = mysqli_query($conn, $query);      
+   } 
 //    // for payroll holiday rule for holiday computations END
 
 //    $query_settings = "SELECT * FROM settings_company_tb";
