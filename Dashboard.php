@@ -31,26 +31,26 @@
  
 
     
-//     $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb WHERE classification != 3";
-//     $result = mysqli_query($conn, $sql);
+    $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb WHERE classification != 3";
+    $result = mysqli_query($conn, $sql);
 
-//     if(!$result){
-//         die("Query Failed: " . mysqli_error($conn));
-//     }
+    if(!$result){
+        die("Query Failed: " . mysqli_error($conn));
+    }
 
-//     $row = mysqli_fetch_assoc($result);
-//     $employee_count = $row["employee_count"];
+    $row = mysqli_fetch_assoc($result);
+    $employee_count = $row["employee_count"];
 
-// //    include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
+   include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
 
 
-// // FOR ATTENDANCE AUTO REFRESHER ABSENT
-//     $_query_attendance = "SELECT * FROM attendances";
-//     $result_attendance = mysqli_query($conn, $_query_attendance);
-//     if(mysqli_num_rows($result_attendance) > 0){
-//         // include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
-//     }
-// // FOR ATTENDANCE AUTO REFRESHER ABSENT END
+// FOR ATTENDANCE AUTO REFRESHER ABSENT
+    $_query_attendance = "SELECT * FROM attendances";
+    $result_attendance = mysqli_query($conn, $_query_attendance);
+    if(mysqli_num_rows($result_attendance) > 0){
+        include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
+    }
+// FOR ATTENDANCE AUTO REFRESHER ABSENT END
    
 
 
