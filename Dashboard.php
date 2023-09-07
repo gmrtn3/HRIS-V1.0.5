@@ -29,56 +29,7 @@ include 'config.php';
     
     $row = mysqli_fetch_assoc($result);
     $employee_count = $row["employee_count"];
-
-     //para sa holiday payroll computation kasi need na Regular ang employee para  may holiday pay
-$query = "SELECT * FROM classification_tb WHERE classification = 'Regular'";
-$result = mysqli_query($conn, $query);
-
-if(mysqli_num_rows($result) <= 0) {
-    // Position does not exist, insert the new record
-    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Regular')";
-    $query_run = mysqli_query($conn, $query);    
-} 
-
-
-//para sa holiday payroll computation kasi need na Regular ang employee para  may holiday pay
-$query = "SELECT * FROM classification_tb WHERE classification = 'Internship/OJT'";
-$result = mysqli_query($conn, $query);
-
-if(mysqli_num_rows($result) <= 0) {
-    // Position does not exist, insert the new record
-    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Internship/OJT')";
-    $query_run = mysqli_query($conn, $query);    
-} 
-
-
-$query = "SELECT * FROM classification_tb WHERE classification = 'Pakyawan'";
-$result = mysqli_query($conn, $query);
-
-if(mysqli_num_rows($result) <= 0) {
-    // Position does not exist, insert the new record
-    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Pakyawan')";
-    $query_run = mysqli_query($conn, $query);    
-} 
-
-
-$query = "SELECT * FROM positionn_tb WHERE position = 'Pakyawan'";
-$result = mysqli_query($conn, $query);
-
-if(mysqli_num_rows($result) <= 0) {
-    // Position does not exist, insert the new record
-    $query = "INSERT INTO positionn_tb (`position`) VALUES ('Pakyawan')";
-    $query_run = mysqli_query($conn, $query);    
-} 
-
-$query = "SELECT * FROM dept_tb WHERE col_deptname = 'Pakyawan'";
-$result = mysqli_query($conn, $query);
-
-if(mysqli_num_rows($result) <= 0) {
-    // Position does not exist, insert the new record
-    $query = "INSERT INTO dept_tb (`col_deptname`) VALUES ('Pakyawan')";
-    $query_run = mysqli_query($conn, $query);    
-} 
+    
     
     mysqli_close($conn);
 ?>
