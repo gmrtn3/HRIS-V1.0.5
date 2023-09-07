@@ -210,7 +210,9 @@ if(mysqli_num_rows($result) <= 0) {
 </head>
 <body >
     <header>
-        <?php include("header.php")?>
+        <?php
+        //  include("header.php")
+        ?>
     </header>
     <style>
         .swiper-button-next:after, .swiper-button-prev:after {
