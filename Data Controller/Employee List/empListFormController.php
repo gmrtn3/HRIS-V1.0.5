@@ -49,7 +49,7 @@ if (!empty($errors)) {
     exit;
 }
 // If there are no errors, insert the data into the database
-$conn = new mysqli('localhost', 'root', '', 'hris_db');
+// $conn = new mysqli('localhost', 'root', '', 'hris_db');
 
 
 
