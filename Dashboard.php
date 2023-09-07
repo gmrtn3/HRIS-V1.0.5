@@ -75,6 +75,7 @@
 
 
 
+
 // //CLASSIFICATION AUTO INSERT
 
 //    //para sa holiday payroll computation kasi need na Regular ang employee para  may holiday pay
@@ -109,14 +110,14 @@ if(mysqli_num_rows($result) <= 0) {
 } 
 
 //error
-// $query = "SELECT * FROM positionn_tb WHERE position = 'Pakyawan'";
-// $result = mysqli_query($conn, $query);
+$query = "SELECT * FROM positionn_tb WHERE position = 'Pakyawan'";
+$result = mysqli_query($conn, $query);
 
-// if(mysqli_num_rows($result) <= 0) {
-//     // Position does not exist, insert the new record
-//     $query = "INSERT INTO positionn_tb (`position`) VALUES ('Pakyawan')";
-//     $query_run = mysqli_query($conn, $query);    
-// } 
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO positionn_tb (`position`) VALUES ('Pakyawan')";
+    $query_run = mysqli_query($conn, $query);    
+} 
 
 
 $query = "SELECT * FROM dept_tb WHERE col_deptname = 'Pakyawan'";
