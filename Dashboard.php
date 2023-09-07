@@ -1,5 +1,6 @@
 <?php
   session_start();
+  include 'config.php';
   //    $empid = $_SESSION['empid'];
      if (!isset($_SESSION['username'])) {
       header("Location: login.php");
@@ -12,7 +13,6 @@
           header("Location: logout.php");
           exit();
       } else{
-          include 'config.php';
           $userId = $_SESSION['empid'];
          
           $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
@@ -30,7 +30,6 @@
 
  
 
-    include 'config.php';
     
 //     $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb WHERE classification != 3";
 //     $result = mysqli_query($conn, $sql);
