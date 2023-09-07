@@ -118,14 +118,14 @@ if(mysqli_num_rows($result) <= 0) {
     $query_run = mysqli_query($conn, $query);    
 } 
 
-$query = "SELECT * FROM dept_tb WHERE col_deptname = 'Pakyawan'";
-$result = mysqli_query($conn, $query);
+// $query = "SELECT * FROM dept_tb WHERE col_deptname = 'Pakyawan'";
+// $result = mysqli_query($conn, $query);
 
-if(mysqli_num_rows($result) <= 0) {
-    // Position does not exist, insert the new record
-    $query = "INSERT INTO dept_tb (`col_deptname`) VALUES ('Pakyawan')";
-    $query_run = mysqli_query($conn, $query);    
-} 
+// if(mysqli_num_rows($result) <= 0) {
+//     // Position does not exist, insert the new record
+//     $query = "INSERT INTO dept_tb (`col_deptname`) VALUES ('Pakyawan')";
+//     $query_run = mysqli_query($conn, $query);    
+// } 
 
 
 
