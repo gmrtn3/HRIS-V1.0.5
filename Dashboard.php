@@ -42,14 +42,14 @@
     $row = mysqli_fetch_assoc($result);
     $employee_count = $row["employee_count"];
 
-   include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
+//    include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
 
 
 // FOR ATTENDANCE AUTO REFRESHER ABSENT
     $_query_attendance = "SELECT * FROM attendances";
     $result_attendance = mysqli_query($conn, $_query_attendance);
     if(mysqli_num_rows($result_attendance) > 0){
-        include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
+        // include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
     }
 // FOR ATTENDANCE AUTO REFRESHER ABSENT END
    
@@ -482,8 +482,13 @@ if(mysqli_num_rows($result) <= 0) {
                         </div>
 
                         <div class="mb-3">
-                            <label for="event" class="form-label">Event Date</label>
-                            <input type="date" name="event_date" class="form-control" id="id_event_date" required>
+                            <label for="event" class="form-label">Start Date</label>
+                            <input type="datetime-local" name="start_date" class="form-control" id="id_event_date" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="event" class="form-label">End Date</label>
+                            <input type="datetime-local" name="end_date" class="form-control" id="id_event_date" required>
                         </div>
 
                         <div class="mb-3">
@@ -1885,14 +1890,15 @@ if(mysqli_num_rows($result) <= 0) {
                                   $startDate = date('Y-m-d');
                                   $endDate = date('Y-m-t');
                                   
-                                $query = "SELECT * FROM event_tb WHERE date_event BETWEEN '$startDate' AND '$endDate' ORDER BY `date_event` ASC";
+                                $query = "SELECT * FROM event_tb WHERE `start_date` BETWEEN '$startDate' AND '$endDate' AND `end_date` BETWEEN '$startDate' AND '$endDate' ORDER BY `start_date` ASC";
                                 $result = mysqli_query($conn, $query);
                                 while ($row = mysqli_fetch_assoc($result)) {
-                                    $eventDate = date('Y-m-d', strtotime($row['date_event']));
-                                    $eventDay = date('l', strtotime($row['date_event']));
+                                    $start_date = date('Y-m-d', strtotime($row['start_date']));
+                                    $end_date = date('Y-m-d', strtotime($row['end_date']));
+                                    $eventDay = date('l', strtotime($row['start_date']));
                                 ?>
                                 <div class="son_first" style="background-color: #ECECEC;">
-                                    <p><?php echo '<strong style="font-size: 20px; margin-left: 10px;">' . $row['event_title'] . '</strong> ' . '<span style="float: right; margin-right: 10px;">' . $eventDate . '</span>'; ?></p>
+                                    <p><?php echo '<strong style="font-size: 20px; margin-left: 10px;">' . $row['event_title'] . '</strong> ' . '<span style="float: right; margin-right: 10px;">' . $start_date . ' - '. $end_date. '</span>' ; ?></p>
                                     <p><?php echo '<span style="margin-left: 10px;">' . $row['event_type'] . '</span> ' . '<span style="float: right; margin-right: 10px;">' . $eventDay . '</span>'; ?></p>
                                 </div>
                                 <?php
