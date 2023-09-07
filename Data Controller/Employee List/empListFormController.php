@@ -67,9 +67,9 @@ $empsss = $_POST['empsss'];
 $emptin = $_POST['emptin'];
 $emppagibig = $_POST['emppagibig'];
 $empphilhealth = $_POST['empphilhealth'];
-$empbranch = filter_input(INPUT_POST, "empbranch", FILTER_SANITIZE_STRING);
-$col_deptname = filter_input(INPUT_POST, "col_deptname", FILTER_SANITIZE_STRING);
-$empposition = filter_input(INPUT_POST, "empposition", FILTER_SANITIZE_STRING);
+$empbranch = filter_input(INPUT_POST, "empbranch" );
+$col_deptname = filter_input(INPUT_POST, "col_deptname" );
+$empposition = filter_input(INPUT_POST, "empposition" );
 $empbsalary = $_POST['empbsalary'];
 $drate = $_POST['drate'];
 // $approver = $_POST['approver'];
@@ -340,26 +340,9 @@ if ($stmt1->errno) {
     $mail->send();
   }
   
-
+   
  
   $stmt1->close();
   $conn->close();
    
    ?>
-
-   <!-- <script>
-    $("#form-fname, #form-lname, #form-empid, #form-contact, #form-email").removeClass("input-error");
-
-    var errorEmpty = "
-    
-    if(errorEmpty == true){
-        $("#form-fname, #form-lname, #form-empid, #form-contact").addClass("input-error");
-    }
-    if(errorEmail == true){
-        $("#form-email").addClass("input-error");        
-    }
-    if(errorEmpty == false && errorEmail == false){
-        $("#form-fname, #form-lname, #form-empid, #form-contact").val("")
-    }
-   </script>
- -->
