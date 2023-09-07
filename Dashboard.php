@@ -37,7 +37,7 @@
     $row = mysqli_fetch_assoc($result);
     $employee_count = $row["employee_count"];
 
-//    include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
+   include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
 
 
 // FOR ATTENDANCE AUTO REFRESHER ABSENT
