@@ -55,66 +55,51 @@
     }
 </style>
 
-  
-
-   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" >
-      <div class="report-container d-flex flex-row mt-5 ">
-        <div class="table-responsive" style="width: 80em" >
-            <table class="table table-bordered">
+   <div class="report-container d-flex flex-row mt-5 border boder-black">
+        <div class="table-responsive w-25 border border-black">
+            <table class="table">
                 <thead style="background-color: #cecece">
                     <th>ID Number</th>
                     <th>Name</th>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight: 400">STS-034</td>
-                        <td style="font-weight: 400">Joseph</td>
+                        <td>STS-034</td>
+                        <td>Joseph</td>
                     </tr>
                     <tr>
-                        <td style="font-weight: 400">Salary Total</td>
-                        <td style="font-weight: 400">50000</td>
+                        <td>Salary Total</td>
+                        <td>50000</td>
                     </tr>
                     <tr>
-                        <td style="font-weight: 400">OT Pay</td>
-                        <td style="font-weight: 400">-</td>
+                        <td>OT Pay</td>
+                        <td>-</td>
                     </tr>
                     <tr>
-                        <td style="font-weight: 400">Salary Deduct</td>
-                        <td style="font-weight: 400">19.00</td>
+                        <td>Salary Deduct</td>
+                        <td>19.00</td>
                     </tr>
                     <tr>
-                        <td style="font-weight: 400">Benefit Sharing Deducted</td>
-                        <td style="font-weight: 400">-</td>
+                        <td>Benefit Sharing Deducted</td>
+                        <td>-</td>
                     </tr>
                     <tr>
-                        <td style="color: red; font-weight: 400">Deduction</td>
-                        <td style="font-weight: 400">-</td>
+                        <td style="color: red">Deduction</td>
+                        <td>-</td>
                     </tr>
                     <tr>
-                        <td style="font-weight: 400">Holiday Pay</td>
-                        <td style="font-weight: 400">-</td>
+                        <td>Holiday Pay</td>
+                        <td>-</td>
                     </tr>
                     <tr>
-                        <td style="font-style: bold; font-weight: 400">Salary Final Total: </td>
-                        <td style="font-weight: 400">4,981.00</td>
+                        <td style="font-style: bold">Salary Final Total: </td>
+                        <td>4,981.00</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="table-responsive w-75 border border-black" style="width: 500em">
-            <table class="table table-bordered" >
+        <div class="table-responsive w-75 border border-black">
+            <table class="table">
                 <thead style="background-color: #cecece">
                     <th>Daily Wage</th>
                     <th>Hourly Rate</th>
@@ -139,41 +124,32 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight: 400">570</td>
-                        <td style="font-weight: 400">71.25</td>
-                        <td style="font-weight: 400">7</td>
-                        <td style="font-weight: 400">7</td>
-                        <td style="font-weight: 400"></td>
-                        <td style="font-weight: 400">4.981.00</td>
-                        <td style="font-weight: 400">-</td>
-                        <td style="font-weight: 400"></td>
-                        <td style="font-weight: 400">-</td>
-                        <td style="font-weight: 400">0</td>
-                        <td style="font-weight: 400">16.00</td>
-                        <td style="font-weight: 400">19.00</td>
-                        <td style="font-weight: 400">-</td>
-                        <td style="font-weight: 400">0</td>
-                        <td style="font-weight: 400">0</td>
-                        <td style="font-weight: 400">-</td>
-                        <td style="font-weight: 400">0</td>
-                        <td style="font-weight: 400">0</td>
-                        <td style="font-weight: 400">0</td>
-                        <td style="font-weight: 400">0</td>
+                        <td>570</td>
+                        <td>71.25</td>
+                        <td>7</td>
+                        <td>7</td>
+                        <td></td>
+                        <td>4.981.00</td>
+                        <td>-</td>
+                        <td></td>
+                        <td>-</td>
+                        <td>0</td>
+                        <td>16.00</td>
+                        <td>19.00</td>
+                        <td>-</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>-</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     
    </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 

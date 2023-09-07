@@ -2,12 +2,7 @@
 <?php
     session_start();
     
-    $server = "localhost";
-    $user = "root";
-    $pass ="";
-    $database = "hris_db";
-
-    $conn = mysqli_connect($server, $user, $pass, $database);
+    include '../../config.php';
 
     // if(isset($_POST['submit'])){
     //     $empid = $_POST['empid'];
@@ -96,12 +91,7 @@
                 </div>
                 <div class="schedule-type-update">
                 <?php
-                    $server = "localhost";
-                    $user = "root";
-                    $pass ="";
-                    $database = "hris_db";
-
-                    $conn = mysqli_connect($server, $user, $pass, $database);
+                   include '../../config.php';
                     $sql = "SELECT schedule_name FROM schedule_tb";
                     $results = mysqli_query($conn, $sql);
 

@@ -1,10 +1,5 @@
 <?php
-$server = "localhost";
-$user = "root";
-$pass = "";
-$database = "hris_db";
-
-$conn = mysqli_connect($server, $user, $pass, $database);
+include 'config.php';
 
 $sql = "SELECT col_ID, col_deptname FROM dept_tb";
 $result = mysqli_query($conn, $sql);

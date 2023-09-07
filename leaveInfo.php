@@ -81,8 +81,8 @@ session_start();
                 display: block;
                 overflow-x: hidden;
                 white-space: nowrap;
-                max-height: 450px;
-                height: 450px;
+                max-height: 400px;
+                height: 400px;
                 
                 
             }
@@ -95,6 +95,7 @@ session_start();
                 display: table !important;
                 table-layout: fixed !important;
             }
+
     </style>
 
 

@@ -1,14 +1,9 @@
 <?php 
  
 // Load the database configuration file 
-$server = "localhost";
-$user = "root";
-$pass ="";
-$database = "hris_db";
+include 'config.php';
 
-$db = mysqli_connect($server, $user, $pass, $database);
-
-if(!$db){
+if(!$conn){
     echo '<script type="text/javascript">';
     echo 'alert("Connection Failed.");';
     echo '</script>';
@@ -17,7 +12,7 @@ if(!$db){
  
 
 // Fetch records from database 
-$query = $db->query("SELECT * FROM attendances ORDER BY id ASC"); 
+$query = $conn->query("SELECT * FROM attendances ORDER BY id ASC"); 
  
 if($query->num_rows > 0){ 
     $delimiter = ","; 

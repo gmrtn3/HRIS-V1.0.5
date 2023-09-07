@@ -1,5 +1,5 @@
 <?php
-
+include '../../config.php';
     $empid = $_POST['empid'];
     $loan_type = $_POST['loan_type'];
     $year = $_POST['year'];
@@ -15,10 +15,7 @@
 
     
 
-    $conn = new mysqli('localhost', 'root', '', 'hris_db');
-        if($conn->connect_error){
-    die('Connection Failed: ' .$conn->connect_error);
-   }
+
 
    $stmt = $conn->prepare("INSERT INTO payroll_loan_tb(`empid`, `loan_type`, `year`, `month`, `cutoff_no`,`remarks`, `loan_date`,`payable_amount`,`amortization`,`applied_cutoff`, `loan_status`, `col_BAL_amount`, `status`)
                             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)

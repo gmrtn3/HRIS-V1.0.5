@@ -67,15 +67,7 @@
     }
     
 
-    $server = "localhost";
-    $user = "root";
-    $pass = "";
-    $database = "hris_db";
-
-    $conn = mysqli_connect(hostname: $server,
-                            username: $user,
-                            password: $pass,
-                            database: $database);
+    include '../../config.php';
 
     if(mysqli_connect_errno()){
         die("Connection error: " .mysqli_connect_error());

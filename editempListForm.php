@@ -746,12 +746,7 @@ else
 
 
                     <?php 
-                        $server = "localhost";
-                        $user = "root";
-                        $pass ="";
-                        $database = "hris_db";
-     
-                        $conn = mysqli_connect($server, $user, $pass, $database);
+                        include 'config.php';
                         $sql = "SELECT empid FROM employee_tb";
 
                         $results = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid ='". $_GET['empid']. "'");
@@ -866,12 +861,7 @@ else
                     
 
                     <?php 
-                        $server = "localhost";
-                        $user = "root";
-                        $pass ="";
-                        $database = "hris_db";
-     
-                        $conn = mysqli_connect($server, $user, $pass, $database);
+                        include 'config.php';
                         $sql = "SELECT empid FROM employee_tb";
 
                         $resultss = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid ='". $_GET['empid']. "'");
@@ -883,12 +873,7 @@ else
                    
                 <form action="Data Controller/Employee List/otherAllowanceController.php" method="POST">
                 <?php 
-                        $server = "localhost";
-                        $user = "root";
-                        $pass ="";
-                        $database = "hris_db";
-     
-                        $conn = mysqli_connect($server, $user, $pass, $database);
+                       include 'config.php';
                         $sql = "SELECT empid FROM employee_tb";
 
                         $results = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid ='". $_GET['empid']. "'");

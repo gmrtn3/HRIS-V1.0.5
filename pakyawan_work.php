@@ -100,7 +100,7 @@ session_start();
                     <div id="error-msg" class="alert alert-danger mt-2" style="display: none;">Start Date and End Date cannot be the same for Weekly frequency</div>
                     <?php
                         include 'config.php';
-                        $conn = mysqli_connect($server, $user, $pass, $database);
+                        
 
                         $sql = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
                                 INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
@@ -114,7 +114,7 @@ session_start();
                         ?>
 
                         <label for="">Employee Name:</label>
-                        <select name="employee" id="employeeDropdown" class="form-select" style="color: black">
+                        <select name="employee" id="employeeDropdown" class="form-select" style="color: black" required>
                             <option value="" disabled selected>Select Employee</option> 
                             <?php echo $options; ?>
                         </select>
@@ -122,7 +122,7 @@ session_start();
                         
 
                         <label for="" class="mt-3">Unit Type:</label>
-                        <select name="unit_type" id="unitTypeDropdown" class="form-select" style="color: black">
+                        <select name="unit_type" id="unitTypeDropdown" class="form-select" style="color: black" required>
                             <option value="" disabled selected>Select Unit Type</option> 
                         </select><br>
 
@@ -150,16 +150,16 @@ session_start();
                     
                   
                     <label for="frequency">Frequency</label><br>
-                    <input type="text" id="frequencyInput" name="work_frequency" readonly class="form-control" ><br>
+                    <input type="text" id="frequencyInput" name="work_frequency" readonly class="form-control"required ><br>
 
                     <label for="">Start Date</label><br>
-                    <input type="date" required name="start_date" class="form-control" id="startDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"><br>
+                    <input type="date" required name="start_date" class="form-control" id="startDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required><br>
 
                     <label for="">End Date</label><br>
-                    <input type="date" required name="end_date" class="form-control" id="endDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="endDate">   
+                    <input type="date" required name="end_date" class="form-control" id="endDate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="endDate" required>   
 
                     <label for="" class="mt-3">Unit Work:</label><br>
-                    <input type="text" name="unit_work" id="unit_work" class="form-control" oninput="updateWorkPay(this.value)" disabled>
+                    <input type="text" name="unit_work" id="unit_work" class="form-control" oninput="updateWorkPay(this.value)" disabled required>
 
                     
                     

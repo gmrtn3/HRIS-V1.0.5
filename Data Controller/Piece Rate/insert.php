@@ -1,10 +1,5 @@
 <?php
-$server = "localhost";
-$user = "root";
-$pass = "";
-$database = "hris_db";
-
-$conn = mysqli_connect($server, $user, $pass, $database);
+include '../../config.php';
 
 // Check if the connection was successful
 if (!$conn) {

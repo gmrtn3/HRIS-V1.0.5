@@ -28,12 +28,7 @@ if (empty($username) || empty($oldPassword) || empty($newPassword) || empty($con
 
 // Step 4: Connect to the database and query for employee data
 // Replace DB_HOST, DB_USERNAME, DB_PASSWORD, and DB_NAME with your database credentials
-$server = "localhost";
-$user = "root";
-$pass = "";
-$database = "hris_db";
-
-$connection = mysqli_connect($server, $user, $pass, $database);
+include '../../config.php';
 
 if (!$connection) {
     die("Database connection failed: " . mysqli_connect_error());

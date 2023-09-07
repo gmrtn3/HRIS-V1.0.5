@@ -278,12 +278,7 @@
                                
                                     
                                  <?php 
-                                     $server = "localhost";
-                                     $user = "root";
-                                     $pass ="";
-                                     $database = "hris_db";
-
-                                     $conn = mysqli_connect($server, $user, $pass, $database);
+                                   include 'config.php';
                                      $sql = "SELECT * FROM company_code_tb";
                                      $result = mysqli_query($conn, $sql);
                                    
@@ -478,12 +473,7 @@
                                       
                                 <div class="emp-empDetail-dept">
                                       <?php
-                                        $server = "localhost";
-                                        $user = "root";
-                                        $pass ="";
-                                        $database = "hris_db";
-
-                                        $conn = mysqli_connect($server, $user, $pass, $database);
+                                       include 'config.php';
                                         $sql = "SELECT * FROM dept_tb";
                                         $result = mysqli_query($conn, $sql);
 
@@ -579,12 +569,7 @@
                             <div class="emp-schedule-first-input">
                                 <div class="emp-schedule-accessID">
                                 <?php
-                                        $server = "localhost";
-                                        $user = "root";
-                                        $pass ="";
-                                        $database = "hris_db";
-
-                                        $conn = mysqli_connect($server, $user, $pass, $database);
+                                       include 'config.php';
                                         $sql = "SELECT * FROM schedule_tb";
                                         $result = mysqli_query($conn, $sql);
 

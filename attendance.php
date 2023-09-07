@@ -29,12 +29,7 @@
        }
    }
  
-    // $server = "localhost";
-    // $user = "root";
-    // $pass ="";
-    // $database = "hris_db";
-
-    // $db = mysqli_connect($server, $user, $pass, $database);
+   
     include 'config.php';
 
 
@@ -490,12 +485,7 @@ window.onload = checkReload;
             <div class="att-emp-stat-container">
             <div class="att-emp">
                 <?php
-                        $server = "localhost";
-                        $user = "root";
-                        $pass ="";
-                        $database = "hris_db";
-
-                        $conn = mysqli_connect($server, $user, $pass, $database);
+                       include 'config.php';
                         $sql = "SELECT `empid`, CONCAT(`fname`, ' ',`lname`) AS `full_name` FROM employee_tb";
                         $result = mysqli_query($conn, $sql);
 

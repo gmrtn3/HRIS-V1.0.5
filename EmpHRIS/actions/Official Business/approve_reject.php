@@ -1,11 +1,5 @@
 <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hris_db";
-
-
-    $conn = mysqli_connect($servername, $username,  $password, $dbname);
+include '../../config.php';
 /************************* For Approve Button ***************************/
 if(isset($_POST['btn_approve']))
 {

@@ -1,5 +1,5 @@
 <?php 
-    include "config.php";
+    include '../../config.php';
     $id = $_GET['col_ID'];
 
 if(isset($_POST['submit'])) {

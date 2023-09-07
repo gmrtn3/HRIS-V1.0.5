@@ -1,19 +1,8 @@
 <?php
     session_start(); 
-    // $cmpny_empid = $row['empid'];
-    // $sql = "SELECT employee_tb.company_code, 
-    //         employee_tb.empid, 
-    //         assigned_company_code_tb.company_code_id, 
-    //         assigned_company_code_tb.empid, 
-    //         company_code_tb.id, 
-    //         company_code_tb.company_code AS company_code_name 
-    //         FROM assigned_company_code_tb 
-    //         INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
-    //         INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
-    //         WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
-            
-    //         $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
-    //         $cmpny_row = mysqli_fetch_assoc($cmpny_result);     
+include 'config.php';
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

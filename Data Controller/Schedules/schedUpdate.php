@@ -1,7 +1,7 @@
 <?php
 include '../../config.php';
 
-$conn = mysqli_connect($server, $user, $pass, $database);
+
 
 // Check if the connection was successful
 if (!$conn) {

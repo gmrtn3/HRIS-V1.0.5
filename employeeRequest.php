@@ -113,12 +113,7 @@ session_start();
             <h2>Employee Request</h2>
             <div class="d-flex flex-row p-2">
                 <?php
-                    $server = "localhost";
-                    $user = "root";
-                    $pass ="";
-                    $database = "hris_db";
-
-                    $conn = mysqli_connect($server, $user, $pass, $database);
+                    include 'config.php';
                     $sql = "SELECT `empid`, CONCAT(`fname`, ' ',`lname`) AS `full_name` FROM employee_tb";
                     $result = mysqli_query($conn, $sql);
                     $empid = isset($_GET['empid']) ? $_GET['empid'] : '';

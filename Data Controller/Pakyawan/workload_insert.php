@@ -1,7 +1,7 @@
 <?php
 include '../../config.php';
 
-$conn = mysqli_connect($server, $user, $pass, $database);
+// $conn = mysqli_connect($server, $user, $pass, $database);
 
 // Check if the connection was successful
 if (!$conn) {
@@ -16,15 +16,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $unit_type = $_POST["unit_type"];
     $unit_work = $_POST["unit_work"];
 
-    $validationSql = "SELECT * FROM pakyawan_based_work_tb WHERE `employee` = '$employee'";
+    $validationSql = "SELECT pakyaw.employee, pakyaw.work_frequency, pakyaw.start_date, pakyaw.end_date, pakyaw.unit_type, piece.id FROM pakyawan_based_work_tb AS pakyaw
+                      INNER JOIN piece_rate_tb AS piece ON pakyaw.unit_type = piece.id
+                      WHERE `pakyaw`.`employee` = '$employee'";
     $validationResult = mysqli_query($conn, $validationSql);
     $validationRow = mysqli_fetch_assoc($validationResult);
 
-    $empid = $validationRow['employee'];
-    $startDate = $validationRow['start_date'];
-    $endDate = $validationRow['end_date'];
+    @$empid = $validationRow['employee'];
+    @$startDate = $validationRow['start_date'];
+    @$endDate = $validationRow['end_date'];
+    @$unit = $validationRow['unit_type'];
 
-    if($empid == $employee && $start_date == $startDate && $end_date == $endDate ){
+
+    if($empid == $employee && $start_date == $startDate && $end_date == $endDate && $unit == $unit_type){
         header("Location: ../../pakyawan_work?error");
         exit;
     } else{

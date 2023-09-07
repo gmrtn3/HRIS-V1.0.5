@@ -185,6 +185,9 @@
                 text-align: left !important;
                 width: 14.28% !important;
             }
+
+            
+
             /* .toggle-circle {
       width: 1.3em;
       height: 1.3em;
@@ -202,13 +205,14 @@
     <thead>
         <th>Employee ID</th>
         <th>Name</th>
-        <th class="email-col">Email</th>
+        <th class="email-col">Department</th>
         <th>Classification</th>
-        <th>Contact No.</th>
+        <th>Position</th>
         <th>Employee Type</th>
         <th>Employee Status</th>
         <th>Employee Details</th>
         <th>Action</th>
+        <th class="d-none">empid</th>
     </thead>
     <tbody id="myTable">
         <?php
@@ -220,18 +224,24 @@
 
         // Check if the selected filter is "Active" or "Inactive"
         if ($status_filter === "Active" || $status_filter === "Inactive") {
-            $query = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
-                      INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
-                     AND employee_tb.status = '$status_filter'";
+            $query = "SELECT employee_tb.*, dept_tb.col_ID, dept_tb.col_deptname, positionn_tb.id, positionn_tb.position, classification_tb.classification FROM employee_tb
+                        INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
+                        INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
+                    INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
+                    AND employee_tb.status = '$status_filter'";
         } elseif($status_filter === "All") {
             // If the selected filter is "All" or not set, show all employees
             $query = "SELECT * FROM employee_tb
+                        INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
+                        INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
                        INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id";
         }
     } else {
         // Default filter status when the form is first loaded
         $status_filter = "Active";
-        $query = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
+        $query = "SELECT employee_tb.*, dept_tb.col_ID, dept_tb.col_deptname, positionn_tb.id, positionn_tb.position, classification_tb.classification FROM employee_tb
+                        INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
+                        INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
                   INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
                    AND employee_tb.status = '$status_filter'";
     }
@@ -241,6 +251,7 @@
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
 
+            
                 $cmpny_empid = $row['empid'];
                 
                 include 'config.php';
@@ -248,6 +259,12 @@
                 $sqls = "SELECT * FROM employee_tb WHERE empid = $cmpny_empid
                          ";
                 $resulte = mysqli_query($conn, $sqls);
+
+                $classification = $row['classification'];
+
+                $position = $row['position'];
+
+                $department = $row['col_deptname'];
 
                 $rowe = mysqli_fetch_assoc($resulte);
                 
@@ -278,28 +295,40 @@
 
                 echo "</td>";
                 echo "<td style='font-weight: 400;'>" . $row["fname"] . " " . $row["lname"] . "</td>";
-                echo "<td style='font-weight: 400;' class='email-col'>" . $row  ["department"] . "</td>";
+                echo "<td style='font-weight: 400;' class='email-col'>"; ?> <?php if( $classification == "Pakyawan") { echo ""; }else{  echo $department; } ?> <?php echo " </td>";
                 echo "<td style='font-weight: 400;'>" . $row["classification"] . "</td>";
-                echo "<td style='font-weight: 400;'>" . $row["position"] . "</td>";
+                echo "<td style='font-weight: 400;'>"; ?> <?php if( $classification == "Pakyawan") { echo ""; }else{  echo $position; } ?> <?php echo " </td>";
                 echo "<td style='font-weight: 400;'>" . $row["role"] . " </td>";
  
-                echo "<td>
-                    <label class='toggle-label' for='toggleCheckbox'>
-                        <input type='checkbox' id='toggleCheckbox' name='status' value='".$status."' ".($status === 'Active' ? 'checked' : '')." style='display: none;'>
-
-                        "; ?> <?php if ($status === 'Active'){
-                            echo " <button type='button' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' class='toggle-circle d-flex align-items-center sched-update' style='margin-left: 0.8em; background-color: green'><span style='margin-left: 2em' id='status'>".$status."</span>
-                            </button>
-    
-                        </label>
+                echo "<td>";
+                ?> <?php
+                if ($row['status'] == 'Active') {
+                    echo "<div class='form-check form-switch'>
+                            <input class='form-check-input ml-3 sched-update' type='checkbox' name='status' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' ";
+                    if ($row['status'] == 'Active') {
+                        echo "checked";
+                    }
+                    echo " data-active='1' style='background-color: green; border:black'> <!-- Add data-active attribute for tracking -->
+                            <span class='d-none'>" . $row['status'] . "</span>
+                        </div>
                     </td>";
-                        }else{
-                            echo " <button type='button' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' class='toggle-circle d-flex align-items-center sched-update' style='margin-left: 0.8em; background-color: red'><span style='margin-left: 2em' id='status'>".$status."</span>
-                            </button>
-    
-                        </label>
+                } else {
+                    echo "<div class='form-check form-switch'>
+                            <input class='form-check-input ml-3 sched-update' type='checkbox' name='status' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' ";
+                    if ($row['status'] == 'Inactive') {
+                        echo "checked";
+                    }
+                    echo " data-active='1' style='background-color: red; border:black; rotate: 180deg'> <!-- Add data-active attribute for tracking -->
+                            <span class='d-none'>" . $row['status'] . "</span>
+                        </div>
                     </td>";
                         }
+
+
+                    ?> <?php
+                
+
+                           
 
 
                 // Custom mapping for data column names
@@ -358,6 +387,7 @@
                 </button>";
 
                 echo "</td>";
+                echo "<td class='d-none'> ".$cmpny_empid." </td>";
                 echo "</tr>";
             }
         } else {
@@ -417,29 +447,22 @@
     </div>
     </form>
 
-    <style>
-         .toggle-circle {
-      width: 1.3em;
-      height: 1.3em;
-      border-radius: 50%;
-      border: 2px solid #ccc;
-      cursor: pointer;
-      /* background-color: <?= $status === 'Inactive' ? 'red' : 'green' ?>; */
-      transition: background-color 0.3s;
-    }
-    </style>
-
     <script>
-    // JavaScript to toggle state and color
-    const toggleButton = document.getElementById('toggleButton');
-    const toggleCheckbox = document.getElementById('toggleCheckbox');
-    
-    toggleButton.addEventListener('click', function() {
-      toggleCheckbox.checked = !toggleCheckbox.checked;
-      toggleButton.style.backgroundColor = toggleCheckbox.checked ? 'green' : 'red';
+    document.querySelectorAll('.sched-update').forEach(function (checkbox) {
+        checkbox.addEventListener('click', function (event) {
+            if (event.target.getAttribute('data-active') === '1') {
+                event.preventDefault(); // Prevent the checkbox from toggling
+                // Add code here to show the modal and handle confirmation
+                var employID = event.target.closest('td').querySelector('[name="empid"]').value;
+                var statuses = event.target.closest('td').querySelector('[name="status"]').value;
+                document.getElementById('employID').value = employID;
+                document.getElementById('statuses').value = statuses;
+                var modal = new bootstrap.Modal(document.getElementById('schedUpdate'));
+                modal.show();
+            }
+        });
     });
-  </script>
-
+</script>
 
     <script> 
       $(document).ready(function() {
@@ -453,7 +476,7 @@
 
         console.log(data);
         //id_colId
-        $('#employID').val(data[0]);
+        $('#employID').val(data[9].trim());
         $('#statuses').val(data[6].trim()); // Remove spaces using trim()
     });
 });

@@ -14,7 +14,7 @@
           } 
           
       }
-
+include 'config.php';
 ?>
 
 <!DOCTYPE html>
@@ -162,7 +162,7 @@
                         <div class="container">
                     <?php
                         $employeeid = $_SESSION['empid'];
-                        include '../config.php';
+                        include 'config.php';
                         date_default_timezone_set("Asia/Manila"); // set the timezone to Manila
                         $current_date = date("Y-m-d"); // format the date as YYYY-MM-DD
 
@@ -199,7 +199,7 @@
                     </div>
                     <?php 
                             $employeeid = $_SESSION['empid'];
-                            include '../config.php';
+                            include 'config.php';
                             date_default_timezone_set('Asia/Manila'); // set the timezone to Manila
 
                             $today = new DateTime(); // create a new DateTime object for today
@@ -439,7 +439,7 @@
                                         <div style="">
                                             <?php
                                                 $employeeid = $_SESSION['empid'];
-                                                include '../config.php';
+                                                include 'config.php';
                                                 date_default_timezone_set('Asia/Manila');
                                                 $yesterday = date('Y-m-d', strtotime('-1 day')); // Get the date of yesterday
 
@@ -481,7 +481,7 @@
                                                 <div style="margin-right: 38px; width: 250px;">
                                                         <?php 
                                                         $employeeid = $_SESSION['empid'];
-                                                        include '../config.php';
+                                                        include 'config.php';
 
                                                         date_default_timezone_set('Asia/Manila'); // Set the timezone to Manila, Philippines
                                                         $today = date('Y-m-d'); // Get the current date

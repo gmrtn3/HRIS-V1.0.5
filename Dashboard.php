@@ -28,12 +28,7 @@
       }
   }
 
-    // $servername = "localhost";
-    // $username = "root";
-    // $password = "";
-    // $dbname = "hris_db";
-
-    // $conn = mysqli_connect($servername, $username, $password, $dbname);
+ 
 
     include 'config.php';
     
@@ -115,6 +110,29 @@ if(mysqli_num_rows($result) <= 0) {
     $query = "INSERT INTO classification_tb (`classification`) VALUES ('Pakyawan')";
     $query_run = mysqli_query($conn, $query);    
 } 
+
+
+$query = "SELECT * FROM positionn_tb WHERE position = 'Pakyawan'";
+$result = mysqli_query($conn, $query);
+
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO positionn_tb (`position`) VALUES ('Pakyawan')";
+    $query_run = mysqli_query($conn, $query);    
+} 
+
+$query = "SELECT * FROM dept_tb WHERE col_deptname = 'Pakyawan'";
+$result = mysqli_query($conn, $query);
+
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO dept_tb (`col_deptname`) VALUES ('Pakyawan')";
+    $query_run = mysqli_query($conn, $query);    
+} 
+
+
+
+
 
     mysqli_close($conn);
 
@@ -226,12 +244,7 @@ if(mysqli_num_rows($result) <= 0) {
 ?>
 <!------------------------------------End Message alert------------------------------------------------->
     <?php 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hris_db";
-
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
+    include 'config.php';
 
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());

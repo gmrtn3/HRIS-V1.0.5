@@ -1,12 +1,6 @@
 <?php
     session_start();
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hris_db";
-
-
-    $conn = mysqli_connect($servername, $username,  $password, $dbname);
+include '../../config.php';
     $employeeID = $_SESSION['empid'];
     $Username = $_SESSION['username'];
 

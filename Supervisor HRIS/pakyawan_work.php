@@ -13,7 +13,7 @@
     } 
 }
 
-
+include 'config.php';
 ?>
 
 <!DOCTYPE html>
@@ -91,7 +91,6 @@
                     <div id="error-msg" class="alert alert-danger mt-2" style="display: none;">Start Date and End Date cannot be the same for Weekly frequency</div>
                     <?php
                        include 'config.php';
-                       $conn = mysqli_connect($server, $user, $pass, $database);
                        
                        // Assuming $_SESSION['approver_empid'] holds the current user's empid
                        // Assuming $_SESSION['empid'] holds the current user's empid

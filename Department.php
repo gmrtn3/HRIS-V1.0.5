@@ -247,7 +247,7 @@
                                     include 'config.php';
 
                                     // Query the department table to retrieve department names
-                                    $dept_query = "SELECT col_ID,col_deptname FROM dept_tb";
+                                    $dept_query = "SELECT col_ID,col_deptname FROM dept_tb WHERE col_ID != 1";
                                     $dept_result = mysqli_query($conn, $dept_query);
 
                                     // Generate the HTML table header

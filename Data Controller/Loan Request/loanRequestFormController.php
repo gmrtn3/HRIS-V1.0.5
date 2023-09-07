@@ -15,7 +15,7 @@
 
     
 
-    $conn = new mysqli('localhost', 'root', '', 'hris_db');
+    include '../../config.php';
         if($conn->connect_error){
     die('Connection Failed: ' .$conn->connect_error);
    }

@@ -1,3 +1,6 @@
+<?php
+include 'config.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -621,13 +624,12 @@
           </li>
 
           <?php 
-              // include 'config.php';
-              // $sql = "SELECT * FROM settings_company_tb";
-              // $result = mysqli_query($conn, $sql);
-              // $row = mysqli_fetch_assoc($result);
+              include 'config.php';
+              $sql = "SELECT * FROM settings_company_tb";
+              $result = mysqli_query($conn, $sql);
+              $row = mysqli_fetch_assoc($result);
 
-              // $pakyaw_toggle = $row['piece_rate_toggle'];
-              
+              @$pakyaw_toggle = $row['piece_rate_toggle'];
           ?>
 
           <li class="nav-item" id="pakyawan_toggle">
@@ -664,7 +666,7 @@
         </ul>
       </nav>
       
- <!-- <script>
+      <script>
           let pakyawan_toggle = document.getElementById("pakyawan_toggle");
           let pak_hide = document.getElementById("pak_hide").value;
 
@@ -673,7 +675,7 @@
           }else{
             pakyawan_toggle.style.display = "block";
           }
-      </script> -->
+      </script>
 
 </body>
 </html>

@@ -1,10 +1,5 @@
 <?php
-$server = "localhost";
-$user = "root";
-$pass = "";
-$database = "hris_db";
-
-$conn = mysqli_connect($server, $user, $pass, $database);
+include 'config.php';
 
 if (isset($_GET['col_ID'])) {
     $selectedDepartment = $_GET['col_ID'];

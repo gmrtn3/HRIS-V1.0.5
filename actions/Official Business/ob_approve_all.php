@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "hris_db");
+include '../../config.php';
 $employeeID = $_SESSION['empid'];
 
 use PHPMailer\PHPMailer\PHPMailer;

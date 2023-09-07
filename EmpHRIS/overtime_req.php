@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -400,7 +401,7 @@ session_start();
                             </tr>
                         </thead>
                          <?php
-                         $conn = mysqli_connect("localhost","root","","hris_db");
+                         include 'config.php';
                          $employeeid = $_SESSION['empid'];
                          
                          $query = "SELECT

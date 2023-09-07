@@ -1,5 +1,6 @@
 <?php
 
+include '../../config.php';
     $empid = $_POST['empid'];
     $loan_type = $_POST['loan_type'];
     $year = $_POST['year'];
@@ -15,7 +16,7 @@
 
     
 
-    $conn = new mysqli('localhost', 'root', '', 'hris_db');
+    
         if($conn->connect_error){
     die('Connection Failed: ' .$conn->connect_error);
    }

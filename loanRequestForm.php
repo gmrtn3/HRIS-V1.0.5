@@ -78,12 +78,7 @@
             <div class="col-6" style="padding: 0 30px 0 30px;">  
                 <div class="form-group">
                     <?php
-                        $server = "localhost";
-                        $user = "root";
-                        $pass ="";
-                        $database = "hris_db";
-
-                        $conn = mysqli_connect($server, $user, $pass, $database);
+                       include 'config.php';
                         $sql = "SELECT * FROM employee_tb ORDER BY empid ASC";
                         $result = mysqli_query($conn, $sql);
                             

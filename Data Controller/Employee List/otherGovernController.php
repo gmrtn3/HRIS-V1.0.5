@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "hris_db");
+include '../../config.php';
 
 $result = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid = '".$_POST['empid']."'");
 $row = mysqli_fetch_assoc($result);

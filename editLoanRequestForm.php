@@ -28,13 +28,7 @@
        
        }
    }
-
-$server = "localhost";
-$user = "root";
-$pass ="";
-$database = "hris_db";
-
-$conn = mysqli_connect($server, $user, $pass, $database);
+   include 'config.php';
 
 if (count($_POST) > 0) {
     mysqli_query($conn, "UPDATE payroll_loan_tb

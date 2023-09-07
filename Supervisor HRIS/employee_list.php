@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include 'config.php';
 
 ?>
 <!DOCTYPE html>
@@ -110,7 +110,7 @@ session_start();
                                                             </tr>
                                                         </thead>
                                                         <?php
-                                                        include '../config.php';
+                                                        include 'config.php';
                                                         $aprrover_ID = $_SESSION['empid'];
                                                         $query = "SELECT employee_tb.id,
                                                         CONCAT(

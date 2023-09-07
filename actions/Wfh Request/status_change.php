@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "hris_db");
+include '../../config.php';
 
 $query = "SELECT * FROM wfh_tb WHERE `status`='Pending'";
 $result = mysqli_query($conn, $query);

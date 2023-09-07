@@ -144,13 +144,4 @@
       background-color: inherit !important;
     }
     
-    .dataTables_paginate{
-      position: fixed;
-      bottom: 70px;
-      right: 30px;
-    }
-    
-    .dataTables_info{
-      position: fixed;
-      bottom: 70px;
-    }
+  

@@ -3,7 +3,7 @@
 
 // Include the configuration file and establish a database connection
 include 'config.php';
-$conn = mysqli_connect($server, $user, $pass, $database);
+
 
 // Get the employee ID from the URL parameter 'empid'
 $empid = isset($_GET['empid']) ? intval($_GET['empid']) : 0;

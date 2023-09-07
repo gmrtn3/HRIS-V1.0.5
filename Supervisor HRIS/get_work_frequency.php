@@ -1,6 +1,6 @@
 <?php
 include 'config.php';
-$conn = mysqli_connect($server, $user, $pass, $database);
+
 
 $empid = $_GET['empid'];
 

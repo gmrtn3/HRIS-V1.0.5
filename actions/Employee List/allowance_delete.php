@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "hris_db");
+include '../../config.php';
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $empid = $_GET['empid']; // add this line to get the empid from the URL

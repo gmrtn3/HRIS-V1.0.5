@@ -297,12 +297,7 @@ session_start();
                         <div class="mb-3">
                             
                             <?php
-                             $server = "localhost";
-                             $user = "root";
-                             $pass ="";
-                             $database = "hris_db";
-
-                            $conn = mysqli_connect($server, $user, $pass, $database);
+                             include 'config.php';
 
                             $sql = "SELECT employee_tb.*, classification_tb.classification FROM employee_tb
                             INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id

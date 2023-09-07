@@ -771,7 +771,18 @@
             </div>
           </li>
 
-          <li class="nav-item" id="piece_hide_show" >
+          <?php 
+              include 'config.php';
+              $sql = "SELECT * FROM settings_company_tb";
+              $result = mysqli_query($conn, $sql);
+              $row = mysqli_fetch_assoc($result);
+
+              $pakyaw_toggle = $row['piece_rate_toggle'];
+              
+          ?>
+
+
+          <li class="nav-item" id="pakyawan_toggle" >
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-pakyawan" aria-expanded="false" aria-controls="ui-pakyawan" style="margin-top: 5px; color:white">
               <i class="fa-solid fa-gear"></i>
               <span class="nav-title"  style="font-size: 21px; margin-left: 15px; font-family: Arial, sans-serif; font-weight: 400" >PAKYAWAN</span>
@@ -785,6 +796,7 @@
                 <li class="nav-item"> <a class="nav-link" href="pakyawan_payroll">PAYROLL</a></li>
                 <li class="nav-item"> <a class="nav-link" href="cash_advance">CASH ADVANCE</a></li>
               </ul>
+              <input type="hidden" value="<?php echo $pakyaw_toggle ?>" id="pak_hide">
             </div>
           </li>
           <li class="nav-item">
@@ -807,19 +819,15 @@
       </nav>
 
       <script>
-        // Fetch the piece_rate_toggle value from the PHP code
-        var pieceRateToggle = "<?php echo $pieceRateToggle; ?>";
+          let pakyawan_toggle = document.getElementById("pakyawan_toggle");
+          let pak_hide = document.getElementById("pak_hide").value;
 
-        // Get the div element with the id "piece_hide_show"
-        var pieceHideShowDiv = document.getElementById("piece_hide_show");
-
-        // Check the value of pieceRateToggle and set the display style accordingly
-        if (pieceRateToggle === "Hidden") {
-            pieceHideShowDiv.style.display = "none";
-        } else {
-            pieceHideShowDiv.style.display = "block";
-        }
-    </script>
+          if(pak_hide == 'Hidden'){
+            pakyawan_toggle.style.display = "none";
+          }else{
+            pakyawan_toggle.style.display = "block";
+          }
+      </script>
 
      
 

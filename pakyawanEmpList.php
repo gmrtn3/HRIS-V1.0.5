@@ -201,12 +201,7 @@
           <div class="form-group">
             <label for="pakyawan">Pakyawan Work Type</label>
             <?php
-                    $server = "localhost";
-                    $user = "root";
-                    $pass = "";
-                    $database = "hris_db";
-
-                    $conn = mysqli_connect($server, $user, $pass, $database);
+                    include 'config.php';
                     $sql = "SELECT * FROM piece_rate_tb";
                     $result = mysqli_query($conn, $sql);
 

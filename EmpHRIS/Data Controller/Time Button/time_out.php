@@ -1,12 +1,6 @@
 <?php
     session_start();
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hris_db";
-
-
-    $conn = mysqli_connect($servername, $username,  $password, $dbname);
+include '../../config.php';
 
     if (isset($_POST['time_out'])) {
         date_default_timezone_set('Asia/Manila');

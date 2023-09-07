@@ -3,12 +3,7 @@
 session_start();
 
 
-$server = "localhost";
-$user = "root";
-$pass ="";
-$database = "hris_db";
-
-$conn = mysqli_connect($server, $user, $pass, $database);
+include 'config.php';
 
 if (count($_POST) > 0) {
     mysqli_query($conn, "UPDATE payroll_loan_tb
@@ -210,7 +205,7 @@ $loanrows = mysqli_fetch_assoc($resultb);
                             </thead>
                             <tbody>
                                 <?php
-                                    $conn = mysqli_connect("localhost", "root", "" , "hris_db");
+                                    include 'config.php';
                                     $sql = "SELECT * FROM payroll_loan_tb WHERE empid = '".$loanrow['empid']."' ";
                                     $results = $conn->query($sql);
 
@@ -269,7 +264,7 @@ $loanrows = mysqli_fetch_assoc($resultb);
                 </thead>
                 <tbody>
                     <?php
-                        $conn = mysqli_connect("localhost", "root", "" , "hris_db");
+                        include 'config.php';
                         $sql = "SELECT * FROM payroll_loan_tb WHERE empid = '".$loanrow['empid']."' ";
                         $results = $conn->query($sql);
 

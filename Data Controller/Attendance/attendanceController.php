@@ -1,12 +1,7 @@
 <?php
 
 // Load the database configuration file
-$server = "localhost";
-$user = "root";
-$pass ="";
-$database = "hris_db";
-
-$db = mysqli_connect($server, $user, $pass, $database);
+include '../../config.php';
 
 
 if(isset($_POST['importSubmit'])){

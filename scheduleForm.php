@@ -183,12 +183,7 @@
                         
                         <div class="mb-3">
                         <?php
-                                    $server = "localhost";
-                                    $user = "root";
-                                    $pass ="";
-                                    $database = "hris_db";
-
-                                    $conn = mysqli_connect($server, $user, $pass, $database);
+                                   include 'config.php';
                                     $sql = "SELECT * FROM schedule_tb";
                                     $result = mysqli_query($conn, $sql);
 
@@ -246,12 +241,7 @@
                 <div class="schedulelist">
 
                      <?php
-                            $server = "localhost";
-                            $user = "root";
-                            $pass ="";
-                            $database = "hris_db";
-
-                            $conn = mysqli_connect($server, $user, $pass, $database);
+                            include 'config.php';
                             $sql = "SELECT * FROM schedule_tb";
                             $results = mysqli_query($conn, $sql);
 
