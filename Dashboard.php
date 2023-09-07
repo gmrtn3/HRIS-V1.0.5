@@ -34,10 +34,6 @@
     $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb WHERE classification != 3";
     $result = mysqli_query($conn, $sql);
 
-    if(!$result){
-        die("Query Failed: " . mysqli_error($conn));
-    }
-
     $row = mysqli_fetch_assoc($result);
     $employee_count = $row["employee_count"];
 
