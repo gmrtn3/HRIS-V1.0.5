@@ -89,24 +89,24 @@ if(mysqli_num_rows($result) <= 0) {
 
 
 // //para sa holiday payroll computation kasi need na Regular ang employee para  may holiday pay
-// $query = "SELECT * FROM classification_tb WHERE classification = 'Internship/OJT'";
-// $result = mysqli_query($conn, $query);
+$query = "SELECT * FROM classification_tb WHERE classification = 'Internship/OJT'";
+$result = mysqli_query($conn, $query);
 
-// if(mysqli_num_rows($result) <= 0) {
-//     // Position does not exist, insert the new record
-//     $query = "INSERT INTO classification_tb (`classification`) VALUES ('Internship/OJT')";
-//     $query_run = mysqli_query($conn, $query);    
-// } 
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Internship/OJT')";
+    $query_run = mysqli_query($conn, $query);    
+} 
 
 
 // $query = "SELECT * FROM classification_tb WHERE classification = 'Pakyawan'";
-// $result = mysqli_query($conn, $query);
+$result = mysqli_query($conn, $query);
 
-// if(mysqli_num_rows($result) <= 0) {
-//     // Position does not exist, insert the new record
-//     $query = "INSERT INTO classification_tb (`classification`) VALUES ('Pakyawan')";
-//     $query_run = mysqli_query($conn, $query);    
-// } 
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Pakyawan')";
+    $query_run = mysqli_query($conn, $query);    
+} 
 
 
 // $query = "SELECT * FROM positionn_tb WHERE position = 'Pakyawan'";
