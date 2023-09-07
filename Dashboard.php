@@ -31,103 +31,103 @@
  
 
     
-//     $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb WHERE classification != 3";
-//     $result = mysqli_query($conn, $sql);
+    $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb WHERE classification != 3";
+    $result = mysqli_query($conn, $sql);
 
-//     $row = mysqli_fetch_assoc($result);
-//     $employee_count = $row["employee_count"];
+    $row = mysqli_fetch_assoc($result);
+    $employee_count = $row["employee_count"];
 
-//    include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
+   include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
 
 
-// // FOR ATTENDANCE AUTO REFRESHER ABSENT
-//     $_query_attendance = "SELECT * FROM attendances";
-//     $result_attendance = mysqli_query($conn, $_query_attendance);
-//     if(mysqli_num_rows($result_attendance) > 0){
-//         include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
-//     }
-// // FOR ATTENDANCE AUTO REFRESHER ABSENT END
+// FOR ATTENDANCE AUTO REFRESHER ABSENT
+    $_query_attendance = "SELECT * FROM attendances";
+    $result_attendance = mysqli_query($conn, $_query_attendance);
+    if(mysqli_num_rows($result_attendance) > 0){
+        include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
+    }
+// FOR ATTENDANCE AUTO REFRESHER ABSENT END
    
 
 
-// //     // for payroll holiday rule for holiday computations
-//    $query_check = "SELECT * FROM settings_tb";
-//    $result = mysqli_query($conn, $query_check);
+//     // for payroll holiday rule for holiday computations
+   $query_check = "SELECT * FROM settings_tb";
+   $result = mysqli_query($conn, $query_check);
 
-//    if(mysqli_num_rows($result) <= 0){
-//     $query = "INSERT INTO settings_tb (`holiday_pay`) VALUES ('Default')";
-//     $query_run = mysqli_query($conn, $query);      
-//    } 
-// //    // for payroll holiday rule for holiday computations END
-
-
-//    // may error
-//    $query = "SELECT * FROM settings_company_tb";
-//    $result = mysqli_query($conn, $query);
-
-//    if (mysqli_num_rows($result) <= 0){
-//     //    $row = mysqli_fetch_assoc($result);
-
-//        $query = "INSERT INTO settings_company_tb (`col_salary_settings`)
-//        VALUES ('Fixed Salary')";
-//        $query_run = mysqli_query($conn, $query);   
-//    }
+   if(mysqli_num_rows($result) <= 0){
+    $query = "INSERT INTO settings_tb (`holiday_pay`) VALUES ('Default')";
+    $query_run = mysqli_query($conn, $query);      
+   } 
+//    // for payroll holiday rule for holiday computations END
 
 
+   // may error
+   $query = "SELECT * FROM settings_company_tb";
+   $result = mysqli_query($conn, $query);
+
+   if (mysqli_num_rows($result) <= 0){
+    //    $row = mysqli_fetch_assoc($result);
+
+       $query = "INSERT INTO settings_company_tb (`col_salary_settings`)
+       VALUES ('Fixed Salary')";
+       $query_run = mysqli_query($conn, $query);   
+   }
 
 
-// // //CLASSIFICATION AUTO INSERT
-
-// //    //para sa holiday payroll computation kasi need na Regular ang employee para  may holiday pay
-// $query = "SELECT * FROM classification_tb WHERE classification = 'Regular'";
-// $result = mysqli_query($conn, $query);
-
-// if(mysqli_num_rows($result) <= 0) {
-//     // Position does not exist, insert the new record
-//     $query = "INSERT INTO classification_tb (`classification`) VALUES ('Regular')";
-//     $query_run = mysqli_query($conn, $query);    
-// } 
 
 
-// // //para sa holiday payroll computation kasi need na Regular ang employee para  may holiday pay
-// $query = "SELECT * FROM classification_tb WHERE classification = 'Internship/OJT'";
-// $result = mysqli_query($conn, $query);
+// //CLASSIFICATION AUTO INSERT
 
-// if(mysqli_num_rows($result) <= 0) {
-//     // Position does not exist, insert the new record
-//     $query = "INSERT INTO classification_tb (`classification`) VALUES ('Internship/OJT')";
-//     $query_run = mysqli_query($conn, $query);    
-// } 
+//    //para sa holiday payroll computation kasi need na Regular ang employee para  may holiday pay
+$query = "SELECT * FROM classification_tb WHERE classification = 'Regular'";
+$result = mysqli_query($conn, $query);
 
-
-// // $query = "SELECT * FROM classification_tb WHERE classification = 'Pakyawan'";
-// $result = mysqli_query($conn, $query);
-
-// if(mysqli_num_rows($result) <= 0) {
-//     // Position does not exist, insert the new record
-//     $query = "INSERT INTO classification_tb (`classification`) VALUES ('Pakyawan')";
-//     $query_run = mysqli_query($conn, $query);    
-// } 
-
-// //error
-// $query = "SELECT * FROM positionn_tb WHERE position = 'Pakyawan'";
-// $result = mysqli_query($conn, $query);
-
-// if(mysqli_num_rows($result) <= 0) {
-//     // Position does not exist, insert the new record
-//     $query = "INSERT INTO positionn_tb (`position`) VALUES ('Pakyawan')";
-//     $query_run = mysqli_query($conn, $query);    
-// } 
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Regular')";
+    $query_run = mysqli_query($conn, $query);    
+} 
 
 
-// $query = "SELECT * FROM dept_tb WHERE col_deptname = 'Pakyawan'";
-// $result = mysqli_query($conn, $query);
+// //para sa holiday payroll computation kasi need na Regular ang employee para  may holiday pay
+$query = "SELECT * FROM classification_tb WHERE classification = 'Internship/OJT'";
+$result = mysqli_query($conn, $query);
 
-// if(mysqli_num_rows($result) <= 0) {
-//     // Position does not exist, insert the new record
-//     $query = "INSERT INTO dept_tb (`col_deptname`) VALUES ('Pakyawan')";
-//     $query_run = mysqli_query($conn, $query);    
-// } 
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Internship/OJT')";
+    $query_run = mysqli_query($conn, $query);    
+} 
+
+
+// $query = "SELECT * FROM classification_tb WHERE classification = 'Pakyawan'";
+$result = mysqli_query($conn, $query);
+
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Pakyawan')";
+    $query_run = mysqli_query($conn, $query);    
+} 
+
+//error
+$query = "SELECT * FROM positionn_tb WHERE position = 'Pakyawan'";
+$result = mysqli_query($conn, $query);
+
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO positionn_tb (`position`) VALUES ('Pakyawan')";
+    $query_run = mysqli_query($conn, $query);    
+} 
+
+
+$query = "SELECT * FROM dept_tb WHERE col_deptname = 'Pakyawan'";
+$result = mysqli_query($conn, $query);
+
+if(mysqli_num_rows($result) <= 0) {
+    // Position does not exist, insert the new record
+    $query = "INSERT INTO dept_tb (`col_deptname`) VALUES ('Pakyawan')";
+    $query_run = mysqli_query($conn, $query);    
+} 
 
 
 
@@ -211,7 +211,7 @@
 <body >
     <header>
         <?php
-        //  include("header.php")
+         include("header.php")
         ?>
     </header>
     <style>

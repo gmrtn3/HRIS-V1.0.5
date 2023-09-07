@@ -83,12 +83,7 @@ else
 // ----------------END Insert into approver_tb table -------------------------
 }
 
-
-
-    $result = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid ='". $_GET['empid']. "'");
-    $row = mysqli_fetch_assoc($result);  
-
-    $empid = $row['empid'];
+    include 'config.php';
 
     $restdayResult = mysqli_query($conn, "SELECT restday FROM employee_tb AS emp
                                         INNER JOIN empschedule_tb AS esched ON esched.empid = emp.empid
@@ -131,6 +126,15 @@ else
 
     // echo $userId;
     // echo $_SESSION['empid'];
+    // $employeeID = $_GET['empid'];
+
+    // echo $_GET['empid'];
+
+    $sql = "SELECT * FROM employee_tb WHERE `empid` = '".$_GET['empid'] ."' ";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    
+    $empid = $row['empid'];
 
     
 }
@@ -182,7 +186,9 @@ else
 </head> 
 <body>
     <header>
-        <?php include("header.php");?>
+        <?php 
+        include("header.php");
+        ?>
         
     </header>
 
@@ -366,7 +372,7 @@ else
  
 
                                         ?> 
-                                        <h2 style="font-size: 1.3em; color: gray; font-style:italic"><?php echo $position ?></h2>
+                                        <h2 style="font-size: 1.3em; color: gray; font-style:italic"><?php echo $empid ?></h2>
                                         <p class="" style="margin-top: -3px; color: black; font-weight: 500">Status: <span style="<?php if($row['status'] == 'Active'){echo "color: green"; }else{echo "color:red"; } ?>"><?php echo $row['status'] ?></span></p>
                                         
                                         <div class="emp-stats" style="">
