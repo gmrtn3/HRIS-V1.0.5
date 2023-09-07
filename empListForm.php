@@ -931,7 +931,7 @@ document.getElementById("empdob").setAttribute("min", minDateFormatted);
         role.removeAttribute("required");
         formEmail.removeAttribute("required");
         pass.removeAttribute("required");
-        cpass.removeAttribute("required");
+        // cpass.removeAttribute("required");
         
 
         btn.addEventListener("click", function() {
@@ -976,7 +976,7 @@ document.getElementById("empdob").setAttribute("min", minDateFormatted);
         role.removeAttribute("disabled");
         formEmail.removeAttribute("disabled");
         pass.removeAttribute("disabled");
-        cpass.removeAttribute("disabled");
+        // cpass.removeAttribute("disabled");
       } else {
         transpo.setAttribute("disabled", "disabled");
         meal.setAttribute("disabled", "disabled");
@@ -1000,7 +1000,7 @@ document.getElementById("empdob").setAttribute("min", minDateFormatted);
         role.setAttribute("disabled", "disabled");
         formEmail.setAttribute("disabled", "disabled");
         pass.setAttribute("disabled", "disabled");
-        cpass.setAttribute("disabled", "disabled");
+        // cpass.setAttribute("disabled", "disabled");
       }
     });
   });
