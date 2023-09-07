@@ -31,49 +31,49 @@
  
 
     
-    $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb WHERE classification != 3";
-    $result = mysqli_query($conn, $sql);
+//     $sql = "SELECT COUNT(*) AS employee_count FROM employee_tb WHERE classification != 3";
+//     $result = mysqli_query($conn, $sql);
 
-    if(!$result){
-        die("Query Failed: " . mysqli_error($conn));
-    }
+//     if(!$result){
+//         die("Query Failed: " . mysqli_error($conn));
+//     }
 
-    $row = mysqli_fetch_assoc($result);
-    $employee_count = $row["employee_count"];
+//     $row = mysqli_fetch_assoc($result);
+//     $employee_count = $row["employee_count"];
 
-//    include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
+// //    include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
 
 
-// FOR ATTENDANCE AUTO REFRESHER ABSENT
-    $_query_attendance = "SELECT * FROM attendances";
-    $result_attendance = mysqli_query($conn, $_query_attendance);
-    if(mysqli_num_rows($result_attendance) > 0){
-        // include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
-    }
-// FOR ATTENDANCE AUTO REFRESHER ABSENT END
+// // FOR ATTENDANCE AUTO REFRESHER ABSENT
+//     $_query_attendance = "SELECT * FROM attendances";
+//     $result_attendance = mysqli_query($conn, $_query_attendance);
+//     if(mysqli_num_rows($result_attendance) > 0){
+//         // include ('Data Controller/Attendance/absent_refreshed.php'); // para mag generate ng automatic absent feature    
+//     }
+// // FOR ATTENDANCE AUTO REFRESHER ABSENT END
    
 
 
-    // for payroll holiday rule for holiday computations
-   $query_check = "SELECT * FROM settings_tb";
-   $result = mysqli_query($conn, $query_check);
+//     // for payroll holiday rule for holiday computations
+//    $query_check = "SELECT * FROM settings_tb";
+//    $result = mysqli_query($conn, $query_check);
 
-   if(mysqli_num_rows($result) <= 0){
-    $query = "INSERT INTO settings_tb (`holiday_pay`) VALUES ('Default')";
-    $query_run = mysqli_query($conn, $query);      
-   } 
-   // for payroll holiday rule for holiday computations END
+//    if(mysqli_num_rows($result) <= 0){
+//     $query = "INSERT INTO settings_tb (`holiday_pay`) VALUES ('Default')";
+//     $query_run = mysqli_query($conn, $query);      
+//    } 
+//    // for payroll holiday rule for holiday computations END
 
-   $query_settings = "SELECT * FROM settings_company_tb";
-   $query_run_Settings = mysqli_query($conn, $query_settings);
+//    $query_settings = "SELECT * FROM settings_company_tb";
+//    $query_run_Settings = mysqli_query($conn, $query_settings);
 
-   if (mysqli_num_rows($query_run_Settings) <= 0){
-       $row_settings = mysqli_fetch_assoc($query_run_Settings);
+//    if (mysqli_num_rows($query_run_Settings) <= 0){
+//        $row_settings = mysqli_fetch_assoc($query_run_Settings);
 
-       $query_settings = "INSERT INTO settings_company_tb (`col_salary_settings`)
-       VALUES ('Fixed Salary')";
-       $query_run_Settings = mysqli_query($conn, $query_settings);   
-   }
+//        $query_settings = "INSERT INTO settings_company_tb (`col_salary_settings`)
+//        VALUES ('Fixed Salary')";
+//        $query_run_Settings = mysqli_query($conn, $query_settings);   
+//    }
 
 
 
