@@ -78,7 +78,9 @@
 </head>
 <body>
     <header>
-        <?php include("header.php")?>
+        <?php 
+        include("header.php")
+        ?>
     </header>
     <style>
     .email-col {
@@ -389,27 +391,7 @@
 
                 echo "</td>";
                 echo "<td class='d-none'> ".$cmpny_empid." </td>";
-                echo "<td>";
-                require_once './SpecialFolders/BiometricsData/Employee.php';
-                try {
-                    $employee = new Employee('12345', '192.168.0.143:8090');
-                } catch (Exception $e) {
-                    echo 'no biometrics found';
-                }
-
-                if ($employee->IsEmployeeExist($row['empid'])) {
-                    echo "<button style='text-decoration:none; text-align:center;' onclick='updateBiometrics(" . strval($row['empid'] !== null ? $row['empid'] : '0') . ")'> Update </button>";
-                } else if (!$employee->IsEmployeeExist($row['empid'])) {
-                    echo "<button style='text-decoration:none; text-align:center;' onclick='addBiometrics(" . strval($row['empid'] !== null ? $row['empid'] : 0) . ")'> Add </button>";
-                } else if ($employee->IsEmployeeExist($row['empid']) == null) {
-                    echo "Biometrics error";
-                }
-
-
-                // NOTE: MATAGAL MAGLOLOAD (O BAKA HINDI NA NGA) TONG MODULE PAG DI NAKABUKAS YUNG HARDWARE (NEED TO OPEN BIOMETRICS HARDWARE).....
-
-
-                echo "</td>";
+                
                 echo "</tr>";
             }
         } else {
@@ -420,174 +402,7 @@
     </tbody>
 </table>
 
- <!-- biometrics data add window -->
- <div id="add-biometrics-modal" class="modal">
-                <div class="modal-content">
-                    <!-- Settings Window -->
-                    <span class="close" id="close_btn">&times;</span>
-
-                    <h3>Add to Biometrics</h3>
-
-                    <!-- Change Password -->
-                    <form action="SpecialFolders/BiometricsData/biometrics-controller.php" id="form-details" class="form-flex-box" method="POST">
-
-                    </form>
-                </div>
-            </div>
-
-            <!-- Biometrics Update window -->
-            <div id="update-biometrics-modal" class="modal">
-                <div class="modal-content">
-                    <!-- Settings Window -->
-                    <span class="close" id="close_btn_update">&times;</span>
-
-                    <h3>Update Biometrics</h3>
-
-                    <!-- Change Password -->
-                    <div id="button-containers">
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- modal window js -->
-            <script type="text/javascript">
-                addBiometrics = (empid) => {
-                    var modal = document.getElementById('add-biometrics-modal');
-                    console.log("Empid: " + empid);
-                    modal.style.display = 'block';
-
-                    fetch(`SpecialFolders/BiometricsData/personDetails.php?empid=${empid}`)
-                        .then(res => res.text())
-                        .then(resData => {
-                            console.log(resData);
-                            document.getElementById('form-details').innerHTML = resData;
-                        })
-                        .catch(err => {
-                            console.error(err);
-                        })
-                }
-
-                var closeAddBtn = document.getElementsByClassName('close')[0]
-
-                closeAddBtn.addEventListener('click', () => {
-                    var modal = document.getElementsByClassName('modal')[0]
-                    modal.style.display = 'none';
-                    console.log('closed');
-                });
-
-
-                window.addEventListener('click', (e) => {
-                    var modal = document.getElementsByClassName('modal')[0]
-                    if (e.target == modal) {
-                        modal.style.display = 'none';
-                    }
-                })
-
-                closeModal = () => {
-                    // var modal = document.getElementById('device-settings-modal')
-                    var modal = document.getElementsByClassName('modal')[0]
-                    modal.style.display = 'none';
-                    console.log('closed');
-                }
-            </script>
-
-
-            <!-- JS for Update window -->
-            <script type="text/javascript">
-                updateBiometrics = (empid) => {
-                    var modal = document.getElementById('update-biometrics-modal');
-
-                    console.log("Empid: ", empid);
-                    modal.style.display = 'block';
-                    fetch(`SpecialFolders/BiometricsData/addBiometrics?empid=${empid}`)
-                        .then(res => res.text())
-                        .then(resData => {
-                            console.log(resData)
-                            document.getElementById('button-containers').innerHTML = resData
-                        })
-                }
-
-                var closeAddBtn = document.getElementsByClassName('close')[1]
-
-                closeAddBtn.addEventListener('click', () => {
-                    var modal = document.getElementsByClassName('modal')[1]
-                    modal.style.display = 'none';
-                    console.log('closed');
-                });
-
-
-                window.addEventListener('click', (e) => {
-                    var modal = document.getElementsByClassName('modal')[1]
-                    if (e.target == modal) {
-                        modal.style.display = 'none';
-                    }
-                })
-
-                closeModal = () => {
-                    // var modal = document.getElementById('device-settings-modal')
-                    var modal = document.getElementsByClassName('modal')[1]
-                    modal.style.display = 'none';
-                    console.log('closed');
-                }
-            </script>
-
-            <script type="text/javascript">
-                //Add Face to Biometrics Hardware
-                function addFace(empid) {
-
-                    if (checkDigits(empid) === 1) {
-                        // console.log(checkDigits(200))
-                        empid = "00" + empid.toString();
-                    }
-                    if (checkDigits(empid) === 2) {
-                        empid = "0" + empid.toString();
-                    }
-
-                    // console.log(`face for: ${empid}`);
-                    fetch(`http://192.168.0.143:8090/face/takeImg?pass=12345&personId=${empid}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }).then(res => res.json())
-                        .then(data => {
-                            alert(data.msg)
-                        })
-                }
-
-
-                // Add fingerprint to Biometrics Hardware
-                function addFingerprint(empid) {
-
-                    if (checkDigits(empid) === 1) {
-                        // console.log(checkDigits(200))
-                        empid = "00" + empid.toString();
-                    }
-                    if (checkDigits(empid) === 2) {
-                        empid = "0" + empid.toString();
-                    }
-
-                    // console.log(`fingerprint for: ${empid.toString()}`);
-
-                    fetch(`http://192.168.0.143:8090/face/fingerRegist?pass=12345&personId=${empid}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            // body: JSON.stringify(empid)
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            console.log(data.msg);
-                            alert(data.msg);
-                        })
-                }
-
-                function checkDigits(int) {
-                    return int.toString().length;
-                }
-            </script>
+ 
 
 
         </div>
