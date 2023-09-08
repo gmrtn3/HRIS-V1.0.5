@@ -1,7 +1,4 @@
 
-<?php try{
-?>
-
 <?php
  session_start();
  //    $empid = $_SESSION['empid'];
@@ -106,7 +103,7 @@
                             
                             <div class="mb-3" >
                                 <?php  
-                                    $conn =mysqli_connect("localhost", "root", "" , "hris_db");
+                                   include 'config.php';
                                     $stmt = "SELECT * FROM employee_tb
                                             AS emp
                                             INNER JOIN empschedule_tb
@@ -675,7 +672,3 @@ $(document).ready(function() {
     <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
 </body>
 </html>
-<?php }catch (Exception $e) {
-    // Handle the exception
-    echo "An exception occurred: " . $e->getMessage();
-} ?>
