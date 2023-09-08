@@ -67,12 +67,12 @@ $empsss = $_POST['empsss'];
 $emptin = $_POST['emptin'];
 $emppagibig = $_POST['emppagibig'];
 $empphilhealth = $_POST['empphilhealth'];
-// $empbranch = filter_input(INPUT_POST, "empbranch", FILTER_SANITIZE_STRING);
-// $col_deptname = filter_input(INPUT_POST, "col_deptname", FILTER_SANITIZE_STRING);
-// $empposition = filter_input(INPUT_POST, "empposition", FILTER_SANITIZE_STRING);
-$empbranch = $_POST['empbranch'];
-$col_deptname = $_POST['col_deptname'];
-$empposition = $_POST['empposition'];
+$empbranch = filter_input(INPUT_POST, "empbranch", FILTER_SANITIZE_STRING);
+$col_deptname = filter_input(INPUT_POST, "col_deptname", FILTER_SANITIZE_STRING);
+$empposition = filter_input(INPUT_POST, "empposition", FILTER_SANITIZE_STRING);
+// $empbranch = $_POST['empbranch'];
+// $col_deptname = $_POST['col_deptname'];
+// $empposition = $_POST['empposition'];
 $drate = $_POST['drate'];
 // $approver = $_POST['approver'];
 $empdate_hired = $_POST['empdate_hired'];
@@ -162,28 +162,28 @@ if ($count > 0) {
 
 $stmt->close();
 
-// Calculate the date 18 years ago
-$minDate = new DateTime('1990-01-01');
+// // Calculate the date 18 years ago
+// $minDate = new DateTime('1990-01-01');
 
-// Check if the employee's date of birth is valid
-$empdobDateTime = DateTime::createFromFormat('Y-m-d', $empdob);
-if (!$empdobDateTime || $empdobDateTime > new DateTime() || $empdobDateTime < $minDate) {
-    echo "<script>alert('Invalid date of birth.');</script>";
-    echo "<script>window.location.href = '../../empListForm.php';</script>";
-    exit;
-}
+// // Check if the employee's date of birth is valid
+// $empdobDateTime = DateTime::createFromFormat('Y-m-d', $empdob);
+// if (!$empdobDateTime || $empdobDateTime > new DateTime() || $empdobDateTime < $minDate) {
+//     echo "<script>alert('Invalid date of birth.');</script>";
+//     echo "<script>window.location.href = '../../empListForm.php';</script>";
+//     exit;
+// }
 
-if (!preg_match("/^[a-zA-Z' -]+$/", $fname)) {
-    echo "<script>alert('Invalid first name.');</script>";
-    echo "<script>window.location.href = '../../empListForm.php';</script>";
-    exit;
-  }
+// if (!preg_match("/^[a-zA-Z' -]+$/", $fname)) {
+//     echo "<script>alert('Invalid first name.');</script>";
+//     echo "<script>window.location.href = '../../empListForm.php';</script>";
+//     exit;
+//   }
   
-  if (!preg_match("/^[a-zA-Z' -]+$/", $lname)) {
-    echo "<script>alert('Invalid last name.');</script>";
-    echo "<script>window.location.href = '../../empListForm.php';</script>";
-    exit;
-  }
+//   if (!preg_match("/^[a-zA-Z' -]+$/", $lname)) {
+//     echo "<script>alert('Invalid last name.');</script>";
+//     echo "<script>window.location.href = '../../empListForm.php';</script>";
+//     exit;
+//   }
   
 // Combine first and last name
 $fullname = $fname . ' ' . $lname;
