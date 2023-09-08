@@ -1,4 +1,7 @@
 
+<?php try{
+?>
+
 <?php
  session_start();
  //    $empid = $_SESSION['empid'];
@@ -672,3 +675,7 @@ $(document).ready(function() {
     <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
 </body>
 </html>
+<?php }catch (Exception $e) {
+    // Handle the exception
+    echo "An exception occurred: " . $e->getMessage();
+} ?>
