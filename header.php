@@ -71,7 +71,7 @@
                       }
                     ?>
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start" id="logo-upper-nav" >
-      <a class="navbar-brand brand-logo me-5" href="dashboard.php" ><img src="data:<?php echo $image_type; ?>;base64,<?php echo $image_data; ?>" class="me-2" alt="logo" style="margin-left: 25px;"/></a>
+      <a class="navbar-brand brand-logo me-5" href="Dashboard" ><img src="data:<?php echo $image_type; ?>;base64,<?php echo $image_data; ?>" class="me-2" alt="logo" style="margin-left: 25px;"/></a>
         <!-- <a class="navbar-brand brand-logo-mini" href="dashboard.php" style="width: 100px;"><img src="img/header-logo-small.jpg" alt="logo" style="width: 100px; " /></a> -->
       </div>
       
@@ -625,7 +625,7 @@
 <nav class="sidebar sidebar-offcanvas custom-nav" id="sidebar" style="margin-top: 20px; position:fixed; overflow-y: auto; height: calc(100vh - 40px);">
   <ul class="nav" style="margin-top: 50px; color:red;">
           <li class="nav-item" style="color: black">
-            <a class="nav-link" href="dashboard" style="color: white;">
+            <a class="nav-link" href="Dashboard" style="color: white;">
               <i class="icon-grid fa-solid fa-tv" style=""></i>
               <span class="nav-title" style="font-size: 21px; margin-left: 15px; font-family: Arial, sans-serif; font-weight: 500">DASHBOARD</span>
             </a>
@@ -646,7 +646,7 @@
               <li class="nav-item"> <a class="nav-link" href="leaveInfo">LEAVE CREDIT</a></li>
               <li class="nav-item"> <a class="nav-link" href="leaveReq">LEAVE REQUEST</a></li>
               <li class="nav-item"> <a class="nav-link" href="official_business">OFFICIAL BUSINESS</a></li>
-              <li class="nav-item"> <a class="nav-link" href="Schedules">SCHEDULES</a></li>
+              <li class="nav-item"> <a class="nav-link" href="schedules">SCHEDULES</a></li>
             </ul>
           </div>
         </li>
@@ -771,6 +771,15 @@
             </div>
           </li>
 
+          <?php 
+              // include 'config.php';
+              // $sql = "SELECT * FROM settings_company_tb WHERE `piece_rate_toggle` = 'Hidden' ";
+              // $result = mysqli_query($conn, $sql);
+              // $row = mysqli_fetch_assoc($result);
+
+              // @$pakyaw_toggle = $row['piece_rate_toggle'];
+          ?>
+
           <li class="nav-item" id="piece_hide_show" >
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-pakyawan" aria-expanded="false" aria-controls="ui-pakyawan" style="margin-top: 5px; color:white">
               <i class="fa-solid fa-gear"></i>
@@ -784,6 +793,7 @@
                 <li class="nav-item"> <a class="nav-link" href="pakyawan_work">SET WORK LOAD</a></li>
                 <li class="nav-item"> <a class="nav-link" href="pakyawan_payroll">PAYROLL</a></li>
                 <li class="nav-item"> <a class="nav-link" href="cash_advance">CASH ADVANCE</a></li>
+                <input type="hidden" value="<?php echo $pakyaw_toggle ?>" id="pak_hide">
               </ul>
             </div>
           </li>
@@ -807,18 +817,14 @@
       </nav>
 
       <script>
-        // Fetch the piece_rate_toggle value from the PHP code
-        var pieceRateToggle = "<?php echo $pieceRateToggle; ?>";
+        //  let pakyawan_toggle = document.getElementById("pakyawan_toggle");
+        //   let pak_hide = document.getElementById("pak_hide").value;
 
-        // Get the div element with the id "piece_hide_show"
-        var pieceHideShowDiv = document.getElementById("piece_hide_show");
-
-        // Check the value of pieceRateToggle and set the display style accordingly
-        if (pieceRateToggle === "Hidden") {
-            pieceHideShowDiv.style.display = "none";
-        } else {
-            pieceHideShowDiv.style.display = "block";
-        }
+        //   if(pak_hide == 'Hidden'){
+        //     pakyawan_toggle.style.display = "none";
+        //   }else{
+        //     pakyawan_toggle.style.display = "block";
+        //   }
     </script>
 
      

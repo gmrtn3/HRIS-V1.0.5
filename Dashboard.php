@@ -357,6 +357,12 @@ if(mysqli_num_rows($result) <= 0) {
                         </thead>
                         <?php
                             include 'config.php';
+                            
+                            try {
+                                // Code that may throw an exception
+                                // $result = 10 / 0; // This will throw a "Division by zero" exception
+                            
+
 
                             $query = "SELECT
                             announcement_tb.id,
@@ -392,7 +398,16 @@ if(mysqli_num_rows($result) <= 0) {
                                
                             </tr>
                         <?php
+                                }
+
+                                
                             }
+                            catch (Exception $e) {
+                                // Handle the exception
+                                echo "An exception occurred: " . $e->getMessage();
+                            }
+
+                            
                         ?>
                     </table>
                 </div>
