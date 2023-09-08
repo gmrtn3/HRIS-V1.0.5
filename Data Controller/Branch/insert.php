@@ -1,6 +1,7 @@
 <?php 
     include "../../config.php";
 
+    
     if(isset($_POST['add_data'])) {
         $branch_name = $_POST['branch_name'];
         $branch_address = $_POST['branch_address'];
