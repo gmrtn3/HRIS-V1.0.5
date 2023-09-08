@@ -15,7 +15,7 @@
 // }
 
 
-$servername = "172.16.2.45";
+$servername = "180.232.110.182";
  $username = "root";
  $password = "RAKabo64657";
  $dbname = "hris_db";
