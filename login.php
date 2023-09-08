@@ -40,7 +40,7 @@ if(isset($_POST['signIn'])){
                 $_SESSION['role'] = $row['role'];
                 
                 if($row['role'] == 'admin'){
-                    header("Location: Dashboard"); // Redirect to admin dashboard
+                    header("Location: Dashboard.php"); // Redirect to admin dashboard
                     exit();
                 } else if($row['role'] == 'Employee'){
                     header("Location: EmpHRIS/Dashboard"); // Redirect to employee dashboard

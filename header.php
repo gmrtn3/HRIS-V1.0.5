@@ -646,7 +646,7 @@
               <li class="nav-item"> <a class="nav-link" href="leaveInfo">LEAVE CREDIT</a></li>
               <li class="nav-item"> <a class="nav-link" href="leaveReq">LEAVE REQUEST</a></li>
               <li class="nav-item"> <a class="nav-link" href="official_business">OFFICIAL BUSINESS</a></li>
-              <li class="nav-item"> <a class="nav-link" href="schedules">SCHEDULES</a></li>
+              <li class="nav-item"> <a class="nav-link" href="Schedules">SCHEDULES</a></li>
             </ul>
           </div>
         </li>
