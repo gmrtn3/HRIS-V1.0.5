@@ -2,17 +2,17 @@
 // if(error_reporting(0)){
 //     header("Location: ../../EmployeeList.php?msg='Employee added successfully'");
 // }
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\Exception;
 
 
 include '../../config.php';
 
-require '../../phpmailer/src/Exception.php';
+// require '../../phpmailer/src/Exception.php';
 
-require '../../phpmailer/src/PHPMailer.php';
+// require '../../phpmailer/src/PHPMailer.php';
 
-require '../../phpmailer/src/SMTP.php';
+// require '../../phpmailer/src/SMTP.php';
 
 // Define an array to hold any validation errors
 $errors = array();
@@ -305,39 +305,39 @@ if ($stmt1->errno) {
     echo '<script>alert("Employee successfully added.")</script>';
     echo "<script>window.location.href = '../../EmployeeList';</script>";
   
-    $mail = new PHPMailer(true);
+    // $mail = new PHPMailer(true);
   
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'hris.payroll.mailer@gmail.com'; //gmail name
-    $mail->Password = 'ndehozbugmfnhmes'; // app password
-    $mail->SMTPSecure = 'ssl';
-    $mail->Port = 465;
+    // $mail->isSMTP();
+    // $mail->Host = 'smtp.gmail.com';
+    // $mail->SMTPAuth = true;
+    // $mail->Username = 'hris.payroll.mailer@gmail.com'; //gmail name
+    // $mail->Password = 'ndehozbugmfnhmes'; // app password
+    // $mail->SMTPSecure = 'ssl';
+    // $mail->Port = 465;
   
-    $mail->setFrom('hris.payroll.mailer@gmail.com'); //gmail name
+    // $mail->setFrom('hris.payroll.mailer@gmail.com'); //gmail name
 
     
   
-    $mail->addAddress($email);
+    // $mail->addAddress($email);
   
-    $mail->isHTML(true);
+    // $mail->isHTML(true);
   
-    // $imgData = file_get_contents('../../img/panget.png');
-    $imgData64 = base64_encode($imgData);
-    $cid = md5(uniqid(time()));
-    $imgSrc = 'data:image/png;base64,' . $imgData64;
-    // $mail->addEmbeddedImage('../../img/panget.png', $cid, 'panget.png');
+    // // $imgData = file_get_contents('../../img/panget.png');
+    // $imgData64 = base64_encode($imgData);
+    // $cid = md5(uniqid(time()));
+    // $imgSrc = 'data:image/png;base64,' . $imgData64;
+    // // $mail->addEmbeddedImage('../../img/panget.png', $cid, 'panget.png');
   
-    $mail->Body .= '<img src="cid:' . $cid . '" style="height: 100px; width: 200px;">';
-    $mail->Body .= '<h1>Hello, ' . $fname . ' ' . $mname . ' '. $lname . '</h1>';
-    $mail->Body .= '<h2>Your account has been successfully created. Enter your given credential to access the website.</h2>';
-    $mail->Body .= '<h3>Your account details:</h3>';
-    $mail->Body .= '<p>Username: ' . $username . '</p>';
-    $mail->Body .= '<p>Password: ' . $password . '</p>';
-    $mail->Body .= '<p>Click <a href="http://192.168.0.105:8080/hris/empChangePassword.php">here</a> to change your preferred password and to access the website.</p>';
+    // $mail->Body .= '<img src="cid:' . $cid . '" style="height: 100px; width: 200px;">';
+    // $mail->Body .= '<h1>Hello, ' . $fname . ' ' . $mname . ' '. $lname . '</h1>';
+    // $mail->Body .= '<h2>Your account has been successfully created. Enter your given credential to access the website.</h2>';
+    // $mail->Body .= '<h3>Your account details:</h3>';
+    // $mail->Body .= '<p>Username: ' . $username . '</p>';
+    // $mail->Body .= '<p>Password: ' . $password . '</p>';
+    // $mail->Body .= '<p>Click <a href="http://192.168.0.105:8080/hris/empChangePassword.php">here</a> to change your preferred password and to access the website.</p>';
   
-    $mail->send();
+    // $mail->send();
   }
   
    
