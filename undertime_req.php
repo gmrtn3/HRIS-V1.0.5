@@ -1,32 +1,7 @@
 <?php
 session_start();
-//    $empid = $_SESSION['empid'];
-   if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-} else {
-    // Check if the user's role is not "admin"
-    if ($_SESSION['role'] != 'admin') {
-        // If the user's role is not "admin", log them out and redirect to the logout page
-        session_unset();
-        session_destroy();
-        header("Location: logout.php");
-        exit();
-    } else{
-        include 'config.php';
-        $userId = $_SESSION['empid'];
-       
-        $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
-        $iconRow = mysqli_fetch_assoc($iconResult);
 
-        if ($iconRow) {
-            $image_url = $iconRow['emp_img_url'];
-        } else {
-            // Handle the case when the user ID is not found in the database
-            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
-        }
-    
-    }
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,28 +57,49 @@ session_start();
 
     .pagination{
         margin-right: 63px !important;
-
         
+    }
+    .sorting_asc{
+        color: black !important;
     }
 
     .pagination li a{
         color: #c37700;
     }
 
-        .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+    .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
         z-index: 3;
         color: #fff;
         background-color: #000;
-        border-color: #000;
+        margin-top: 20px;
     }
 
     
     
     #order-listing_next{
-        margin-right: 28px !important;
-        margin-bottom: -16px !important;
+        margin-right: 18px !important;
+        margin-bottom: -17px !important;
 
     }
+    table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 100%;
+                height: 320px;
+                /* border: black 1px solid; */
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+    
 </style>
 
 <!---------------------------------------Download Modal Start Here -------------------------------------->
@@ -198,15 +194,116 @@ session_start();
 </div>
 <!------------------------------------------------End ng View Modal ---------------------------------------------------->
 
+<!----------------Modal kapag clinick ang approve button----------------------->
+<div class="modal fade" id="Modal_UT_Approved" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Undertime Request/approve_ut.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve this request?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <input type="hidden" id="approve_ut_id" name="approve_name_ut">
+                          <textarea class="form-control" name="ut_approve_marks" placeholder="Approval message..." id="floatingTextarea"></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="name_approved_ut" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!----------------Modal kapag clinick ang approve button----------------------->
 
+<!----------------Modal kapag clinick ang reject button----------------------->
+<div class="modal fade" id="Modal_UT_reject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Undertime Request/reject_ut.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to reject this request?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <input type="hidden" id="reject_ut_id" name="reject_name_ut">
+                          <textarea class="form-control" name="ut_reject_remarks" placeholder="Reject message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="name_rejected_ut" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!----------------Modal kapag clinick ang reject button----------------------->
+
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+<div class="modal fade" id="ut_approve_all_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Undertime Request/ut_approve_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="ut_all_approve_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="approve_all_ut" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+
+
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+<div class="modal fade" id="ut_reject_all_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Undertime Request/ut_reject_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="ut_all_reject_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="reject_all_ut" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
 
 
 
 <!------------------------------------Main Panel of data table------------------------------------------------->
-    <div class="main-panel mt-5" style="margin-left: 19%; position: absolute; top: 30px;">
+<div class="main-panel mt-5" style="margin-left: 19%; position: absolute; top: 30px;">
         <div class=" mt-5">
           <div class="card" style="box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17); width:1500px; height:800px; border-radius:20px;">
-            <div class="card-body">  
+            <div class="card-body">   
 <!------------------------------------Main Panel of data table------------------------------------------------->
 
 
@@ -266,7 +363,7 @@ session_start();
             </div>
 
             <div class="dropdown_panel">
-                   <?php
+                    <?php
                         $status = isset($_GET['status']) ? $_GET['status'] : '';
                     ?>
               <p class="drop_text">Status</p>
@@ -279,8 +376,9 @@ session_start();
                   <option value="Cancelled" <?php if ($status == 'Cancelled') echo 'selected'; ?>>Cancelled</option>
               </select>
           </div>
-
-            <button class="btn_go" id="id_btngo" onclick="filterUTRequest()">Go</button>
+          
+          <button class="btn_go" id="id_btngo" onclick="filterUTRequest()">Apply Filter</button>
+          
           </div>
 <!------------------------------End Syntax for Dropdown button------------------------------------------------->
 
@@ -290,42 +388,33 @@ session_start();
         var employee = document.getElementById('sel_employee').value;
         var status = document.getElementById('id_status').value;
 
-        var url = 'overtime_req.php?empid=' + employee + '&status=' + status;
+        var url = 'undertime_req.php?empid=' + employee + '&status=' + status;
         window.location.href = url;
     }
 </script>
 <!----------------------------Script sa pagfilter ng data table------------------------->
 
 <!----------------------------------Button for Approve and Reject All------------------------------------------>
-<div class="btn-section">
-                <form action="actions/Undertime Request/status_update.php" method="POST">
-                <input type="hidden" name="Approve" value="approved">
-                <button type="submit" name="approve_all" class="approve-btn">Approve All</button>
-                </form>
-
-                <form action="actions/Undertime Request/status_update.php" method="POST">
-                <!-- <input type="hidden" name="status" value="rejected"> -->
-                <button type="submit" name="reject_all" class="reject-btn">Reject All</button>
-                </form>
+        <div class="btn-section">
+                <button type="submit" name="approve_all" data-bs-toggle="modal" data-bs-target="#ut_approve_all_modal" class="approve-btn">Approve All</button>
+                <button type="submit" name="reject_all"  data-bs-toggle="modal" data-bs-target="#ut_reject_all_modal" class="reject-btn">Reject All</button>
         </div>
 <!--------------------------------End Button for Approve and Reject All---------------------------------------->  
                
 
 <!------------------------------------------Syntax ng Table-------------------------------------------------->
-<form action="actions/Undertime Request/approve'reject.php" method="POST">
         <div class="row" >
             <div class="col-12 mt-2">
-                <input type="hidden" id="check_id" name="id_check" value="<?php echo $row['id']?>">
-                  <div class="table-responsive" style="max-height: 590px; overflow-y: auto;">
-                    <table id="order-listing" class="table" style="width: 100%; max-height: 590px;">
+                <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                    <table id="order-listing" class="table" style="width: 100%">
                       <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
                             <tr>
                                 <th style="display: none;">ID</th>
                                 <th>Employee ID</th>
                                 <th>Name</th>
                                 <th>Undertime Date</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
+                                <th>Undertime</th>
+                                <th>Time Out</th>
                                 <th>Undertime Hours</th>
                                 <th style="display: none;">Reason</th>
                                 <th>File Attachment</th>
@@ -340,40 +429,93 @@ session_start();
 
                          $empid = $_GET['empid'] ?? '';
                          $status = $_GET['status'] ?? '';
+
+                         if (isset($_GET['id'])) {
+                          $employee_id = $_GET['id'];
+                      
+                          $query = "SELECT
+                          undertime_tb.id,
+                          employee_tb.empid,
+                          CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`,
+                          undertime_tb.date,
+                          undertime_tb.start_time,
+                          undertime_tb.end_time,
+                          undertime_tb.total_undertime,
+                          undertime_tb.file_attachment,
+                          undertime_tb.reason,
+                          undertime_tb.status,
+                          undertime_tb.date_file
+                          FROM
+                           undertime_tb
+                          INNER JOIN employee_tb ON undertime_tb.empid = employee_tb.empid 
+                          INNER JOIN approver_tb ON approver_tb.empid = undertime_tb.empid
+                           WHERE approver_tb.approver_empid = '$aprrover_ID' AND undertime_tb.id = '$employee_id'";
+ 
+                              if (!empty($empid) && $empid != 'All Employee') {
+                                $query .= " AND employee_tb.empid = '$empid'";
+                              }
+
+                              if (!empty($status) && $status != 'All Status') {
+                                $query .= " AND undertime_tb.status = '$status'";
+                              }
+                          } else {
+                            $query = "SELECT
+                            undertime_tb.id,
+                            employee_tb.empid,
+                            CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`,
+                            undertime_tb.date,
+                            undertime_tb.start_time,
+                            undertime_tb.end_time,
+                            undertime_tb.total_undertime,
+                            undertime_tb.file_attachment,
+                            undertime_tb.reason,
+                            undertime_tb.status,
+                            undertime_tb.date_file
+                            FROM
+                             undertime_tb
+                            INNER JOIN employee_tb ON undertime_tb.empid = employee_tb.empid 
+                            INNER JOIN approver_tb ON approver_tb.empid = undertime_tb.empid
+                             WHERE approver_tb.approver_empid = $aprrover_ID";
+   
+                              if (!empty($empid) && $empid != 'All Employee') {
+                                $query .= " AND employee_tb.empid = '$empid'";
+                              }
+
+                              if (!empty($status) && $status != 'All Status') {
+                                $query .= " AND undertime_tb.status = '$status'";
+                              }
+                          }
                          
-                         $query = "SELECT
-                         undertime_tb.id,
-                         employee_tb.empid,
-                         CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`,
-                         undertime_tb.date,
-                         undertime_tb.start_time,
-                         undertime_tb.end_time,
-                         undertime_tb.total_undertime,
-                         undertime_tb.file_attachment,
-                         undertime_tb.reason,
-                         undertime_tb.status,
-                         undertime_tb.date_file
-                         FROM
-                          undertime_tb
-                         INNER JOIN employee_tb ON undertime_tb.empid = employee_tb.empid 
-                         INNER JOIN approver_tb ON approver_tb.empid = undertime_tb.empid
-                          WHERE
-                            approver_tb.approver_empid = $aprrover_ID;";
-
-                          if (!empty($empid) && $empid != 'All Employee') {
-                            $query .= " AND employee_tb.empid = '$empid'";
-                          }
-
-                          if (!empty($status) && $status != 'All Status') {
-                            $query .= " AND overtime_tb.status = '$status'";
-                          }
+                        
 
                          $result = mysqli_query($conn, $query);
                          while ($row = mysqli_fetch_assoc($result)){  
+                          $cmpny_empid = $row['empid'];
+
+                          $sql = "SELECT employee_tb.company_code, 
+                                  employee_tb.empid, 
+                                  assigned_company_code_tb.company_code_id, 
+                                  assigned_company_code_tb.empid, 
+                                  company_code_tb.id, 
+                                  company_code_tb.company_code AS company_code_name 
+                                  FROM assigned_company_code_tb 
+                                  INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                                  INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                                  WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                                  
+                                  $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                                  $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+          
                          ?>
                             <tr>
                                 <td style="display: none;"><?php echo $row['id']?></td>
-                                <td><?php echo $row['empid']?></td>
+                                <td><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
+                                $empid = $row['empid'];
+                                if (!empty($cmpny_code)) {
+                                    echo $cmpny_code . " - " . $empid;
+                                } else {
+                                    echo $empid;
+                                }?></td>
                                 <td><?php echo $row['full_name']?></td>
                                 <td><?php echo $row['date']?></td>
                                 <td><?php echo date('h:i A', strtotime($row['end_time'])) ?></td>
@@ -391,17 +533,17 @@ session_start();
                                 <td><?php echo $row['date_file']?></td>
                                 <td>      
                                  <?php if ($row['status'] === 'Approved' || $row['status'] === 'Rejected' || $row['status'] === 'Cancelled'): ?>
-                                 <button type="submit" class="btn btn-outline-success viewbtn" name="approve_btn" style="display: none;" disabled>
+                                 <button type="submit" class="btn btn-outline-success approveUTbtn"  data-bs-toggle="modal" data-bs-target="#Modal_UT_Approved" name="approve_btn" style="display: none;" disabled>
                                    Approve
                                  </button>
-                                 <button type="submit" class="btn btn-outline-danger viewbtn" name="reject_btn" style="display: none;" disabled>
+                                 <button type="submit" class="btn btn-outline-danger rejectUTbtn" data-bs-toggle="modal" data-bs-target="#Modal_UT_reject" name="reject_btn" style="display: none;" disabled>
                                    Reject
                                  </button>
                                  <?php else: ?>
-                                 <button type="submit" class="btn btn-outline-success viewbtn" name="approve_btn">
+                                 <button type="submit" class="btn btn-outline-success approveUTbtn" data-bs-toggle="modal" data-bs-target="#Modal_UT_Approved" name="approve_btn">
                                     Approve
                                  </button>
-                                 <button type="submit" class="btn btn-outline-danger viewbtn" name="reject_btn">
+                                 <button type="submit" class="btn btn-outline-danger rejectUTbtn" data-bs-toggle="modal" data-bs-target="#Modal_UT_reject" name="reject_btn">
                                     Reject
                                   </button>
                                   <?php endif; ?>
@@ -411,7 +553,6 @@ session_start();
                              } 
                             ?>
                       </table>
-                      </form>  
 <!------------------------------------End Syntax ng Table------------------------------------------------->                      
                     </div>
                 </div>
@@ -423,13 +564,45 @@ session_start();
 
 
  
+<!-------------------------------Script para matest kung naseselect ba ang I.D sa approve---------------------------------------->        
+<script> 
+            $(document).ready(function(){
+               $('.approveUTbtn').on('click', function(){
+                 $().modal('show');
+                      $tr = $(this).closest('tr');
 
+                    var data = $tr.children("td").map(function () {
+                    return $(this).text();
+                    }).get();
+                   console.log(data);
+                   $('#approve_ut_id').val(data[0]);
+               });
+             });
+</script>
+<!-----------------------------End Script para matest kung naseselect ba ang I.D approve------------------------------------->
+
+<!-------------------------------Script para matest kung naseselect ba ang I.D sa reject---------------------------------------->        
+<script> 
+            $(document).ready(function(){
+               $('.rejectUTbtn').on('click', function(){
+                 $().modal('show');
+                      $tr = $(this).closest('tr');
+
+                    var data = $tr.children("td").map(function () {
+                    return $(this).text();
+                    }).get();
+                   console.log(data);
+                   $('#reject_ut_id').val(data[0]);
+               });
+             });
+</script>
+<!-----------------------------End Script para matest kung naseselect ba ang I.D reject------------------------------------->
 
 
 <!-------------------------------Script para matest kung naseselect ba ang I.D---------------------------------------->        
 <script> 
             $(document).ready(function(){
-               $('.viewbtn').on('click', function(){
+               $('.checkunder').on('click', function(){
                  $().modal('show');
                       $tr = $(this).closest('tr');
 

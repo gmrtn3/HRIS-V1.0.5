@@ -120,20 +120,19 @@ if(!empty($_GET['status'])){
 
 
 <!------------------------------------------------- Header ------------------------------------------------------------->
-    <div class="main-panel mt-5" style="margin-left: 15%; position: absolute; top:0;">
+<div class="main-panel mt-5" style="margin-left: 15%; position: absolute; top:0;">
         <div class="content-wrapper mt-4" style="background-color: #f4f4f4">
           <div class="card mt-3" style=" width: 1550px; height:790px; box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);">
             <div class="card-body">
+
                 <div class="pnl_home">
-              
                 <p class="header_prgph_DTR" style="font-size: 25px; padding: 10px">Employee DTR Management</p>
-                
                 <div class="btn-section" style="margin-left:70px;">
                      <!-- Button trigger modal -->
                     <button class="up-btn" data-bs-toggle="modal" data-bs-target="#upload_dtr_btn">Upload DTR File</button>
                     <button class="down-btn" id="downloadBtn">Download CSV</button>
-                  </div>
-                  </div>
+                </div>
+                </div>
 <!------------------------------------------------- End Of Header -------------------------------------------> 
 
 <!---------------------------------------- Display status message ------------------------------------------->
@@ -200,18 +199,17 @@ if(!empty($_GET['status'])){
                              <table id="order-listing" class="table mt-2">
                                 <thead>
                                     <tr>
-                                        <th>Status</th>
                                         <th>Employee ID</th>
                                         <th>Name</th>
-                                        <th>Date</th>
+                                        <th>Month</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
                                         <th>Department</th>
-                                        <th style="display: none;">Schedule Type</th>
-                                        <th>Time Entry</th>
-                                        <th>Time Out</th>
                                         <th>Late</th>
                                         <th>Undertime</th>
                                         <th>Overtime</th>
                                         <th>Total Hours</th>
+                                        <th>DT Records</th>
                                         <th>Download File</th>
                                     </tr>
                                 </thead>
@@ -228,18 +226,45 @@ if(!empty($_GET['status'])){
                                         employee_tb.empid,
                                         CONCAT(employee_tb.fname, ' ', employee_tb.lname) AS `full_name`,
                                         attendances.date,
+                                        MIN(attendances.date) AS min_date, 
+                                        MAX(attendances.date) AS max_date,
                                         dept_tb.col_deptname,
                                         empschedule_tb.schedule_name,
                                         attendances.time_in,
                                         attendances.time_out,
-                                        attendances.late,
+                                        CONCAT(
+                                        FLOOR( 
+                                            SUM(TIME_TO_SEC(attendances.late)) / 3600
+                                        ),
+                                        'H:',
+                                        FLOOR(
+                                            (
+                                                SUM(TIME_TO_SEC(attendances.late)) % 3600
+                                            ) / 60
+                                        ),
+                                        'M'
+                                    ) AS total_hours_minutesLATE,
                                         attendances.early_out,
                                         attendances.overtime,
-                                        attendances.total_work
+                                        CONCAT(
+                                        FLOOR(
+                                            SUM(TIME_TO_SEC(attendances.total_work)) / 3600
+                                            
+                                        ),
+                                        'H:',
+                                        FLOOR(
+                                            (
+                                                SUM(TIME_TO_SEC(attendances.total_work)) % 3600
+                                                
+                                            ) / 60
+                                        ),
+                                        'M'
+                                    ) AS total_hoursWORK
                                         FROM employee_tb
                                         INNER JOIN attendances ON employee_tb.empid = attendances.empid
                                         INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
-                                        INNER JOIN empschedule_tb ON employee_tb.empid = empschedule_tb.empid";
+                                        INNER JOIN empschedule_tb ON employee_tb.empid = empschedule_tb.empid 
+                                        GROUP BY attendances.empid, YEAR(attendances.date), MONTH(attendances.date)";
 
                                         if (!empty($department) && $department != 'All Department') {
                                             $query .= " AND dept_tb.col_deptname = '$department'";
@@ -255,7 +280,7 @@ if(!empty($_GET['status'])){
 
                                     $result = mysqli_query($conn, $query);
                                     while ($row = mysqli_fetch_assoc($result)) {
-
+                                        $monthName = date("F", strtotime($row['min_date']));
                                         $cmpny_empid = $row['empid'];
 
                                               $sql = "SELECT employee_tb.company_code, 
@@ -273,26 +298,32 @@ if(!empty($_GET['status'])){
                                                       $cmpny_row = mysqli_fetch_assoc($cmpny_result);
                                         ?>
                                         <tr>
-                                            <td><?php echo $row['status']; ?></td>
-                                            <td><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
+                                            <td style="font-weight: 400;"><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
                                             $empid = $row["empid"];
                                             if (!empty($cmpny_code)) {
                                                 echo $cmpny_code . " - " . $empid;
                                             } else {
                                                 echo $empid;
                                             } ?></td>
-                                            <td><?php echo $row['full_name']; ?></td>
-                                            <td><?php echo $row['date']; ?></td>
-                                            <td><?php echo $row['col_deptname']; ?></td>
-                                            <td style="display: none;"><?php echo $row['schedule_name']; ?></td>
-                                            <td><?php echo $row['time_in']; ?></td>
-                                            <td><?php echo $row['time_out']; ?></td>
-                                            <td><?php echo $row['late']; ?></td>
-                                            <td><?php echo $row['early_out']; ?></td>
-                                            <td><?php echo $row['overtime']; ?></td>
-                                            <td><?php echo $row['total_work']; ?></td>
-                                            <td> <!-- added download button/link -->
-                                                <a href="actions/Daily Time Records/download.php?<?php echo http_build_query($row); ?>" class="btn btn-primary">Download</a>
+                                            <td style="font-weight: 400;"><?php echo $row['full_name']; ?></td>
+                                            <td><?php echo $monthName ?></td>
+                                            <td style="font-weight: 400;"><?php echo $row['min_date']; ?></td>
+                                            <td style="font-weight: 400;"><?php echo $row['max_date']; ?></td>
+                                            <td style="font-weight: 400;"><?php echo $row['col_deptname']; ?></td>
+                                            <td style="font-weight: 400;"><?php echo $row['total_hours_minutesLATE']; ?></td>
+                                            <td style="font-weight: 400;"><?php echo $row['early_out']; ?></td>
+                                            <td style="font-weight: 400;"><?php echo $row['overtime']; ?></td>
+                                            <td style="font-weight: 400;"><?php echo $row['total_hoursWORK']; ?></td>
+                                            <td style="font-weight: 400;">    <button class="btn btn-primary viewdtrecords" data-bs-toggle="modal" data-bs-target="#ViewdtrReport" 
+                                                data-employee-id="<?php echo $row['empid']; ?>"
+                                                data-min-date="<?php echo $row['min_date']; ?>"
+                                                data-max-date="<?php echo $row['max_date']; ?>">View
+                                            </button></td>
+                                            <td style="font-weight: 400;">
+                                                    <input type="hidden" name="employeeId" value="<?php echo $row['empid']; ?>">
+                                                    <input type="hidden" name="minDate" value="<?php echo $row['min_date']; ?>">
+                                                    <input type="hidden" name="maxDate" value="<?php echo $row['max_date']; ?>">
+                                                    <button class="btn btn-secondary downloadcsv">Download</button>
                                             </td>
                                         </tr>
                                     <?php
@@ -300,45 +331,84 @@ if(!empty($_GET['status'])){
                                     ?>
                             </table>
                          </div>
-                      </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="ViewdtrReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Daily Time Records</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                        <div class="modal-body" id="dtr-modal-body">
+    
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
                   </div>
                </div>
             </div>
          </div>
-   
+                      
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+<script>
+$(document).ready(function () {
+    $('.downloadcsv').click(function () {
+        var employeeId = $("input[name='employeeId']").val();
+        var minDate = $("input[name='minDate']").val();
+        var maxDate = $("input[name='maxDate']").val();
+
+        // Use window.location to trigger the download
+        window.location.href = 'actions/Daily Time Records/download.php?employeeId=' + employeeId + '&minDate=' + minDate + '&maxDate=' + maxDate;
+    });
+});
+</script>
+
+
+<!---------------------Script sa pagview ng attendance record with specific employee----------------->         
+<script>
+$(document).ready(function () {
+    $('.viewdtrecords').click(function () {
+        var employeeId = $(this).data('employee-id');
+        var minDate = $(this).data('min-date');
+        var maxDate = $(this).data('max-date');
+
+        $.ajax({
+            url: 'get_dtr_data.php',
+            method: 'POST',
+            data: { employeeId: employeeId, minDate: minDate, maxDate: maxDate }, // Ipasa ang minDate at maxDate
+            success: function (response) {
+                $('#dtr-modal-body').html(response);
+            }
+        });
+    });
+});
+</script>             
       
 <!-------------------------------------------------TABLE END------------------------------------------->
 <!-- CSV -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+<script>
 $(document).ready(function() {
     // Export button click event
     $('#downloadBtn').click(function() {
         // Create a CSV content
         var csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Status , Employee ID , Name, Date, Department , Time Entry, Time Out, Late, Undertime, Overtime, Total Hours\n";
-
-        // Loop through table rows and append data
-        $('#order-listing tbody tr').each(function() {
-            var status = $(this).find('td:nth-child(1)').text();
-            var empid = $(this).find('td:nth-child(2)').text();
-            var name = $(this).find('td:nth-child(3)').text();
-            var date = $(this).find('td:nth-child(4)').text();
-            var department = $(this).find('td:nth-child(5)').text();
-            var time_entry = $(this).find('td:nth-child(7)').text();
-            var time_out = $(this).find('td:nth-child(8)').text();
-            var late = $(this).find('td:nth-child(9)').text();
-            var under = $(this).find('td:nth-child(10)').text();
-            var ot = $(this).find('td:nth-child(11)').text();
-            var total = $(this).find('td:nth-child(12)').text();
-            csvContent += status + "," + empid + "," + name + ","  + date + ","  + department + ","  + time_entry + ","  + time_out + "," + late + "," + under + "," + ot + "," + total +"\n";
-        });
+        csvContent += "Status , Employee ID, Date, Time in, Time out, Late, Undertime, Overtime, Total work";
 
         // Create a CSV blob and trigger a download
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Daily Time Records.csv");
+        link.setAttribute("download", "Daily Time Records Template.csv");
         document.body.appendChild(link);
         link.click();
     });

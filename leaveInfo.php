@@ -66,6 +66,7 @@ session_start();
     <link rel="stylesheet" href="css/leaveInfo.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/leaveInfoResponsive.css">
+    <link rel="stylesheet" type="text/css" href="css/virtual-select.min.css">
 </head>
 <body>
 
@@ -81,8 +82,8 @@ session_start();
                 display: block;
                 overflow-x: hidden;
                 white-space: nowrap;
-                max-height: 400px;
-                height: 400px;
+                max-height: 450px;
+                height: 450px;
                 
                 
             }
@@ -95,7 +96,23 @@ session_start();
                 display: table !important;
                 table-layout: fixed !important;
             }
+            .multiselect-dropdown-list-wrapper span.placeholder{
+        display: none !important;
+        cursor: default !important;
+        background-color: #fff !important;
+        color: #fff !important;
+        display:none !important; 
+    }
+    .multiselect-dropdown{
+        height: 50px !important;
+        width: 98% !important;
+    }
 
+
+        #multi_option{
+	        max-width: 100%;
+	        width: 100%;
+        }
     </style>
 
 
@@ -111,45 +128,33 @@ session_start();
         <div class="modal-body">
         
         <div class="mb-3">
-            <label for="Select_dept" class="form-label">Select Department</label>
+            <label for="department">Select Department</label><br>
             <?php
-            include 'config.php';
-            // Fetch all values of col_deptname from the database
-            $sql = "SELECT col_ID, col_deptname FROM dept_tb";
-            $result = mysqli_query($conn, $sql);
+                include 'config.php';
 
-            // Store all values in an array
-            $dept_options = array();
-            while ($row = mysqli_fetch_array($result)) {
-                $ID = $row["col_ID"];
-                $Deptname = $row["col_deptname"];
+                $sqls = "SELECT * FROM dept_tb";
 
-                $dept_options[] = array('col_ID' => $ID, 'col_deptname' => $Deptname);
+                $results = mysqli_query($conn, $sqls);
 
-            }
-
-            // Generate the dropdown list
-            echo "<select class='form-select form-select-m' aria-label='.form-select-sm example' id='deptSelect' onchange='updateEmployeeDropdown()'>";
-            echo "<option selected disabled value=''>Select Department</option>";
-            foreach ($dept_options as $dept_option) {
-                
-                echo "<option  value='" . $dept_option['col_ID'] . "'>" . $dept_option['col_deptname'] . "</option>";
-            }
-            echo "</select>";
+                $option = "";
+                while ($rows = mysqli_fetch_assoc($results)) {
+                    $option .= "<option value='" . $rows['col_ID'] . "'>" . $rows['col_deptname'] . "</option> ";
+                }
             ?>
+            <select name="department" id="departmentDropdown" class="form-select">
+                <option value selected>Select Department</option>
+                <option value='All'>All</option>
+                <?php echo $option ?>
+            </select>
         </div>
-
-
-        <!--------------------------- line break ------------------------------------>
 
         <div class="mb-3">
-            <label for="Select_emp" class="form-label">Select Employee</label>
-            <select class="form-select form-select-m" aria-label=".form-select-sm example" id="empSelect" name="name_emp"></select>
+            <label for="emp">Select Employee</label><br>
+                <div id="employeeDropdown">
+                <select class="approver-dd dd-hide" name="empid[]" id="multi_option" multiple placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;">
+                </select>
+            </div>
         </div>
-
-        <!--------------------------- line break ------------------------------------>
-
-
 
             <div class="mb-3">
                 <label for="vctn_lve" class="form-label">Vacation Leave</label>
@@ -159,8 +164,6 @@ session_start();
                 </div>
 
             </div>
-
-            <!--              line break                     -->
             <div class="mb-3">
                 <label for="sick_lve" class="form-label">Sick Leave</label>
                     <div class="input-group mb-3">
@@ -169,8 +172,6 @@ session_start();
                     </div>
                     <p></p>
             </div>
-
-            <!--              line break                     -->
             <div class="mb-3">
                 <label for="brvmnt_lve" class="form-label">Bereavement Leave</label>
                     <div class="input-group mb-3">
@@ -178,13 +179,10 @@ session_start();
                         <span class="input-group-text"><input type="text" onclick="changeVal3()" id="id_addB" style="background-color: inherit; border: none; font-size: 15px; cursor: pointer; " title="CLick Me to change the decimal" name="name_brvmnt_lve1"  readonly value=".0"></span>
                     </div>
             </div>
-            <!--              line break                     --> 
-
-          
 
         </div>
       <div class="modal-footer">
-        <button type="submit" name="save_changes" class="btn btn-success">Add Credits</button>
+        <button type="submit" name="save_changes" class="btn btn-primary">Add Credits</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
       </form>
@@ -436,6 +434,49 @@ session_start();
             </div>
         </div>
     </div>
+
+<script>
+    $(document).ready(function() {
+    $('#departmentDropdown').change(function() {
+        var selectedValue = $(this).val();
+        
+        // Send selectedValue to a PHP script via AJAX
+        $.ajax({
+            type: 'POST',
+            url: 'update_selected_department.php', // Create this PHP file to handle the AJAX request
+            data: { department: selectedValue },
+            success: function(response) {
+                $('#selectedDepartment').text(response); // Update the value in the <p> tag
+
+                // Fetch employee options based on the selected department
+                $.ajax({
+                    type: 'POST',
+                    url: 'sched_employee_options.php', // Create this PHP file to generate employee options
+                    data: { department: response },
+                    success: function(employeeOptions) {
+                        // Update the employee dropdown with new options
+                        $('#employeeDropdown').html(employeeOptions);
+                        console.log('Employee options updated successfully.');
+
+                        // Collect selected employee IDs
+                        var selectedEmployeeIDs = $('#multi_option').val();
+                        console.log('Selected Employee IDs:', selectedEmployeeIDs);
+
+                        // Now submit the form with the selected employee IDs
+                      
+                    }
+                });
+            }
+        });
+    });
+});
+    </script>
+<script type="text/javascript" src="js/virtual-select.min.js"></script>
+<script type="text/javascript">
+	VirtualSelect.init({ 
+	  ele: '#multi_option' 
+	});
+</script>
 
     <script>
                 function changeVal1() {

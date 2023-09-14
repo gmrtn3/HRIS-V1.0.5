@@ -1,32 +1,7 @@
 <?php
 session_start();
-//    $empid = $_SESSION['empid'];
-   if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-} else {
-    // Check if the user's role is not "admin"
-    if ($_SESSION['role'] != 'admin') {
-        // If the user's role is not "admin", log them out and redirect to the logout page
-        session_unset();
-        session_destroy();
-        header("Location: logout.php");
-        exit();
-    } else{
-        include 'config.php';
-        $userId = $_SESSION['empid'];
-       
-        $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
-        $iconRow = mysqli_fetch_assoc($iconResult);
 
-        if ($iconRow) {
-            $image_url = $iconRow['emp_img_url'];
-        } else {
-            // Handle the case when the user ID is not found in the database
-            $image_url = '../img/user.jpg'; // Set a default image or handle the situation accordingly
-        }
-    
-    }
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,29 +55,51 @@ session_start();
     }
 
     .pagination{
-        margin-right: 73px !important;
-
+        margin-right: 63px !important;
         
+    }
+    .sorting_asc{
+        color: black !important;
     }
 
     .pagination li a{
         color: #c37700;
     }
 
-        .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+    .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
         z-index: 3;
         color: #fff;
         background-color: #000;
-        border-color: #000;
+        margin-top: 20px;
     }
 
     
     
     #order-listing_next{
-        margin-right: 28px !important;
-        margin-bottom: -16px !important;
+        margin-right: 18px !important;
+        margin-bottom: -17px !important;
 
     }
+
+    table {
+                display: block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                max-height: 100%;
+                height: 320px;
+                /* border: black 1px solid; */
+                
+            }
+            tbody {
+                display: table;
+                width: 100%;
+            }
+            tr {
+                width: 100% !important;
+                display: table !important;
+                table-layout: fixed !important;
+            }
+
 </style>
 
 <!---------------------------------------Download Modal Start Here -------------------------------------->
@@ -131,76 +128,108 @@ session_start();
 </div>
 <!---------------------------------------Download Modal End Here --------------------------------------->
 
-<!------------------------------------------------View ng whole data Modal ---------------------------------------------------->
+<!----------------Modal kapag clinick ang approve button----------------------->
+<div class="modal fade" id="Modal_OT_Approved" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Overtime Request/approve_ot.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve this request?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <input type="hidden" id="approve_check_id" name="approve_id_check">
+                          <textarea class="form-control" name="ot_approve_marks" placeholder="Approval message..." id="floatingTextarea"></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="name_approved_ot" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!----------------Modal kapag clinick ang approve button----------------------->
 
-<div class="modal fade" id="view_ot_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Employee Details</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-                <div class="modal-body">
-                    <div class="row" >
-                     <div class="col-6">
-                            <label for="" class="form-label">Employee ID</label>
-                            <input type="text" name="empid_view" class="form-control" id="view_empid" readonly>
-                        </div>
-                        <div class="col-6">
-                            <label for="company" class="form-label">OT Date</label>
-                            <input type="date" name="view_date_choose" class="form-control" id="view_date_id" readonly>
-                        </div>
-                    </div>
-                    
-                    <div class="row mt-2">
-                       <div class="col-6">
-                            <label for="start" class="form-label">Time In</label>
-                            <input type="time" name="view_time_start" class="form-control" id="view_start_time_id" readonly>
-                        </div>
-                        <div class="col-6">
-                           <label for="end" class="form-label">Time Out</label>
-                           <input type="time" name="view_time_end" class="form-control" id="view_end_time_id" readonly>
-                        </div>
-                    </div>
+<!----------------Modal kapag clinick ang reject button----------------------->
+<div class="modal fade" id="Modal_OT_reject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Overtime Request/reject_ot.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to reject this request?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <input type="hidden" id="reject_check_id" name="reject_id_reject">
+                          <textarea class="form-control" name="ot_reject_remarks" placeholder="Reject message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="name_rejected_ot" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!----------------Modal kapag clinick ang reject button----------------------->
 
-                    <div class="form-group mt-2">
-                        <label for="ot_hours" class="form-label">Overtime Hours</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="view_total_overtime" id="view_ot_id" readonly>
-                            <span class="input-group-text">hrs</span>
-                       </div>
-                    </div>
-
-                    <div class="mb-3">
-                            <label for="text_area" class="form-label">Reason</label>
-                            <textarea class="form-control" name="view_reason" id="view_reason_id" readonly></textarea>
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <input type="text" name="view_file_upload" class="form-control" id="view_file_id" readonly>
-                        <label class="input-group-text"  for="inputGroupFile02">Upload</label>
-                    </div>
-
-                  <div class="row" >
-                        <div class="col-6">
-                            <label for="" class="form-label">Date File</label>
-                            <input type="text" name="datefile_viewing" class="form-control" id="view_datefile" readonly>
-                        </div>
-                        <div class="col-6">
-                            <label for="" class="form-label">Status</label>
-                            <input type="text" name="view_status" class="form-control" id="view_status_id" readonly>
-                        </div>
-                    </div>
-
-                </div> <!---Modal Body End Tag-->
-        </div>
-    </div>
-</div>
-
-<!------------------------------------------------End ng View Modal ---------------------------------------------------->
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
+<div class="modal fade" id="approve_all_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Overtime Request/approve_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="ot_approve_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="approve_all" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang Approve all button-------------------------->
 
 
-
+<!-----------------Modal kapag naclick ang Reject all button-------------------------->
+<div class="modal fade" id="reject_all_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <form action="actions/Overtime Request/reject_all.php" method="POST">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">You want to approve all the requests?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-floating">
+                          <textarea class="form-control" name="ot_reject_marks" placeholder="Approve message..." id="floatingTextarea" required></textarea>
+                          <label for="floatingTextarea">Remarks:</label>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit"  name="reject_all" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+<!-----------------Modal kapag naclick ang Reject all button-------------------------->
 
 
 <!------------------------------------Main Panel of data table------------------------------------------------->
@@ -216,12 +245,6 @@ session_start();
                                 <div class="col-6">
                                     <h2>Overtime Request List</h2>
                                 </div>
-                                <!-- <div class="col-6 mt-1 text-end"> -->
-                                <!-- Button trigger modal -->
-                                <!-- <button type="button" class="file_overtime" data-bs-toggle="modal" data-bs-target="#file_overtime">
-                                    File Overtime
-                                    </button>
-                                </div> -->
                             </div> <!--ROW END-->
 <!----------------------------------End Class ng header including the button for modal-------------------------------------------->
 
@@ -290,46 +313,28 @@ session_start();
             <div class="child_panel">
             
             </div>
-            <button class="btn_go" id="id_btngo" onclick="filterOTRequest()">Go</button>
+            <button class="btn_go" id="id_btngo" onclick="filterOTRequest()">Apply Filter</button>
 
           </div>
 <!------------------------------End Syntax for Dropdown button------------------------------------------------->
 
-<!----------------------------Script sa pagfilter ng data table------------------------->
-<script>
-    function filterOTRequest() {
-        var employee = document.getElementById('sel_employee').value;
-        var status = document.getElementById('id_status').value;
 
-        var url = 'overtime_req.php?empid=' + employee + '&status=' + status;
-        window.location.href = url;
-    }
-</script>
-<!----------------------------Script sa pagfilter ng data table------------------------->
+
 
 <!----------------------------------Button for Approve and Reject All------------------------------------------>
         <div class="btn-section">
-                <form action="actions/Overtime Request/update_status.php" method="POST">
-                <input type="hidden" name="Approve" value="approved">
-                <button type="submit" name="approve_all" class="approve-btn">Approve All</button>
-                </form>
-
-                <form action="actions/Overtime Request/update_status.php" method="POST">
-                <!-- <input type="hidden" name="status" value="rejected"> -->
-                <button type="submit" name="reject_all" class="reject-btn">Reject All</button>
-                </form>
+                  <button type="submit" class="approve-btn" data-bs-toggle="modal" data-bs-target="#approve_all_modal">Approve All</button>
+                  <button type="submit" class="reject-btn" data-bs-toggle="modal" data-bs-target="#reject_all_modal">Reject All</button>
         </div>
 <!--------------------------------End Button for Approve and Reject All---------------------------------------->                 
                
 
 <!------------------------------------------Syntax ng Table-------------------------------------------------->
-<form action="actions/Overtime Request/approve_reject.php" method="POST">
         <div class="row" >
             <div class="col-12 mt-2">
-                <input type="hidden" id="check_id" name="id_check" value="<?php echo $row['id']?>">
-                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                      <table id="order-listing" class="table" style="width: 100%; max-height: 400px;">
-                        <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
+                  <div class="table-responsive" id="table-responsiveness" style="width: 98%; margin:auto; margin-top: 30px;">
+                    <table id="order-listing" class="table" style="width: 100%">
+                      <thead style="position: sticky; top: 0; background-color: white; z-index: 1;">
                             <tr>
                                 <th style="display: none;">ID</th>
                                 <th>Employee ID</th>
@@ -345,48 +350,101 @@ session_start();
                                 <th>Action</th>
                             </tr>
                         </thead>
-                         <?php
+                        <?php
                          include 'config.php';
 
                          $aprrover_ID = $_SESSION['empid'];
 
                          $empid = $_GET['empid'] ?? '';
                          $status = $_GET['status'] ?? '';
+
+                         if (isset($_GET['id'])) {
+                          $employee_id = $_GET['id'];
+                      
+                          $query = "SELECT
+                          overtime_tb.id,
+                          employee_tb.empid,
+                          CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`,
+                          overtime_tb.work_schedule,
+                          overtime_tb.time_in,
+                          overtime_tb.time_out,
+                          overtime_tb.ot_hours,
+                          overtime_tb.total_ot,
+                          overtime_tb.reason,
+                          overtime_tb.file_attachment,
+                          overtime_tb.status,
+                          overtime_tb.date_filed
+                           FROM
+                               overtime_tb
+                           INNER JOIN employee_tb ON overtime_tb.empid = employee_tb.empid
+                           INNER JOIN approver_tb ON approver_tb.empid = overtime_tb.empid
+                           WHERE approver_tb.approver_empid = '$aprrover_ID' AND
+                           overtime_tb.id = '$employee_id'";
+ 
+                           if (!empty($empid) && $empid != 'All Employee') {
+                             $query .= " AND employee_tb.empid = '$empid'";
+                           }
+ 
+                           if (!empty($status) && $status != 'All Status') {
+                             $query .= " AND overtime_tb.status = '$status'";
+                           }
+                          } else {
+                            $query = "SELECT
+                            overtime_tb.id,
+                            employee_tb.empid,
+                            CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`,
+                            overtime_tb.work_schedule,
+                            overtime_tb.time_in,
+                            overtime_tb.time_out,
+                            overtime_tb.ot_hours,
+                            overtime_tb.total_ot,
+                            overtime_tb.reason,
+                            overtime_tb.file_attachment,
+                            overtime_tb.status,
+                            overtime_tb.date_filed
+                             FROM
+                                 overtime_tb
+                             INNER JOIN employee_tb ON overtime_tb.empid = employee_tb.empid
+                             INNER JOIN approver_tb ON approver_tb.empid = overtime_tb.empid WHERE approver_tb.approver_empid = '$aprrover_ID'";
+   
+                             if (!empty($empid) && $empid != 'All Employee') {
+                               $query .= " AND employee_tb.empid = '$empid'";
+                             }
+   
+                             if (!empty($status) && $status != 'All Status') {
+                               $query .= " AND overtime_tb.status = '$status'";
+                             }
+                          }
                          
-                         $query = "SELECT
-                         overtime_tb.id,
-                         employee_tb.empid,
-                         CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`,
-                         overtime_tb.work_schedule,
-                         overtime_tb.time_in,
-                         overtime_tb.time_out,
-                         overtime_tb.ot_hours,
-                         overtime_tb.total_ot,
-                         overtime_tb.reason,
-                         overtime_tb.file_attachment,
-                         overtime_tb.status,
-                         overtime_tb.date_filed
-                          FROM
-                              overtime_tb
-                          INNER JOIN employee_tb ON overtime_tb.empid = employee_tb.empid
-                          INNER JOIN approver_tb ON approver_tb.empid = overtime_tb.empid
-                          WHERE
-                            approver_tb.approver_empid = $aprrover_ID";
-
-                          if (!empty($empid) && $empid != 'All Employee') {
-                            $query .= " AND employee_tb.empid = '$empid'";
-                          }
-
-                          if (!empty($status) && $status != 'All Status') {
-                            $query .= " AND overtime_tb.status = '$status'";
-                          }
                           
                          $result = mysqli_query($conn, $query);
                          while ($row = mysqli_fetch_assoc($result)){  
+                          $cmpny_empid = $row['empid'];
+
+                          $sql = "SELECT employee_tb.company_code, 
+                                  employee_tb.empid, 
+                                  assigned_company_code_tb.company_code_id, 
+                                  assigned_company_code_tb.empid, 
+                                  company_code_tb.id, 
+                                  company_code_tb.company_code AS company_code_name 
+                                  FROM assigned_company_code_tb 
+                                  INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                                  INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                                  WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                                  
+                                  $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                                  $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+          
                          ?>
                             <tr>
                                 <td style="display: none;"><?php echo $row['id']?></td>
-                                <td><?php echo $row['empid']?></td>
+                                <td><?php $cmpny_code = $cmpny_row['company_code_name'] ?? null;
+                                            $empid = $row['empid'];
+                                            if (!empty($cmpny_code)) {
+                                                echo $cmpny_code . " - " . $empid;
+                                            } else {
+                                                echo $empid;
+                                            } ?></td>
                                 <td><?php echo $row['full_name']?></td>
                                 <td><?php echo $row['work_schedule']?></td>
                                 <td><?php echo date('h:i A', strtotime($row['time_in'])) ?></td>
@@ -404,17 +462,17 @@ session_start();
                                 <td><?php echo $row['date_filed']?></td>
                                 <td>     
                                     <?php if ($row['status'] === 'Approved' || $row['status'] === 'Rejected' || $row['status'] === 'Cancelled'): ?>
-                                          <button type="submit" class="btn btn-outline-success viewbtn" name="approve_btn" style="display: none;" disabled>
+                                          <button type="submit" class="btn btn-outline-success approveOTbtn" data-bs-toggle="modal" data-bs-target="#Modal_OT_Approved" name="approve_btn" style="display: none;" disabled>
                                             Approve
                                           </button>
-                                          <button type="submit" class="btn btn-outline-danger viewbtn" name="reject_btn" style="display: none;" disabled>
+                                          <button type="submit" class="btn btn-outline-danger rejectOTbtn" data-bs-toggle="modal" data-bs-target="#Modal_OT_reject" name="reject_btn" style="display: none;" disabled>
                                             Reject
                                           </button>
                                         <?php else: ?>
-                                          <button type="submit" class="btn btn-outline-success viewbtn" name="approve_btn">
+                                          <button type="submit" class="btn btn-outline-success approveOTbtn" data-bs-toggle="modal" data-bs-target="#Modal_OT_Approved" name="approve_btn">
                                             Approve
                                           </button>
-                                          <button type="submit" class="btn btn-outline-danger viewbtn" name="reject_btn">
+                                          <button type="submit" class="btn btn-outline-danger rejectOTbtn" data-bs-toggle="modal" data-bs-target="#Modal_OT_reject" name="reject_btn">
                                             Reject
                                           </button>
                                         <?php endif; ?>
@@ -423,8 +481,7 @@ session_start();
                             <?php
                              } 
                             ?>
-                      </table>
-                      </form>  
+                      </table>  
 <!------------------------------------End Syntax ng Table------------------------------------------------->                      
                     </div>
                 </div>
@@ -433,13 +490,24 @@ session_start();
     </div>
 </div>
 
+<!----------------------------Script sa pagfilter ng data table------------------------->
+<script>
+    function filterOTRequest() {
+        var employee = document.getElementById('sel_employee').value;
+        var status = document.getElementById('id_status').value;
+
+        var url = 'overtime_req.php?empid=' + employee + '&status=' + status;
+        window.location.href = url;
+    }
+</script>
+<!----------------------------Script sa pagfilter ng data table------------------------->
 
 
 
-<!-------------------------------Script para matest kung naseselect ba ang I.D---------------------------------------->        
+<!-------------------------------Script para matest kung naseselect ba ang I.D sa approve---------------------------------------->        
 <script> 
             $(document).ready(function(){
-               $('.viewbtn').on('click', function(){
+               $('.approveOTbtn').on('click', function(){
                  $().modal('show');
                       $tr = $(this).closest('tr');
 
@@ -447,11 +515,28 @@ session_start();
                     return $(this).text();
                     }).get();
                    console.log(data);
-                   $('#check_id').val(data[0]);
+                   $('#approve_check_id').val(data[0]);
                });
              });
 </script>
-<!-----------------------------End Script para matest kung naseselect ba ang I.D------------------------------------->
+<!-----------------------------End Script para matest kung naseselect ba ang I.D approve------------------------------------->
+
+<!-------------------------------Script para matest kung naseselect ba ang I.D sa reject---------------------------------------->        
+<script> 
+            $(document).ready(function(){
+               $('.rejectOTbtn').on('click', function(){
+                 $().modal('show');
+                      $tr = $(this).closest('tr');
+
+                    var data = $tr.children("td").map(function () {
+                    return $(this).text();
+                    }).get();
+                   console.log(data);
+                   $('#reject_check_id').val(data[0]);
+               });
+             });
+</script>
+<!-----------------------------End Script para matest kung naseselect ba ang I.D reject------------------------------------->
  
 
 <!------------------------------------Script para lumabas ang modal------------------------------------------------->
@@ -472,31 +557,6 @@ session_start();
 </script>
 <!---------------------------------End ng Script para lumabas ang modal------------------------------------------>
 
-<!------------------------------------Script para sa whole view data ng modal------------------------------------------------->
-<script>
-     $(document).ready(function(){
-               $('.viewbtn').on('click', function(){
-                 $('#view_ot_modal').modal('show');
-                      $tr = $(this).closest('tr');
-
-                    var data = $tr.children("td").map(function () {
-                    return $(this).text();
-                    }).get();
-                   console.log(data);
-                   $('#view_empid').val(data[1]);
-                   $('#view_date_id').val(data[2]);
-                   $('#view_start_time_id').val(data[3]);
-                   $('#view_end_time_id').val(data[4]);
-                   $('#view_ot_id').val(data[5]);
-                   $('#view_reason_id').val(data[6]);
-                   $('#view_file_id').val(data[7]);
-                   var status = $tr.find('td:eq(8)').text();
-                   $('#view_status_id').val(status);
-                   $('#view_datefile').val(data[9]);    
-               });
-             });
-             </script>
-<!---------------------------------End ng Script whole view data ng modal------------------------------------------>
 
 <!---------------------------- Script para lumabas ang warning message na PDF File lang inaallow------------------------------------------>
 <script>

@@ -28,19 +28,21 @@ if (isset($_POST['department'])) {
         $optionsa = "";
         while ($rowa = mysqli_fetch_assoc($resulta)) {
             $optionsa .= '<option value="' . $rowa['empid'] . '">' . $rowa['empid'] . " - " . $rowa['fname'] . " " . $rowa['lname'] . '</option>';
+            $class = $rowa['classification'];
         }
         
-        echo '<select class="approver-dd" name="empid[]" id="multi_option" multiple placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;"> ' . $optionsa . ' </select>';
+        echo '<select class="approver-dd" value="'.$class.'" name="empid[]" id="multi_option" multiple placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;"> ' . $optionsa . ' </select>';
     } else {
         $sql = "SELECT * FROM employee_tb WHERE department_name = '$selectedDepartment' AND classification != 3";
         $result = mysqli_query($conn, $sql);
         
         $options = "";
         while ($row = mysqli_fetch_assoc($result)) {
+            $class = $row['classification'];
             $options .= '<option value="' . $row['empid'] . '">' . $row['empid'] . " - " . $row['fname'] . " " . $row['lname'] . '</option>';
         }
         
-        echo '<select class="approver-dd" name="empid[]" id="multi_option" multiple  placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;"> ' . $options . ' </select>';
+        echo '<select  value="'.$class.'"  class="approver-dd" name="empid[]" id="multi_option" multiple  placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;"> ' . $options . ' </select>';
     }
 }
 ?>

@@ -140,8 +140,13 @@ session_start();
                         <input name="company_zipcode" type="text" class="form-control input_zipcode" id="zipcode_id" value="<?php echo $row['cmpny_zipcode']?>" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 4) this.value = this.value.slice(0, 4);">
                       </div>
 
+                      <div class="dmcontainer">
+                          <label for="" class="form-label">Domain email</label>
+                          <input type="text" class="form-control inputemail" name="company_domain_mail" value="<?php echo $row['email_domain']?>">
+                      </div>
+
                       
-                      <div class="form-check form-switch" >
+                      <div class="form-check form-switch">
                         <label for="" class="" style="margin-top: 5%">Hide Pakyawan</label>
                         <?php
                           // Assuming you have already fetched the data and stored it in the $pieceRateToggle variable
@@ -171,8 +176,6 @@ session_start();
                         <label class="btn btn-outline-warning radio_btn" for="btnradio3">Days Worked</label>
                     </div>
                     </div>
-
-                    
             
                 </div><!--first_cont-->
                 

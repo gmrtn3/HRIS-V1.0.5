@@ -39,7 +39,7 @@ if(isset($_POST['importSubmit'])){
                 
                   // Check if empid exists in the employee_tb
                 $empQuery = "SELECT * FROM employee_tb WHERE empid = '$empid'";
-                $empResult = $db->query($empQuery);
+                $empResult = $conn->query($empQuery);
                 if(mysqli_num_rows($empResult) < 1) {
                     // echo '<script>alert("Error: Unable to insert data for non-existing Employee ID because the Employee ID does not exist in the database.")</script>';
                     echo "<script>window.location.href = '../../attendance?noEmpid';</script>";
@@ -2904,7 +2904,7 @@ if(isset($_POST['importSubmit'])){
 
 // Check if empid exists in the employee_tb
 $empQuery = "SELECT * FROM employee_tb WHERE empid = ?";
-$empStmt = $db->prepare($empQuery);
+$empStmt = $conn->prepare($empQuery);
 $empStmt->bind_param("s", $empid);
 $empStmt->execute();
 $empResult = $empStmt->get_result();
@@ -2915,7 +2915,7 @@ if ($empResult->num_rows < 1) {
     exit;
 } else {
     $prevQuery = "SELECT id FROM attendances WHERE empid = ?";
-    $prevStmt = $db->prepare($prevQuery);
+    $prevStmt = $conn->prepare($prevQuery);
     $prevStmt->bind_param("s", $empid);
     $prevStmt->execute();
     $prevResult = $prevStmt->get_result();
@@ -2930,7 +2930,7 @@ if ($empResult->num_rows < 1) {
         
         // Assuming you have executed the query to fetch attendance records for the current empid and date
         $recordQuery = "SELECT * FROM attendances WHERE empid = ? AND date = ?";
-        $recordStmt = $db->prepare($recordQuery);
+        $recordStmt = $conn->prepare($recordQuery);
         $recordStmt->bind_param("ss", $currentEmpid, $currentDate);
         $recordStmt->execute();
         $recordResult = $recordStmt->get_result();
@@ -2941,7 +2941,7 @@ if ($empResult->num_rows < 1) {
             $updateQuery = "UPDATE attendances SET
                 status = ?, time_in = ?, time_out = ?, late = ?, early_out = ?, overtime = ?, total_work = ?, total_rest = ?
                 WHERE empid = ? AND date = ?";
-            $updateStmt = $db->prepare($updateQuery);
+            $updateStmt = $conn->prepare($updateQuery);
             $updateStmt->bind_param("ssssssssss", $status, $time_in, $time_out, $late, $early_out, $overtime, $total_work, $total_rest, $currentEmpid, $currentDate);
             $updateStmt->execute();
             // echo "<br>data update";
@@ -2949,7 +2949,7 @@ if ($empResult->num_rows < 1) {
             // Insert a new record
             $insertQuery = "INSERT INTO attendances (status, empid, date, time_in, time_out, late, early_out, overtime, total_work, total_rest)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $insertStmt = $db->prepare($insertQuery);
+            $insertStmt = $conn->prepare($insertQuery);
             $insertStmt->bind_param("ssssssssss", $status, $currentEmpid, $currentDate, $time_in, $time_out, $late, $early_out, $overtime, $total_work, $total_rest);
             $insertStmt->execute();
 

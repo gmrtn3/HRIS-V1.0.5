@@ -34,7 +34,7 @@ if(count($_POST) > 0){
     $dailyRate_update = number_format($dailyRate_update, 2);
     $dailyRate_update = str_replace(',', '', $dailyRate_update); // Remove comma
 
-    mysqli_query($conn, "UPDATE employee_tb SET fname='".$_POST['fname']."',mname='".$_POST['mname']."', lname='".$_POST['lname']."',contact='".$_POST['contact']."',cstatus='".$_POST['cstatus']."',gender='".$_POST['gender']."',empdob='".$_POST['empdob']."',empsss='".$_POST['empsss']."',emptin='".$_POST['emptin']."',emppagibig='".$_POST['emppagibig']."',empphilhealth='".$_POST['empphilhealth']."',empbranch='".$_POST['empbranch']."',department_name='".$_POST['department_name']."',empbsalary='".$_POST['empbsalary']."', drate='". $dailyRate_update ."', otrate='".$_POST['otrate']."', empdate_hired='".$_POST['empdate_hired']."',emptranspo='".$_POST['emptranspo']."',empmeal='".$_POST['empmeal']."',empinternet='".$_POST['empinternet']."',empposition='".$_POST['empposition']."', role='".$_POST['role']."',email='".$_POST['email']."', sss_amount='".$_POST['sss_amount']."', tin_amount='".$_POST['tin_amount']."', pagibig_amount='".$_POST['pagibig_amount']."', philhealth_amount='".$_POST['philhealth_amount']."', classification='".$_POST['classification']."', bank_name='".$_POST['bank_name']."', bank_number='".$_POST['bank_number']."'".$emp_img_url.", company_code='".$_POST['company_code']."'
+    mysqli_query($conn, "UPDATE employee_tb SET fname='".$_POST['fname']."',mname='".$_POST['mname']."', lname='".$_POST['lname']."',contact='".$_POST['contact']."',cstatus='".$_POST['cstatus']."',gender='".$_POST['gender']."',empdob='".$_POST['empdob']."',empsss='".$_POST['empsss']."',emptin='".$_POST['emptin']."',emppagibig='".$_POST['emppagibig']."',empphilhealth='".$_POST['empphilhealth']."',empbranch='".$_POST['empbranch']."',department_name='".$_POST['department_name']."',empbsalary='".$_POST['empbsalary']."', drate='". $dailyRate_update ."', otrate='".$_POST['otrate']."', empdate_hired='".$_POST['empdate_hired']."',emptranspo='".$_POST['emptranspo']."',empmeal='".$_POST['empmeal']."',empinternet='".$_POST['empinternet']."',empposition='".$_POST['empposition']."', role='".$_POST['role']."',email='".$_POST['email']."', company_email='".$_POST['comp_email']."',sss_amount='".$_POST['sss_amount']."', tin_amount='".$_POST['tin_amount']."', pagibig_amount='".$_POST['pagibig_amount']."', philhealth_amount='".$_POST['philhealth_amount']."', classification='".$_POST['classification']."', bank_name='".$_POST['bank_name']."', bank_number='".$_POST['bank_number']."'".$emp_img_url.", company_code='".$_POST['company_code']."'
     WHERE id ='".$_POST['id']."'");
 
     mysqli_query($conn, "UPDATE assigned_company_code_tb SET company_code_id='".$_POST['company_code']."' WHERE empid = '".$_POST['empid']."' ");
@@ -83,7 +83,12 @@ else
 // ----------------END Insert into approver_tb table -------------------------
 }
 
-    include 'config.php';
+
+
+    $result = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid ='". $_GET['empid']. "'");
+    $row = mysqli_fetch_assoc($result);  
+
+    $empid = $row['empid'];
 
     $restdayResult = mysqli_query($conn, "SELECT restday FROM employee_tb AS emp
                                         INNER JOIN empschedule_tb AS esched ON esched.empid = emp.empid
@@ -126,21 +131,29 @@ else
 
     // echo $userId;
     // echo $_SESSION['empid'];
-    // $employeeID = $_GET['empid'];
-
-    // echo $_GET['empid'];
-
-    $sql = "SELECT * FROM employee_tb WHERE `empid` = '".$_GET['empid'] ."' ";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
-    
-    $empid = $row['empid'];
 
     
 }
 
-    
+// NiRetrieve ko ang decode JSON data galing empListForm.php para mapalitan din ang label ng allowance
+$data = json_decode(file_get_contents('php://input'), true);
 
+// Update session variables with the new labels (if they are set)
+if (isset($data['newTranspoLabel'])) {
+    $_SESSION['newTranspoLabel'] = $data['newTranspoLabel'];
+}
+if (isset($data['newMealLabel'])) {
+    $_SESSION['newMealLabel'] = $data['newMealLabel'];
+}
+if (isset($data['newInternetLabel'])) {
+    $_SESSION['newInternetLabel'] = $data['newInternetLabel'];
+}
+
+// Define default labels or use session data
+$newTranspoLabel = isset($_SESSION['newTranspoLabel']) ? $_SESSION['newTranspoLabel'] : '';
+$newMealLabel = isset($_SESSION['newMealLabel']) ? $_SESSION['newMealLabel'] : '';
+$newInternetLabel = isset($_SESSION['newInternetLabel']) ? $_SESSION['newInternetLabel'] : '';
+//End ng ajax para label
 ?>
 
 <!DOCTYPE html>
@@ -186,9 +199,7 @@ else
 </head> 
 <body>
     <header>
-        <?php 
-        include("header.php");
-        ?>
+        <?php include("header.php");?>
         
     </header>
 
@@ -301,6 +312,12 @@ else
                                         <label for="email">Email</label><br>
                                         <input type="email" name="email" id="" placeholder="Email Address" value="<?php echo $row['email'] ?>" pattern="[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" title="Must be a valid email." style="border: black 1px solid;">
                                     </div>
+
+                                    <div class="emp-email">
+                                        <label for="email">Company Email</label><br>
+                                        <input type="text" name="comp_email" id="" placeholder="Email Address" value="<?php echo $row['company_email'] ?>" pattern="[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" title="Must be a valid email." style="border: black 1px solid;">
+                                    </div>
+
                                     <div class="emp-datehired">
                                         <label for="empdate_hired">Date Joined</label><br>
                                             <input type="date" name="empdate_hired" id="" placeholder="Date Hired" value="<?php echo $row['empdate_hired'] ?>" style="border: black 1px solid;">
@@ -372,7 +389,7 @@ else
  
 
                                         ?> 
-                                        <h2 style="font-size: 1.3em; color: gray; font-style:italic"><?php echo $empid ?></h2>
+                                        <h2 style="font-size: 1.3em; color: gray; font-style:italic"><?php echo $position ?></h2>
                                         <p class="" style="margin-top: -3px; color: black; font-weight: 500">Status: <span style="<?php if($row['status'] == 'Active'){echo "color: green"; }else{echo "color:red"; } ?>"><?php echo $row['status'] ?></span></p>
                                         
                                         <div class="emp-stats" style="">
@@ -471,26 +488,47 @@ else
 
                         <div class="emp-allowance-container">
                             <div class="emp-title" style="display:flex; flex-direction:space-row; align-items: center; justify-content:space-between; width: 1440px;">
-                                <h1>Employee Monthly Allowance</h1>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#allowanceModal" id="modal-update" id="modal-update" class="fa-light fa-plus" style="color: #000000; cursor: pointer; margin-right: 20px; font-size: 20px; border:none; background-color:inherit; outline:none; font-size: 30px;"> </button>
-
+                                <h1 id="countfield">Employee Monthly Allowance</h1>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#allowanceModal" id="modal-update" class="fa-light fa-plus" style="color: #000000; cursor: pointer; margin-right: 20px; font-size: 20px; border:none; background-color:inherit; outline:none; font-size: 30px;"> </button>
                             </div>
                             <div class="emp-allowance-first-container">
                                 <div class="allowance-transpo">
-                                    <label for="emptranspo">Transportation</label><br>
+                                    <label for="emptranspo"><?php echo $newTranspoLabel; ?></label><br>
                                         <input type="text" name="emptranspo" placeholder="0.00" value="<?php echo $row['emptranspo']; ?>" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);" style="border: black 1px solid;">
-                                        
                                 </div>
+
                                 <div class="allowance-meal">
-                                    <label for="empmeal">Meal Allowance</label><br>
+                                    <label for="empmeal"><?php echo $newMealLabel; ?></label><br>
                                         <input type="text" name="empmeal" placeholder="0.00" value="<?php echo $row['empmeal'] ?>" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);" style="border: black 1px solid;"> 
                                 </div>
+
                                 <div class="allowance-internet">
-                                    <label for="empinternet">Internet Allowance</label><br>
+                                    <label for="empinternet"><?php echo $newInternetLabel; ?></label><br>
                                         <input type="text" name="empinternet" placeholder="0.00" value="<?php echo $row['empinternet'] ?>" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);" style="border: black 1px solid;">  
                                 </div>
                             </div>
-                        </div>
+
+                            <?php
+                                $newAllowance = mysqli_query($conn, "SELECT * FROM allowancededuct_tb WHERE `id_emp` = '$empid' LIMIT 3");
+                                if ($newAllowance && mysqli_num_rows($newAllowance) > 0) {
+                                    echo '<div class="emp-allowance-first-container">';
+                                    while ($allowrow = mysqli_fetch_assoc($newAllowance)) {
+
+                                        echo '<div class="allowance-internet">';
+                                        echo '<label for="emptranspo">' . $allowrow['other_allowance'] . '</label><br>';
+                                        echo '<input type="text" name="newallowance" placeholder="0.00" value="' . $allowrow['allowance_amount'] . '" oninput="this.value = this.value.replace(/[^0-9]/g, \'\'); if(this.value.length > 11) this.value = this.value.slice(0, 11);" style="border: black 1px solid;">';
+                                        echo '</div>';
+                                    }
+                                    echo '</div>';
+                                } else {
+                                    // Walang resulta sa query, kaya maaaring i-remove o hindi ipakita ang div na emp-allowance-first-container
+                                    // Halimbawa:
+                                    // echo '<div class="emp-allowance-first-container" style="display: none;"></div>';
+                                }
+                                ?>
+
+                        </div><!--emp allowance container-->
+
 
                         <?php
                             $cmpny_empid = $row['empid'];
@@ -752,7 +790,7 @@ else
 
 
                     <?php 
-                        include 'config.php';
+                       include 'config.php';
                         $sql = "SELECT empid FROM employee_tb";
 
                         $results = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid ='". $_GET['empid']. "'");
@@ -879,26 +917,18 @@ else
                    
                 <form action="Data Controller/Employee List/otherAllowanceController.php" method="POST">
                 <?php 
-                       include 'config.php';
+                        include 'config.php';
                         $sql = "SELECT empid FROM employee_tb";
 
                         $results = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid ='". $_GET['empid']. "'");
-                        $rows = mysqli_fetch_assoc($results);
-     
-                                
+                        $rows = mysqli_fetch_assoc($results);                        
                     ?>
-                
                     <div class="modal fade" id="allowanceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="allowanceLabel" aria-hidden="true">
                         <div class="modal-dialog"  style="position: absolute; top: 50px; left: 35%; ">
                         <div class="modal-content" style="width: 800px;">
                             <script>
                                 $(document).ready(function(){
                                     var html = '<tr><td><input required type="text" name="other_allowance[]" id=""  class="allowance-desc form-control" placeholder="Description"style="margin-top: 10px; border: black 1px solid; width: 100%;"></td><td><input required type="text" name="govern_amount[]" id="inputBox" class="emp-amount form-control" placeholder="Amount" oninput="validateInput(this)" style="margin-top: 10px; border: black 1px solid;"></td><td><input type="button" value="Remove" name="id_emp" id="allowanceRemove" class="btn" style="margin-top: 10px;"></td><td> <input type="hidden" name="id_emp[]" value="<?php echo $rows['empid']?>" id="" style="width:30px"></td></tr>';
-
-                                   
-
-                                    
-
                                 var max = 5;
                                 var x = 1;
                                 $("#allowanceAdd").click(function(){
@@ -932,8 +962,8 @@ else
                                         <th></th>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" name="other_allowance[]" id=""  class="allowance-desc form-control" placeholder="Description" style="width: 250px; border: black 1px solid;" required></td>
-                                        <td><input type="text" name="allowance_amount[]" id=""  class="allowance-amount form-control" placeholder="Amount" style="width: 250px; border: black 1px solid;" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);" required></td>
+                                        <td><input type="text" name="other_allowance[]" id="modal-description"  class="allowance-desc form-control" placeholder="Description" style="width: 250px; border: black 1px solid;" required></td>
+                                        <td><input type="text" name="allowance_amount[]" id="modal-amount"  class="allowance-amount form-control" placeholder="Amount" style="width: 250px; border: black 1px solid;" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);" required></td>
                                         <td><input type="button" value="Add" name="id_emp[]" id="allowanceAdd" class="btn btn-success" style="width: 73px;" ></td>
                                         <td>
                                         <input type="hidden" name="id_emp[]" value="<?php echo $rows['empid']?>" id="" style="width:30px">
@@ -992,21 +1022,24 @@ else
                         </div>
                     </div>
                 
-                    
-                 
                 
-            
-            
- 
-<!-- <script type="text/javascript">
-      document.getElementById("customFile").onchange = function(){
-          document.getElementById("form").submit();
-      };
-</script> -->
+           
+<!----------Script para macount ang text input field sa allowance na magdidisplay sa gilid ng h1----------->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var allowanceContainer = document.querySelector(".emp-allowance-container");
+var inputFields = allowanceContainer.querySelectorAll(".emp-allowance-first-container input[type='text']");
+var inputFieldCount = inputFields.length;
+
+var h1Tag = document.getElementById('countfield');
+h1Tag.textContent = "Employee Monthly Allowance (" + inputFieldCount + "/6)";
+
+});
+</script>
+<!----------Script para macount ang text input field sa allowance na magdidisplay sa gilid ng h1----------->       
 
 <script>
     // sched form modal
-
 let allowanceModal = document.getElementById('allowance-modal');
 
 //get open modal
@@ -1034,11 +1067,10 @@ function clickOutsides(e){
         allowanceModal.style.display ='none';    
     }
 }
-
 </script>
 
 <script>
-    var inputBox = document.getElementById("inputBox");
+var inputBox = document.getElementById("inputBox");
 
 var invalidChars = [
   "-",
@@ -1104,7 +1136,6 @@ function clickOutside(e){
         Modal.style.display ='none';    
     }
 }
-
 </script>
 
     

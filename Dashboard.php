@@ -38,7 +38,7 @@
     $employee_count = $row["employee_count"];
 
    include 'Data Controller/Dashboard/fetchHoliday.php'; //para sa pag fetch ng holidays using API
-
+   include 'Data Controller/Dashboard/fetchCalendar.php';
 
 // FOR ATTENDANCE AUTO REFRESHER ABSENT
     $_query_attendance = "SELECT * FROM attendances";
@@ -84,7 +84,7 @@ $result = mysqli_query($conn, $query);
 
 if(mysqli_num_rows($result) <= 0) {
     // Position does not exist, insert the new record
-    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Regular')";
+    $query = "INSERT INTO classification_tb (`id`, `classification`) VALUES (1, 'Regular')";
     $query_run = mysqli_query($conn, $query);    
 } 
 
@@ -95,19 +95,20 @@ $result = mysqli_query($conn, $query);
 
 if(mysqli_num_rows($result) <= 0) {
     // Position does not exist, insert the new record
-    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Internship/OJT')";
+    $query = "INSERT INTO classification_tb (`id`, `classification`) VALUES (2, 'Internship/OJT')";
     $query_run = mysqli_query($conn, $query);    
 } 
 
 
-// $query = "SELECT * FROM classification_tb WHERE classification = 'Pakyawan'";
+$query = "SELECT * FROM classification_tb WHERE classification = 'Pakyawan'";
 $result = mysqli_query($conn, $query);
 
 if(mysqli_num_rows($result) <= 0) {
     // Position does not exist, insert the new record
-    $query = "INSERT INTO classification_tb (`classification`) VALUES ('Pakyawan')";
+    $query = "INSERT INTO classification_tb (`id`,`classification`) VALUES (3, 'Pakyawan')";
     $query_run = mysqli_query($conn, $query);    
 } 
+
 
 //error
 $query = "SELECT * FROM positionn_tb WHERE position = 'Pakyawan'";
@@ -115,7 +116,7 @@ $result = mysqli_query($conn, $query);
 
 if(mysqli_num_rows($result) <= 0) {
     // Position does not exist, insert the new record
-    $query = "INSERT INTO positionn_tb (`position`) VALUES ('Pakyawan')";
+    $query = "INSERT INTO positionn_tb (`id`,`position`) VALUES (1,'Pakyawan')";
     $query_run = mysqli_query($conn, $query);    
 } 
 
@@ -125,7 +126,7 @@ $result = mysqli_query($conn, $query);
 
 if(mysqli_num_rows($result) <= 0) {
     // Position does not exist, insert the new record
-    $query = "INSERT INTO dept_tb (`col_deptname`) VALUES ('Pakyawan')";
+    $query = "INSERT INTO dept_tb (`id`,`col_deptname`) VALUES (1,'Pakyawan')";
     $query_run = mysqli_query($conn, $query);    
 } 
 
@@ -704,6 +705,7 @@ if(mysqli_num_rows($result) <= 0) {
             <div class="modal-body">
 
                 <input type="hidden" name="id_holiday" id="id_modall">
+                <input type="hidden" name="holiday_title" id="hol_title">
 
                 <div class="mb-4">
                     <label for="name_employee_fname" class="form-label">Date :</label>
@@ -746,6 +748,7 @@ if(mysqli_num_rows($result) <= 0) {
     let type_day = document.getElementById('type_id').value;
     let div_type_holiday = document.querySelector('.div_type_holiday');
 
+   
 
     var selectElement = document.getElementById("type_holiday_id");
 
@@ -2035,6 +2038,7 @@ if(mysqli_num_rows($result) <= 0) {
 
                     $('#id_modall').val(data[0]);
                     $('#HolidayDate_id').val(data[2]);
+                    // $('#hol_title').val(data[1]);
                 });
             });
         </script>

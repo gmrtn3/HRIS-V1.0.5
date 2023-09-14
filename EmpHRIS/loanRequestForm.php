@@ -72,36 +72,6 @@
                         <option value="Company Motorcycle Loan">Company Motorcycle Loan</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="year">Year</label><br>
-                    <select name="year" class="form-control" style="height:50px; color: black" required>
-                        <option value="" disabled selected>Year</option>
-                        <?php
-                            $currentYear = date("Y");
-                            for ($year = $currentYear; $year >= 1990; $year--) {
-                                echo "<option value=\"$year\">$year</option>";
-                            }
-                            ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="month">Month</label>
-                        <select name="month" id="" class="form-control" style="height:50px; color: black" required>
-                            <option value="" disabled selected>Month</option>
-                            <option value="January">January</option>
-                            <option value="February">February</option>
-                            <option value="March">March</option>
-                            <option value="April">April</option>
-                            <option value="May">May</option>
-                            <option value="June">June</option>
-                            <option value="July">July</option>
-                            <option value="August">August</option>
-                            <option value="September">September</option>
-                            <option value="October">October</option>
-                            <option value="November">November</option>
-                            <option value="December">December</option>
-                        </select>
-                </div>
                 <div class="form-group cutoff-no" style="display:flex; flex-direction: row; height: 100px;">
                 <div>
                     <label for="">Cutoff No.</label><br>

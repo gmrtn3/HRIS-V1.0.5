@@ -118,6 +118,17 @@ p {
   color: #FFFFFF;
 }
 
+.manualDtr {
+  background-color: rgb(63, 63, 63); 
+  padding: 10px; 
+  color: white; 
+  border-radius: 6px;
+}
+
+.manualDtr:hover{
+  background-color: black;
+  color: white;
+}
 
 tr:hover td {
   background-color: #ECECEC;

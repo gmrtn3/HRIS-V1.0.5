@@ -12,7 +12,27 @@ if(!isset($_SESSION['username'])){
         exit();
     }
 }
+include 'config.php';
 
+// NiRetrieve ko ang decode JSON data galing empListForm.php para mapalitan din ang label ng allowance
+$data = json_decode(file_get_contents('php://input'), true);
+
+// Update session variables with the new labels (if they are set)
+if (isset($data['newTranspoLabel'])) {
+    $_SESSION['newTranspoLabel'] = $data['newTranspoLabel'];
+}
+if (isset($data['newMealLabel'])) {
+    $_SESSION['newMealLabel'] = $data['newMealLabel'];
+}
+if (isset($data['newInternetLabel'])) {
+    $_SESSION['newInternetLabel'] = $data['newInternetLabel'];
+}
+
+// Define default labels or use session data
+$newTranspoLabel = isset($_SESSION['newTranspoLabel']) ? $_SESSION['newTranspoLabel'] : '';
+$newMealLabel = isset($_SESSION['newMealLabel']) ? $_SESSION['newMealLabel'] : '';
+$newInternetLabel = isset($_SESSION['newInternetLabel']) ? $_SESSION['newInternetLabel'] : '';
+//End ng ajax para label
 ?>
 
 
@@ -71,7 +91,8 @@ if(!isset($_SESSION['username'])){
 }
 
 .first button,
-.second button {
+.second button,
+.third button {
   background-color: inherit;
   border: none;
   outline: none;
@@ -82,7 +103,8 @@ if(!isset($_SESSION['username'])){
 
 /* Apply background color to active tab button */
 .first.active button,
-.second.active button {
+.second.active button,
+.third.active button {
   background-color: #ccc;
 }
 
@@ -97,6 +119,33 @@ if(!isset($_SESSION['username'])){
   padding: 6px 12px;
   border-top: none;
 }
+
+.pagination{
+        margin-right: 74px !important;
+        
+    }
+    .sorting_asc{
+        color: black !important;
+    }
+
+    .pagination li a{
+        color: #c37700;
+    }
+
+        .page-item.active .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a, .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
+        z-index: 3;
+        color: #fff;
+        background-color: #000;
+        border-color: #000;
+    }
+
+    
+    
+    #order-listing_next{
+        margin-right: 28px !important;
+        margin-bottom: -16px !important;
+
+    }
 </style>
 
  <!-- Modal -->
@@ -116,29 +165,60 @@ if(!isset($_SESSION['username'])){
                 </div>
 
                 <div class="second">
+                    <button class="tablinks" onclick="openTab(event, 'Table2')">Deduction</button>
+                </div>
+
+                <div class="third">
                     <button class="tablinks" onclick="openTab(event, 'Table3')">Loan Details</button>
                 </div>
             </div>
 
                     <div id="Table1" class="tabcontent" style="display: block;">
                         <div class="table-responsive" id="table-responsiveness">
-                            <table class="table table-bordered">
-                                <thead>
+                            <table class="table">
+                                <thead style="background-color: #D8D8F5;">
                                 <tr>
-                                    <th style="display: none;">Salary Rate</th>
+                                    <th>Fixed Salary Rate</th>
+                                    <th style="display: none;">Basic Pay</th>
                                     <th>Actual Working Days</th>
-                                    <th>Daily Wage</th>
+                                    <th style="display: none;">Daily Wage</th>
                                     <th>Overtime</th>
                                     <th>OverTime Pay</th>
                                     <th>Holiday Pay</th>
                                     <th>Number of Leave</th>
                                     <th>Leave Pay</th>
-                                    <th style="display: none;">Basic Pay</th>
-                                    <th>Transportation Allowance</th>
-                                    <th>Meal Allowance</th> 
-                                    <th>Internet Allowance</th>
+                                    <th><?php echo $newTranspoLabel; ?></th>
+                                    <th><?php echo $newMealLabel; ?></th> 
+                                    <th><?php echo $newInternetLabel; ?></th>
                                     <th>Other Allowances</th>
                                     <th>Total</th>
+                                </tr>
+                            </thead>
+                                <tr>
+                                    <td style="font-weight: 400;" id="salaryRate"></td>
+                                    <td style="font-weight: 400; display: none;" id="basicpay"></td>
+                                    <td style="font-weight: 400;" id="acDays"></td>
+                                    <td style="font-weight: 400; display: none;" id="drates"></td>
+                                    <td style="font-weight: 400;" id="ot_shours"></td>
+                                    <td style="font-weight: 400;" id="overtime"></td>
+                                    <td style="font-weight: 400;" id="holiPay"></td>
+                                    <td style="font-weight: 400;" id="leaveDate"></td>
+                                    <td style="font-weight: 400;" id="leavePay"></td>
+                                    <td style="font-weight: 400;" id="transport"></td>
+                                    <td style="font-weight: 400;" id="meal"></td>
+                                    <td style="font-weight: 400;" id="internet"></td>
+                                    <td style="font-weight: 400;" id="other"></td>
+                                    <td style="font-weight: 400;" id="addtotal"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="Table2" class="tabcontent">
+                        <div class="table-responsive" id="table-responsiveness">
+                            <table class="table">
+                                <thead style="background-color: #D8D8F5;">
+                                <tr>
                                     <th>Absent</th>
                                     <th>Absent Deduction</th>
                                     <th>Late</th>
@@ -157,20 +237,6 @@ if(!isset($_SESSION['username'])){
                                 </tr>
                             </thead>
                                 <tr>
-                                    <td style="display: none; font-weight: 400;" id="salaryRate"></td>
-                                    <td style="font-weight: 400;" id="acDays"></td>
-                                    <td style="font-weight: 400;" id="drates"></td>
-                                    <td style="font-weight: 400;" id="ot_shours"></td>
-                                    <td style="font-weight: 400;" id="overtime"></td>
-                                    <td style="font-weight: 400;" id="holiPay"></td>
-                                    <td style="font-weight: 400;" id="leaveDate"></td>
-                                    <td style="font-weight: 400;" id="leavePay"></td>
-                                    <td style="display: none; font-weight: 400;" id="basicpay"></td>
-                                    <td style="font-weight: 400;" id="transport"></td>
-                                    <td style="font-weight: 400;" id="meal"></td>
-                                    <td style="font-weight: 400;" id="internet"></td>
-                                    <td style="font-weight: 400;" id="other"></td>
-                                    <td style="font-weight: 400;" id="addtotal"></td>
                                     <td style="font-weight: 400; color: red;" id="absence"></td>
                                     <td style="font-weight: 400; color: red;" id="absencededucts"></td>
                                     <td style="font-weight: 400; color: red;" id="late"></td>
@@ -194,7 +260,7 @@ if(!isset($_SESSION['username'])){
                     <div id="Table3" class="tabcontent">
                         <div class="table-responsive" id="table-responsiveness">
                             <table class="table">
-                                <thead>
+                                <thead style="background-color: #D8D8F5;">
                                 <tr>
                                     <th>Loan Type</th>
                                     <th>Payable Amount</th>
@@ -269,6 +335,52 @@ if(!isset($_SESSION['username'])){
   </div>
 </div>
 
+<!----------------------------------------select button and text input--------------------------------------->
+<div class="container-select">
+            <div class="input-container">
+              <p class="demm-text">Select Department</p>
+              <?php
+                include('config.php');
+
+                $sql = "SELECT col_ID, col_deptname FROM dept_tb";
+                $result = mysqli_query($conn, $sql);
+                
+                $Department = isset($_GET['department_name']) ? ($_GET['department_name']) : '';
+
+                $options = "";
+                $options .= "<option class='select-btn form-select-m' aria-label='.form-select-sm example' value='All Department'" .($Department == 'All Department' ? ' selected' : '').">All Department</option>";
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $selected = ($Department == $row['col_ID']) ? 'selected' : '';
+                    $options .= "<option value='" . $row['col_ID'] . "' " . $selected . ">" . $row['col_deptname'] . "</option>";
+                }
+                ?>
+                  <select class="select-btn form-select-m" aria-label=".form-select-sm example" name="department" id="select_department" style="padding: 10px;">
+                      <option value="" disabled selected>Select Department</option>
+                      <?php echo $options; ?>
+                  </select>
+            </div>
+                
+            <div class="input-container">
+                <p class="demm-text">Select Employee</p>
+                  <label for="employee"></label>
+                    <select  class="select-btn form-select-m" aria-label=".form-select-sm example" name="employee" id="select_employee" style="padding: 10px;" disabled>
+                        <option value="" disabled selected>Select Employee</option>
+                    </select>
+              </div>
+
+                <div class="input-container">
+                    <p class="demm-text">Date From</p>
+                    <input class="select-btn" type="date" name="date_from" id="datestart" required>
+                </div>
+                <div class="input-container">
+                    <div class="notif">
+                    <p class="demm-text">Date To</p>
+                    </div>
+                    <input class="select-btn" type="date" name="date_to" id="enddate" onchange="datefunct()" required>
+                </div>
+                <button id="arrowBtn" onclick="filterAttReport()"> &rarr; Apply Filter</button>
+ </div> <!--Container Select-->
+<!----------------------------------------select button and text input--------------------------------------->
 
 
 
@@ -324,7 +436,7 @@ if(!isset($_SESSION['username'])){
                                             <th style="display: none;">Total Deduction</th>
                                             <th style="display: none;">Employee Status</th>
                                             <th style="display: none;">Frequency</th>
-                                            <th>Working Days</th>
+                                            <th>Actual Working Days</th>
                                             <th style="display: none;">Cut off ID</th>
                                             <th style="display: none;">Daily Wage</th>
                                             <th style="display: none;">Leave with Pay</th>
@@ -339,12 +451,15 @@ if(!isset($_SESSION['username'])){
                                             <th style="display: none;">Total Late</th>
                                             <th style="display: none;">Undertime Hours</th>
                                             <th style="display: none;">Total LWOP</th>
+                                            <th style="display: none;">Total Government</th>
+                                            <th style="display: none;">Actual Deduction</th>
                                             <th>View Details</th>
                                             <th>Print</th>
                                         </tr>
                                     </thead>
                                     <?php
                                     include 'config.php';
+
                                     if(isset($_POST['name_btnview'])){
 
                                     $cutOffID = $_POST['name_btnview'];
@@ -359,12 +474,15 @@ if(!isset($_SESSION['username'])){
                                     $end_date = $Cutoffrow['col_endDate'];
                                     $Frequency = $Cutoffrow['col_frequency'];
 
+                                    $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
+                                    $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
+                                    $department = $_GET['department_name'] ?? '';
+                                    $employee = $_GET['empid'] ?? '';
+
                                     $CheckEmpid = "SELECT * FROM empcutoff_tb WHERE `cutOff_ID` = '$cutOffID'";
                                     $runEmpid = mysqli_query($conn, $CheckEmpid);
                                     while($row = mysqli_fetch_assoc($runEmpid)){
                                         $EmployeeID = $row['emp_ID'];
-
-
                                     
                                         $query_settings_salary = "SELECT * FROM settings_company_tb";
                                         $result_settings_salary = mysqli_query($conn, $query_settings_salary);
@@ -1655,7 +1773,11 @@ if(!isset($_SESSION['username'])){
                                 payroll_loan_tb.loan_status,
                                 payroll_loan_tb.loan_date,
                                 payroll_loan_tb.timestamp,
-                                allowancededuct_tb.allowance_amount AS total_sum,
+                                SUM(allowancededuct_tb.allowance_amount) AS total_sum,
+                                dept_tb.col_ID,
+                                dept_tb.col_deptname,
+                                employee_tb.department_name,
+                                employee_tb.empid,
                                 employee_tb.emptranspo,
                                 employee_tb.empmeal,
                                 employee_tb.empinternet,
@@ -1707,6 +1829,7 @@ if(!isset($_SESSION['username'])){
                             FROM
                                 employee_tb
                                 INNER JOIN attendances ON employee_tb.empid = attendances.empid
+                                INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
                                 LEFT JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
                                 LEFT JOIN payroll_loan_tb ON employee_tb.empid = payroll_loan_tb.empid
 
@@ -1720,7 +1843,7 @@ if(!isset($_SESSION['username'])){
                             $result_absent_count = mysqli_query($conn, $sql_absent_count);
                             $row_absent_count = mysqli_fetch_assoc($result_absent_count);
                             $number_of_absent =  $row_absent_count['Absent_count'];
-                            $absenceDeduct = $EmpDrate * $number_of_absent;
+                            
                             
                         }else{
                                 $sql = "SELECT
@@ -1733,7 +1856,11 @@ if(!isset($_SESSION['username'])){
                                 payroll_loan_tb.loan_status,
                                 payroll_loan_tb.loan_date,
                                 payroll_loan_tb.timestamp,
-                                allowancededuct_tb.allowance_amount AS total_sum,
+                                SUM(allowancededuct_tb.allowance_amount) AS total_sum,
+                                dept_tb.col_ID,
+                                dept_tb.col_deptname,
+                                employee_tb.department_name,
+                                employee_tb.empid,
                                 employee_tb.emptranspo,
                                 employee_tb.empmeal,
                                 employee_tb.empinternet,
@@ -1783,10 +1910,22 @@ if(!isset($_SESSION['username'])){
                             FROM
                                 employee_tb
                                 INNER JOIN attendances ON employee_tb.empid = attendances.empid
+                                INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
                                 LEFT JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
                                 LEFT JOIN payroll_loan_tb ON employee_tb.empid = payroll_loan_tb.empid
 
                             WHERE (attendances.status = 'Present' OR attendances.status = 'On-Leave')  AND employee_tb.empid = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
+                        }
+                        if (!empty($department) && $department != 'All Department') {
+                            $sql .= " AND dept_tb.col_deptname = '$department'";
+                        }
+
+                        if (!empty($employee) && $employee != 'All Employee') {
+                            $sql .= " AND employee_tb.empid = '$employee'";
+                        }
+
+                        if (!empty($dateFrom) && !empty($dateTo)) {
+                            $sql .= " AND attendances.date BETWEEN '$dateFrom' AND '$dateTo'";
                         }
                         $result = $conn->query($sql);
                
@@ -1798,9 +1937,12 @@ if(!isset($_SESSION['username'])){
                                             $empLate = $row['total_hours_minutesLATE'];
                                             if ($Frequency === 'Monthly'){
 
+                                                $Empsalary = $row['Salary_of_Month'];
                                                 @$salary_of_month = $row['Salary_of_Month'];
                                                 if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
                                                     @$salary_of_month = $salary_of_month - ($row_emp['drate'] * $number_of_absent);
+
+                                                    $absenceDeduct = $EmpDrate * $number_of_absent;
                                                 }
                                                 
                                                 $sss = $row['sss_amount'];
@@ -1812,11 +1954,13 @@ if(!isset($_SESSION['username'])){
 
                                             } 
                                             else if ($Frequency === 'Semi-Month'){
-
+                                                $Empsalary = $row['Salary_of_Month'] / 2;
                                                 @$salary_of_month = ($row['Salary_of_Month']) / 2;
 
                                                 if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
                                                     @$salary_of_month = $salary_of_month - ($row_emp['drate'] * $number_of_absent);
+
+                                                    $absenceDeduct = $EmpDrate * $number_of_absent;
                                                 }
 
                                                 $sss = $row['sss_amount'] / 2;      
@@ -1826,11 +1970,13 @@ if(!isset($_SESSION['username'])){
                                                 $total_government_deduct = $sss + $philHealth + $pagibig_amount + $tin_amount;              
                                             }
                                             else if ($Frequency === 'Weekly'){
-
+                                                $Empsalary = $row['Salary_of_Month'] / 4;
                                                 @$salary_of_month = ($row['Salary_of_Month']) / 4;
                                                 
                                                 if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
                                                     @$salary_of_month = $salary_of_month - ($row_emp['drate'] * $number_of_absent);
+
+                                                    $absenceDeduct = $EmpDrate * $number_of_absent;
                                                 }
 
                                                 $sss = $row['sss_amount'] / 4;
@@ -1839,11 +1985,9 @@ if(!isset($_SESSION['username'])){
                                                 $tin_amount = $row['tin_amount'] / 4; 
                                                 $total_government_deduct = $sss + $philHealth + $pagibig_amount + $tin_amount;
                                             }
-                                            
+                                         
                                         @$cutoff_OT = ($time_OT_TOTAL);
-
-                                    
-                                                 
+                                        
                                         //government deduction
                                         $result_governDeduct = mysqli_query($conn, "SELECT
                                         SUM(govern_amount) AS total_sum_othe_deduct 
@@ -1854,11 +1998,18 @@ if(!isset($_SESSION['username'])){
 
                                                 if ($Frequency === 'Monthly') {
                                                     $cutoff_deductGovern = $row_governDeduct['total_sum_othe_deduct'];
+
+                                                    $GovernmentBenefit = $sss + $philHealth + $pagibig_amount + $tin_amount + $row_governDeduct['total_sum_othe_deduct'];
                                                 } else if ($Frequency === 'Semi-Month') {
                                                     $cutoff_deductGovern = $row_governDeduct['total_sum_othe_deduct'] / 2;
+
+                                                    $GovernmentBenefit = $sss + $philHealth + $pagibig_amount + $tin_amount + $row_governDeduct['total_sum_othe_deduct']/2;
                                                 } else if ($Frequency === 'Weekly') {
                                                     $cutoff_deductGovern = $row_governDeduct['total_sum_othe_deduct'] / 4;
+
+                                                    $GovernmentBenefit = $sss + $philHealth + $pagibig_amount + $tin_amount + $row_governDeduct['total_sum_othe_deduct']/4;
                                                 } 
+
 
                                             $query_deduct_onLeave = "SELECT COUNT(`status`) AS onLeaveCount FROM attendances 
                                             WHERE `status` = 'On-Leave' 
@@ -1874,7 +2025,7 @@ if(!isset($_SESSION['username'])){
                                                 $number_ofLeave_attStatus = 0;
                                             }
                                             
-
+                                            
 
                                             //Calculation ng basic pay sa payslip
                                             $SalaryEmp = $salary_of_month - ($EmpDrate * $number_ofLeave_attStatus);
@@ -2013,17 +2164,26 @@ if(!isset($_SESSION['username'])){
                                                 }
                                             $total_deductionLOAN = @$amortization1 + @$amortization2 + @$amortization3;
                                             }
-                                            //Calculation sa payslip netpay modal
-                                            $PayslipNetpay = "₱ " . (($salary_of_month) + $formatted_value + $OTamount + @$holiday_rate_with_dpay + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein)
-                                            - ($sss + $philHealth + $tin_amount + $pagibig_amount + $cutoff_deductGovern + $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN);
 
-                                            // echo $EmpDrate * $TotalworkDays + $formatted_value + $OTamount + @$holiday_rate_with_dpay + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein - $sss - $philHealth -  $tin_amount - $pagibig_amount - $cutoff_deductGovern - $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN;
+
+                                            //Calculation sa payslip netpay modal
+                                            // $PayslipNetpay = "₱ " . (($salary_of_month) + $Total_allowances + $OTamount + @$holiday_rate_with_dpay + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein)
+                                            // - ($sss + $philHealth + $tin_amount + $pagibig_amount + $cutoff_deductGovern + $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN);
+                                            $PayslipNetpay = "₱ " . number_format(($salary_of_month + $Total_allowances + $OTamount + @$holiday_rate_with_dpay + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein)
+                                            - ($sss + $philHealth + $tin_amount + $pagibig_amount + $cutoff_deductGovern + $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN), 2);
+
+
+                                            // echo $EmpDrate * $TotalworkDays + $Total_allowances + $OTamount + @$holiday_rate_with_dpay + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein - $sss - $philHealth -  $tin_amount - $pagibig_amount - $cutoff_deductGovern - $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN;
 
                                             //calculation ng total earning
-                                            $totalEarn = $salary_of_month + $holiday_rate_with_dpay + $formatted_value  + $cutoff_OT + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein;
+                                            $totalEarn = $Empsalary + $holiday_rate_with_dpay + $Total_allowances  + $cutoff_OT + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein;
 
                                             //deduction sa payslip
-                                            $totalDeduct = $sss + $philHealth +  $tin_amount +  $pagibig_amount +  $cutoff_deductGovern +  $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN;
+                                            $totalDeduct = $sss + $philHealth +  $tin_amount +  $pagibig_amount +  $cutoff_deductGovern +  $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN + $absenceDeduct;
+
+                                            //Deduction sa paginsert sa payslip report tb
+                                            $totalDeductions = $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN + $absenceDeduct;
+                                            
                                         ?>
                                         <tr>
                                             <td><?php echo $EmployeeID ?></td>
@@ -2033,7 +2193,7 @@ if(!isset($_SESSION['username'])){
                                             <td><?php echo $str_date ?></td>
                                             <td><?php echo $end_date ?></td>
                                             <td><?php echo $cutoffNumber?></td>
-                                            <td style="display: none;"><?php echo $salary_of_month ?></td>
+                                            <td style="display: none;"><?php echo number_format(($Empsalary),2); ?></td>
                                             <td style="display: none;"><?php echo $row['total_hours_minutesLATE'] ?></td>
                                             <td style="display: none;"><?php echo (empty($UT_time) || $UT_time === null) ? "0H:0M" : $UT_time; ?></td>
                                             <td style="display: none;"><?php echo $row['total_hours_minutestotalHours'] ?></td>
@@ -2058,10 +2218,10 @@ if(!isset($_SESSION['username'])){
                                             <td style="display: none;"><?php echo $row['loan_date'] ?></td>
                                             <td style="display: none;"><?php echo $row['timestamp'] ?></td>
                                             <td style="display: none;"><?php echo $Totalwork ?></td>
-                                            <td style="display: none;"><?php echo $SalaryEmp?></td>
+                                            <td style="display: none;"><?php echo number_format(($SalaryEmp),2);?></td>
                                             <td style="display: none;"><?php echo $basic_OT_hours ?></td>
                                             <td style="display: none;"><?php echo number_format($OTamount, 2)?></td>
-                                            <td style="display: none;"><?php echo $formatted_value ?></td>
+                                            <td style="display: none;"><?php echo $Total_allowances ?></td>
                                             <td style="display: none;"><?php echo number_format($PaidLeaves, 2)?></td>
                                             <td style="display: none;"><?php echo number_format($HolidayPayment, 2)?></td>
                                             <td style="display: none;"><?php echo $cutoff_deductGovern?></td>
@@ -2069,8 +2229,8 @@ if(!isset($_SESSION['username'])){
                                             <td style="display: none;"><?php echo $Undertime_rate_to_deduct ?></td>
                                             <td style="display: none;"><?php echo number_format($LWOPdeduct, 2)?></td>
                                             <td style="display: none;"><?php echo $PayslipNetpay?></td>
-                                            <td style="display: none;"><?php echo $totalEarn?></td>
-                                            <td style="display: none;"><?php echo $totalDeduct?></td>
+                                            <td style="display: none;"><?php echo number_format(($totalEarn),2);?></td>
+                                            <td style="display: none;"><?php echo number_format(($totalDeduct),2);?></td>
                                             <td style="display: none;"><?php echo $EmpStatus ?></td>
                                             <td style="display: none;"><?php echo $Frequency ?></td>
                                             <td><?php echo $TotalworkDays?></td>
@@ -2088,6 +2248,8 @@ if(!isset($_SESSION['username'])){
                                             <td style="display: none;"><?php echo $empLate?></td>
                                             <td style="display: none;"><?php echo $UT_time?></td>
                                             <td style="display: none;"><?php echo $number_LWOP_attStatus?></td>
+                                            <td style="display: none;"><?php echo number_format(($GovernmentBenefit),2) ?></td>
+                                            <td style="display: none;"><?php echo number_format(($totalDeductions),2)?></td>
                                             <td><button type="button" class="btn btn-primary payrolldetails" data-bs-toggle="modal" data-bs-target="#Payrollbootstrap">View</button></td>
                                             <td><button type="button" class="btn btn-success textempID" data-bs-toggle="modal" data-bs-target="#viewPayslip">Payslip</button></td>
                                         </tr>
@@ -2147,6 +2309,7 @@ if(!isset($_SESSION['username'])){
                                 <input type="hidden" id="deduct_LWOP">
                                 <input type="hidden" id="totalDeductions">
                                 <input type="hidden" id="netpayslips">
+                                <input type="hidden" id="totalgovernbenefit">
 
                                     <div class="header_view">
                                         <img src="icons/logo_hris.png" width="70px" alt="">
@@ -2215,8 +2378,9 @@ if(!isset($_SESSION['username'])){
                                         </div>
 
                                         <div class="headbdy_pnl2">
-                                            <p class="lbl_deduct">Deduction</p>
-                                            <p class="lbl_Amount2">Amount</p>
+                                        <p class="lbl_earnings">Deduction</p>
+                                            <p class="lbl_Hours">Hours</p>
+                                            <p class="lbl_Amount">Amount</p>
                                         </div>
 
                                         <div class="headbdy_pnl3">
@@ -2270,26 +2434,32 @@ if(!isset($_SESSION['username'])){
                                             <div class="headbdy_pnl22">
                                                 <div class="div_mdlcontnt_mid">
                                                     <div class="div_mdlcontnt_mid_left">
+                                                        <p class="lbl_hdmf">Tardiness</p>
+                                                        <p class="lbl_hdmf">Undertime</p>
+                                                        <p class="lbl_hdmf">LWOP</p>
                                                         <p class="lbl_sss_se">SSS SE CONTRI</p>
                                                         <p class="lbl_philhlt_c">PHILHEALTH CONTRI</p>
                                                         <p class="lbl_sss_se">TIN CONTRI</p>
                                                         <p class="lbl_philhlt_c">PAGIBIG CONTRI</p>
                                                         <p class="lbl_hdmf">OTHER CONTRI</p>
-                                                        <p class="lbl_hdmf">Tardiness</p>
-                                                        <p class="lbl_hdmf">Undertime</p>
-                                                        <p class="lbl_hdmf">LWOP</p>
+
                                                         <p  style = "margin-top : -10px;" class="lbl_advnc_p">
                                                     </div>    
+
+                                                    <div class="hourcontent_mid">
+                                                        <p class="latehour" id="latehour"></p>
+                                                        <p class="utHour" id="underhour"></p>
+                                                    </div>
                         
                                                     <div class="div_mdlcontnt_mid_right">
+                                                    <p class="lbl_philhlt_c" id="deductLate" name="late_kaltas"></p>
+                                                        <p class="lbl_philhlt_c" id="deductUT" name="undertime_kaltas"></p>
+                                                        <p class="lbl_philhlt_c" id="deductLWOP" name="lwop_kaltas"></p>
                                                         <p class="lbl_sss_se" id="deductSSS" name="sss_kaltas"></p>
                                                         <p class="lbl_philhlt_c" id="deductphil" name="phil_kaltas"></p>
                                                         <p class="lbl_sss_se" id="deductTIN" name="tin_kaltas"></p>
                                                         <p class="lbl_philhlt_c" id="deductPagibig" name="pagibig_kaltas"></p>
                                                         <p class="lbl_philhlt_c" id="deductOther" name="other_kaltas"></p>
-                                                        <p class="lbl_philhlt_c" id="deductLate" name="late_kaltas"></p>
-                                                        <p class="lbl_philhlt_c" id="deductUT" name="undertime_kaltas"></p>
-                                                        <p class="lbl_philhlt_c" id="deductLWOP" name="lwop_kaltas"></p>
                                                         <p style = "margin-top : -10px;" class="lbl_advnc_p">
                                                     </div> 
                                                 </div>
@@ -2378,6 +2548,7 @@ document.getElementById("pdfPrint").addEventListener("click", function () {
                 table_deductTIN: document.getElementById("deduct_TIN").value,
                 table_deductPagibig: document.getElementById("deduct_Pagibig").value,
                 table_deductOther: document.getElementById("deduct_Other").value,
+                table_governmenttotal: document.getElementById("totalgovernbenefit").value,
                 table_countLate: document.getElementById("lateNumber").value,
                 table_deductLate: document.getElementById("deduct_Late").value,
                 table_countUT: document.getElementById("countUT").value,
@@ -2411,12 +2582,12 @@ document.getElementById("pdfPrint").addEventListener("click", function () {
 
 <!---------------Script para sa pagpindot ng print all button at mapaginsert papuntang insert payslip--------------------->      
 
-<!-------------------------------------------------TABLE END------------------------------------------->
-<script>
+<!-----------------------------------Script sa pagprint ng data payslip sa modal------------------------------------------->
+<!-- <script>
 window.html2canvas = html2canvas;
 window.jsPDF = window.jspdf.jsPDF;
 function makePDF() {
-  var employeeId = document.getElementById('employeeID').textContent;
+  var employeeId = document.getElementById('id_employeeid').value;
   var empName = document.getElementById('id_p_emp_name').textContent;
   var Cutoff_Frequency = document.getElementById('id_table_frequency').value;
   var Cutoff_Numbers = document.getElementById('id_table_cutoffnum').value;
@@ -2443,14 +2614,14 @@ function makePDF() {
         var response = xhr.responseText;
         if (response === "Done") {
           // PDF generated successfully
-          window.location.href = "generatePayslip.php?msg=Successfully Generated the Payslip";
+          window.location.href = "generatePayslip.php?msg=Successfully Generated the Payslip&pdfFile=" + encodeURIComponent(pdfFileName);
         } else {
           // PDF generation failed
           console.log(response);
         }
       }
     };
-
+    xhr.open("POST", "generate-pdf.php", true);
     var formData = new FormData();
     formData.append("pdfData", img);
     formData.append("employeeId", employeeId);
@@ -2458,13 +2629,77 @@ function makePDF() {
     formData.append("Cutoff_Numbers", Cutoff_Numbers);
     formData.append("employee_workdays", employee_workdays);
     formData.append("cutoff_Id", cutoff_Id);
-
-    xhr.open("POST", "generate-pdf.php", true);
     xhr.send(formData); // Send the FormData object directly
   });
 }
+</script> -->
 
+<script type="text/javascript">
+    $("body").on("click", "#pdfPrint", function () {
+        let employeeId = document.getElementById('id_employeeid').value;
+        let Cutoff_Frequency = document.getElementById('id_table_frequency').value;
+        let Cutoff_Numbers = document.getElementById('id_table_cutoffnum').value;
+        let employee_workdays = document.getElementById('id_workdays').value;
+        let cutoff_Id = document.getElementById('id_cutoff_id').value;
+        document.getElementById('id_btn_close').style.display="none";
+        document.getElementById('pdfPrint').style.display="none";
+        
+
+        var emp_fullname = document.getElementById("id_p_emp_name");
+        var fullname = emp_fullname.textContent;
+        var currentDate = new Date();
+        var options = {
+        timeZone: "Asia/Manila",
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric"
+        };
+
+var currentDateTime = currentDate.toLocaleString("en-PH", options);
+        html2canvas($('#modal-body')[0], {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download(fullname + "_" + currentDateTime  +".pdf");
+                pdfMake.createPdf(docDefinition).getBase64(function (pdfData) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            var response = this.responseText;
+                            console.log(response);
+                            if (response === "Done") {
+                                window.location.href = "generatePayslip.php?msg=Successfully Generated the Payslip";
+                            } else {
+                                console.log(response);
+                            }
+                        }
+                    };
+                    xhr.open("POST", "generate-pdf.php", true);
+                    var formData = new FormData();
+                    formData.append("pdfData", pdfData);
+                    formData.append("employeeId", employeeId);
+                    formData.append("Cutoff_Frequency", Cutoff_Frequency);
+                    formData.append("Cutoff_Numbers", Cutoff_Numbers);
+                    formData.append("employee_workdays", employee_workdays);
+                    formData.append("cutoff_Id", cutoff_Id);
+                    xhr.send(formData);
+                    document.getElementById('id_btn_close').style.display="";
+                    document.getElementById('download-pdf').style.display="";
+                });
+            }
+        });
+    });
 </script>
+<!-----------------------------------Script sa pagprint ng data payslip sa modal------------------------------------------->
+
 
 <!------------------------------------Script para sa whole view data ng modal------------------------------------------------->
 <script>
@@ -2486,10 +2721,10 @@ $(document).ready(function(){
         $('#holiPay').text(data[37]);
         $('#leaveDate').text(data[50]);
         $('#leavePay').text(data[36]);
-        $('#transport').text(data[18]);
-        $('#meal').text(data[19]);
-        $('#internet').text(data[20]);
-        $('#other').text(data[21]);
+        $('#transport').text(data[55]);
+        $('#meal').text(data[56]);
+        $('#internet').text(data[57]);
+        $('#other').text(data[58]);
         $('#addtotal').text(data[43]);
         $('#absence').text(data[51]);
         $('#absencededucts').text(data[52]);
@@ -2538,7 +2773,6 @@ $(document).ready(function(){
             return $(this).text();
         }).get();
 
-        // Assuming the employee ID is in data[0]
         var employeeID = data[0];
         var empName = data[1];
         var cutoffMonth = data[2];
@@ -2549,8 +2783,9 @@ $(document).ready(function(){
         var Philhealth = data[14];
         var Pagibig = data[15];
         var Tin = data[16];
+        var Governtotal = data[62];
         var totalWork = data[31];
-        var Amount = data[32];
+        var Amount = data[7];
         var OThours = data[33];
         var OTAmount = data[34];
         var totalAllowance = data[35];
@@ -2566,7 +2801,7 @@ $(document).ready(function(){
         var LWOPDeduction = data[41];
         var Netpayslip = data[42];
         var EarnTotal = data[43];
-        var DeductTotal = data[44];
+        var DeductTotal = data[63];
         var EmployeeStats = data[45];
         var cutoffFrequency = data[46];
         var Totalworkingdays = data[47];
@@ -2599,7 +2834,9 @@ $(document).ready(function(){
         $('#deductPagibig').text(Pagibig);
         $('#deductOther').text(otherDeduct);
         $('#deductLate').text(Latededuction);
+        $('#latehour').text(countLate);
         $('#deductUT').text(UTDeduction);
+        $('#underhour').text(UTHours);
         $('#deductLWOP').text(LWOPDeduction);
         $('#netpayslip').text(Netpayslip);
         $('#totalEarn').text(EarnTotal);
@@ -2635,6 +2872,7 @@ $(document).ready(function(){
         $('#deduct_TIN').val(Tin);
         $('#deduct_Pagibig').val(Pagibig);
         $('#deduct_Other').val(otherDeduct);
+        $('#totalgovernbenefit').val(Governtotal);
         $('#lateNumber').val(countLate);
         $('#deduct_Late').val(Latededuction);
         $('#countUT').val(UTHours);
@@ -2686,7 +2924,7 @@ function openTab(evt, tabName) {
 
 
 <!----------------------Script sa dropdown chain--------------------------->        
-<!-- <script>
+<script>
 // Kapag nagbago ang pagpili sa select department dropdown
 document.getElementById("select_department").addEventListener("change", function() {
     var departmentID = this.value; // Kunin ang value ng selected department
@@ -2735,10 +2973,10 @@ function filterAttReport() {
         var employee = document.getElementById('select_employee').value;
         var dateFrom = document.getElementById('datestart').value;
         var dateTo = document.getElementById('enddate').value;
-        var url = 'dtRecords.php?col_deptname=' + department + '&empid=' + employee + '&date=' + dateFrom + '&date=' + dateTo;
+        var url = 'gnrate_payroll_prac.php?col_deptname=' + department + '&empid=' + employee + '&date_from=' + dateFrom + '&date_to=' + dateTo;
         window.location.href = url;
     }
-</script> -->
+</script>
 <!----------------------Script sa dropdown chain--------------------------->      
 
 <!------------------------------------------------MESSAGE FUNCTION START------------------------------------------->
@@ -2872,27 +3110,43 @@ $(document).ready(function() {
 
 
     </script>
-<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap4.min.js"></script>
-
-    <script src="vendors/datatables.net/jquery.dataTables.js"></script>
-    <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-
-           <!--skydash-->
-    <script src="skydash/vendor.bundle.base.js"></script>
-    <script src="skydash/off-canvas.js"></script>
-    <script src="skydash/hoverable-collapse.js"></script>
-    <script src="skydash/template.js"></script>
-    <script src="skydash/settings.js"></script>
-    <script src="skydash/todolist.js"></script>
-     <script src="main.js"></script>
-    <script src="bootstrap js/data-table.js"></script>
-
 
     
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+<script src="path/to/mpdf/autoload.php"></script>
 
-  
-    <script src="vendors/datatables.net/jquery.dataTables.js"></script>
-    <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap4.min.js"></script>
+
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+
+<!--skydash-->
+<script src="skydash/vendor.bundle.base.js"></script>
+<script src="skydash/off-canvas.js"></script>
+<script src="skydash/hoverable-collapse.js"></script>
+<script src="skydash/template.js"></script>
+<script src="skydash/settings.js"></script>
+<script src="skydash/todolist.js"></script>
+<script src="main.js"></script>
+<script src="bootstrap js/data-table.js"></script>
+
+<script src="vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
 </body>
 </html>

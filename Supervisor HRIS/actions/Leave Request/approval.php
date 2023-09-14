@@ -26,7 +26,8 @@ require '../../../phpmailer/src/SMTP.php';
 //Para sa pag select ng mga data galing sa APPLYLEAVE TABLE (END)
 
 //Para sa pag select ng mga data galing sa LEAVE INFO TABLE
-        $employee_ID = $_SESSION["ID_empId"]; //employee ID
+$employee_ID = preg_replace('/\D/', '', $_SESSION["ID_empId"]);
+        echo $employee_ID;
         $result_leaveINFO = mysqli_query($conn, "SELECT * FROM leaveinfo_tb WHERE col_empID = $employee_ID");
         if(mysqli_num_rows($result_leaveINFO) > 0) {
             $row__leaveINFO = mysqli_fetch_assoc($result_leaveINFO);

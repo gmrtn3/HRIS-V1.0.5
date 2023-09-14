@@ -3,11 +3,18 @@
 $date = $_POST['date']; // Make sure to update this with the correct form input name
 $typeHoliday = $_POST['type_holiday'];
 $id = $_POST['id_holiday'];
+$holiday_title = $_POST['holiday_title'];
 
 require('../../config.php');
 
+// echo $holiday_title;
+
 // SQL query to update data in the database
 $sql = "UPDATE `holiday_tb` SET `date_holiday`= '$date',`holiday_type`= '$typeHoliday' WHERE `id` = '$id'";
+
+$updateCalender = "UPDATE `schedule_list` SET `start_datetime` = '$date', `end_startdate` = '$date' , `description` = '$typeHoliday' WHERE `title` = '$holiday_title'  ";
+
+// $query_run = mysqli_query($conn, $updateCalender);
 
 if ($conn->query($sql) === TRUE) {
     // If the update was successful, retrieve the updated row from the database

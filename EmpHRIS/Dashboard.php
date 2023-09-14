@@ -853,14 +853,15 @@ include 'config.php';
                                   $startDate = date('Y-m-d');
                                   $endDate = date('Y-m-t');
                                   
-                                $query = "SELECT * FROM event_tb WHERE date_event BETWEEN '$startDate' AND '$endDate' ORDER BY `date_event` ASC";
+                                  $query = "SELECT * FROM event_tb WHERE `start_date` BETWEEN '$startDate' AND '$endDate' AND `end_date` BETWEEN '$startDate' AND '$endDate' ORDER BY `start_date` ASC";
                                 $result = mysqli_query($conn, $query);
                                 while ($row = mysqli_fetch_assoc($result)) {
-                                    $eventDate = date('Y-m-d', strtotime($row['date_event']));
+                                    $start_date = date('Y-m-d', strtotime($row['start_date']));
+                                    $end_date = date('Y-m-d', strtotime($row['end_date']));
                                     $eventDay = date('l', strtotime($row['date_event']));
                                 ?>
                                 <div class="son_first" style="background-color: #ECECEC;">
-                                    <p ><?php echo '<strong style="font-size: 20px; margin-left: 10px;">' . $row['event_title'] . '</strong> ' . '<span style="float: right; margin-right: 10px;">' . $eventDate . '</span>'; ?></p>
+                                    <p ><?php echo '<strong style="font-size: 20px; margin-left: 10px;">' . $row['event_title'] . '</strong> ' . '<span style="float: right; margin-right: 10px;"> '; ?> <?php if ($start_date == $end_date){ echo $start_date; }else{ echo $start_date, " - ", $end_date; } ?> <?php ' </span>'; ?></p>
                                     <p><?php echo '<span style="margin-left: 10px;">' . $row['event_type'] . '</span> ' . '<span style="float: right; margin-right: 10px;">' . $eventDay . '</span>'; ?></p>
                                     <p class="ml-2 fst-italic">Type: Event</p>
                                 </div>

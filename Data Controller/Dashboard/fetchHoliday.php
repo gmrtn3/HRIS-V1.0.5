@@ -53,12 +53,43 @@
                     $dateTime = new DateTime($date);
                     $holidayDate = $dateTime->format('Y-m-d');
             
-                    $title = $holiday['name']; // holiday title
+                    $title = str_replace(["'", '`'], '', $holiday['name']); //holiday title
                     $type = $holiday['type'][0];
                     //$emp_login_ID = $_SESSION['empid']; // login Emp ID
             
                     // Determine if it's a working day or non-working day holiday
-                    $isWorkingDayHoliday = ($type == 'observance' || $type == 'season') ? 'Regular Working Day' : 'Regular Working Day';
+                    $isWorkingDayHoliday = ($type == 'Observance' || $type == 'Season') ? 'Regular Working Day' : 'Regular Holiday';
+
+
+                    // echo $title , "   ", $dateTime, "<br>";
+
+                    if ($title == "People Power Anniversary") {
+                        $isWorkingDayHoliday = "Special Non-Working Holiday";
+
+                    } else if ($title == "Black Saturday") {
+                        $isWorkingDayHoliday = "Special Non-Working Holiday";
+
+                    } else if ($title == "All Saints' Day") {
+                        $isWorkingDayHoliday = "Special Non-Working Holiday";
+
+                    } else if ($title == "Feast of the Immaculate Conception") {
+                        $isWorkingDayHoliday = "Special Non-Working Holiday";
+
+                    } elseif($title == "Ninoy Aquino Day") {
+                        $isWorkingDayHoliday = "Special Non-Working Holiday";
+
+                    }elseif($title == "All Souls' Day"){
+                        $isWorkingDayHoliday = "Special Working Holiday";
+
+                    }elseif($title == "Christmas Eve"){
+                        $isWorkingDayHoliday = "Special Working Holiday";
+
+                    }elseif($title == "New Year's Eve"){
+                        $isWorkingDayHoliday = "Special Working Holiday";
+                    }else{
+                        
+                    }
+                    
             
             
                     // Check if the holiday already exists in the database
@@ -139,12 +170,32 @@
                             $dateTime = new DateTime($date);
                             $holidayDate = $dateTime->format('Y-m-d');
                     
-                            $title = $holiday['name']; // holiday title
+                            $title = str_replace(["'", '`'], '', $holiday['name']); //holiday title
                             $type = $holiday['type'][0];
                             $emp_login_ID = $_SESSION['empid']; // login Emp ID
                     
-                            // Determine if it's a working day or non-working day holiday
-                            $isWorkingDayHoliday = ($type == 'observance' || $type == 'season') ? 'Regular Working Day' : 'Regular Working Day';
+                             // Determine if it's a working day or non-working day holiday
+                            $isWorkingDayHoliday = ($type == 'Observance' || $type == 'Season') ? 'Regular Working Day' : 'Regular Holiday';
+
+
+                            // echo $title , "   ", $dateTime, "<br>";
+
+                            if ($title == "People Power Anniversary") {
+                       
+                                $isWorkingDayHoliday = "Special Non-Working Holiday";
+                            } else if ($title == "Black Saturday") {
+                                $isWorkingDayHoliday = "Special Non-Working Holiday";
+                            } else if ($title == "All Saints' Day") {
+                                $isWorkingDayHoliday = "Special Non-Working Holiday";
+                            } else if ($title == "Feast of the Immaculate Conception") {
+                                $isWorkingDayHoliday = "Special Non-Working Holiday";
+                            } else if ($title == "New Year's Eve") {
+                                $isWorkingDayHoliday = "Special Non-Working Holiday";
+                            } else {
+                                
+                            }
+                    
+
                     
                     
                             // Check if the holiday already exists in the database
@@ -179,6 +230,8 @@
                     
                     }
             }
+
+        
 
         }
 //----------------------------- FOR FETCHING HOLIDAY END ----------------------------//

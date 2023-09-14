@@ -75,8 +75,8 @@
 }
 
 .fc-theme-standard td, .fc-theme-standard th {
-    border: 1px solid #ddd;
-    border: 1px solid var(--fc-border-color, #ddd)
+    border: 1px solid #000;
+    border: 1px solid var(--fc-border-color, #000)
 }
 
 .fc-liquid-hack td, .fc-liquid-hack th {
@@ -310,8 +310,8 @@
 }
 
 .fc-theme-standard .fc-scrollgrid {
-    border: 1px solid #ddd;
-    border: 1px solid var(--fc-border-color, #ddd)
+    border: 1px solid #000;
+    border: 1px solid var(--fc-border-color, #000)
 }
 
 .fc .fc-scrollgrid, .fc .fc-scrollgrid-section-footer>*, .fc .fc-scrollgrid-section-header>* {
@@ -609,8 +609,8 @@
 }
 
 .fc-theme-standard .fc-popover {
-    border: 1px solid #ddd;
-    border: 1px solid var(--fc-border-color, #ddd);
+    border: 1px solid #000;
+    border: 1px solid var(--fc-border-color, #000);
     background: var(--fc-page-bg-color, #fff)
 }
 
@@ -1189,8 +1189,8 @@
 }
 
 .fc-theme-standard .fc-list {
-    border: 1px solid #ddd;
-    border: 1px solid var(--fc-border-color, #ddd)
+    border: 1px solid #000;
+    border: 1px solid var(--fc-border-color, #000)
 }
 
 .fc .fc-list-empty {

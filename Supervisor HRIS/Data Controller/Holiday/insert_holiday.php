@@ -16,6 +16,10 @@ if(isset($_POST['add_holiday'])){
 
     if($query_run)
     {
+        $sql = "INSERT INTO schedule_list (`title`, `description`, `start_datetime`, `end_datetime`)
+                VALUES ('$typeofHoliday', '$holiday_title', '$holidayDate', '$holidayDate' ) ";
+
+        $sql_run = mysqli_query($conn, $sql);
         header("Location: ../../Dashboard.php?msg=Successfully Added");
     }
     else

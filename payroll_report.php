@@ -196,61 +196,72 @@ include_once 'config.php';
                                                         <td style="font-weight: 400;"><?php echo $prb_row['cutoff_enddate']; ?></td>
                                                         <td style="font-weight: 400;"><?php echo $prb_row['cutoff_num']; ?></td>
                                                         <td style="font-weight: 400;"><?php echo $prb_row['date_time']; ?></td>
-                                                        <td><button class="btn btn-primary view-report-btn" data-bs-toggle="modal" data-bs-target="#ViewReport" data-cutoff-id="<?php echo $prb_row['cutoff_ID']; ?>" data-start-date="<?php echo $prb_row['cutoff_startdate']; ?>" data-end-date="<?php echo $prb_row['cutoff_enddate']; ?>">View Report</button></td>
+                                                        <td>                
+                                                            <form method="post" action="PayReport.php">
+                                                                <input type="hidden" name="cutoffID" value="<?php echo $prb_row['cutoff_ID']; ?>">
+                                                                <input type="hidden" name="startDate" value="<?php echo $prb_row['cutoff_startdate']; ?>">
+                                                                <input type="hidden" name="endDate" value="<?php echo $prb_row['cutoff_enddate']; ?>">
+                                                                <button type="submit" class="btn btn-primary view-report-btn">View Report</button>
+                                                            </form>
+                                                        </td>
                                                     </tr>
-                                                    <?php
-                                                    }
-                                                  }
-                                                ?>
+
                                      </table>
                                </div>    
 
-                               <div class="modal fade" id="ViewReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
+                               <!-- <div class="modal fade" id="ViewReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" style="width: 2000px;">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Payroll Report</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                                <div class="modal-body" id="report-modal-body" style="overflow-y:scroll;">
+                                                <div class="modal-body" id="report-modal-body">
                                                     
                                                 </div>
                                            </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                             
                     <div class="export-section">
                         <div class="export-sec">
                             <p class="export">Export Options:</p>
-                            <button class="excel" id="export-csv-btn">CSV</button>
+                            <form action="actions/Payroll/export_csv.php" method="POST" id="csv-export-form">
+                                    <input type="hidden" name="cutoffID" value="<?php echo $prb_row['cutoff_ID']; ?>">
+                                    <input type="hidden" name="startDate" value="<?php echo $prb_row['cutoff_startdate']; ?>">
+                                    <input type="hidden" name="endDate" value="<?php echo $prb_row['cutoff_enddate']; ?>">
+                                <button class="excel downloadcsv" id="export-csv-btn">CSV</button>
+                            </form>
                             <p class="lbl_exprt_contnt">|</p>
                             <button class="pdf" onclick="makePDF()">PDF</button>
                         </div>
                     </div>
-
+                     <?php
+                      }
+                   }
+                ?>
             </div>
           </div>
         </div>
       </div>
    
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var viewReportButtons = document.querySelectorAll('.view-report-button');
-        viewReportButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var cutoffID = button.getAttribute('data-cutoff-id');
-                var cutoffStartDate = button.getAttribute('data-cutoff-startdate');
-                var cutoffEndDate = button.getAttribute('data-cutoff-enddate');
-                
-                document.getElementById('modal-cutoff-id').textContent = cutoffID;
-                document.getElementById('modal-cutoff-startdate').textContent = cutoffStartDate;
-                document.getElementById('modal-cutoff-enddate').textContent = cutoffEndDate;
-            });
-        });
-    });
-</script>       -->
 
 <script>
+$(document).ready(function () {
+    $('.downloadcsv').click(function () {
+        var employeeId = $("input[name='employeeId']").val();
+        var minDate = $("input[name='minDate']").val();
+        var maxDate = $("input[name='maxDate']").val();
+
+        // Use window.location to trigger the download
+        window.location.href = 'actions/Daily Time Records/download.php?employeeId=' + employeeId + '&minDate=' + minDate + '&maxDate=' + maxDate;
+    });
+});
+</script>
+
+
+<!---Script sa pagpindot ng view report button nakaspecific data--->
+<!-- <script>
     $(document).ready(function () {
         $('.view-report-btn').click(function () {
             var cutoffID = $(this).data('cutoff-id');
@@ -267,7 +278,7 @@ include_once 'config.php';
             });
         });
     });
-</script>
+</script> -->
 
 <!-------------------------------------------------TABLE END------------------------------------------->
 
@@ -298,7 +309,7 @@ function makePDF() {
 </script>
 <!--CSV Exporting-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+<!-- <script>
 $(document).ready(function() {
     // Export button click event
     $('#export-csv-btn').click(function() {
@@ -342,7 +353,7 @@ $(document).ready(function() {
         link.click();
     });
 });
-</script>
+</script> -->
 
 <!----------------------Script sa dropdown chain--------------------------->        
 <script>
@@ -394,7 +405,7 @@ function filterAttReport() {
         var employee = document.getElementById('select_employee').value;
         var dateFrom = document.getElementById('datestart').value;
         var dateTo = document.getElementById('enddate').value;
-        var url = 'dtRecords.php?col_deptname=' + department + '&empid=' + employee + '&date=' + dateFrom + '&date=' + dateTo;
+        var url = 'payroll_report.php?col_deptname=' + department + '&empid=' + employee + '&date=' + dateFrom + '&date=' + dateTo;
         window.location.href = url;
     }
 </script>

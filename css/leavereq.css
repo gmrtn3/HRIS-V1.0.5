@@ -80,6 +80,18 @@ tr:hover td {
     top: 0;
     z-index: 1;
   }
+
+  .manualLeave {
+    background-color: rgb(63, 63, 63); 
+    padding: 10px; 
+    color: white; 
+    border-radius: 6px;
+  }
+  
+  .manualLeave:hover{
+    background-color: black;
+    color: white;
+  }
   
   table {
     display: block;

@@ -9,10 +9,10 @@
 </head>
 <body>
     <style>
-        #multi_option{
+    #multi_option{
 	max-width: 100%;
 	width: 100%;
-}
+    }
     </style>
 
 <?php

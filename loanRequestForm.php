@@ -96,7 +96,7 @@
                 </div>
                 <div class="form-group">
                     <label for="loan_type">Loan Type</label><br>
-                    <select name="loan_type" class="form-control" style="height:50px;" required>
+                    <select name="loan_type" class="form-select" style="height:50px;" required>
                         <option value="" selected="selected" class="selectTag" style="color: gray;" >Select Loan Type</option>
                         <option value="Company Emergency Loan">Company Emergency Loan</option>
                         <option value="Pag-ibig Emergency Loan">Pag-ibig Emergency Loan</option>
@@ -106,40 +106,10 @@
                         <option value="Company Motorcycle Loan">Company Motorcycle Loan</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="year">Year</label><br>
-                    <select name="year" class="form-control" style="height:50px;" required>
-                        <option value="" disabled selected>Year</option>
-                        <?php
-                            $currentYear = date("Y");
-                            for ($year = $currentYear; $year >= 1990; $year--) {
-                                echo "<option value=\"$year\">$year</option>";
-                            }
-                            ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="month">Month</label>
-                        <select name="month" id="" class="form-control" style="height:50px;" required>
-                            <option value="" disabled selected>Month</option>
-                            <option value="January">January</option>
-                            <option value="February">February</option>
-                            <option value="March">March</option>
-                            <option value="April">April</option>
-                            <option value="May">May</option>
-                            <option value="June">June</option>
-                            <option value="July">July</option>
-                            <option value="August">August</option>
-                            <option value="September">September</option>
-                            <option value="October">October</option>
-                            <option value="November">November</option>
-                            <option value="December">December</option>
-                        </select>
-                </div>
                 <div class="form-group cutoff-no" style="display:flex; flex-direction: row; height: 100px;">
                 <div>
                     <label for="">Cutoff No.</label><br>
-                    <select name="cutoff_no" id="cutoff_no"  style="width: 378px; height:50px; padding: 10px;" onchange="calculate()" required>
+                    <select name="cutoff_no" id="cutoff_no" class="form-select" style="width: 378px; height:50px; padding: 10px;" onchange="calculate()" required>
                         <option value="" selected disabled>0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -152,7 +122,7 @@
                 </div>
                 <div class="form-group loan-remarks">
                     <label for="remarks">Remarks</label><br>
-                    <textarea name="remarks" id="" rows="5" class="form-control"></textarea>
+                    <textarea name="remarks" id="" rows="7" class="form-control"></textarea>
                 </div>
             </div>
             <div class="col-6" style="padding: 0 30px 0 30px;">
@@ -184,7 +154,7 @@
                 </div>
                 <div class="form-group">
                     <label for="applied_cutoff">Applied Cutoff</label><br>
-                    <select name="applied_cutoff" class="form-control" style="height:50px;" id="">
+                    <select name="applied_cutoff" class="form-select" style="height:50px;" id="">
                         <option value="" selected disabled>Cutoff</option>
                         <option value="Every Cutoff">Every Cutoff</option>
                         <option value="First Cutoff">First Cutoff</option>
@@ -238,8 +208,6 @@
                     <div class="table-responsive" style="margin-left: 30px;width:600px;">
                         <table class="table table-hover table-bordered" style="margin-bottom: 50px;">
                             <thead>
-                                <th>Year</th>
-                                <th>Month</th>
                                 <th>Cutoff No.</th>
                                 <th>Amount</th>
                                 <th>Status</th>
@@ -255,8 +223,6 @@
                                     if($results->num_rows > 0){
                                         while($rows = $results->fetch_assoc()){
                                             echo "<tr>
-                                                    <td style='font-weight:400'>".$rows['year']."</td>
-                                                    <td style='font-weight:400'>".$rows['month']."</td>
                                                     <td style='font-weight:400'>".$rows['cutoff_no']."</td>
                                                     <td style='font-weight:400'>".$rows['payable_amount']."</td>
                                                     <td style='font-weight:400' >".$rows['loan_status']."</td>

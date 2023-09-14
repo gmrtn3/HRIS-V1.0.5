@@ -503,7 +503,7 @@
                         $profileRun = mysqli_query($conn, $Supervisor_Profile);
 
                         $SuperProfile = mysqli_fetch_assoc($profileRun);
-                        $visor_Profile = $SuperProfile['user_profile'];
+                        @$visor_Profile = $SuperProfile['user_profile'];
 
                         $image_data = "";
                                         
@@ -640,7 +640,7 @@
           <div class="collapse" id="ui-basic">
             <ul class="nav flex-column sub-menu" id="sub-menu" style="width: 100%;">
               <li class="nav-item"> <a class="nav-link" href="attendance.php">ATTENDANCE</a></li>
-              <li class="nav-item"> <a class="nav-link" href="#">CALENDAR</a></li>
+              <li class="nav-item"> <a class="nav-link" href="Calendar.php">CALENDAR</a></li>
               <li class="nav-item"> <a class="nav-link" href="dtRecords">DAILY TIME RECORDS</a></li>
               <li class="nav-item"> <a class="nav-link" href="dtr_admin">DTR CORRECTION</a></li>
               <li class="nav-item"> <a class="nav-link" href="leaveInfo">LEAVE CREDIT</a></li>
@@ -772,15 +772,15 @@
           </li>
 
           <?php 
-              // include 'config.php';
-              // $sql = "SELECT * FROM settings_company_tb WHERE `piece_rate_toggle` = 'Hidden' ";
-              // $result = mysqli_query($conn, $sql);
-              // $row = mysqli_fetch_assoc($result);
+              include 'config.php';
+              $sqlk = "SELECT * FROM settings_company_tb WHERE `piece_rate_toggle` = 'Hidden' ";
+              $resultk = mysqli_query($conn, $sqlk);
+              $rowk = mysqli_fetch_assoc($resultk);
 
-              // @$pakyaw_toggle = $row['piece_rate_toggle'];
+              @$pakyaw_toggle = $rowk['piece_rate_toggle'];
           ?>
 
-          <li class="nav-item" id="piece_hide_show" >
+          <li class="nav-item" id="pakyawan_toggle" >
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-pakyawan" aria-expanded="false" aria-controls="ui-pakyawan" style="margin-top: 5px; color:white">
               <i class="fa-solid fa-gear"></i>
               <span class="nav-title"  style="font-size: 21px; margin-left: 15px; font-family: Arial, sans-serif; font-weight: 400" >PAKYAWAN</span>
@@ -817,14 +817,16 @@
       </nav>
 
       <script>
-        //  let pakyawan_toggle = document.getElementById("pakyawan_toggle");
-        //   let pak_hide = document.getElementById("pak_hide").value;
+         let pakyawan_toggle = document.getElementById("pakyawan_toggle");
+          let pak_hide = document.getElementById("pak_hide").value;
 
-        //   if(pak_hide == 'Hidden'){
-        //     pakyawan_toggle.style.display = "none";
-        //   }else{
-        //     pakyawan_toggle.style.display = "block";
-        //   }
+          if(pak_hide == 'Hidden'){
+            pakyawan_toggle.style.display = "none";
+            // console.log("hehe");
+          }else{
+            pakyawan_toggle.style.display = "block";
+            // console.log("haha");
+          }
     </script>
 
      

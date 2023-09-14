@@ -13,13 +13,11 @@
 <?php
 include '../../config.php';
 $payslip_ID = $_GET['id'];
-$result_payslip = mysqli_query($conn, " SELECT
-                                                *
-                                            FROM 
+$result_payslip = mysqli_query($conn, "SELECT * FROM 
                                             `payslip_tb`
                                             WHERE `col_ID`=  '$payslip_ID'");
  $row_payslip= mysqli_fetch_assoc($result_payslip);
-echo $row_payslip['col_Payslip_pdf'];
+ echo $row_payslip['col_Payslip_pdf'];
 // Path to the PDF file
 $filepath = '../../' . $row_payslip['col_Payslip_pdf'];
 

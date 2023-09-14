@@ -62,6 +62,7 @@
 <link rel="stylesheet" href="css/try.css">
 <link rel="stylesheet" href="css/styles.css">
     <title>HRIS | Employee List Form</title>
+
 </head>
 <body>
     <header>
@@ -130,7 +131,7 @@
 	        max-width: 100%;
 	        width: 100%;
         }
-    
+
 </style>
 
 
@@ -168,7 +169,9 @@
                         </select>
                     </div>
 
-             <!-- <p>Selected Department ID: <span id="selectedDepartment"><?php echo @$selectedDepartment ?></span></p> -->
+             <!-- <p>Selected Department ID: <span id="selectedDepartment"><?php 
+            //  echo @$selectedDepartment
+              ?></span></p> -->
                         
                     
                     <form action="Data Controller/Schedules/empSchedule.php" method="POST">
@@ -208,22 +211,92 @@
 
 
                             </div>
-                            <div class="w-50">
-                                <label for="from">To</label><br>
-                                <input type="date" name="sched_to" id="sched_to_id" class="form-control" onchange="datevalidate()" required>   
-                                <div id="sched_to_error" class="text-danger" style="font-size: small;"></div>
- 
-                            </div>
-                        </div>
-                        
-                        <div class="sched-modal-btn mt-5">
-                            <div>
+                            <div class="w-50" id="sample-container">
 
                             </div>
-                            <div>
+                            <!-- <div class="w-50">
+                                <label for="from">To</label><br>
+                                <input type="date" name="sched_to" id="sched_to_id" class="form-control" onchange="datevalidate()">   
+                                <div id="sched_to_error" class="text-danger" style="font-size: small;"></div>
+                               
+                            </div> -->
+
+                        </div>
+                        <!-- <div class="d-flex w-100 flex-row mt-3 align-items-center" style="height: 1em">
+                            <input class="mr-2" type="checkbox" name="" value=""  id="sample">
+                            <label for="" class="mt-2">Shifting Schedule</label>
+                            
+                        </div> -->
+                        <div class="w-100 mt-3" id="radBtn" style="display:block"> 
+                            <div class="form-check ml-4">
+                                <input class="form-check-input fs-5"  type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                <label class="form-check-label fs-5" for="flexRadioDefault1" style="margin-left: -0.1em">
+                                    Shifting Schedule
+                                </label>
+                                <!-- <p id="selectedRegular">hah</p> -->
+
+                            </div>
+                            <div class="form-check ml-4 mt-2">
+                                <input class="form-check-input fs-5"  type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                <label class="form-check-label fs-5"  for="flexRadioDefault2" style="margin-left: -0.1em">
+                                    Fixed Schedule
+                                </label>
+                                <!-- <p id="displayEmpid">s</p> -->
+                            </div>
+                        </div>
+                    
+
+                        <script>
+                        var radio1 = document.getElementById("flexRadioDefault1");
+                        var radio2 = document.getElementById("flexRadioDefault2");
+                        var container = document.getElementById("sample-container");
+                        
+                        // Initial check
+                        if (radio2.checked) {
+                            createDiv(); // Create the div initially if the second radio is checked
+                        }
+
+                        radio1.addEventListener("change", function() {
+                            clearContainer();
+                            if (radio1.checked) {
+                                createDiv(); // Create the div when the first radio is checked
+                            }
+                        });
+
+                        radio2.addEventListener("change", function() {
+                            clearContainer();
+                            if (radio2.checked) {
+                                // console.log("hehe");     // Create the div when the second radio is checked
+                            }
+                        });
+
+                        function createDiv() {
+                            // Create the div element and its content
+                            var div = document.createElement("div");
+                            div.className = "w-100";
+                            div.innerHTML = `
+                                <label for="from">To</label><br>
+                                <input type="date" name="sched_to" id="sched_to_id" class="form-control" onchange="datevalidate()">
+                                <div id="sched_to_error" class="text-danger" style="font-size: small;"></div>
+                            `;
+                            
+                            // Append the created div to the container
+                            container.appendChild(div);
+                        }
+
+                        function clearContainer() {
+                            // Clear the container
+                            container.innerHTML = "";
+                        }
+                    </script>
+
+
+
+                        
+                        <div class="sched-modal-btn mt-4">
+                          
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border:none; background-color: inherit; font-size: 23px;">Close</button>
                             <button class="btn btn-primary" name="submit" type="submit">Submit</button>
-                            </div>
                         </div>
                             
                     </div>
@@ -416,6 +489,7 @@
                 </div>
         </div> -->
 
+
         <script>
       $(document).ready(function() {
     $('#departmentDropdown').change(function() {
@@ -438,13 +512,17 @@
                         // Update the employee dropdown with new options
                         $('#employeeDropdown').html(employeeOptions);
                         console.log('Employee options updated successfully.');
+                        // console.log(employeeOptions);
 
                         // Collect selected employee IDs
                         var selectedEmployeeIDs = $('#multi_option').val();
-                        console.log('Selected Employee IDs:', selectedEmployeeIDs);
+                        console.log(selectedEmployeeIDs);
+                        $('#displayEmpid').text(selectedEmployeeIDs);
+
+                        
 
                         // Now submit the form with the selected employee IDs
-                      
+                       
                     }
                 });
             }
@@ -452,6 +530,28 @@
     });
 });
     </script>
+    
+<!-- 
+    <script>
+        $(document).ready(function(){
+            $('#multi_option').change(function(){
+                var selectedValue = $(this).val();
+                console.log("haha", selectedValue);
+
+                $.ajax({
+                    type:'POST',
+                    url: 'get_regular_emp.php',
+                    data: { regular: selectedValue },
+                    success: function(response){
+                        $('#selectedRegular').text(response);
+                        console.log("hoho",response);
+                    }
+                });
+            });
+        });
+    </script> -->
+
+
 
         <script type="text/javascript" src="js/virtual-select.min.js"></script>
 <script type="text/javascript">
@@ -459,6 +559,7 @@
 	  ele: '#multi_option' 
 	});
 </script>
+
         
 <!---------Script sa pagdisable ng button kapag nagcheck ng checkbox at hindi naglagay sa time input-------->
 

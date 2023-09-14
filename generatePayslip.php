@@ -118,17 +118,6 @@
         margin-right: 20px !important;
     }
 
-    .department{
-       
-
-    }
-
-    .row select{
-        width: 250px !important;
-        margin-left: 85px !important;
-        height: 50px !important;
-
-    }
     
     </style>
     <header>
@@ -280,7 +269,7 @@ function filterPayslip() {
             <div class="col-12 ">
                 <div class="table-responsive" style="margin-top:70px;">
                     <form action="" method="post">
-                        <input type="hidden" name="name_payslip" value="">
+                        <input type="hidden" name="name_payslip" id="payslipID" value="">
                         <table id="order-listing" class="table table-hover table-borderless" cellspacing="0" >
                             <thead style="background-color: #f4f4f4;">
                                 <tr>
@@ -385,7 +374,7 @@ function filterPayslip() {
                                             <td>" . $row['col_cutOffNum'] . "</td> 
                                             <td>" . $row['_datetime'] . "</td> 
                                             <td>
-                                                <a class='' href='Data Controller/Payslip/getPayslipdata.php?id=" . $row['col_ID'] . "'><i class='fa-solid fa-eye fs-5 me-3'></i></a>
+                                                <a class='viewrequest' href='Data Controller/Payslip/getPayslipdata.php?id=". $row['col_ID'] ."'><i class='fa-solid fa-eye fs-5 me-3'></i></a>
                                             </td>                                      
                                         </tr>"; 
                                 }
@@ -399,11 +388,24 @@ function filterPayslip() {
             
         </div>
    
+
+<!-- <script> 
+        $(document).ready(function(){
+        $('.viewrequest').on('click', function(){
+        $tr = $(this).closest('tr');
+
+            var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+        $('#payslipID').val(data[0]);                  
+    });
+});
+</script>      -->
+
+
 <script>
-
-
-
-
 function cutoff(value) {
     // Make an AJAX request to the server
         var xhttp = new XMLHttpRequest();
@@ -426,8 +428,6 @@ function cutoff(value) {
             xhttp.open("GET", "Data Controller/Payslip/getCutoffdata.php?value=" + encodeURIComponent(value), true);
             xhttp.send();
     }
-
-
 
 
 function sortTable(columnIndex) {

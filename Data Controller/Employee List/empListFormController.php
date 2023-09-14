@@ -86,8 +86,9 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 $cpassword = $_POST['cpassword'];
 $classification = $_POST['classification'];
+$empbsalary = $_POST['empbsalary'];
 
-$empschedule_type = $_POST['schedule_name'];
+@$empschedule_type = $_POST['schedule_name'];
 $empstart_date = $_POST['sched_from'];
 $empend_date = $_POST['sched_to'];
 
@@ -95,7 +96,7 @@ if($empschedule_type = ''){
     $empschedule_type = 'none';
 }
 else{
-    $empschedule_type = $_POST['schedule_name'];
+    @$empschedule_type = $_POST['schedule_name'];
 }
 
 // Check if the employee already exists in the database

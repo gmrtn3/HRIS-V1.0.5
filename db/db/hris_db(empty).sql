@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 30, 2023 at 04:53 AM
+-- Generation Time: Sep 14, 2023 at 04:55 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -167,7 +167,8 @@ CREATE TABLE `attendance_time_in` (
   `id` int(11) NOT NULL,
   `time_in_personId` varchar(20) NOT NULL,
   `date_time_in` date NOT NULL,
-  `time_in` time NOT NULL
+  `time_in` time NOT NULL,
+  `timestamp` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -180,7 +181,8 @@ CREATE TABLE `attendance_time_out` (
   `id` int(11) NOT NULL,
   `time_out_personId` varchar(20) NOT NULL,
   `date_time_out` date NOT NULL,
-  `time_out` time NOT NULL
+  `time_out` time NOT NULL,
+  `timestamp` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -196,6 +198,21 @@ CREATE TABLE `branch_tb` (
   `zip_code` varchar(20) NOT NULL,
   `email` varchar(100) NOT NULL,
   `telephone` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `calendar_event_master`
+--
+
+CREATE TABLE `calendar_event_master` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `timestamp` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -341,13 +358,14 @@ CREATE TABLE `employee_tb` (
   `otrate` int(11) NOT NULL,
   `drate` varchar(255) NOT NULL,
   `empdate_hired` varchar(255) NOT NULL,
-  `emptranspo` varchar(255) NOT NULL,
-  `empmeal` varchar(255) NOT NULL,
-  `empinternet` varchar(255) NOT NULL,
+  `emptranspo` int(11) NOT NULL,
+  `empmeal` int(11) NOT NULL,
+  `empinternet` int(11) NOT NULL,
   `empaccess_id` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `role` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `company_email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `sss_amount` int(11) NOT NULL,
   `tin_amount` int(11) NOT NULL,
@@ -398,6 +416,20 @@ CREATE TABLE `emp_dtr_tb` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emp_file`
+--
+
+CREATE TABLE `emp_file` (
+  `id` int(11) NOT NULL,
+  `empid` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `content` longblob DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `emp_official_tb`
 --
 
@@ -428,7 +460,8 @@ CREATE TABLE `event_tb` (
   `id` int(11) NOT NULL,
   `empid` varchar(255) NOT NULL,
   `event_title` varchar(500) NOT NULL,
-  `date_event` date NOT NULL,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime DEFAULT NULL,
   `event_type` varchar(255) NOT NULL,
   `_datetime` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -584,8 +617,6 @@ CREATE TABLE `payroll_loan_tb` (
   `id` int(11) NOT NULL,
   `empid` varchar(255) NOT NULL,
   `loan_type` varchar(255) NOT NULL,
-  `year` int(11) NOT NULL,
-  `month` varchar(255) NOT NULL,
   `cutoff_no` int(11) NOT NULL,
   `remarks` varchar(255) NOT NULL,
   `loan_date` varchar(11) NOT NULL,
@@ -606,7 +637,10 @@ CREATE TABLE `payroll_loan_tb` (
 
 CREATE TABLE `payslip_report_tb` (
   `id` int(11) NOT NULL,
+  `cutoff_ID` int(11) NOT NULL,
+  `pay_rule` varchar(255) NOT NULL,
   `empid` varchar(255) NOT NULL,
+  `col_frequency` varchar(255) NOT NULL,
   `cutoff_month` varchar(255) NOT NULL,
   `cutoff_startdate` date NOT NULL,
   `cutoff_enddate` date NOT NULL,
@@ -616,20 +650,31 @@ CREATE TABLE `payslip_report_tb` (
   `basic_amount_pay` varchar(255) NOT NULL,
   `overtime_hours` varchar(255) NOT NULL,
   `overtime_amount` varchar(255) NOT NULL,
+  `transpo_allow` varchar(255) NOT NULL,
+  `meal_allow` varchar(255) NOT NULL,
+  `net_allowance` varchar(255) NOT NULL,
+  `add_allow` varchar(255) NOT NULL,
   `allowances` varchar(255) NOT NULL,
+  `number_leave` varchar(255) NOT NULL,
   `paid_leaves` varchar(255) NOT NULL,
   `holiday_pay` varchar(255) NOT NULL,
   `total_earnings` varchar(255) NOT NULL,
+  `absence` varchar(255) NOT NULL,
+  `absence_deduction` varchar(255) NOT NULL,
   `sss_contri` varchar(255) NOT NULL,
   `philhealth_contri` varchar(255) NOT NULL,
   `tin_contri` varchar(255) NOT NULL,
   `pagibig_contri` varchar(255) NOT NULL,
   `other_contri` varchar(255) NOT NULL,
+  `total_late` varchar(255) NOT NULL,
   `tardiness_deduct` varchar(255) NOT NULL,
+  `ut_time` varchar(255) NOT NULL,
   `undertime_deduct` varchar(255) NOT NULL,
+  `number_lwop` varchar(255) NOT NULL,
   `lwop_deduct` varchar(255) NOT NULL,
   `total_deduction` varchar(255) NOT NULL,
-  `net_pay` varchar(255) NOT NULL
+  `net_pay` varchar(255) NOT NULL,
+  `date_time` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -676,12 +721,16 @@ CREATE TABLE `positionn_tb` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sample_ai`
+-- Table structure for table `schedule_list`
 --
 
-CREATE TABLE `sample_ai` (
+CREATE TABLE `schedule_list` (
   `id` int(11) NOT NULL,
-  `sample_ai` varchar(255) NOT NULL
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `start_datetime` datetime NOT NULL,
+  `end_datetime` datetime DEFAULT NULL,
+  `timestamp` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -722,9 +771,9 @@ CREATE TABLE `schedule_tb` (
   `sun_timeout` varchar(255) DEFAULT NULL,
   `sun_wfh` varchar(255) DEFAULT NULL,
   `flexible` varchar(255) DEFAULT NULL,
-  `enable_grace_period` varchar(255) NOT NULL,
+  `enable_grace_period` varchar(255) DEFAULT NULL,
   `grace_period` varchar(255) DEFAULT NULL,
-  `enable_sched_ot` varchar(255) NOT NULL,
+  `enable_sched_ot` varchar(255) DEFAULT NULL,
   `sched_ot` varchar(255) DEFAULT NULL,
   `sched_holiday` varchar(255) DEFAULT NULL,
   `restday` varchar(255) NOT NULL,
@@ -740,6 +789,7 @@ CREATE TABLE `schedule_tb` (
 CREATE TABLE `settings_company_tb` (
   `id` int(11) NOT NULL,
   `cmpny_logo` longblob NOT NULL,
+  `email_domain` varchar(255) NOT NULL,
   `cmpny_name` varchar(255) NOT NULL,
   `cmpny_address` varchar(255) NOT NULL,
   `cmpny_zipcode` int(11) NOT NULL,
@@ -792,15 +842,16 @@ CREATE TABLE `user_tb` (
   `username` varchar(30) NOT NULL,
   `userType` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL
+  `role` varchar(255) NOT NULL,
+  `empid` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_tb`
 --
 
-INSERT INTO `user_tb` (`id`, `username`, `userType`, `password`, `role`) VALUES
-(1, 'admin', 'admin', 'admin', 'admin');
+INSERT INTO `user_tb` (`id`, `username`, `userType`, `password`, `role`, `empid`) VALUES
+(1, 'superadmin', 'admin', 'admin', 'admin', '00001');
 
 -- --------------------------------------------------------
 
@@ -897,6 +948,12 @@ ALTER TABLE `branch_tb`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `calendar_event_master`
+--
+ALTER TABLE `calendar_event_master`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `classification_tb`
 --
 ALTER TABLE `classification_tb`
@@ -961,6 +1018,12 @@ ALTER TABLE `empschedule_tb`
 -- Indexes for table `emp_dtr_tb`
 --
 ALTER TABLE `emp_dtr_tb`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `emp_file`
+--
+ALTER TABLE `emp_file`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1060,11 +1123,10 @@ ALTER TABLE `positionn_tb`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `sample_ai`
+-- Indexes for table `schedule_list`
 --
-ALTER TABLE `sample_ai`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `1` (`sample_ai`);
+ALTER TABLE `schedule_list`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `schedule_tb`
@@ -1174,6 +1236,12 @@ ALTER TABLE `branch_tb`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `calendar_event_master`
+--
+ALTER TABLE `calendar_event_master`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `classification_tb`
 --
 ALTER TABLE `classification_tb`
@@ -1237,6 +1305,12 @@ ALTER TABLE `empschedule_tb`
 -- AUTO_INCREMENT for table `emp_dtr_tb`
 --
 ALTER TABLE `emp_dtr_tb`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `emp_file`
+--
+ALTER TABLE `emp_file`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -1336,9 +1410,9 @@ ALTER TABLE `positionn_tb`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `sample_ai`
+-- AUTO_INCREMENT for table `schedule_list`
 --
-ALTER TABLE `sample_ai`
+ALTER TABLE `schedule_list`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

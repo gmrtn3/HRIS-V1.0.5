@@ -1,12 +1,12 @@
 <?php
 include '../../config.php';
 if (isset($_POST['yes_download_wfh'])) {
-   $select_tableid = $_POST["table_id"];
-   $select_tablename = $_POST["table_name"];
+   $select_tableid = $_POST["table_id_wfh"];
+   $select_tablename = $_POST["table_name_wfh"];
 
 
    // Step 2: Retrieve blob data from database
-        $sql = "SELECT `upload_file` FROM `wfh_tb` WHERE `id` = ?";
+        $sql = "SELECT `file_attachment` FROM `wfh_tb` WHERE `id` = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "i", $select_tableid); // $id is the ID of the blob data you want to retrieve
         mysqli_stmt_execute($stmt);

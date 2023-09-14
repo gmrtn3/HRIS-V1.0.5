@@ -173,56 +173,6 @@ include 'config.php';
     <!-- Modal -->
     
         <!-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> -->
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Pakyawan Cash Advance</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <?php 
-                            include 'config.php';
-
-                            $approverEmpid = $_SESSION['empid'];
-
-                            $sql = "SELECT * FROM employee_tb
-                                    INNER JOIN approver_tb ON employee_tb.empid = approver_tb.empid 
-                                    WHERE classification = 3 AND approver_tb.approver_empid = $approverEmpid";
-
-                            $result = mysqli_query($conn, $sql);
-                           
-                            $options = "";
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $options .= "<option value='".$row['empid']."'>".$row['fname']."  ".$row['lname']."</option>";
-                            }
-
-
-                        ?>
-                         <label for="">Select Pakyawan Employee</label><br>
-                        <select name="empid" id="" class="form-select" required>
-                        <option value="" disabled selected>Select Employee</option> 
-                            <?php echo $options ?>
-                        </select><br>
-
-                        <label for="">Date</label><br>
-                        <input type="date" name="date" id="" class="form-control" required><br>
-
-                        <label for="">Cash</label><br>
-                        <input type="text" name="cash_advance" id="" class="form-control" required oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0, 11);"><br>
-
-                        <button class="btn btn-info w-100 text-white" id="loanForecastButton">Loan Forecast</button>
-
-                        <input type="hidden" name="status" value="Pending">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" id="btn_save" name="btn_save" class="btn btn-primary">Submit</button>
-                </div>
-                </div>
-            </div>
-        </div>
   
         <form action="Data Controller/Pakyawan/cash_advance_insert.php" method="POST">
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

@@ -56,7 +56,7 @@ include_once 'config.php';
     <div class="container py-5" id="page-container">
         <div class="row">
             <div class="col-md-9">
-                <div id="calendar"></div>
+                <div id="calendar" style="height: 150vh; width: 150vh"></div>
             </div>
             <div class="col-md-3">
                 <div class="cardt rounded-0 shadow">
@@ -131,7 +131,7 @@ include_once 'config.php';
     <!-- Event Details Modal -->
 
 <?php 
-$schedules = $conn->query("SELECT * FROM `calendar_event_master`");
+$schedules = $conn->query("SELECT * FROM `schedule_list`");
 $sched_res = [];
 foreach($schedules->fetch_all(MYSQLI_ASSOC) as $row){
     $row['sdate'] = date("F d, Y h:i A",strtotime($row['start_datetime']));

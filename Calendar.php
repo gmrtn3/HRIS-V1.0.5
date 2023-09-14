@@ -14,7 +14,7 @@
          exit();
      } else{
          include 'config.php';
-         $userId = $_SESSION['empid'];
+         @$userId = $_SESSION['empid'];
         
          $iconResult = mysqli_query($conn, "SELECT id, emp_img_url, empid FROM employee_tb WHERE empid = '$userId'");
          $iconRow = mysqli_fetch_assoc($iconResult);
@@ -28,6 +28,8 @@
      
      }
  }
+
+//  include 'Data Controller/Dashboard/fetchCalendar.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +62,7 @@
     <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="fullcalendar/lib/main.min.css">
     <script src="js/jquery-3.6.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="js/bootstrap.min.js"></script> -->
     <script src="fullcalendar/lib/main.min.js"></script>
 
     <script src="https://kit.fontawesome.com/803701e46b.js" crossorigin="anonymous"></script>
@@ -68,7 +70,7 @@
 
     <link rel="stylesheet" href="css/try.css">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/calendar.css">
+    <!-- <link rel="stylesheet" href="css/calendar.css"> -->
     <title>HRIS | Calendar</title>
     </head>
 <body>
@@ -85,9 +87,9 @@
 
         html,
         body {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
+          height: 100%;
+          width: 100%;
+            overflow: hidden; 
         } 
 
         .btn-info.text-light:hover,
@@ -104,7 +106,16 @@
         }
         .fc .fc-event{
           color: #000;
+        } 
+        .fc-event-title.fc-sticky{
+          color: black !important;
+          font-weight: 500;
         }
+
+        .fc .fc-scroller-liquid {
+            border: black 1px solid !important;
+        }
+       
     </style>
         
     <div class="calendar-container" style="position: absolute; left: 19%; top: 14.6%; width: 78%; height: 80%; background-color: #fff; box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17); border-radius: 0.6em;">
@@ -114,46 +125,18 @@
                   <h2 class="fs-2 ">Calendar</h2>
                   <div id="calendar" ></div>
               </div>
-              <div class="col-md-3">
-                  <div class="cardt rounded-0 shadow">
-                      <div class="card-header bg-gradient bg-primary text-light">
-                          <h5 class="card-title">Schedule Form</h5>
-                      </div>
-                      <div class="card-body">
-                          <div class="container-fluid">
-                              <form action="Data Controller/Calendar/save_event.php" method="post" id="schedule-form">
-                                  <input type="hidden" name="id" value="">
-                                  <div class="form-group mb-2">
-                                      <label for="title" class="control-label">Title</label>
-                                      <input type="text" class="form-control form-control-sm rounded-0" name="title" id="title" required>
-                                  </div>
-                                  <div class="form-group mb-2">
-                                      <label for="description" class="control-label">Description</label>
-                                      <textarea rows="3" class="form-control form-control-sm rounded-0" name="description" id="description" required></textarea>
-                                  </div>
-                                  <div class="form-group mb-2">
-                                      <label for="start_datetime" class="control-label">Start</label>
-                                      <input type="datetime-local" class="form-control form-control-sm rounded-0" name="start_datetime" id="start_datetime" required>
-                                  </div>
-                                  <div class="form-group mb-2">
-                                      <label for="end_datetime" class="control-label">End</label>
-                                      <input type="datetime-local" class="form-control form-control-sm rounded-0" name="end_datetime" id="end_datetime" required>
-                                  </div>
-                              </form>
-                          </div>
-                      </div>
-                      <div class="card-footer d-flex justify-content-center">
-                          <div class="">
-                              <button class="btn btn-primary btn-sm rounded-0" type="submit" form="schedule-form"><i class="fa fa-save"></i> Save</button>
-                              <button class="btn btn-default border btn-sm rounded-0" type="reset" form="schedule-form"><i class="fa fa-reset"></i> Cancel</button>
-                          </div>
-                      </div>
-                  </div>
+              <div class="col-md-3 h-100">
+                    <div class="button-container w-100 d-flex flex-column justify-content-between" style="margin-top: 20%" >
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_event">Add Event</button>
+                            <button class="btn btn-primary mt-3"  data-bs-toggle="modal" data-bs-target="#add_holiday">Add Holiday</button>
+                            <!-- <button class="btn btn-primary mt-3"  data-bs-toggle="modal" data-bs-target="#add_cutoff">Add Cutoff Date</button> -->
+                    </div>
+                  
               </div>
           </div>
       </div>
       <!-- Event Details Modal -->
-      <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="event-details-modal">
+      <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="event-details-modal" >
           <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content rounded-0">
                   <div class="modal-header rounded-0">
@@ -176,9 +159,9 @@
                   </div>
                   <div class="modal-footer rounded-0">
                       <div class="text-end">
-                          <button type="button" class="btn btn-primary btn-sm rounded-0" id="edit" data-id="">Edit</button>
-                          <button type="button" class="btn btn-danger btn-sm rounded-0" id="delete" data-id="">Delete</button>
-                          <button type="button" class="btn btn-secondary btn-sm rounded-0" data-bs-dismiss="modal">Close</button>
+                          <!-- <button type="button" class="btn btn-primary btn-sm rounded-0" id="edit" data-id="">Edit</button> -->
+                          <!-- <button type="button" class="btn btn-danger btn-sm rounded-0" id="delete" data-id="">Delete</button> -->
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       </div>
                   </div>
               </div>
@@ -186,20 +169,204 @@
       </div>
     </div>
 
+
+    <!-------------------------------------------Modal of Event Start Here--------------------------------------------->
+<div class="modal fade" id="add_event" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Event</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+       <form action="Data Controller/Calendar/insert_event.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="mb-3" style="display:none;">
+                        <label for="Select_emp" class="form-label">Name</label>
+                            <?php
+                                include 'config.php'; 
+                                @$employeeid = $_SESSION['empid'];
+                                ?>
+                                <input type="text" class="form-control" name="name_emp" value="<?php error_reporting(E_ERROR | E_PARSE);
+                                    if($employeeid == NULL){
+                                        echo 'Super Admin';
+                                    }else{
+                                        echo $employeeid;
+                                    }?>" id="empid" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Event Title</label>
+                            <input type="text" name="event_title" class="form-control" id="id_title_event" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="event" class="form-label">Start Date</label>
+                            <input type="datetime-local" name="start_date" class="form-control" id="id_event_date" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="event" class="form-label">End Date</label>
+                            <input type="datetime-local" name="end_date" class="form-control" id="id_event_date" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="eventype" class="form-label">Type of Event</label>
+                            <input type="text" class="form-control" name="event_type" id="id_event_type"></input>
+                        </div>
+                    </div><!--Modal body Close tag--->
+                    <div class="modal-footer">
+                <button type="submit" name="add_event" class="btn btn-primary">Add</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+         </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-------------------------------------------Modal of Event End Here---------------------------------------------> 
+<!-------------------------------------------Modal of Holiday Start Here--------------------------------------------->
+<div class="modal fade" id="add_holiday" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Holiday</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+       <form action="Data Controller/Calendar/insert_holiday.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="mb-3" style="display:none;">
+                        <label for="Select_emp" class="form-label">Name</label>
+                            <?php
+                                include 'config.php'; 
+                                @$employeeid = $_SESSION['empid'];
+                                ?>
+                                <input type="text" class="form-control" name="name_emp" value="<?php error_reporting(E_ERROR | E_PARSE);
+                                    if($employeeid == NULL){
+                                        echo 'Super Admin';
+                                    }else{
+                                        echo $employeeid;
+                                    }?>" id="empid" readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Holiday Title</label>
+                            <input type="text" name="title_holiday" class="form-control" id="id_title_holiday" required>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="event" class="form-label">Holiday Date</label>
+                            <input type="date" name="date_holiday" class="form-control" id="id_holiday_date" required>
+                            <p style="color: red" id="holidayMsg"></p>
+                        </div>
+                        
+                       
+                            
+                        <div class="mb-3">
+                            <label for="eventype" class="form-label">Type of Holiday</label>
+                            <select class="form-select form-select-m" name="type_holiday" id="" aria-label=".form-select-sm example" style="height: 50px; cursor: pointer;">
+                                <option value="Regular Working Day">Regular Working Day</option>
+                                <option value="Regular Holiday">Regular Holiday</option>
+                                <option value="Special Working Holiday">Special Working Holiday</option>
+                                <option value="Special Non-Working Holiday">Special Non-Working Holiday</option>
+                            </select>
+                        </div>
+                    </div><!--Modal body Close tag--->
+                    <div class="modal-footer">
+                <button type="submit" name="add_holiday" class="btn btn-primary" id="btn_save">Add</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+         </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-------------------------------------------Modal of Holiday End Here---------------------------------------------> 
+<!-------------------------------------------Modal of Holiday Start Here--------------------------------------------->
+<div class="modal fade" id="add_cutoff" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Holiday</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+       <form action="Data Controller/Calendar/cutoff_date.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                          <label for="">Payroll 1st Cutoff Day</label><br>
+                          <input type="text" name="cutoff_day1" placeholder="Input within a number in a month" value="<?php echo $hello ?>" id="" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 2) this.value = this.value.slice(0, 2);"><br>
+
+                          <label for="">Payroll 2nd Cutoff Day</label><br>
+                          <input type="text" name="cutoff_day2" placeholder="Input within a number in a month" id="" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 2) this.value = this.value.slice(0, 2);">
+                          
+                    </div>
+                </div><!--Modal body Close tag--->
+                <div class="modal-footer">
+                <button type="submit" name="add_holiday" class="btn btn-primary" id="btn_save">Add</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+         </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-------------------------------------------Modal of Holiday End Here---------------------------------------------> 
+
     <?php 
 $schedules = $conn->query("SELECT * FROM `schedule_list`");
 $sched_res = [];
-foreach($schedules->fetch_all(MYSQLI_ASSOC) as $row){
-    $row['sdate'] = date("F d, Y h:i A",strtotime($row['start_datetime']));
-    $row['edate'] = date("F d, Y h:i A",strtotime($row['end_datetime']));
-    $sched_res[$row['id']] = $row;
-}
+  foreach ($schedules->fetch_all(MYSQLI_ASSOC) as $row) {
+      $row['sdate'] = date("F d, Y h:i A", strtotime($row['start_datetime']));
+      $row['edate'] = date("F d, Y h:i A", strtotime($row['end_datetime']));
+      $hello = $row['title'];
+      $sched_res[$row['id']] = $row;
+
+
+  }
+
+
 
 ?>
 <?php 
 if(isset($conn)) $conn->close();
 ?>
 
+
+
+<script>
+    var scheds = $.parseJSON('<?= json_encode($sched_res) ?>')
+</script>
+<script src="./js/script.js"></script>
+
+<style>
+  <?php 
+    if (!empty($hello)) {
+      // Array of possible background colors
+      $backgroundColors = ['#A3E4D7'];
+
+      // Select a random background color from the array
+      $randomColor = $backgroundColors[array_rand($backgroundColors)];
+
+      echo '.fc-direction-ltr .fc-daygrid-event.fc-event-end, .fc-direction-rtl .fc-daygrid-event.fc-event-start { background-color: ' . $randomColor . ' }';
+    } else {
+      echo '.fc-direction-ltr .fc-daygrid-event.fc-event-end, .fc-direction-rtl .fc-daygrid-event.fc-event-start { background-color: #f4f4f4; } ';
+    }
+  ?>
+  .fc-direction-ltr .fc-daygrid-event .fc-event-time {
+    display: none;
+  }
+</style>
+
+
+<script>
+    getHour = document.querySelectorAll(".fc-event-time").value;
+
+    console.log(getHour);
+
+
+</script>
 
 
 
@@ -290,26 +457,6 @@ $(document).ready(function() {
 
 </script>
 
-<script> 
-        $(document).ready(function(){
-                $('.sched-update').on('click', function(){
-                                    $('#schedUpdate').modal('show');
-                                    $tr = $(this).closest('tr');
-
-                                    var data = $tr.children("td").map(function () {
-                                        return $(this).text();
-                                    }).get();
-
-                                    console.log(data);
-                                    //id_colId
-                                    $('#empid').val(data[10]);
-                                    $('#sched_from').val(data[7]);
-                                    $('#sched_to').val(data[8]);
-                                    $('#empName').val(data[1]);
-                                });
-                            });
-            
-    </script>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -339,8 +486,4 @@ $(document).ready(function() {
     <script src="vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
 </body>
-<script>
-    var scheds = $.parseJSON('<?= json_encode($sched_res) ?>')
-</script>
-<script src="./js/script.js"></script>
 </html>

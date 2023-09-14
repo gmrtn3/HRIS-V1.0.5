@@ -1,30 +1,30 @@
 <?php 
 
-//     $server = "localhost";
-//     $user = "root";
-//     $pass ="";
-//     $database = "hris_db";
+    $server = "localhost";
+    $user = "root";
+    $pass ="";
+    $database = "hris_db";
 
-//     $conn = mysqli_connect($server, $user, $pass, $database);
+    $conn = mysqli_connect($server, $user, $pass, $database);
 
-//     if(!$conn){
-//         echo '<script type="text/javascript">';
-//         echo 'alert("Connection Failed.");';
-//         echo '</script>';
-//         die;
-// }
-
-
-$servername = "172.16.2.45";
- $username = "root";
- $password = "RAKabo64657";
- $dbname = "hris_db";
-
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-
-if(!$conn){
-    echo '<script type="text/javascript">';
-    echo 'alert("Connection Failed.");';
-    echo '</script>';
-    die;
+    if(!$conn){
+        echo '<script type="text/javascript">';
+        echo 'alert("Connection Failed.");';
+        echo '</script>';
+        die;
 }
+
+
+// $servername = "172.16.2.45";
+//  $username = "root";
+//  $password = "RAKabo64657";
+//  $dbname = "hris_db";
+
+// $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+// if(!$conn){
+//     echo '<script type="text/javascript">';
+//     echo 'alert("Connection Failed.");';
+//     echo '</script>';
+//     die;
+// }

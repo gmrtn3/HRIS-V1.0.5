@@ -174,8 +174,6 @@
                        
                        $result = $conn->query("SELECT payroll_loan_tb.id,
                                         payroll_loan_tb.loan_type,
-                                        payroll_loan_tb.year,
-                                        payroll_loan_tb.month,
                                         payroll_loan_tb.cutoff_no,
                                         payroll_loan_tb.remarks,
                                         payroll_loan_tb.loan_date,

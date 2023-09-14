@@ -57,8 +57,8 @@
 }
 .fc-theme-standard td,
   .fc-theme-standard th {
-    border: 1px solid #ddd;
-    border: 1px solid var(--fc-border-color, #ddd);
+    border: 1px solid #000;
+    border: 1px solid var(--fc-border-color, #000);
   }
 /* for FF, which doesn't expand a 100% div within a table cell. use absolute positioning */
 /* inner-wrappers are responsible for being absolute */
@@ -333,8 +333,8 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     direction: rtl;
   }
 .fc-theme-standard .fc-scrollgrid {
-    border: 1px solid #ddd;
-    border: 1px solid var(--fc-border-color, #ddd); /* bootstrap does this. match */
+    border: 1px solid #000;
+    border: 1px solid var(--fc-border-color, #000); /* bootstrap does this. match */
   }
 .fc .fc-scrollgrid,
     .fc .fc-scrollgrid table { /* all tables (self included) */
@@ -679,8 +679,8 @@ A HORIZONTAL event
     font-size: 1.1em;
   }
 .fc-theme-standard .fc-popover {
-    border: 1px solid #ddd;
-    border: 1px solid var(--fc-border-color, #ddd);
+    border: 1px solid #000;
+    border: 1px solid var(--fc-border-color, #000);
     background: #fff;
     background: var(--fc-page-bg-color, #fff);
   }
@@ -1324,8 +1324,8 @@ A VERTICAL event
   --fc-list-event-hover-bg-color: #f5f5f5;
 }
 .fc-theme-standard .fc-list {
-    border: 1px solid #ddd;
-    border: 1px solid var(--fc-border-color, #ddd);
+    border: 1px solid #000;
+    border: 1px solid var(--fc-border-color, #000);
   }
 .fc {
 

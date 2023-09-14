@@ -62,6 +62,7 @@ session_start();
     <link rel="stylesheet" href="css/leavereq.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/leaveReqResponsive.css">
+    <link rel="stylesheet" type="text/css" href="css/virtual-select.min.css">
     <title>Leave Request</title>
 </head>
 <body>
@@ -99,12 +100,117 @@ session_start();
    tr td:nth-child(3){
     width: 12% !important;
    }
+
+   .multiselect-dropdown-list-wrapper span.placeholder{
+        display: none !important;
+        cursor: default !important;
+        background-color: #fff !important;
+        color: #fff !important;
+        display:none !important; 
+    }
+    .multiselect-dropdown{
+        height: 50px !important;
+        width: 98% !important;
+    }
+
+
+        #multi_option{
+	        max-width: 100%;
+	        width: 100%;
+        }
     </style>
 
 <header>
     <?php include 'header.php';
     ?>
 </header>
+
+<!-- Modal -->
+<div class="modal fade" id="leavesManual" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Leave Employee</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="actions/DTR Correction/correction.php" method="post">
+      <div class="modal-body">
+            <div class="mb-3">
+                    <label for="department">Select Department</label><br>
+                    <?php
+                        include 'config.php';
+
+                        $sqls = "SELECT * FROM dept_tb";
+
+                        $results = mysqli_query($conn, $sqls);
+
+                        $option = "";
+                        while ($rows = mysqli_fetch_assoc($results)) {
+                            $option .= "<option value='" . $rows['col_ID'] . "'>" . $rows['col_deptname'] . "</option> ";
+                        }
+                    ?>
+                    <select name="department" id="departmentDropdown" class="form-select">
+                        <option value selected>Select Department</option>
+                        <option value='All'>All</option>
+                        <?php echo $option ?>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="emp">Select Employee</label><br>
+                        <div id="employeeDropdown">
+                        <select class="approver-dd dd-hide" name="empid[]" id="multi_option" multiple placeholder="Select Employee" data-silent-initial-value-set="false" style="display:flex; width: 380px;">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                            <label for="Select_dept" class="form-label">Leave Type :</label>
+                            <select class='form-select form-select-m' onchange="leavetype()" id="leavetype_id" name="name_LeaveT" aria-label='.form-select-sm example' style=' cursor: pointer;'>
+                                <option selected disabled value=''>Select</option>
+                                <option value='Vacation Leave'>Vacation Leave</option>
+                                <option value='Sick Leave'>Sick Leave</option>
+                                <option value='Bereavement Leave'>Bereavement Leave</option>
+                            </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="Select_dept" class="form-label">Leave Period :</label>
+                        <select style id="id_leavePeriod" disabled name="name_LeaveP" onchange="halfdaysides()" class='form-select form-select-m' aria-label='.form-select-sm example' style='cursor: pointer;'>
+                            <option disabled selected value=''>Select</option>
+                            <option value='Full Day'>Full Day</option>
+                            <option value='Half Day'>Half Day</option> 
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <div class="mb-1">
+                            <label for="id_inpt_strdate">Start Date :</label>
+                            <input type="date" onchange =" strvalidate() "   name="name_STRdate" class="form-control" id="id_inpt_strdate" style='cursor: pointer;' disabled required>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-1">
+                            <label for="id_inpt_enddate">End Date :</label>
+                            <input type="date" onchange =" endvalidate()" name="name_ENDdate" class="form-control" id="id_inpt_enddate"  style='  cursor: pointer;' required disabled>
+                        </div>
+                    </div>
+                </div>
+                <span id="error-msg" style="color: red;"></span>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" name="yesCorrect" class="btn btn-primary">Yes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
     <div class="main-panel mt-5" style="margin-left: 15%; position: absolute; top:0;">
         <div class="content-wrapper mt-4" style="background-color: #f4f4f4">
@@ -115,6 +221,12 @@ session_start();
                         <div class="col-6">
                             <p style="font-size: 25px; padding: 10px">Leave Request</p>
                         </div>
+                        <div class="col-6 mt-1 text-end">
+                                <!-- Button trigger modal -->
+                              <button type="button" class="manualLeave" data-bs-toggle="modal" data-bs-target="#leavesManual">
+                               Employee Leave    
+                              </button>
+                          </div>
                  </div>  
 
                  <!------------------------------------Message alert------------------------------------------------->
@@ -207,8 +319,9 @@ session_start();
                                             $status = $_GET['col_status'] ?? '';
                                             $dateFrom = $_GET['col_strDate'] ?? '';
                                             $dateTo = $_GET['col_endDate'] ?? '';
-
-                                            $sql = "SELECT
+                                            if (isset($_GET['id'])) {
+                                                $employee_id = $_GET['id'];
+                                                $sql = "SELECT
                                                         applyleave_tb.col_ID,
                                                         applyleave_tb.col_req_emp,
                                                         CONCAT(employee_tb.fname, ' ', employee_tb.lname) AS full_name,
@@ -224,7 +337,8 @@ session_start();
                                                         applyleave_tb.col_status
                                                     FROM
                                                         applyleave_tb
-                                                    INNER JOIN employee_tb ON applyleave_tb.col_req_emp = employee_tb.empid";
+                                                    INNER JOIN employee_tb ON applyleave_tb.col_req_emp = employee_tb.empid
+                                                    WHERE applyleave_tb.col_ID = '$employee_id'";
                                                         if (!empty($status) && $status != 'All Status') {
                                                             $sql .= " WHERE applyleave_tb.col_status = '$status'";
                                                         }
@@ -252,6 +366,53 @@ session_start();
                                                             $sql .= " applyleave_tb.col_endDate = '$dateTo'";
                                                         }
                                             $sql .= " ORDER BY applyleave_tb._datetime DESC";
+                                            }else{
+                                                $sql = "SELECT
+                                                applyleave_tb.col_ID,
+                                                applyleave_tb.col_req_emp,
+                                                CONCAT(employee_tb.fname, ' ', employee_tb.lname) AS full_name,
+                                                applyleave_tb.col_LeaveType,
+                                                applyleave_tb.col_credit,
+                                                applyleave_tb.col_file,
+                                                applyleave_tb.col_strDate,
+                                                applyleave_tb.col_endDate,
+                                                applyleave_tb._datetime,
+                                                applyleave_tb.col_dt_action,
+                                                applyleave_tb.col_approver,
+                                                applyleave_tb.col_LeavePeriod,
+                                                applyleave_tb.col_status
+                                            FROM
+                                                applyleave_tb
+                                            INNER JOIN employee_tb ON applyleave_tb.col_req_emp = employee_tb.empid";
+                                                if (!empty($status) && $status != 'All Status') {
+                                                    $sql .= " WHERE applyleave_tb.col_status = '$status'";
+                                                }
+
+                                                if (!empty($dateFrom) && !empty($dateTo)) {
+                                                    if ($status != 'All Status') {
+                                                        $sql .= " AND";
+                                                    } else {
+                                                        $sql .= " WHERE";
+                                                    }
+                                                    $sql .= " (applyleave_tb.col_strDate >= '$dateFrom' AND applyleave_tb.col_endDate <= '$dateTo')";
+                                                } elseif (!empty($dateFrom)) {
+                                                    if ($status != 'All Status') {
+                                                        $sql .= " AND";
+                                                    } else {
+                                                        $sql .= " WHERE";
+                                                    }
+                                                    $sql .= " applyleave_tb.col_strDate = '$dateFrom'";
+                                                } elseif (!empty($dateTo)) {
+                                                    if ($status != 'All Status') {
+                                                        $sql .= " AND";
+                                                    } else {
+                                                        $sql .= " WHERE";
+                                                    }
+                                                    $sql .= " applyleave_tb.col_endDate = '$dateTo'";
+                                                }
+                                                $sql .= " ORDER BY applyleave_tb._datetime DESC";
+                                            }
+
 
                                             $result = $conn->query($sql);
 
@@ -376,6 +537,49 @@ session_start();
        </div>
     </div>
 </div>
+
+<!-----------------------Script sa pagselect ng multiple employee---------------->
+<script>
+    $(document).ready(function() {
+    $('#departmentDropdown').change(function() {
+        var selectedValue = $(this).val();
+
+        $.ajax({
+            type: 'POST',
+            url: 'update_selected_department.php',
+            data: { department: selectedValue },
+            success: function(response) {
+                $('#selectedDepartment').text(response); // Update the value in the <p> tag
+
+                // Fetch employee options based on the selected department
+                $.ajax({
+                    type: 'POST',
+                    url: 'leave_employee_options.php', // Create this PHP file to generate employee options
+                    data: { department: response },
+                    success: function(employeeOptions) {
+                        // Update the employee dropdown with new options
+                        $('#employeeDropdown').html(employeeOptions);
+                        console.log('Employee options updated successfully.');
+
+                        // Collect selected employee IDs
+                        var selectedEmployeeIDs = $('#multi_option').val();
+                        console.log('Selected Employee IDs:', selectedEmployeeIDs);
+                      
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+
+<script type="text/javascript" src="js/virtual-select.min.js"></script>
+<script type="text/javascript">
+	VirtualSelect.init({ 
+	  ele: '#multi_option' 
+	});
+</script>
+<!-----------------------Script sa pagselect ng multiple employee---------------->
 
 <!---------------------Script sa pagfilter ng data----------------------------------->
 <script>

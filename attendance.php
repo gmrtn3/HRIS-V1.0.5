@@ -29,7 +29,12 @@
        }
    }
  
-   
+    // $server = "localhost";
+    // $user = "root";
+    // $pass ="";
+    // $database = "hris_db";
+
+    // $db = mysqli_connect($server, $user, $pass, $database);
     include 'config.php';
 
 
@@ -193,10 +198,10 @@ window.onload = checkReload;
         opacity: 1 !important;
     }
     .empid-width{
-        width: 6.5% !important;
+        width: 4.6% !important;
     }
     .email-col {
-    width: 18% !important; /* adjust the width as needed */
+    width: 13% !important; 
 }
     #table-reposiveness{
         width: 95%; height: 100%; margin:auto; margin-top: 30px;
@@ -478,72 +483,78 @@ window.onload = checkReload;
     <div class="attendace-container" id="attendace-container">
         <div class="attendance-title d-flex flex-row justify-content-between">
             <h1>Attendance</h1>
-           
         </div>
 
-        <div class="attendance-input">
-            <div class="att-emp-stat-container">
-            <div class="att-emp">
+        <div class="attendance-input" style="width: 100%; height: 20%;">
+            <div class="att-emp-stat-container" style="height: 100%; ">
+             <div class="att-emp">
                 <?php
-                       include 'config.php';
-                        $sql = "SELECT `empid`, CONCAT(`fname`, ' ',`lname`) AS `full_name` FROM employee_tb";
-                        $result = mysqli_query($conn, $sql);
+                    include('config.php');
 
-                        $empid = isset($_GET['empid']) ? $_GET['empid'] : '';
-                        $options = "";
-                        $options .= "<option value='All Employee'" . ($empid == 'All Employee' ? ' selected' : '') . ">All Employee</option>";
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $emp_id = $row['empid'];
-                            $emp_name = $row['full_name'];
-                            $selected = ($empid == $emp_id) ? ' selected' : '';
-                             $options .= "<option value='$emp_id' $selected>$emp_id - $emp_name</option>";
-                            
-                        }
+                    $sql = "SELECT col_ID, col_deptname FROM dept_tb";
+                    $result = mysqli_query($conn, $sql);
+                    
+                    $Department = isset($_GET['department_name']) ? ($_GET['department_name']) : '';
+
+                    $options = "";
+                    $options .= "<option class='select-btn form-select-m' aria-label='.form-select-sm example' value='All Department'" .($Department == 'All Department' ? ' selected' : '').">All Department</option>";
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $selected = ($Department == $row['col_ID']) ? 'selected' : '';
+                        $options .= "<option value='" . $row['col_ID'] . "' " . $selected . ">" . $row['col_deptname'] . "</option>";
+                    }
                     ?>
-                    <label for="emp">Select Employee
-                        <select name="empname" id="sel_employee" class="stat">
-                            <option value disabled selected>Select Employee</option>
+                        <label for="emp">Select Department
+                        <select  class="stat" aria-label=".form-select-sm example" name="department" id="select_department">
+                            <option value="" disabled selected>Select Department</option>
                             <?php echo $options; ?>
                         </select>
-                    </label>
-                </div>
-              
-                <div class="att-stat">
-                    <?php
-                        $status = isset($_GET['status']) ? $_GET['status'] : '';
-                    ?>
-                    <label for="Employee" >Status
-                    <select name="select_status" id="sel_stats" class="">
-                            <option value="">All Status</option>
-                            <option value="Present" <?php if ($status == 'Present') echo 'selected'; ?>>Present</option>
-                            <option value="Absent" <?php if ($status == 'Absent') echo 'selected'; ?>>Absent</option>
-                            <option value="On-Leave" <?php if ($status == 'On-Leave') echo 'selected'; ?>>On-Leave</option>
-                            <option value="LWOP" <?php if ($status == 'LWOP') echo 'selected'; ?>>LWOP</option>
-                        </select>
-                    </label>
-                </div>
-            </div>
-
-            <div class="att-range-container">
-            <?php
-                    $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
-                    $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
-                    
-                ?>
-                <div class="att-range">                   
-                        <label for="Employee"><span>Date Range</span> 
-                        <input type="date" name="date_from" id="startdate" placeholder="Start Date" style="padding:10px; " value="<?php echo $dateFrom; ?>">
                         </label>
+                    </div>
+
+                    <div class="att-emp" >
+                        <label for="emp" style="width: 100%">Select Employee
+                        <select  class="stat" aria-label=".form-select-sm example" name="employee" id="select_employee" disabled>
+                            <option value="" disabled selected>Select Employee</option>
+                        </select>
+                        </label>
+                    </div>
+              
+                    <div class="att-stat" style="margin-top: 10px;">
+                        <?php
+                            $status = isset($_GET['status']) ? $_GET['status'] : '';
+                        ?>
+                        <label for="Employee" >Status
+                        <select name="select_status" id="sel_stats" class="">
+                                <option value="">All Status</option>
+                                <option value="Present" <?php if ($status == 'Present') echo 'selected'; ?>>Present</option>
+                                <option value="Absent" <?php if ($status == 'Absent') echo 'selected'; ?>>Absent</option>
+                                <option value="On-Leave" <?php if ($status == 'On-Leave') echo 'selected'; ?>>On-Leave</option>
+                                <option value="LWOP" <?php if ($status == 'LWOP') echo 'selected'; ?>>LWOP</option>
+                            </select>
+                        </label>
+                    </div>
                 </div>
-                <input class="att-end" type="date" name="date_to" id="enddate" placeholder="End Date" style="padding:10px; " value="<?php echo $dateTo; ?>">
-            </div>
-            <button class="btn_go" id="id_btngo" style="height: 50px; width: 80px; margin-top: 20px; margin-left: 10px; background-color: black;" onclick="filterData()">Go</button>
-            <div class="att-excel-input">   
+
+                <div class="att-range-container">
+                <?php
+                        $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
+                        $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
+                        
+                    ?>
+                    <div class="att-range">                   
+                            <label for="Employee"><span>Date Range</span> 
+                            <input type="date" name="date_from" id="startdate" placeholder="Start Date" style="padding:10px; " value="<?php echo $dateFrom; ?>">
+                            </label>
+                    </div>
+                    <input class="att-end" type="date" name="date_to" id="enddate" placeholder="End Date" style="padding:10px; " value="<?php echo $dateTo; ?>">
+                </div>
+                <button class="btn_go" id="id_btngo" style="height: 50px; width: 80px; margin-top: 20px; margin-left: 10px; background-color: black;" onclick="filterData()">Go</button>
+            <!-- <div class="att-excel-input">   
                     <form action="Data Controller/Attendance/attendanceController.php"  enctype="multipart/form-data" method="POST">
                             <input type="file" name="file" />
                             <input type="submit" value="Submit" name="importSubmit" class="btn btn-primary" style="background-color: black;">
                     </form>
-                </div>
+                </div> -->
             
 
         </div>
@@ -552,7 +563,7 @@ window.onload = checkReload;
             <h1 id="current-date"></h1>
         </div>
 
-        <?php
+                 <?php
                 if(isset($_GET['noSchedule'])){
                     echo ' <div class="error-handler w-100 mb-3" style="height: 3em" id="error-message">';
                         echo '<div class="w-100 d-flex flex-row align-items-center justify-content-between pl-4 pr-4" style="height: 100%; background-color: brown;">';
@@ -563,7 +574,7 @@ window.onload = checkReload;
                 }
                 ?>
 
-<?php
+                <?php
                 if(isset($_GET['noEmpid'])){
                     echo ' <div class="error-handler w-100 mb-3" style="height: 3em" id="error-message">';
                         echo '<div class="w-100 d-flex flex-row align-items-center justify-content-between pl-4 pr-4" style="height: 100%; background-color: brown;">';
@@ -574,7 +585,7 @@ window.onload = checkReload;
                 }
                 ?>
 
-<?php
+                <?php
                 if(isset($_GET['wrongDate'])){
                     echo ' <div class="error-handler w-100 mb-3" style="height: 3em; margin:auto;" id="error-message">';
                         echo '<div class="w-100 d-flex flex-row align-items-center justify-content-between pl-4 pr-4" style="height: 100%;  border-radius: 0.5em; background-color: brown;">';
@@ -592,6 +603,7 @@ window.onload = checkReload;
                         <th>Status</th>
                         <th class="empid-width">Employee ID</th>
                         <th class="email-col">Name</th>
+                        <th>Department</th>
                         <th>Date</th>
                         <th>Time in</th>
                         <th>Time out</th>
@@ -604,87 +616,87 @@ window.onload = checkReload;
                 </thead>
              <tbody>
              <?php
-date_default_timezone_set('Asia/Manila');
-$currentMonth = date('m');
+                date_default_timezone_set('Asia/Manila');
+                $currentMonth = date('m');
 
-// Assuming you have established the database connection already
+                $dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
+                $dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
+                $department = $_GET['department_name'] ?? '';
+                $employee = $_GET['empid'] ?? '';
+                $status = isset($_GET['status']) ? $_GET['status'] : '';
 
-// Get the filter values from the URL parameters
-$dateFrom = isset($_GET['date_from']) ? $_GET['date_from'] : '';
-$dateTo = isset($_GET['date_to']) ? $_GET['date_to'] : '';
-$empid = isset($_GET['empid']) ? $_GET['empid'] : ''; // Assuming you have 'empid' in your URL parameters
-$status = isset($_GET['status']) ? $_GET['status'] : ''; // Assuming you have 'status' in your URL parameters
+                $sql = "SELECT attendances.status, 
+                        attendances.empid,
+                        attendances.date,
+                        attendances.time_in,
+                        attendances.time_out,
+                        attendances.late,
+                        attendances.early_out,
+                        attendances.overtime,
+                        attendances.total_work,
+                        attendances.total_rest, 
+                        dept_tb.col_ID,
+                        dept_tb.col_deptname,
+                        employee_tb.department_name,
+                        CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`
+                        FROM attendances
+                        INNER JOIN employee_tb ON employee_tb.empid = attendances.empid
+                        INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID";
 
-// Start building the SQL query
-$sql = "SELECT attendances.status, 
-        attendances.empid,
-        attendances.date,
-        attendances.time_in,
-        attendances.time_out,
-        attendances.late,
-        attendances.early_out,
-        attendances.overtime,
-        attendances.total_work,
-        attendances.total_rest, 
-        CONCAT(employee_tb.`fname`, ' ', employee_tb.`lname`) AS `full_name`
-        FROM attendances
-        INNER JOIN employee_tb ON employee_tb.empid = attendances.empid ";
+                    // Add filters based on the user inputs
+                    if (!empty($department) && $department != 'All Department') {
+                        $sql .= " AND dept_tb.col_deptname = '$department'";
+                    }
+                    
+                    if (!empty($employee) && $employee != 'All Employee') {
+                        $sql .= " AND employee_tb.empid = '$employee'";
+                    }
 
-// Add filters based on the user inputs
-if (!empty($empid) && $empid != 'All Employee') {
-    $sql .= " AND employee_tb.empid = '$empid'";
-}
+                    if (!empty($status) && $status != 'All Status') {
+                        $sql .= " AND attendances.status = '$status'";
+                    }
 
-if (!empty($status) && $status != 'All Status') {
-    $sql .= " AND attendances.status = '$status'";
-}
+                    if (!empty($dateFrom) && !empty($dateTo)) {
+                        $dateFrom = date('Y-m-d', strtotime($dateFrom));
+                        $dateTo = date('Y-m-d', strtotime($dateTo));
+                        $sql .= " AND attendances.date BETWEEN '$dateFrom' AND '$dateTo'";
+                    } else {
+                        $sql .= " AND DATE_FORMAT(attendances.date, '%m') = '$currentMonth'";
+                    }
 
-if (!empty($dateFrom) && !empty($dateTo)) {
-    // Assuming your 'date' column is in the format 'YYYY-MM-DD'
-    // Convert the date range inputs to the appropriate format
-    $dateFrom = date('Y-m-d', strtotime($dateFrom));
-    $dateTo = date('Y-m-d', strtotime($dateTo));
+                    $sql .= "ORDER BY CASE WHEN `attendances`.`status` = 'Present' THEN 1
+                    WHEN `attendances`.`status` = 'Absent' THEN 2
+                    WHEN `attendances`.`status` = 'LWOP' THEN 3
+                    WHEN `attendances`.`status` = 'On-Leave' THEN 4
+                    WHEN `attendances`.`status` = 'Restday' THEN 5
+                    END, `attendances`.`date` DESC";
 
-    // Add the date range filter to the query
-    $sql .= " AND attendances.date BETWEEN '$dateFrom' AND '$dateTo'";
-} else {
-    // If no date range is provided, filter by the current month
-    $sql .= " AND DATE_FORMAT(attendances.date, '%m') = '$currentMonth'";
-}
+                    // For debugging, echo the SQL query
 
-$sql .= "ORDER BY CASE WHEN `attendances`.`status` = 'Present' THEN 1
-WHEN `attendances`.`status` = 'Absent' THEN 2
-WHEN `attendances`.`status` = 'LWOP' THEN 3
-WHEN `attendances`.`status` = 'On-Leave' THEN 4
-WHEN `attendances`.`status` = 'Restday' THEN 5
-END, `attendances`.`date` DESC";
-
-// For debugging, echo the SQL query
-
-$result = $conn->query($sql);
+                    $result = $conn->query($sql);
 
 
 
-        if($result->num_rows > 0){
-          
-            while($row = $result->fetch_assoc()){
-                $cmpny_empid = $row['empid'];
+                if($result->num_rows > 0){
+                
+                    while($row = $result->fetch_assoc()){
+                        $cmpny_empid = $row['empid'];
 
-                $sql = "SELECT employee_tb.company_code, 
-                        employee_tb.empid, 
-                        assigned_company_code_tb.company_code_id, 
-                        assigned_company_code_tb.empid, 
-                        company_code_tb.id, 
-                        company_code_tb.company_code AS company_code_name 
-                        FROM assigned_company_code_tb 
-                        INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
-                        INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
-                        WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
-                        
-                        $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
-                        $cmpny_row = mysqli_fetch_assoc($cmpny_result);
+                        $sql = "SELECT employee_tb.company_code, 
+                                employee_tb.empid, 
+                                assigned_company_code_tb.company_code_id, 
+                                assigned_company_code_tb.empid, 
+                                company_code_tb.id, 
+                                company_code_tb.company_code AS company_code_name 
+                                FROM assigned_company_code_tb 
+                                INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                                INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                                WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                                
+                                $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                                $cmpny_row = mysqli_fetch_assoc($cmpny_result);
 
-                ?>
+                        ?>
                 <tr>
                     <td style="font-weight: 400;"><?php echo $row['status']; ?></td>
                     <td class="empid-width" style="font-weight: 400;">
@@ -693,7 +705,8 @@ $result = $conn->query($sql);
                         echo $cmpny_code !== '' ? $cmpny_code . ' - ' . $row['empid'] : $row['empid'];
                         ?>
                     </td>
-                    <td class="email-col" style="font-weight: 400;"><?php echo $row['full_name']; ?> </td>
+                    <td class="email-col" style="font-weight: 400;"><?php echo $row['full_name']; ?></td>
+                    <td style="font-weight: 400;"><?php echo $row['col_deptname']; ?></td>
                     <td style="font-weight: 400;"><?php echo $row['date']; ?></td>
                             <!-------- td  for time out ----------->
                     <td 
@@ -831,13 +844,51 @@ $result = $conn->query($sql);
     
 <!----------------------------Script sa pagfilter ng data table------------------------->
 <script>
+document.getElementById("select_department").addEventListener("change", function() {
+    var departmentID = this.value; 
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var employees = JSON.parse(this.responseText);
+            var employeeDropdown = document.getElementById("select_employee");
+            employeeDropdown.innerHTML = "";
+
+            if (departmentID == "All Department") {
+                var allEmployeeOption = document.createElement("option");
+                allEmployeeOption.value = "All Employee";
+                allEmployeeOption.text = "All Employee";
+                employeeDropdown.appendChild(allEmployeeOption);
+
+                employees.forEach(function(employee) {
+                    var option = document.createElement("option");
+                    option.value = employee.empid;
+                    option.text = employee.empid + " - " + employee.fname + " " + employee.lname;
+                    employeeDropdown.appendChild(option);
+                });
+            } else {
+                employees.forEach(function(employee) {
+                    var option = document.createElement("option");
+                    option.value = employee.empid;
+                    option.text = employee.empid + " - " + employee.fname + " " + employee.lname;
+                    employeeDropdown.appendChild(option);
+                });
+            }
+            employeeDropdown.disabled = false;
+        }
+    };
+    xhttp.open("GET", "get_employees.php?departmentID=" + departmentID, true);
+    xhttp.send();
+});
+
     function filterData() {
-        var empid = document.getElementById('sel_employee').value;
+        var department = document.getElementById('select_department').value;
+        var employee = document.getElementById('select_employee').value;
         var status = document.getElementById('sel_stats').value;
         var dateFrom = document.getElementById('startdate').value;
         var dateTo = document.getElementById('enddate').value;
 
-        var url = 'attendance.php?empid=' + empid + '&status=' + status + '&date_from=' + dateFrom + '&date_to=' + dateTo;
+        var url = 'attendance.php?col_deptname=' + department + '&empid=' + employee + '&status=' + status + '&date_from=' + dateFrom + '&date_to=' + dateTo;
         window.location.href = url;
     }
 </script>

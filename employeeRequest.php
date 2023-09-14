@@ -113,7 +113,7 @@ session_start();
             <h2>Employee Request</h2>
             <div class="d-flex flex-row p-2">
                 <?php
-                    include 'config.php';
+                   include 'config.php';
                     $sql = "SELECT `empid`, CONCAT(`fname`, ' ',`lname`) AS `full_name` FROM employee_tb";
                     $result = mysqli_query($conn, $sql);
                     $empid = isset($_GET['empid']) ? $_GET['empid'] : '';
@@ -311,7 +311,17 @@ session_start();
                                                     $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
                                                     $cmpny_row = mysqli_fetch_assoc($cmpny_result);
                             
-
+                                                    $status = $row['col_status'];
+                                                    $color = '';
+                                                    if ($status == 'Pending') {
+                                                        $color = 'orange';
+                                                    } elseif ($status == 'Approved') {
+                                                        $color = 'green';
+                                                    } elseif ($status == 'Rejected') {
+                                                        $color = 'red';
+                                                    } elseif ($status == 'Cancelled') {
+                                                        $color = 'gray';
+                                                    }
                                             echo "<tr>";
 
                                             echo "<td style='display: none;'>" . $row['col_ID'] . "</td>";
@@ -337,7 +347,7 @@ session_start();
                                             echo "<td style='font-weight: 400'>" . $row['Department'] . "</td>";
                                             echo "<td style='font-weight: 400'>" . $row['datefiled'] . "</td>";
                                             echo "<td style='font-weight: 400'>" . $row['request_type'] . "</td>";
-                                            echo "<td style='font-weight: 400'>" . $row['col_status'] . "</td>";
+                                            echo "<td style='font-weight: 400; color: $color;'>$status</td>";
                                             // echo "<td style='font-weight: 400'>" . $row['full_name'] . "</td>";
                                             echo "</tr>";
                                         }

@@ -190,7 +190,7 @@ table {
   overflow-y: auto;
   overflow-x: hidden;
   white-space: nowrap;
-  max-height: 75%;
+  max-height: 90%;
 
   /* height: 250px; */
 } 
@@ -228,8 +228,6 @@ tr {
   background-color: #000;
   border-color: #000;
 }
-
-
 
 #order-listing_next{
   margin-right: 28px !important;

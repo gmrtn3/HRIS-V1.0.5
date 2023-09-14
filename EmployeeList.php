@@ -36,7 +36,7 @@
 
     $rowaa = mysqli_fetch_assoc($resultaa);
 
-    $status = $rowaa['status'];
+    @$status = $rowaa['status'];
     
 
  
@@ -78,9 +78,7 @@
 </head>
 <body>
     <header>
-        <?php 
-        include("header.php")
-        ?>
+        <?php include("header.php")?>
     </header>
     <style>
     .email-col {
@@ -200,210 +198,223 @@
       transition: background-color 0.3s;
     } */
         </style>
-        
+<!-- Modal sa file ng employee -->
+<div class="modal fade" id="empFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Employee Files</h1>
+            <div class="d-flex flex-row" style="margin-left: 10px;">
+                <form id="myForm" action="Data Controller/Employee List/empfile.php" method="POST" enctype="multipart/form-data">  
+                <input type="hidden" id="employeID" name="empoyeeId">
+                <input type="file" class="" name="multipleFile[]" id="formFileMultiple" accept="*/*" multiple>
+                <button type="submit" name="btn_save" style="width: 80px; background-color: blue; color: white; border: none; border-radius: 4px;">Save</button>
+              </form>    
+            </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="emp-modal-body">
+
+      </div>
+    </div>
+  </div>
+</div>
+
         
         <div style="width: 95%; margin:auto; margin-top: 30px;">
-        <table id="order-listing" class="table" style="width: 100%">
-    <thead>
-        <th>Employee ID</th>
-        <th>Name</th>
-        <th class="email-col">Department</th>
-        <th>Classification</th>
-        <th>Position</th>
-        <th>Employee Type</th>
-        <th>Employee Status</th>
-        <th>Employee Details</th>
-        <th>Action</th>
-        <th class="d-none">empid</th>
-        <th>Biometrics</th>
-    </thead>
-    <tbody id="myTable">
-        <?php
-        include 'config.php';
+            <table id="order-listing" class="table" style="width: 100%">
+                            <thead>
+                            <th>Employee ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Classification</th>
+                            <th>Position</th>
+                            <th>Type</th>
+                            <th>Documents</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                            <th>Action</th>
+                            <th class="d-none">empid</th>
+                        </thead>
+                        <tbody id="myTable">
+                            <?php
+                            include 'config.php';
 
-       // Check if the form is submitted and the status_filter value is set
-       if (isset($_POST['status_filter'])) {
-        $status_filter = $_POST['status_filter'];
+                        // Check if the form is submitted and the status_filter value is set
+                        if (isset($_POST['status_filter'])) {
+                            $status_filter = $_POST['status_filter'];
 
-        // Check if the selected filter is "Active" or "Inactive"
-        if ($status_filter === "Active" || $status_filter === "Inactive") {
-            $query = "SELECT employee_tb.*, dept_tb.col_ID, dept_tb.col_deptname, positionn_tb.id, positionn_tb.position, classification_tb.classification FROM employee_tb
-                        INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
-                        INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
-                    INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
-                    AND employee_tb.status = '$status_filter'";
-        } elseif($status_filter === "All") {
-            // If the selected filter is "All" or not set, show all employees
-            $query = "SELECT * FROM employee_tb
-                        INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
-                        INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
-                       INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id";
-        }
-    } else {
-        // Default filter status when the form is first loaded
-        $status_filter = "Active";
-        $query = "SELECT employee_tb.*, dept_tb.col_ID, dept_tb.col_deptname, positionn_tb.id, positionn_tb.position, classification_tb.classification FROM employee_tb
-                        INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
-                        INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
-                  INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
-                   AND employee_tb.status = '$status_filter'";
-    }
- 
-        $result = $conn->query($query);
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-
-            
-                $cmpny_empid = $row['empid'];
-                
-                include 'config.php';
-                
-                $sqls = "SELECT * FROM employee_tb WHERE empid = $cmpny_empid
-                         ";
-                $resulte = mysqli_query($conn, $sqls);
-
-                $classification = $row['classification'];
-
-                $position = $row['position'];
-
-                $department = $row['col_deptname'];
-
-                $rowe = mysqli_fetch_assoc($resulte);
-                
-                $status = $rowe['status'];
-
-                $sql = "SELECT employee_tb.company_code, 
-                        employee_tb.empid, 
-                        assigned_company_code_tb.company_code_id, 
-                        assigned_company_code_tb.empid, 
-                        company_code_tb.id, 
-                        company_code_tb.company_code AS company_code_name 
-                        FROM assigned_company_code_tb 
-                        INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
-                        INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
-                        WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
-                        
-                        $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
-                        $cmpny_row = mysqli_fetch_assoc($cmpny_result);
-
-                        // echo $cmpny_row['empid'];
-               
-
-                echo "<tr class='lh-1'>";
-                echo "<td style='font-weight: 400;'>";
-
-                $cmpny_code = $cmpny_row['company_code_name'] ?? null;
-                echo $cmpny_code !== null ? $cmpny_code . " - " . $row["empid"] : $row["empid"];
-
-                echo "</td>";
-                echo "<td style='font-weight: 400;'>" . $row["fname"] . " " . $row["lname"] . "</td>";
-                echo "<td style='font-weight: 400;' class='email-col'>"; ?> <?php if( $classification == "Pakyawan") { echo ""; }else{  echo $department; } ?> <?php echo " </td>";
-                echo "<td style='font-weight: 400;'>" . $row["classification"] . "</td>";
-                echo "<td style='font-weight: 400;'>"; ?> <?php if( $classification == "Pakyawan") { echo ""; }else{  echo $position; } ?> <?php echo " </td>";
-                echo "<td style='font-weight: 400;'>" . $row["role"] . " </td>";
- 
-                echo "<td>";
-                ?> <?php
-                if ($row['status'] == 'Active') {
-                    echo "<div class='form-check form-switch'>
-                            <input class='form-check-input ml-3 sched-update' type='checkbox' name='status' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' ";
-                    if ($row['status'] == 'Active') {
-                        echo "checked";
-                    }
-                    echo " data-active='1' style='background-color: green; border:black'> <!-- Add data-active attribute for tracking -->
-                            <span class='d-none'>" . $row['status'] . "</span>
-                        </div>
-                    </td>";
-                } else {
-                    echo "<div class='form-check form-switch'>
-                            <input class='form-check-input ml-3 sched-update' type='checkbox' name='status' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' ";
-                    if ($row['status'] == 'Inactive') {
-                        echo "checked";
-                    }
-                    echo " data-active='1' style='background-color: red; border:black; rotate: 180deg'> <!-- Add data-active attribute for tracking -->
-                            <span class='d-none'>" . $row['status'] . "</span>
-                        </div>
-                    </td>";
+                            // Check if the selected filter is "Active" or "Inactive"
+                            if ($status_filter === "Active" || $status_filter === "Inactive") {
+                                $query = "SELECT employee_tb.*, dept_tb.col_ID, dept_tb.col_deptname, positionn_tb.id, positionn_tb.position, classification_tb.classification FROM employee_tb
+                                            INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
+                                            INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
+                                        INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
+                                        AND employee_tb.status = '$status_filter'";
+                            } elseif($status_filter === "All") {
+                                // If the selected filter is "All" or not set, show all employees
+                                $query = "SELECT * FROM employee_tb
+                                            INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
+                                            INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
+                                        INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id";
+                            }
+                        } else {
+                            // Default filter status when the form is first loaded
+                            $status_filter = "Active";
+                            $query = "SELECT employee_tb.*, dept_tb.col_ID, dept_tb.col_deptname, positionn_tb.id, positionn_tb.position, classification_tb.classification FROM employee_tb
+                                            INNER JOIN positionn_tb ON employee_tb.empposition = positionn_tb.id
+                                            INNER JOIN dept_tb ON employee_tb.department_name = dept_tb.col_ID
+                                    INNER JOIN classification_tb ON employee_tb.classification = classification_tb.id
+                                    AND employee_tb.status = '$status_filter'";
                         }
-
-
-                    ?> <?php
-                
-
-                           
-
-
-                // Custom mapping for data column names
-                $columnMapping = array(
-                    'empsss' => 'SSS',
-                    'emptin' => 'TIN',
-                    'emppagibig' => 'Pagibig',
-                    'empphilhealth' => 'Philhealth',
-                    'emptranspo' => 'Transportation',
-                    'empmeal' => 'Meal',
-                    'empinternet' => 'Internet',
-                    'sss_amount' => 'SSS Amount',
-                    'tin_amount' => 'TIN Amount',
-                    'pagibig_amount' => 'Pagibig Amount',
-                    'philhealth_amount' => 'Philhealth Amount',
-                    'bank_name' => 'Bank Name',
-                    'bank_number' => 'Bank Number',
-                    'emp_img_url' => 'Image'
                     
-                );
+                            $result = $conn->query($query);
 
-                // Check if any of the columns (except 'user_profile') have null, empty, or 0 values
-                $incomplete = false;
-                $details = '';
-                foreach ($row as $key => $value) {
-                    if (($key !== 'user_profile' && $key !== 'work_frequency') && (empty($value) || is_null($value) || $value === "0" || $value === 0)) {
-                        // Map the original column name to the new name using the $columnMapping array
-                        $columnDisplayName = isset($columnMapping[$key]) ? $columnMapping[$key] : $key;
-                        $details .= "<p><strong>$columnDisplayName:</strong> No value</p>";
-                        $incomplete = true;
-                    }
-                }
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
 
-                // Display the 'Employee Details' column based on the check
-                if ($incomplete) {
-                    echo "<td style='font-weight: 400; color: red;'>
-                        <button class='btn-incomplete' style='border: none; text-decoration-line: underline; background-color: inherit; color: red;' data-details='$details'>Incomplete</button>
-                    </td>";
-                } else {
-                    echo "<td style='font-weight: 400; color: blue;'>Complete</td>";
-                }
+                                
+                                    $cmpny_empid = $row['empid'];
+                                    
+                                    include 'config.php';
+                                    
+                                    $sqls = "SELECT * FROM employee_tb WHERE empid = $cmpny_empid
+                                            ";
+                                    $resulte = mysqli_query($conn, $sqls);
 
-                echo "<td class='tbody-btn' style='width:120px;'>";
+                                    $classification = $row['classification'];
 
-                $empid = $row['empid'];
-                $classification = $row['classification'];
+                                    $position = $row['position'];
 
-                if ($classification != 'Pakyawan') {
-                    $redirectUrl = "editempListForm.php?empid=$empid&classification=$classification";
-                } else {
-                    $redirectUrl = "edit_pakyawan_work.php?empid=$empid&classification=$classification";
-                }
+                                    $department = $row['col_deptname'];
 
-                echo "<button class='tb-view' style='text-decoration:none; border:none;background-color:inherit; outline:none;'>
-                <a href='$redirectUrl' style='color:gray; text-decoration:none;'>View</a>
-                </button>";
+                                    $rowe = mysqli_fetch_assoc($resulte);
+                                    
+                                    $status = $rowe['status'];
 
-                echo "</td>";
-                echo "<td class='d-none'> ".$cmpny_empid." </td>";
-                
-                echo "</tr>";
-            }
-        } else {
-            // Handle the case when there are no rows in the result
-            echo "<tr><td colspan='9' style='font-weight: 400; text-align: center;'>No employees found.</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
+                                    $sql = "SELECT employee_tb.company_code, 
+                                            employee_tb.empid, 
+                                            assigned_company_code_tb.company_code_id, 
+                                            assigned_company_code_tb.empid, 
+                                            company_code_tb.id, 
+                                            company_code_tb.company_code AS company_code_name 
+                                            FROM assigned_company_code_tb 
+                                            INNER JOIN company_code_tb ON assigned_company_code_tb.company_code_id = company_code_tb.id 
+                                            INNER JOIN employee_tb ON assigned_company_code_tb.empid = employee_tb.empid 
+                                            WHERE assigned_company_code_tb.empid = '$cmpny_empid' ";
+                                            
+                                            $cmpny_result = mysqli_query($conn, $sql); // Corrected parameter order
+                                            $cmpny_row = mysqli_fetch_assoc($cmpny_result);
 
- 
+                                            // echo $cmpny_row['empid'];
+                                
 
+                                    echo "<tr class='lh-1'>";
+                                    echo "<td style='font-weight: 400;'>";
+
+                                    $cmpny_code = $cmpny_row['company_code_name'] ?? null;
+                                    echo $cmpny_code !== null ? $cmpny_code . " - " . $row["empid"] : $row["empid"];
+
+                                    echo "</td>";
+                                    echo "<td style='font-weight: 400;'>" . $row["fname"] . " " . $row["lname"] . "</td>";
+                                    echo "<td style='font-weight: 400;'>"; ?> <?php if( $classification == "Pakyawan") { echo ""; }else{  echo $department; } ?> <?php echo " </td>";
+                                    echo "<td style='font-weight: 400;'>" . $row["classification"] . "</td>";
+                                    echo "<td style='font-weight: 400;'>"; ?> <?php if( $classification == "Pakyawan") { echo ""; }else{  echo $position; } ?> <?php echo " </td>";
+                                    echo "<td style='font-weight: 400;'>" . $row["role"] . " </td>";
+                                    echo "<td>" . '<button class="btn btn-outline-danger btn-icon-text employeeFiles" data-bs-toggle="modal" data-bs-target="#empFile" data-emp-id="' . $cmpny_empid . '"><i class="ti-upload btn-icon-prepend"></i>file</button>' . "</td>";
+                                    echo "<td>";
+                                    ?> <?php
+                                    if ($row['status'] == 'Active') {
+                                        echo "<div class='form-check form-switch'>
+                                                <input class='form-check-input ml-3 sched-update' type='checkbox' name='status' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' ";
+                                        if ($row['status'] == 'Active') {
+                                            echo "checked";
+                                        }
+                                        echo " data-active='1' style='background-color: green; border:black'> <!-- Add data-active attribute for tracking -->
+                                                <span class='d-none'>" . $row['status'] . "</span>
+                                            </div>
+                                        </td>";
+                                    } else {
+                                        echo "<div class='form-check form-switch'>
+                                                <input class='form-check-input ml-3 sched-update' type='checkbox' name='status' data-bs-toggle='modal' data-bs-target='#schedUpdate' id='sched-update' ";
+                                        if ($row['status'] == 'Inactive') {
+                                            echo "checked";
+                                        }
+                                        echo " data-active='1' style='background-color: red; border:black; rotate: 180deg'> <!-- Add data-active attribute for tracking -->
+                                                <span class='d-none'>" . $row['status'] . "</span>
+                                            </div>
+                                        </td>";
+                                            }
+
+
+                                        ?> <?php
+                                    
+                                    // Custom mapping for data column names
+                                    $columnMapping = array(
+                                        'empsss' => 'SSS',
+                                        'emptin' => 'TIN',
+                                        'emppagibig' => 'Pagibig',
+                                        'empphilhealth' => 'Philhealth',
+                                        'emptranspo' => 'Transportation',
+                                        'empmeal' => 'Meal',
+                                        'empinternet' => 'Internet',
+                                        'sss_amount' => 'SSS Amount',
+                                        'tin_amount' => 'TIN Amount',
+                                        'pagibig_amount' => 'Pagibig Amount',
+                                        'philhealth_amount' => 'Philhealth Amount',
+                                        'bank_name' => 'Bank Name',
+                                        'bank_number' => 'Bank Number',
+                                        'emp_img_url' => 'Image'
+                                        
+                                    );
+
+                                    // Check if any of the columns (except 'user_profile') have null, empty, or 0 values
+                                    $incomplete = false;
+                                    $details = '';
+                                    foreach ($row as $key => $value) {
+                                        if (($key !== 'user_profile' && $key !== 'work_frequency') && (empty($value) || is_null($value) || $value === "0" || $value === 0)) {
+                                            // Map the original column name to the new name using the $columnMapping array
+                                            $columnDisplayName = isset($columnMapping[$key]) ? $columnMapping[$key] : $key;
+                                            $details .= "<p><strong>$columnDisplayName:</strong> No value</p>";
+                                            $incomplete = true;
+                                        }
+                                    }
+
+                                    // Display the 'Employee Details' column based on the check
+                                    if ($incomplete) {
+                                        echo "<td style='font-weight: 400; color: red;'>
+                                            <button class='btn-incomplete' style='border: none; text-decoration-line: underline; background-color: inherit; color: red;' data-details='$details'>Incomplete</button>
+                                        </td>";
+                                    } else {
+                                        echo "<td style='font-weight: 400; color: blue;'>Complete</td>";
+                                    }
+
+                                    echo "<td class='tbody-btn' style='width:120px;'>";
+
+                                    $empid = $row['empid'];
+                                    $classification = $row['classification'];
+
+                                    if ($classification != 'Pakyawan') {
+                                        $redirectUrl = "editempListForm.php?empid=$empid&classification=$classification";
+                                    } else {
+                                        $redirectUrl = "edit_pakyawan_work.php?empid=$empid&classification=$classification";
+                                    }
+
+                                    echo "<button class='tb-view' style='text-decoration:none; border:none;background-color:inherit; outline:none;'>
+                                    <a href='$redirectUrl' style='color:gray; text-decoration:none;'>View</a>
+                                    </button>";
+
+                                    echo "</td>";
+                                    echo "<td class='d-none'>".$cmpny_empid."</td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                // Handle the case when there are no rows in the result
+                                echo "<tr><td colspan='9' style='font-weight: 400; text-align: center;'>No employees found.</td></tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
 
         </div>
     </div>
@@ -452,7 +463,7 @@
     </div>
     </form>
 
-    <script>
+<script>
     document.querySelectorAll('.sched-update').forEach(function (checkbox) {
         checkbox.addEventListener('click', function (event) {
             if (event.target.getAttribute('data-active') === '1') {
@@ -469,8 +480,8 @@
     });
 </script>
 
-    <script> 
-      $(document).ready(function() {
+<script> 
+$(document).ready(function() {
     $('.sched-update').on('click', function() {
         $('#schedUpdate').modal('show');
         $tr = $(this).closest('tr');
@@ -481,13 +492,48 @@
 
         console.log(data);
         //id_colId
-        $('#employID').val(data[9].trim());
-        $('#statuses').val(data[6].trim()); // Remove spaces using trim()
+        $('#employID').val(data[10].trim());
+        $('#statuses').val(data[7].trim()); // Remove spaces using trim()
+    });
+});
+</script>
+
+
+<!--para sa modal ng pagclick sa file-->
+<script> 
+$(document).ready(function() {
+    $('.employeeFiles').on('click', function() {
+        $('#empFile').modal('show');
+        $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function() {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+        $('#employeID').val(data[10]);
+    });
+});
+</script>
+
+<!--para maipasa ang data sa modal kapag na-click ang file button-->
+<script>
+$(document).ready(function () {
+    $('.employeeFiles').click(function () {
+        var employeeId = $(this).data('emp-id'); // Retrieve the empid value
+
+        $.ajax({
+            url: 'actions/Employee List/emplist_data.php',
+            method: 'POST',
+            data: { empId: employeeId }, // Pass empId in the data object
+            success: function (response) {
+                $('#emp-modal-body').html(response);
+            }
+        });
     });
 });
 
-    </script>
-
+</script>
 
 
     
