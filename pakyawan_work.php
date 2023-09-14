@@ -372,7 +372,6 @@ session_start();
                 FROM pakyawan_based_work_tb AS pakyaw
                 INNER JOIN employee_tb AS emp ON pakyaw.employee = emp.empid
                 INNER JOIN piece_rate_tb AS peice ON pakyaw.unit_type = peice.id";
-          // $sql ="SELECT * FROM pakyawan_based_work_tb";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) > 0) {

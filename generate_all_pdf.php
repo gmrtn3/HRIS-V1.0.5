@@ -9,8 +9,30 @@ $employee_workdays = $_POST['employee_workdays'];
 $cutoffId = $_POST['cutoffId'];
 
 $decodedPdfData = base64_decode($pdfData);
+
 date_default_timezone_set('Asia/Manila');
 $currentDateTime = date('His');
+
+$result_emp = mysqli_query($conn, "SELECT
+                                        CONCAT(
+                                            employee_tb.`fname`,
+                                                ' ',
+                                            employee_tb.`lname`
+                                            ) AS `full_name`
+                                            FROM 
+                                            `employee_tb`
+                                            WHERE `empid`=  '$employeeId'");
+ $row_emp= mysqli_fetch_assoc($result_emp);
+
+ $pdfFilePath = 'Payslip PDF/' . $row_emp['full_name'] . $currentDateTime . "_" . $Cutoff_Numbers . '.pdf';
+ $file = fopen($pdfFilePath, 'wb'); // Open the file in write mode
+ if ($file) {
+  fwrite($file, $decodedPdfData);
+  fclose($file);
+  echo "Done"; // Send a success response
+  } else {
+    echo "Error writing the PDF file.";
+  }
 
 if ($Cutoff_Frequency === 'Monthly'){
 
@@ -65,16 +87,15 @@ else if($Cutoff_Frequency === 'Weekly'){
                             $stmt->execute();
                           }  
                       }
-                      $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_numDaysWork, col_cutoffID) VALUES (?, ?, ?, ?)");
-                      $stmt->bind_param("ssii", $decodedPdfData, $employeeId, $Cutoff_Numbers, $cutoffId);
+                      $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_cutoffID, col_numDaysWork) VALUES (?, ?, ?, ?)");
+                      $stmt->bind_param("ssii", $pdfFilePath, $employeeId, $cutoffId, $employee_workdays);
                       $stmt->execute();
           
                       echo 'Done';
     }else{
-        $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_numDaysWork, col_cutoffID) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssii", $decodedPdfData, $employeeId, $Cutoff_Numbers, $cutoffId);
-        $stmt->execute();
-
+      $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_cutoffID, col_numDaysWork) VALUES (?, ?, ?, ?)");
+      $stmt->bind_param("ssii", $pdfFilePath, $employeeId, $cutoffId, $employee_workdays);
+      $stmt->execute();
         echo 'Done';
     }
 } else {
@@ -129,10 +150,9 @@ else if($Cutoff_Frequency === 'Weekly'){
 
                         } else {
                             // Insert data into payslip_tb table
-                            $insertQuery = "INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_numDaysWork, col_cutoffID) VALUES (?, ?, ?, ?)";
-                            $insertStmt = $conn->prepare($insertQuery);
-                            $insertStmt->bind_param("ssii", $decodedPdfData, $employeeId, $Cutoff_Numbers, $cutoffId);
-                            $insertStmt->execute();
+                            $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_cutoffID, col_numDaysWork) VALUES (?, ?, ?, ?)");
+                            $stmt->bind_param("ssii", $pdfFilePath, $employeeId, $cutoffId, $employee_workdays);
+                            $stmt->execute();
 
                             echo 'Done';
                         }
@@ -149,10 +169,9 @@ else if($Cutoff_Frequency === 'Weekly'){
 
                     } else {
                         // Insert data into payslip_tb table
-                        $insertQuery = "INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_numDaysWork, col_cutoffID) VALUES (?, ?, ?, ?)";
-                        $insertStmt = $conn->prepare($insertQuery);
-                        $insertStmt->bind_param("ssii", $decodedPdfData, $employeeId, $Cutoff_Numbers, $cutoffId);
-                        $insertStmt->execute();
+                        $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_cutoffID, col_numDaysWork) VALUES (?, ?, ?, ?)");
+                        $stmt->bind_param("ssii", $pdfFilePath, $employeeId, $cutoffId, $employee_workdays);
+                        $stmt->execute();
 
                         echo 'Done';
                     }
@@ -208,10 +227,9 @@ else if($Cutoff_Frequency === 'Weekly'){
 
             } else {
                 // Insert data into payslip_tb table
-                $insertQuery = "INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_numDaysWork, col_cutoffID) VALUES (?, ?, ?, ?)";
-                $insertStmt = $conn->prepare($insertQuery);
-                $insertStmt->bind_param("ssii", $decodedPdfData, $employeeId, $Cutoff_Numbers, $cutoffId);
-                $insertStmt->execute();
+                $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_cutoffID, col_numDaysWork) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("ssii", $pdfFilePath, $employeeId, $cutoffId, $employee_workdays);
+                $stmt->execute();
 
                 echo 'Done';
             }
@@ -228,10 +246,9 @@ else if($Cutoff_Frequency === 'Weekly'){
 
             } else {
                 // Insert data into payslip_tb table
-                $insertQuery = "INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_numDaysWork, col_cutoffID) VALUES (?, ?, ?, ?)";
-                $insertStmt = $conn->prepare($insertQuery);
-                $insertStmt->bind_param("ssii", $decodedPdfData, $employeeId, $Cutoff_Numbers, $cutoffId);
-                $insertStmt->execute();
+                $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_cutoffID, col_numDaysWork) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("ssii", $pdfFilePath, $employeeId, $cutoffId, $employee_workdays);
+                $stmt->execute();
 
                 echo 'Done';
             }
@@ -290,10 +307,9 @@ else if($Cutoff_Frequency === 'Weekly'){
 
             } else {
                 // Insert data into payslip_tb table
-                $insertQuery = "INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_numDaysWork, col_cutoffID) VALUES (?, ?, ?, ?)";
-                $insertStmt = $conn->prepare($insertQuery);
-                $insertStmt->bind_param("ssii", $decodedPdfData, $employeeId, $Cutoff_Numbers, $cutoffId);
-                $insertStmt->execute();
+                $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_cutoffID, col_numDaysWork) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("ssii", $pdfFilePath, $employeeId, $cutoffId, $employee_workdays);
+                $stmt->execute();
 
                 echo 'Done';
             }
@@ -310,10 +326,9 @@ else if($Cutoff_Frequency === 'Weekly'){
 
             } else {
                 // Insert data into payslip_tb table
-                $insertQuery = "INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_numDaysWork, col_cutoffID) VALUES (?, ?, ?, ?)";
-                $insertStmt = $conn->prepare($insertQuery);
-                $insertStmt->bind_param("ssii", $decodedPdfData, $employeeId, $Cutoff_Numbers, $cutoffId);
-                $insertStmt->execute();
+                $stmt = $conn->prepare("INSERT INTO payslip_tb (col_Payslip_pdf, col_empid, col_cutoffID, col_numDaysWork) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("ssii", $pdfFilePath, $employeeId, $cutoffId, $employee_workdays);
+                $stmt->execute();
 
                 echo 'Done';
             }

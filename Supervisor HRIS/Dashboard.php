@@ -14,12 +14,7 @@
         }
     }
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hris_db";
-
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
+include 'config.php';
     $approver_ID = $_SESSION['empid'];
     $sql = "SELECT COUNT(*) AS employee_count
         FROM employee_tb
@@ -1279,12 +1274,7 @@ font-size: 19px !important;
 ?>
 <!------------------------------------End Message alert------------------------------------------------->
     <?php 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hris_db";
-
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
+    include 'config.php';
 
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());

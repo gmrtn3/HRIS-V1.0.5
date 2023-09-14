@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = 'Active';
     // Insert into employee_tb table
     $stmt = $conn->prepare("INSERT INTO employee_tb (`fname`,`mname`, `lname`, `company_code`, `empid`, `address`, `contact`, `cstatus`, `gender`, `empdob`, `classification`, `empdate_hired`, `empbranch`, `status`, `work_frequency` , `role`, `email`)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,? , ?)");
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     if (!$stmt) {
         die("Prepare failed: (" . $conn->errno . ") " . $conn->error);

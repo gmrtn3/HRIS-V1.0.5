@@ -42,7 +42,7 @@
 
     include 'config.php';
     $result = mysqli_query($conn, "SELECT * FROM settings_company_tb");
-    $row = mysqli_fetch_assoc($result);
+    $row_setting = mysqli_fetch_assoc($result);
 
 ?>
 <!DOCTYPE html>
@@ -90,11 +90,7 @@
 <body>
 
 <style>
-    .emp-Access-password{
-    position: relative;
-    
 
-}
     .emp-Access-password #eye{
        font-size:  1.3em !important;
        position: absolute !important;
@@ -103,11 +99,7 @@
         cursor: pointer !important;
         transform: translateY(-50%);
     }
-    .emp-Access-cpassword{
-    position: relative;
-    
 
-}
     .emp-Access-cpassword #confirm-eye{
        font-size: 1.3em !important;
        position: absolute !important;
@@ -137,7 +129,7 @@
         height: 45px !important;
     }
 
-    
+
 
 </style>
 
@@ -206,7 +198,7 @@
  <!-- <input type="checkbox" name="pakyawan" id="toggleCheckbox">
                                     <label for="" style="font-weight: 300; font-size: 1em; font-style: italic">Manny Pakyawan</label> -->
 
-        <form id="myForm" action="Data Controller/Employee List/empListFormController.php" method="POST">
+        <form id="myForm" action="Data Controller/Employee List/empListFormController.php" method="POST" enctype="multipart/form-data">
             <div class="employeeList-modal" id="Modal">
                     <div class="employeeList-modal-content">
                         <div class="employeeList-info-container">
@@ -222,19 +214,16 @@
                             <div class="emp-info-first-input">
                                 <div class="emp-info-fname">
                                         <label for="fname">First Name</label><br>
-                                        
                                         <input class="" id="form-fname" type="text" name="fname" placeholder="First Name" id="fname" onkeyup='saveValue(this);' value="<?php echo isset($_GET['fname']) ? $_GET['fname'] : ''; ?>" required>
                                         
                                 </div>
                                 <div class="emp-info-mname">
                                         <label for="lname">Middle Name</label><br>
                                         <input type="text" name="mname" id="form-lname" placeholder="Middle Name" id="lname" onkeyup='saveValue(this);' value="<?php echo isset($_GET['mname']) ? $_GET['mname'] : ''; ?>" required>
-                                        
                                 </div>
                                 <div class="emp-info-lname">
                                         <label for="lname">Last Name</label><br>
                                         <input type="text" name="lname" id="form-lname" placeholder="Last Name" id="mname" onkeyup='saveValue(this);' value="<?php echo isset($_GET['lname']) ? $_GET['lname'] : ''; ?>" required>
-                                        
                                 </div>
                             </div>
                             <div class="emp-info-second-input">
@@ -273,10 +262,8 @@
                                 </div>
                             </div>
                             <div class="emp-info-fourth-input w-100 d-flex flex-start ml-3 mt-1">
-                            <div class="emp-info-empID" style=" width: 25.6%; margin-left: 1.7%;"  >
-                                <label for="empid" >Employee ID</label><br> 
-                               
-                                    
+                              <div class="emp-info-empID" style=" width: 25.6%; margin-left: 1.7%;">
+                                <label for="empid" >Employee ID</label><br>                                     
                                  <?php 
                                      $server = "localhost";
                                      $user = "root";
@@ -308,8 +295,6 @@
 
                                                 if ($row) {
                                                     $lastEmpID = $row['empid'];
-
-                                                    // Calculate the next employee ID
                                                     $nextEmpID = (int)$lastEmpID + 1;
                                                     
                                                     if ($nextEmpID < 10) {
@@ -552,24 +537,56 @@
                         <div class="employeeList-allowance-container hide-element">
                             <div class="emp-title">
                                 <h1>Employee Monthly Allowance</h1>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#allowanceModal" id="modal-update" style="margin-left: 70%; background-color: inherit;" class='link-dark editbtn border-0'><i class='fa-solid fa-pen-to-square fs-5 me-3' title='Edit'></i>Edit</button>
                             </div>
 
                             <div class="emp-allowance-first-input">
                                 <div class="emp-allowance-transpo">
-                                    <label for="emptranspo">Transportation</label><br>
-                                    <input type="text" id="transpo" name="emptranspo" placeholder="Transpormation Amount" id="numberInput" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 8) this.value = this.value.slice(0, 8);" value="<?php echo isset($_GET['emptranspo']) ? $_GET['emptranspo'] : ''; ?>" >
+                                    <label for="emptranspo"><?php echo $newTranspoLabel; ?></label><br>
+                                    <input type="text" id="transpo" name="emptranspo" placeholder="Allowance Amount" id="numberInput" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 8) this.value = this.value.slice(0, 8);" value="<?php echo isset($_GET['emptranspo']) ? $_GET['emptranspo'] : ''; ?>" >
                                 </div>
                                 <div class="emp-allowance-meal">
-                                    <label for="empmeal">Meal Allowance</label><br>
-                                    <input type="text" id="meal" name="empmeal" placeholder="Meal Amount" id="numberInput" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 8) this.value = this.value.slice(0, 8);" value="<?php echo isset($_GET['empmeal']) ? $_GET['empmeal'] : ''; ?>" > 
+                                    <label for="empmeal"><?php echo $newMealLabel; ?></label><br>
+                                    <input type="text" id="meal" name="empmeal" placeholder="Allowance Amount" id="numberInput" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 8) this.value = this.value.slice(0, 8);" value="<?php echo isset($_GET['empmeal']) ? $_GET['empmeal'] : ''; ?>" > 
                                 </div>
                                 <div class="emp-allowance-internet">
-                                    <label for="empinternet">Internet Allowance</label><br>
-                                    <input type="text" id="internet" name="empinternet" placeholder="Internet Amount" id="numberInput" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 8) this.value = this.value.slice(0, 8);" value="<?php echo isset($_GET['empinternet']) ? $_GET['empinternet'] : ''; ?>" > 
+                                    <label for="empinternet"><?php echo $newInternetLabel; ?></label><br>
+                                    <input type="text" id="internet" name="empinternet" placeholder="Allowance Amount" id="numberInput" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 8) this.value = this.value.slice(0, 8);" value="<?php echo isset($_GET['empinternet']) ? $_GET['empinternet'] : ''; ?>" > 
                                 </div>
                             </div>
                         </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="allowanceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Labels</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="newTranspoLabel">New Allowance Label</label>
+                                                    <input type="text" class="form-control" id="newTranspoLabel" placeholder="Enter new label">
+                                                </div>
 
+                                                <div class="form-group">
+                                                    <label for="newMealLabel">New Allowance Label</label>
+                                                    <input type="text" class="form-control" id="newMealLabel" placeholder="Enter new label">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="newInternetLabel">New Allowance Label</label>
+                                                    <input type="text" class="form-control" id="newInternetLabel" placeholder="Enter new label">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" onclick="updateLabels()">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             <!---Modal-->
                         
                         <div class="employeeList-schedule-input hide-element">
                             <div class="emp-title">
@@ -637,31 +654,36 @@
                             </div>
                             <div class="emp-Access-second-input">
                                 <div class="emp-Access-email">
-                                        <label for="email">Email</label><br>
+                                        <label for="email">Personal Email</label><br>
                                         <input pattern="[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"  type="email" name="email" id="form-email" placeholder="Email Address" title="Must be a valid email."  required>
-                                        
                                 </div>
-                                <div class="emp-Access-password">
+                                <div class="emp-Access-email">
+                                        <label for="email">Company Email</label><br>
+                                        <input pattern="[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"  type="text" name="comp_email" id="form-emails" placeholder="Email Address" title="Must be a valid email."  value="<?php echo $row_setting['email_domain']?>"required>
+                                </div>
+                            </div>
+                            <div class="emp-Access-password">
                                     <label for="password">Password</label><br>
                                     <input type="password"  pattern="[a-zA-Z0-9]{5,}" title="Must be at least 5 characters." oninput="Pass()" oninput="showPasswordIcon(this, 'eye')" name="password" id="pass" placeholder="Password" required>
                                     <i class="fas fa-eye show-pass" aria-hidden="true" id="eye" style="display: none;" onclick="togglePassword()"></i>
                                 </div>
+
                                 <div class="emp-Access-cpassword">
                                     <label for="cpassword">Confirm Password</label><br>
                                     <input type="password"  pattern="[a-zA-Z0-9]{5,}" title="Must be at least 5 characters." disabled oninput="matchPass()" oninput="showPasswordIcon(this, 'confirm-eye')" name="cpassword" id="cpass" placeholder="Confirm Password" required>
                                     <i class="fas fa-eye show-pass" aria-hidden="true" id="confirm-eye" style="display: none;" onclick="toggleConfirmPassword()"></i>
-                                </div>
-                            </div>
-                            <p  id="id_pValidate"style="margin-top: 5px; margin-right: 340px; color: red; display: none; text-align: right;">* Passwords don't match!</p>
+                                </div>  
+                                <p  id="id_pValidate" style="margin-top: 5px; margin-right: 825px; color: red; display: none; text-align: right;">Passwords don't match!</p>
                         </div>
 
+                        <!-- <div class="password_sec">
 
-
+                        </div> -->
+                        
                     <div class="empList-save-btn">
                         <div>
                             <a style="margin-right: 10px; font-size: 20px; text-decoration: none" href="EmployeeList.php">Cancel</a>
                             <span class="modalSave" style="border: none"> <input class="submit" id="btn_save" type="submit" value="Save" style="border: none"></span>
-                            
                         </div>
                     </div>
                 </div>
@@ -672,8 +694,107 @@
     
         </div>
 
-       
-       
+<!--------------------Script sa pagchange ng Label sa allowance---------------------->       
+<script>
+    // Retrieve cookies when the page loads
+    window.onload = function() {
+        var newTranspoLabel = getCookie("newTranspoLabel");
+        var newMealLabel = getCookie("newMealLabel");
+        var newInternetLabel = getCookie("newInternetLabel");
+
+        // Set the labels on the page with retrieved values
+        document.querySelector(".emp-allowance-transpo label").textContent = newTranspoLabel;
+        document.querySelector(".emp-allowance-meal label").textContent = newMealLabel;
+        document.querySelector(".emp-allowance-internet label").textContent = newInternetLabel;
+    };
+
+    function updateLabels() {
+        // Get the new label values from input fields
+        var newTranspoLabel = document.getElementById("newTranspoLabel").value;
+        var newMealLabel = document.getElementById("newMealLabel").value;
+        var newInternetLabel = document.getElementById("newInternetLabel").value;
+
+        // Update the labels on the page
+        document.querySelector(".emp-allowance-transpo label").textContent = newTranspoLabel;
+        document.querySelector(".emp-allowance-meal label").textContent = newMealLabel;
+        document.querySelector(".emp-allowance-internet label").textContent = newInternetLabel;
+
+        // Close the modal
+        $('#allowanceModal').modal('hide');
+
+        // Set cookies
+        document.cookie = "newTranspoLabel=" + newTranspoLabel;
+        document.cookie = "newMealLabel=" + newMealLabel;
+        document.cookie = "newInternetLabel=" + newInternetLabel;
+
+        // Create an object with the new labels
+        var newLabels = {
+            newTranspoLabel: newTranspoLabel,
+            newMealLabel: newMealLabel,
+            newInternetLabel: newInternetLabel
+        };
+
+        fetch('editempListForm.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newLabels)
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Handle the response from editempListForm.php if needed
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        // Send the new labels to PayReport.php using fetch
+        fetch('PayReport.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newLabels)
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Handle the response from PayReport.php if needed
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+
+        // Send the new labels to PayReport.php using fetch
+        fetch('gnrate_payroll_prac.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newLabels)
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Handle the response from PayReport.php if needed
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    
+
+    // Retrieve cookies function
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+</script>
+<!--------------------Script sa pagchange ng Label sa allowance---------------------->      
 
 
 
@@ -739,7 +860,7 @@
 </style> -->
   
 
-        <script>
+<script>
   function togglePassword() {
     var passwordInput = document.getElementById("pass");
     var eyeIcon = document.getElementById("eye");
@@ -902,20 +1023,21 @@ function matchPass(){
     var username = document.getElementById("username");
     var role = document.getElementById("role");
     var formEmail = document.getElementById("form-email");
+    var compEmail = document.getElementById("form-emails");
     var pass = document.getElementById("pass");
     var cpass = document.getElementById("cpass");
     var form = document.getElementById("myForm");
     var governContainer = document.querySelector(".employeeList-govern-container");
-  var allowanceContainer = document.querySelector(".employeeList-allowance-container");
-  var scheduleInput = document.querySelector(".employeeList-schedule-input");
-  var empAccessContainer = document.querySelector(".employeeList-empAccess-container");
-  var empDrate = document.querySelector(".emp-empDetail-drate");
-  var empSalary = document.querySelector(".emp-empDetail-bsalary");
-  var empDept = document.querySelector(".emp-empDetail-dept");
-  var empPosition = document.querySelector(".emp-empDetail-jposition");
-  var pakyawan = document.querySelector(".emp-empDetail-piece_rate");
-  var freq = document.querySelector(".emp-empDetail-work_frequency");
-//   var empDetailSecondInput = document.querySelector(".emp-empDetail-second-input");
+    var allowanceContainer = document.querySelector(".employeeList-allowance-container");
+    var scheduleInput = document.querySelector(".employeeList-schedule-input");
+    var empAccessContainer = document.querySelector(".employeeList-empAccess-container");
+    var empDrate = document.querySelector(".emp-empDetail-drate");
+    var empSalary = document.querySelector(".emp-empDetail-bsalary");
+    var empDept = document.querySelector(".emp-empDetail-dept");
+    var empPosition = document.querySelector(".emp-empDetail-jposition");
+    var pakyawan = document.querySelector(".emp-empDetail-piece_rate");
+    var freq = document.querySelector(".emp-empDetail-work_frequency");
+    //   var empDetailSecondInput = document.querySelector(".emp-empDetail-second-input");
 
     classificationSelect.addEventListener("change", function() {
       if (classificationSelect.value === "3") {
@@ -923,7 +1045,6 @@ function matchPass(){
       const requiredInputs = element.querySelectorAll('input[required], select[required]');
       requiredInputs.forEach(function(input) {
          input.removeAttribute('required');
-         
       });
    }
         form.action = "Data Controller/Employee List/pakyawanController.php";

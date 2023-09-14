@@ -772,13 +772,34 @@ header{
 .emp-Access-second-input{
     display: flex;
     flex-direction: row;
-    width: 1400px;
+    width: 935px;
     height: 100px;
     justify-content: space-around;
-    align-items: center;
 }
 
 .emp-Access-second-input input{
+    width: 380px;
+    padding: 10px;
+    outline: none;
+}
+
+
+.password_sec{
+    display: flex;
+    flex-direction: row;
+    margin-left: 28px;
+    width: 935px;
+}
+.emp-Access-password,
+.emp-Access-cpassword {
+    flex: 1; /* Make both fields take up equal width */
+    padding: 15px; /* Add padding for spacing if desired */
+    box-sizing: border-box;
+    
+}
+
+.emp-Access-password input[type="password"],
+.emp-Access-cpassword input[type="password"] {
     width: 380px;
     padding: 10px;
     outline: none;
@@ -814,6 +835,9 @@ header{
     border-radius: 5px;
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
 }
+
+
+
 
 /* edit employee */ 
 

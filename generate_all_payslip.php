@@ -61,7 +61,7 @@
 
     <div class="row">
                     <div class="col-6">
-                        <p style="font-size: 25px; padding: 10px">Generate Payroll</p>
+                        <p style="font-size: 25px; padding: 10px">Generate Payslip</p>
                     </div>
                     <div class="col-6 mt-1 text-end">
                                 <!-- Button trigger modal -->
@@ -1361,153 +1361,152 @@ if(isset($_POST['printAll'])){
                 $row_table_UT = mysqli_fetch_assoc($result_table_UT);
                 $UT_time = $row_table_UT['total_hours_minutesUndertime'];
 
-                    if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
-                        $sql = "SELECT
-                        payroll_loan_tb.loan_type,
-                        payroll_loan_tb.payable_amount,
-                        payroll_loan_tb.amortization,
-                        payroll_loan_tb.col_BAL_amount,
-                        payroll_loan_tb.cutoff_no,
-                        payroll_loan_tb.applied_cutoff,
-                        payroll_loan_tb.loan_status,
-                        payroll_loan_tb.loan_date,
-                        payroll_loan_tb.timestamp,
-                        allowancededuct_tb.allowance_amount AS total_sum,
-                        employee_tb.emptranspo,
-                        employee_tb.empmeal,
-                        employee_tb.empinternet,
-                        employee_tb.`empbsalary` AS Salary_of_Month,
-                        employee_tb.`sss_amount`,
-                        employee_tb.`tin_amount`,
-                        employee_tb.`pagibig_amount`,
-                        employee_tb.`philhealth_amount`,
-                        employee_tb.`emptranspo` + employee_tb.`empmeal` + employee_tb.`empmeal` AS Total_allowanceStandard,
-                        employee_tb.`sss_amount` + employee_tb.`tin_amount` + employee_tb.`pagibig_amount` + employee_tb.`philhealth_amount` AS Total_deduct_governStANDARD,
-                        CONCAT(
-                                FLOOR( 
-                                    SUM(TIME_TO_SEC(attendances.late)) / 3600
-                                ),
-                                'H:',
-                                FLOOR(
-                                    (
-                                        SUM(TIME_TO_SEC(attendances.late)) % 3600
-                                    ) / 60
-                                ),
-                                'M'
-                            ) AS total_hours_minutesLATE,
-                        CONCAT(
-                                FLOOR(
-                                    SUM(TIME_TO_SEC(attendances.early_out)) / 3600
-                                ),
-                                'H:',
-                                FLOOR(
-                                    (
-                                        SUM(TIME_TO_SEC(attendances.early_out)) % 3600
-                                    ) / 60
-                                ),
-                                'M'
-                            ) AS total_hours_minutesUndertime,
-                        CONCAT(
-                                FLOOR(
-                                    SUM(TIME_TO_SEC(attendances.total_work)) / 3600
-                                    
-                                ),
-                                'H:',
-                                FLOOR(
-                                    (
-                                        SUM(TIME_TO_SEC(attendances.total_work)) % 3600
-                                       
-                                    ) / 60
-                                ),
-                                'M'
-                            ) AS total_hours_minutestotalHours
-                    FROM
-                        employee_tb
-                        INNER JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
-                        INNER JOIN attendances ON employee_tb.empid = attendances.empid
-                        LEFT JOIN payroll_loan_tb ON employee_tb.empid = payroll_loan_tb.empid
+                if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
+                    $sql = "SELECT
+                    payroll_loan_tb.loan_type,
+                    payroll_loan_tb.payable_amount,
+                    payroll_loan_tb.amortization,
+                    payroll_loan_tb.col_BAL_amount,
+                    payroll_loan_tb.cutoff_no,
+                    payroll_loan_tb.applied_cutoff,
+                    payroll_loan_tb.loan_status,
+                    payroll_loan_tb.loan_date,
+                    payroll_loan_tb.timestamp,
+                    SUM(allowancededuct_tb.allowance_amount) AS total_sum,
+                    employee_tb.emptranspo,
+                    employee_tb.empmeal,
+                    employee_tb.empinternet,
+                    employee_tb.`empbsalary` AS Salary_of_Month,
+                    employee_tb.`sss_amount`,
+                    employee_tb.`tin_amount`,
+                    employee_tb.`pagibig_amount`,
+                    employee_tb.`philhealth_amount`,
+                    employee_tb.`emptranspo` + employee_tb.`empmeal` + employee_tb.`empmeal` AS Total_allowanceStandard,
+                    employee_tb.`sss_amount` + employee_tb.`tin_amount` + employee_tb.`pagibig_amount` + employee_tb.`philhealth_amount` AS Total_deduct_governStANDARD,
+                    CONCAT(
+                            FLOOR( 
+                                SUM(TIME_TO_SEC(attendances.late)) / 3600
+                            ),
+                            'H:',
+                            FLOOR(
+                                (
+                                    SUM(TIME_TO_SEC(attendances.late)) % 3600
+                                ) / 60
+                            ),
+                            'M'
+                        ) AS total_hours_minutesLATE,
+                    CONCAT(
+                            FLOOR(
+                                SUM(TIME_TO_SEC(attendances.early_out)) / 3600
+                            ),
+                            'H:',
+                            FLOOR(
+                                (
+                                    SUM(TIME_TO_SEC(attendances.early_out)) % 3600
+                                ) / 60
+                            ),
+                            'M'
+                        ) AS total_hours_minutesUndertime,
+                    CONCAT(
+                            FLOOR(
+                                SUM(TIME_TO_SEC(attendances.total_work)) / 3600
+                                
+                            ),
+                            'H:',
+                            FLOOR(
+                                (
+                                    SUM(TIME_TO_SEC(attendances.total_work)) % 3600
+                                   
+                                ) / 60
+                            ),
+                            'M'
+                        ) AS total_hours_minutestotalHours
+                FROM
+                    employee_tb
+                    INNER JOIN attendances ON employee_tb.empid = attendances.empid
+                    LEFT JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
+                    LEFT JOIN payroll_loan_tb ON employee_tb.empid = payroll_loan_tb.empid
 
-                    WHERE (attendances.status = 'Present' OR attendances.status = 'On-Leave')  AND employee_tb.empid = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
+                WHERE (attendances.status = 'Present' OR attendances.status = 'On-Leave')  AND employee_tb.empid = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
 
-                    $sql_absent_count = "SELECT 
-                                            COUNT(`status`) as Absent_count
-                                         FROM attendances
-                                         WHERE (`status` = 'Absent' OR `status` = 'LWOP')  AND `empid` = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
+                $sql_absent_count = "SELECT 
+                                        COUNT(`status`) as Absent_count
+                                     FROM attendances
+                                     WHERE (`status` = 'Absent' OR `status` = 'LWOP')  AND `empid` = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
 
-                    $result_absent_count = mysqli_query($conn, $sql_absent_count);
-                    $row_absent_count = mysqli_fetch_assoc($result_absent_count);
-                    $number_of_absent =  $row_absent_count['Absent_count'];
+                $result_absent_count = mysqli_query($conn, $sql_absent_count);
+                $row_absent_count = mysqli_fetch_assoc($result_absent_count);
+                $number_of_absent =  $row_absent_count['Absent_count'];
+                
+                
+            }else{
+                    $sql = "SELECT
+                    payroll_loan_tb.loan_type,
+                    payroll_loan_tb.payable_amount,
+                    payroll_loan_tb.amortization,
+                    payroll_loan_tb.col_BAL_amount,
+                    payroll_loan_tb.cutoff_no,
+                    payroll_loan_tb.applied_cutoff,
+                    payroll_loan_tb.loan_status,
+                    payroll_loan_tb.loan_date,
+                    payroll_loan_tb.timestamp,
+                    SUM(allowancededuct_tb.allowance_amount) AS total_sum,
+                    employee_tb.emptranspo,
+                    employee_tb.empmeal,
+                    employee_tb.empinternet,
+                    SUM(employee_tb.`drate`) AS Salary_of_Month,
+                    employee_tb.`sss_amount`,
+                    employee_tb.`tin_amount`,
+                    employee_tb.`pagibig_amount`,
+                    employee_tb.`philhealth_amount`,
+                    employee_tb.`emptranspo` + employee_tb.`empmeal` + employee_tb.`empmeal` AS Total_allowanceStandard,
+                    employee_tb.`sss_amount` + employee_tb.`tin_amount` + employee_tb.`pagibig_amount` + employee_tb.`philhealth_amount` AS Total_deduct_governStANDARD,
+                    CONCAT(
+                            FLOOR( 
+                                SUM(TIME_TO_SEC(attendances.late)) / 3600
+                            ),
+                            'H:',
+                            FLOOR(
+                                (
+                                    SUM(TIME_TO_SEC(attendances.late)) % 3600
+                                ) / 60
+                            ),
+                            'M'
+                        ) AS total_hours_minutesLATE,
+                    CONCAT(
+                            FLOOR(
+                                SUM(TIME_TO_SEC(attendances.early_out)) / 3600
+                            ),
+                            'H:',
+                            FLOOR(
+                                (
+                                    SUM(TIME_TO_SEC(attendances.early_out)) % 3600
+                                ) / 60
+                            ),
+                            'M'
+                        ) AS total_hours_minutesUndertime,
+                    CONCAT(
+                            FLOOR(
+                                SUM(TIME_TO_SEC(attendances.total_work)) / 3600
+                            ),
+                            'H:',
+                            FLOOR(
+                                (
+                                    SUM(TIME_TO_SEC(attendances.total_work)) % 3600
+                                ) / 60
+                            ),
+                            'M'
+                        ) AS total_hours_minutestotalHours
+                FROM
+                    employee_tb
+                    INNER JOIN attendances ON employee_tb.empid = attendances.empid
+                    LEFT JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
+                    LEFT JOIN payroll_loan_tb ON employee_tb.empid = payroll_loan_tb.empid
 
-                    
-                    
-                }else{
-                        $sql = "SELECT
-                        payroll_loan_tb.loan_type,
-                        payroll_loan_tb.payable_amount,
-                        payroll_loan_tb.amortization,
-                        payroll_loan_tb.col_BAL_amount,
-                        payroll_loan_tb.cutoff_no,
-                        payroll_loan_tb.applied_cutoff,
-                        payroll_loan_tb.loan_status,
-                        payroll_loan_tb.loan_date,
-                        payroll_loan_tb.timestamp,
-                        allowancededuct_tb.allowance_amount AS total_sum,
-                        employee_tb.emptranspo,
-                        employee_tb.empmeal,
-                        employee_tb.empinternet,
-                        SUM(employee_tb.`drate`) AS Salary_of_Month,
-                        employee_tb.`sss_amount`,
-                        employee_tb.`tin_amount`,
-                        employee_tb.`pagibig_amount`,
-                        employee_tb.`philhealth_amount`,
-                        employee_tb.`emptranspo` + employee_tb.`empmeal` + employee_tb.`empmeal` AS Total_allowanceStandard,
-                        employee_tb.`sss_amount` + employee_tb.`tin_amount` + employee_tb.`pagibig_amount` + employee_tb.`philhealth_amount` AS Total_deduct_governStANDARD,
-                        CONCAT(
-                                FLOOR( 
-                                    SUM(TIME_TO_SEC(attendances.late)) / 3600
-                                ),
-                                'H:',
-                                FLOOR(
-                                    (
-                                        SUM(TIME_TO_SEC(attendances.late)) % 3600
-                                    ) / 60
-                                ),
-                                'M'
-                            ) AS total_hours_minutesLATE,
-                        CONCAT(
-                                FLOOR(
-                                    SUM(TIME_TO_SEC(attendances.early_out)) / 3600
-                                ),
-                                'H:',
-                                FLOOR(
-                                    (
-                                        SUM(TIME_TO_SEC(attendances.early_out)) % 3600
-                                    ) / 60
-                                ),
-                                'M'
-                            ) AS total_hours_minutesUndertime,
-                        CONCAT(
-                                FLOOR(
-                                    SUM(TIME_TO_SEC(attendances.total_work)) / 3600
-                                ),
-                                'H:',
-                                FLOOR(
-                                    (
-                                        SUM(TIME_TO_SEC(attendances.total_work)) % 3600
-                                    ) / 60
-                                ),
-                                'M'
-                            ) AS total_hours_minutestotalHours
-                    FROM
-                        employee_tb
-                        INNER JOIN allowancededuct_tb ON employee_tb.empid = allowancededuct_tb.id_emp
-                        INNER JOIN attendances ON employee_tb.empid = attendances.empid
-                        LEFT JOIN payroll_loan_tb ON employee_tb.empid = payroll_loan_tb.empid
-
-                    WHERE (attendances.status = 'Present' OR attendances.status = 'On-Leave')  AND employee_tb.empid = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
-                }
+                WHERE (attendances.status = 'Present' OR attendances.status = 'On-Leave')  AND employee_tb.empid = '$EmployeeID' AND `date` BETWEEN  '$str_date' AND  '$end_date'";
+            }
                 //deduct sa absent
-                $absence_Deductions = $EmpDrate * $number_of_absent;
+                
                 $result = $conn->query($sql);
                 while($row = $result->fetch_assoc()){
                  //Total Late   
@@ -1515,6 +1514,7 @@ if(isset($_POST['printAll'])){
                     
                     if ($Frequency === 'Monthly'){
 
+                        $Empsalary = $row['Salary_of_Month'];
                         @$salary_of_month = $salary;
                         if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
                             @$salary_of_month = $salary_of_month - ($EmpDrate * $number_of_absent);
@@ -1531,9 +1531,8 @@ if(isset($_POST['printAll'])){
     
                     } 
                     else if ($Frequency === 'Semi-Month'){
-    
+                        $Empsalary = $row['Salary_of_Month'] / 2;
                         @$salary_of_month = ($salary) / 2;
-    
                         if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
                             @$salary_of_month = $salary_of_month - ($EmpDrate * $number_of_absent);
                         }
@@ -1547,9 +1546,8 @@ if(isset($_POST['printAll'])){
                         $absence_Deducts = $EmpDrate * $number_of_absent;
                     }
                     else if ($Frequency === 'Weekly'){
-    
+                        $Empsalary = $row['Salary_of_Month'] / 4;
                         @$salary_of_month = ($salary) / 4;
-                        
                         if($row_settings_salary['col_salary_settings'] === 'Fixed Salary'){
                             @$salary_of_month = $salary_of_month - ($EmpDrate* $number_of_absent);
                         }
@@ -1575,10 +1573,16 @@ if(isset($_POST['printAll'])){
 
                             if ($Frequency === 'Monthly') {
                                 $cutoff_deductGovern = $row_governDeduct['total_sum_othe_deduct'];
+
+                                $GovernmentBenefit = $sss + $philHealth + $pagibig_amount + $tin_amount + $row_governDeduct['total_sum_othe_deduct'];
                             } else if ($Frequency === 'Semi-Month') {
                                 $cutoff_deductGovern = $row_governDeduct['total_sum_othe_deduct'] / 2;
+
+                                $GovernmentBenefit = $sss + $philHealth + $pagibig_amount + $tin_amount + $row_governDeduct['total_sum_othe_deduct']/2;
                             } else if ($Frequency === 'Weekly') {
                                 $cutoff_deductGovern = $row_governDeduct['total_sum_othe_deduct'] / 4;
+
+                                $GovernmentBenefit = $sss + $philHealth + $pagibig_amount + $tin_amount + $row_governDeduct['total_sum_othe_deduct']/4;
                             } 
 
                         $query_deduct_onLeave = "SELECT COUNT(`status`) AS onLeaveCount FROM attendances 
@@ -1596,7 +1600,7 @@ if(isset($_POST['printAll'])){
                         }
 
                         //Calculation ng basic pay sa payslip
-                        $SalaryEmp = $salary_of_month - ($EmpDrate * $number_ofLeave_attStatus);
+                        // $SalaryEmp = $salary_of_month - ($EmpDrate * $number_ofLeave_attStatus);
 
                         //calculation ng paid leaves
                         $PaidLeaves = $EmpDrate * $number_ofLeave_attStatus;
@@ -1731,23 +1735,28 @@ if(isset($_POST['printAll'])){
                             }
                         $total_deductionLOAN = @$amortization1 + @$amortization2 + @$amortization3;
                         }
+                        
 
-                        $PayslipNetpay = "₱ " . (($salary_of_month) + $formatted_value + $cutoff_OT + @$holiday_rate_with_dpay + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein)
-                        - ($sss + $philHealth + $tin_amount + $pagibig_amount + $cutoff_deductGovern + $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN);
+                        // $PayslipNetpay = "₱ " . (($salary_of_month) + $formatted_value + $cutoff_OT + @$holiday_rate_with_dpay + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein)
+                        // - ($sss + $philHealth + $tin_amount + $pagibig_amount + $cutoff_deductGovern + $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN);
+
+                        $PayslipNetpay = "₱ " . number_format(($salary_of_month + $Total_allowances + $OTamount + @$holiday_rate_with_dpay + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein)
+                        - ($sss + $philHealth + $tin_amount + $pagibig_amount + $cutoff_deductGovern + $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN), 2);
 
                         //calculation ng total earning
-                        $totalEarn = $salary_of_month + $holiday_rate_with_dpay + $formatted_value  + $cutoff_OT + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein;
+                        $totalEarn = $Empsalary + $holiday_rate_with_dpay + $Total_allowances  + $cutoff_OT + @$holiday_rate_with_dpay_OT + $num_holiday_not_timein;
 
                         //deduction sa payslip
-                        $totalDeduct = $sss + $philHealth +  $tin_amount +  $pagibig_amount +  $cutoff_deductGovern +  $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN;
+                        $totalDeduct = $sss + $philHealth +  $tin_amount +  $pagibig_amount +  $cutoff_deductGovern +  $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN + $absence_Deducts;
+
+                        //Deduction sa paginsert sa payslip report tb
+                        $totalDeductions = $UT_LATE_DEDUCT_TOTAL + $total_deductionLOAN + $absence_Deducts;
                         
                         
 ?>
-
-
-
-
-                <form action="insert_payslip.php" method="post">
+                <div class="card" style="background-color: inherit;">
+                  <div class="card-body" style="width: 58%;">
+                    <form action="insert_payslip.php" method="post">
                     <div class="payslip_body" id="body_payslip" style="overflow-y: auto;">
                                 <div class="header_view">
                                         <img src="icons/logo_hris.png" width="70px" alt="">
@@ -1797,6 +1806,8 @@ if(isset($_POST['printAll'])){
                                         <p style="display:none;"><?php echo $empLate?></p>
                                         <p style="display:none;"><?php echo $UT_time?></p>
                                         <p style="display:none;"><?php echo $number_LWOP_attStatus?></p>
+                                        <p style="display:none;"><?php echo number_format(($GovernmentBenefit),2);?></p>
+                                        <p style="display:none;"><?php echo number_format(($totalDeductions),2);?></p>
                                     </div>
 
                                     <div class="headbody">
@@ -1828,9 +1839,11 @@ if(isset($_POST['printAll'])){
                                             <p class="lbl_Amount">Amount</p>
                                         </div>
 
-                                        <div class="headbdy_pnl2">
-                                            <p class="lbl_deduct">Deduction</p>
-                                            <p class="lbl_Amount2">Amount</p>
+
+                                        <div class="headbdy_pnl1">
+                                            <p class="lbl_earnings">Deduction</p>
+                                            <p class="lbl_Hours">Hours</p>
+                                            <p class="lbl_Amount">Amount</p>
                                         </div>
 
                                         <div class="headbdy_pnl3">
@@ -1844,59 +1857,58 @@ if(isset($_POST['printAll'])){
 
                                             <div class="div_mdlcontnt_left">
                                                 <p class="lbl_bsc_pay">Basic Pay</p>
-                                                <p class="p_Thrs" id="empTotalwork" name="totalbasicwork_name"><?php echo $Totalwork ?></p>
-                                                <p class="p_Tamount" id="empAmount" name="basicsalary_name"><?php echo $SalaryEmp ?></p>
-                                            </div>
-
-                                             <div class="div_mdlcontnt_left1">
                                                 <p class="lbl_bsc_pay">Overtime Pay</p>
-                                                <p class="p_Thrs" id="empOThours" name="totalot_name"><?php echo $basic_OT_hours?></p>
-                                                <p class="p_Tamount" id="OTamount" name="amountOT_name"><?php echo $OTamount?></p>
-                                            </div>
-
-                                            <div class="div_mdlcontnt_left2">
                                                 <p class="lbl_bsc_pay">Allowance</p>
-                                                <p class="p_Thrs"></p>
-                                                <p class="p_Tamount" id="allowanceAmount" name="allowance_name"><?php echo $formatted_value?></p>
-                                            </div>
-
-                                            <div class="div_mdlcontnt_left3">
                                                 <p class="lbl_bsc_pay">PAID LEAVES</p>
-                                                <p class="p_Thrs"></p>
-                                                <p class="p_Tamount" id="leaveAmount" name="leavepay_name"><?php echo $PaidLeaves?></p>
-                                            </div>
-
-                                            <div class="div_mdlcontnt_left4">
                                                 <p class="lbl_bsc_pay">HOLIDAY PAY</p>
-                                                <p class="p_Thrs"></p>
-                                                <p class="p_Tamount" id="holidayAmount" name="holiday_name"><?php echo $HolidayPayment?></p>
                                             </div>
 
+                                            <!---dito ang time ng total work at overtime--->
+                                             <div class="div_mdlcontnt_left1">
+                                                <p class="p_Thrs" id="empTotalwork" name="totalbasicwork_name"><?php echo $Totalwork ?></p>
+                                                <p class="p_Thrs" id="empOThours" name="totalot_name"><?php echo $basic_OT_hours?></p>
+                                            </div>
+
+                                            <!---dito naman ang amount--->
+                                            <div class="div_mdlcontnt_left2">
+                                            <p class="p_Tamount" id="empAmount" name="basicsalary_name"><?php echo number_format(($Empsalary),2); ?></p>
+                                            <p class="p_Tamount" id="OTamount" name="amountOT_name"><?php echo $OTamount?></p>
+                                            <p class="p_Tamount" id="allowanceAmount" name="allowance_name"><?php echo $Total_allowances?></p>
+                                            <p class="p_Tamount" id="leaveAmount" name="leavepay_name"><?php echo $PaidLeaves?></p>
+                                            <p class="p_Tamount" id="holidayAmount" name="holiday_name"><?php echo $HolidayPayment?></p>
+                                            </div>
                                        </div><!--headbdy_pnl11-->
+
+                                       
                                         
                                             <div class="headbdy_pnl22">
                                                 <div class="div_mdlcontnt_mid">
                                                     <div class="div_mdlcontnt_mid_left">
-                                                        <p class="lbl_sss_se">SSS SE CONTRI</p>
-                                                        <p class="lbl_philhlt_c">PHILHEALTH CONTRI</p>
-                                                        <p class="lbl_sss_se">TIN CONTRI</p>
-                                                        <p class="lbl_philhlt_c">PAGIBIG CONTRI</p>
-                                                        <p class="lbl_hdmf">OTHER CONTRI</p>
                                                         <p class="lbl_hdmf">Tardiness</p>
                                                         <p class="lbl_hdmf">Undertime</p>
                                                         <p class="lbl_hdmf">LWOP</p>
+                                                        <p class="lbl_hdmf">SSS SE CONTRI</p>
+                                                        <p class="lbl_hdmf">PHILHEALTH CONTRI</p>
+                                                        <p class="lbl_hdmf">TIN CONTRI</p>
+                                                        <p class="lbl_hdmf">PAGIBIG CONTRI</p>
+                                                        <p class="lbl_hdmf">OTHER CONTRI</p>
                                                         <p  style = "margin-top : -10px;" class="lbl_advnc_p">
                                                     </div>    
+
+                                                    <div class="hourcontent_mid">
+                                                        <p class="latehour" id="latehour"><?php echo $empLate?></p>
+                                                        <p class="utHour" id="underhour"><?php echo $UT_time?></p>
+                                                    </div>
                         
                                                     <div class="div_mdlcontnt_mid_right">
+                                                        <p class="lbl_philhlt_c" id="deductLate" name="late_name"><?php echo $Late_rate_to_deduct?></p>
+                                                        <p class="lbl_philhlt_c" id="deductUT" name="under_name"><?php echo $Undertime_rate_to_deduct?></p>
+                                                        <p class="lbl_philhlt_c" id="deductLWOP" name="lwop_name"><?php echo $LWOPdeduct?></p>
                                                         <p class="lbl_sss_se" id="deductSSS" name="sss_name"><?php echo $sss?></p>
                                                         <p class="lbl_philhlt_c" id="deductphil" name="philhealt_name"><?php echo $philHealth?></p>
                                                         <p class="lbl_sss_se" id="deductTIN" name="tin_name"><?php echo $tin_amount?></p>
                                                         <p class="lbl_philhlt_c" id="deductPagibig" name="pagibig_name"><?php echo $pagibig_amount?></p>
                                                         <p class="lbl_philhlt_c" id="deductOther" name="other_name"><?php echo $cutoff_deductGovern?></p>
-                                                        <p class="lbl_philhlt_c" id="deductLate" name="late_name"><?php echo $Late_rate_to_deduct?></p>
-                                                        <p class="lbl_philhlt_c" id="deductUT" name="under_name"><?php echo $Undertime_rate_to_deduct?></p>
-                                                        <p class="lbl_philhlt_c" id="deductLWOP" name="lwop_name"><?php echo $LWOPdeduct?></p>
                                                         <p style = "margin-top : -10px;" class="lbl_advnc_p">
                                                     </div> 
                                                 </div>
@@ -1915,12 +1927,12 @@ if(isset($_POST['printAll'])){
                                     <div class="headbody2">
                                         <div class="headbdy_pnl1">
                                             <p class="lbl_earnings">Total Earnings :</p>
-                                            <p class="lbl_Hours" id="totalEarn" name="earn_name"><?php echo $totalEarn?></p>
+                                            <p class="lbl_Hours" id="totalEarn" name="earn_name"><?php echo number_format(($totalEarn),2);?></p>
                                         </div>
 
                                         <div class="headbdy_pnl2">
                                                 <p class="lbl_deduct">Total Deduction : </p>
-                                                <p class="lbl_Amount2" id="totalDeduction" name="totalkaltas_name"><?php echo $totalDeduct?></p>
+                                                <p class="lbl_Amount2" id="totalDeduction" name="totalkaltas_name"><?php echo number_format(($totalDeduct),2);?></p>
                                         </div>
 
                                         <div class="headbdy_pnl3">
@@ -1929,11 +1941,12 @@ if(isset($_POST['printAll'])){
                                 </div>
                             </div>
                         </form>
-                    
+                    </div>
+                </div>
                       
     <?php
         }
-        $printAllslipArray[] = array('employeeId' => $EmployeeID, 'numbercutoff' => $cutoffNumber, 'worknumdays' => $TotalworkDays, 'monthcutoff' => $cutoffMonth, 'cutoffstart' => $str_date, 'cutoffend' => $end_date, 'basichours' => $Totalwork, 'basicpay' => $salary_of_month, 'othours' => $basic_OT_hours, 'otpay' => $OTamount, 'empAllowance' => $formatted_value, 'leavepay' => $PaidLeaves, 'holidayPay' => $HolidayPayment, 'sssdeduct' => $sss, 'phildeduct' => $philHealth, 'tindeduct' => $tin_amount, 'pagibigdeduct' => $pagibig_amount, 'otherdeduct' => $cutoff_deductGovern, 'latededuct' => $Late_rate_to_deduct, 'underdeduct' => $Undertime_rate_to_deduct, 'lwopdeduct' => $LWOPdeduct, 'empnetpay' => $PayslipNetpay, 'totalEarn' => $totalEarn, 'totalDeduct' => $totalDeduct,  'frequency'=> $Frequency, 'cutoffId'=> $Id_cutoff, 'absences'=> $number_of_absent, 'payrule'=> $row_settings_salary['col_salary_settings'], 'leavecount'=> $number_ofLeave_attStatus, 'transpoallow'=> $Transport, 'mealallow'=> $Meal, 'netallowance'=> $Internet, 'otherallow'=> $Otherallowance, 'absdeductions'=> $absence_Deducts, 'latedeductions'=> $empLate, 'utHours'=> $UT_time, 'lwopcount'=> $number_LWOP_attStatus);
+        $printAllslipArray[] = array('employeeId' => $EmployeeID, 'numbercutoff' => $cutoffNumber, 'worknumdays' => $TotalworkDays, 'monthcutoff' => $cutoffMonth, 'cutoffstart' => $str_date, 'cutoffend' => $end_date, 'basichours' => $Totalwork, 'basicpay' => $salary_of_month, 'othours' => $basic_OT_hours, 'otpay' => $OTamount, 'empAllowance' => $Total_allowances, 'leavepay' => $PaidLeaves, 'holidayPay' => $HolidayPayment, 'sssdeduct' => $sss, 'phildeduct' => $philHealth, 'tindeduct' => $tin_amount, 'pagibigdeduct' => $pagibig_amount, 'otherdeduct' => $cutoff_deductGovern, 'GovernBenefit' => number_format(($GovernmentBenefit),2), 'latededuct' => $Late_rate_to_deduct, 'underdeduct' => $Undertime_rate_to_deduct, 'lwopdeduct' => $LWOPdeduct, 'empnetpay' => $PayslipNetpay, 'totalEarn' => $totalEarn, 'totalDeduct' => number_format(($totalDeductions),2), 'frequency'=> $Frequency, 'cutoffId'=> $Id_cutoff, 'absences'=> $number_of_absent, 'payrule'=> $row_settings_salary['col_salary_settings'], 'leavecount'=> $number_ofLeave_attStatus, 'transpoallow'=> $Transport, 'mealallow'=> $Meal, 'netallowance'=> $Internet, 'otherallow'=> $Otherallowance, 'absdeductions'=> $absence_Deducts, 'latedeductions'=> $empLate, 'utHours'=> $UT_time, 'lwopcount'=> $number_LWOP_attStatus);
      }
      foreach ($printAllslipArray as $Employeeslip) {
         $Employee = $Employeeslip['employeeId'];
@@ -1954,6 +1967,7 @@ if(isset($_POST['printAll'])){
         $tincut = $Employeeslip['tindeduct'];
         $pagibigcut = $Employeeslip['pagibigdeduct'];
         $othercut = $Employeeslip['otherdeduct'];
+        $GovernmentTotal = $Employeeslip['GovernBenefit'];
         $latecut = $Employeeslip['latededuct'];
         $undertimecut = $Employeeslip['underdeduct'];
         $lwopcut = $Employeeslip['lwopdeduct'];
@@ -2050,35 +2064,152 @@ window.html2canvas = html2canvas;
                 });
             });
         });
-    }
+    }    
+// $("body").on("click", "#PrintAllbutton", function () {
+//     var printAllslipArray = <?php echo json_encode($printAllslipArray); ?>;
+    
+//     var docDefinition = {
+//         content: []
+//     };
 
-    // window.html2canvas = html2canvas;
-    // window.jsPDF = window.jspdf.jsPDF;
+//     printAllslipArray.forEach(function (Employeeslip, index) {
+//         var employeeId = Employeeslip.employeeId;
+//         var Cutoff_Frequency = Employeeslip.frequency;
+//         var Cutoff_Numbers = Employeeslip.numbercutoff;
+//         var employee_workdays = Employeeslip.worknumdays;
+//         var cutoffId = Employeeslip.cutoffId;
+        
+//         var emp_fullname = document.getElementById("id_p_emp_name");
+//         var fullname = emp_fullname.textContent;
+        
+//         var currentDate = new Date();
+//         var options = {
+//             timeZone: "Asia/Manila",
+//             year: "numeric",
+//             month: "numeric",
+//             day: "numeric",
+//             hour: "numeric",
+//             minute: "numeric",
+//             second: "numeric"
+//         };
+        
+//         var currentDateTime = currentDate.toLocaleString("en-PH", options);
+//         var payslipContainers = document.querySelectorAll(".card-body");
+        
+//         payslipContainers.forEach(function (payslipContainer, containerIndex) {
+//             html2canvas(payslipContainer, {
+//                 onrendered: function (canvas) {
+//                     var data = canvas.toDataURL();
+//                     var pageContent = {
+//                         image: data,
+//                         width: 500
+//                     };
 
-    // function PrintallPayslip() {
+//                     if (containerIndex > 0) {
+//                         pageContent.pageBreak = 'after';
+//                     }
+                    
+//                     docDefinition.content.push(pageContent);
+                    
+//                     if (index === printAllslipArray.length - 1 && containerIndex === payslipContainers.length - 1) {
+//                         var pdfName = fullname + "_" + currentDateTime + ".pdf";
+                        
+//                         pdfMake.createPdf(docDefinition).download(pdfName);
+//                         pdfMake.createPdf(docDefinition).getBase64(function (pdfData) {
+//                             var formData = new FormData();
+//                             formData.append("pdfData", pdfData);
+//                             formData.append("employeeId", employeeId);
+//                             formData.append("Cutoff_Frequency", Cutoff_Frequency);
+//                             formData.append("Cutoff_Numbers", Cutoff_Numbers);
+//                             formData.append("employee_workdays", employee_workdays);
+//                             formData.append("cutoffId", cutoffId);
+                            
+//                             var xhr = new XMLHttpRequest();
+//                             xhr.open("POST", "generate_all_pdf.php", true);
+//                             xhr.send(formData);
+//                         });
+//                     }
+//                 }
+//             });
+//         });
+//     });
+// });
+// $("body").on("click", "#PrintAllbutton", function () {
+//     var printAllslipArray = <?php echo json_encode($printAllslipArray); ?>;
+    
+//     var docDefinition = {
+//         content: []
+//     };
 
-    //     var payslipContainers = document.querySelectorAll(".payslip_body");
-    //     var pdf = new jsPDF('landscape');
+//     printAllslipArray.forEach(function (Employeeslip, index) {
+//         var employeeId = Employeeslip.employeeId;
+//         var Cutoff_Frequency = Employeeslip.frequency;
+//         var Cutoff_Numbers = Employeeslip.numbercutoff;
+//         var employee_workdays = Employeeslip.worknumdays;
+//         var cutoffId = Employeeslip.cutoffId;
+        
+//         var emp_fullname = document.getElementById("id_p_emp_name");
+//         var fullname = emp_fullname.textContent;
+        
+//         var currentDate = new Date();
+//         var options = {
+//             timeZone: "Asia/Manila",
+//             year: "numeric",
+//             month: "numeric",
+//             day: "numeric",
+//             hour: "numeric",
+//             minute: "numeric",
+//             second: "numeric"
+//         };
+        
+//         var currentDateTime = currentDate.toLocaleString("en-PH", options);
+//         var payslipContainers = document.querySelectorAll(".card-body");
+        
+//         payslipContainers.forEach(function (payslipContainer, containerIndex) {
+//             html2canvas(payslipContainer, {
+//                 onrendered: function (canvas) {
+//                     var data = canvas.toDataURL();
+//                     var pageContent = {
+//                         image: data,
+//                         width: 500
+//                     };
+                    
+//                     // Add a page separator after each payslip except the last one
+//                     if (containerIndex > payslipContainers.length - 0) {
+//                         pageContent.pageBreak = 'after';
+//                     }
 
-    //     payslipContainers.forEach(function(payslipContainer, index) {
-    //         html2canvas(payslipContainer, {
-    //             allowTaint: true,
-    //             useCORS: true,
-    //             scale: 1
-    //         }).then(canvas => {
-    //             if (index > 0) {
-    //                 pdf.addPage('landscape');
-    //             }
-                
-    //             var img = canvas.toDataURL("image/png");
-    //             pdf.addImage(img, 'PNG', 7, 13, pdf.internal.pageSize.getWidth() - 14, pdf.internal.pageSize.getHeight() - 26);
+                    
+//                     docDefinition.content.push(pageContent);
+                    
+//                     // If this is the last payslip, generate and download the PDF
+//                     if (index === printAllslipArray.length - 1 && containerIndex === payslipContainers.length - 1) {
+//                         var pdfName = fullname + "_" + currentDateTime + ".pdf";
+                        
+//                         var pdf = pdfMake.createPdf(docDefinition);
+//                         pdf.download(pdfName);
+//                         pdf.getBase64(function (pdfData) {
+//                             var formData = new FormData();
+//                             formData.append("pdfData", img);
+//                             formData.append("employeeId", employeeId);
+//                             formData.append("Cutoff_Frequency", Cutoff_Frequency);
+//                             formData.append("Cutoff_Numbers", Cutoff_Numbers);
+//                             formData.append("employee_workdays", employee_workdays);
+//                             formData.append("cutoffId", cutoffId);
+                            
+//                             var xhr = new XMLHttpRequest();
+//                             xhr.open("POST", "generate_all_pdf.php", true);
+//                             xhr.send(formData);
+//                         });
+//                     }
+//                 }
+//             });
+//         });
+//     });
+// });
 
-    //             if (index === payslipContainers.length - 1) {
-    //                 pdf.save("All_Payslips.pdf");
-    //             }
-    //         });
-    //     });
-    // }
+
+
 </script>
 <!----Script para macapture ang multiple payslip at mailagay sa separate na pages ----->
 
@@ -2246,7 +2377,8 @@ $(document).ready(function() {
 
 </script>
 
-<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap4.min.js"></script>
 
     <script src="vendors/datatables.net/jquery.dataTables.js"></script>
@@ -2262,10 +2394,6 @@ $(document).ready(function() {
      <script src="main.js"></script>
     <script src="bootstrap js/data-table.js"></script>
 
-
-    
-
-  
     <script src="vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
 </body>

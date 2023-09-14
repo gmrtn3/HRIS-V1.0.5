@@ -75,14 +75,13 @@
   .p_payout{
   color: #656464;
   font-size: small;
-  margin-left: 245px;
-  position: fixed;
+  margin-left: 120px;
+
   }
   .dt_pyout{
   color: #4B49AC;
   font-size: small;
-  margin-left: 320px;
-  position: fixed;
+  margin-left: 32px;
   }
   .emp_name{
   color: #656464;
@@ -256,8 +255,7 @@
   background-color: transparent;
   color: #656464;
   font-size: small;
-  margin-left: 10px;
-  margin: auto;
+
   }
   .lbl_Amount2{
   background-color: transparent;
@@ -304,62 +302,66 @@
   background-color: transparent;
   color: #656464;
   font-size: small;
-  flex-direction: row;
+  flex-direction: column;
   display: flex;
+  width: 45%;
   }
-  .div_mdlcontnt_left1{ /* para sa allowance */
+.div_mdlcontnt_left1{ /* para sa allowance */
+background-color: transparent;
+color: #656464;
+font-size: small;
+flex-direction: column;
+display: flex;
+width: 42%;
+}
+
+.div_mdlcontnt_left2{ /* para sa overtime */
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  flex-direction: column;
+  display: flex;
+}
+
+.div_mdlcontnt_left3{ /* para sa ON LEAVE */
   background-color: transparent;
   color: #656464;
   font-size: small;
   flex-direction: row;
   display: flex;
-  margin-top: 30px;
-  }
-  .div_mdlcontnt_left2{ /* para sa overtime */
-    background-color: transparent;
-    color: #656464;
-    font-size: small;
-    flex-direction: row;
-    display: flex;
-    margin-top: 60px;
-    }
-    .div_mdlcontnt_left3{ /* para sa ON LEAVE */
-      background-color: transparent;
-      color: #656464;
-      font-size: small;
-      flex-direction: row;
-      display: flex;
-      margin-top: 90px;
-      }
-      .div_mdlcontnt_left4{ /* para sa ON LEAVE */
-        background-color: transparent;
-        color: #656464;
-        font-size: small;
-        flex-direction: row;
-        display: flex;
-        margin-top:120px;
-        }
-        .div_mdlcontnt_left5{ /* para sa ON LEAVE */
-          background-color: transparent;
-          color: #656464;
-          font-size: small;
-          flex-direction: row;
-          display: flex;
-          margin-top:150px;
-          }
+  margin-top: 90px;
+}
+
+.div_mdlcontnt_left4{ /* para sa ON LEAVE */
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  flex-direction: row;
+  display: flex;
+  margin-top:120px;
+}
+
+.div_mdlcontnt_left5{ /* para sa ON LEAVE */
+  background-color: transparent;
+  color: #656464;
+  font-size: small;
+  flex-direction: row;
+  display: flex;
+  margin-top: 150px;
+}
+
   .lbl_bsc_pay{
   background-color: transparent;
-  position: fixed;
+  font-size: smaller;
   }
   .p_Thrs{
   background-color: transparent;
-  position: fixed;
-  margin-left: 150px;
+  font-size: smaller;
   }
   .p_Tamount{
   background-color: transparent;
-  position: fixed;
-  margin-left: 300px;
+  font-size: smaller;
+
   }
   .headbdy_pnl22{
   background-color: transparent;
@@ -370,14 +372,18 @@
   border-bottom: 1px solid #9E9E9E;
   padding: 10px;
   width: 35%;
+
   }
+
   .div_mdlcontnt_mid{
   background-color: transparent;
   color: #656464;
   font-size: small;
   flex-direction: row;
   display: flex;
+  width: 100%;
   }
+  
   .div_mdlcontnt_mid_left{
   background-color: #ffffff;
   float: left;
@@ -385,16 +391,20 @@
   font-size: small;
   flex-direction: column;
   display: flex;
+
+  width: 47%;
   }
   .lbl_sss_se{
   background-color: transparent;
   color: #656464;
   font-size: smaller;
+  margin-left: 20px;
   }
   .lbl_philhlt_c{
   background-color: transparent;
   color: #656464;
   font-size: smaller;
+  margin-left: 20px;
   }
   .lbl_hdmf{
   background-color: transparent;
@@ -423,11 +433,25 @@
   }
   .div_mdlcontnt_mid_right{
   background-color: transparent;
-  float: left;
-  margin-left: 90px;
-  align-items: center;
+  width: 20%;
   }
   
+  .hourcontent_mid{
+    align-items: center;
+    width: 30%;
+    width: 32%;
+  }
+
+  .latehour{
+    font-size: smaller;
+  }
+
+  .utHour{
+    font-size: smaller;
+  }
+  
+
+
   .headbdy_pnl33{
   background-color: transparent;
   flex-direction: row;

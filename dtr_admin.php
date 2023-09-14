@@ -96,6 +96,50 @@
     </style>
 
 
+
+<!-- Modal -->
+<div class="modal fade" id="manualDtr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">DTR Correction</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="actions/DTR Correction/correction.php" method="post">
+      <div class="modal-body">
+            <div class="mb-3">
+                  <label for="exampleInputDate" class="form-label">Employee ID</label>
+                  <input name="employeeId" type="text" class="form-control" required>
+              </div>
+
+             <div class="mb-3">
+                  <label for="exampleInputDate" class="form-label">Date</label>
+                  <input name="dateDtr" type="date" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                  <label for="exampleInputTime" class="form-label">Time</label>
+                  <input name="timeDtr" type="time" class="form-control" required>
+              </div>
+
+              <div class="mb-3">
+                  <label for="disabledSelect" class="form-label">Type</label>
+                  <select name="typeDtr" class="form-select" required>
+                    <option value="" disabled>Select Type</option>
+                    <option value="IN">IN</option>
+                    <option value="OUT">OUT</option>
+                  </select>
+                </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" name="yesCorrect" class="btn btn-primary">Yes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!------------------------------------Header and Button------------------------------------------------->
     <div class="main-panel mt-5" style="margin-left: 15%; position: absolute; top:0;">
         <div class="content-wrapper mt-4">
@@ -106,6 +150,13 @@
                         <div class="col-6">
                             <p style="font-size: 25px; padding: 10px">DTR Correction</p>
                         </div>
+
+                        <div class="col-6 mt-1 text-end">
+                                <!-- Button trigger modal -->
+                              <button type="button" class="manualDtr" data-bs-toggle="modal" data-bs-target="#manualDtr">
+                               Manual Correction
+                              </button>
+                          </div>
                     </div>  
 <!------------------------------------Header, Dropdown and Button------------------------------------------------->
 

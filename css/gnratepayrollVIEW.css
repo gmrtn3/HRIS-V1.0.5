@@ -375,6 +375,7 @@ border-right: 1px solid #9E9E9E;
 border-bottom: 1px solid #9E9E9E;
 padding: 10px;
 width: 35%;
+
 }
 .div_mdlcontnt_mid{
 background-color: transparent;
@@ -382,7 +383,9 @@ color: #656464;
 font-size: small;
 flex-direction: row;
 display: flex;
+width: 100%;
 }
+
 .div_mdlcontnt_mid_left{
 background-color: #ffffff;
 float: left;
@@ -390,6 +393,7 @@ color: #656464;
 font-size: small;
 flex-direction: column;
 display: flex;
+width: 54%;
 }
 .lbl_sss_se{
 background-color: transparent;
@@ -411,6 +415,22 @@ background-color: transparent;
 color: #656464;
 font-size: smaller;
 }
+
+.hourcontent_mid{
+  align-items: center;
+  width: 30%;
+  margin-left: 18%;
+}
+
+
+.latehour{
+  font-size: smaller;
+}
+
+.utHour{
+  font-size: smaller;
+}
+
 .lbl_sssL{
 background-color: transparent;
 color: #656464;
@@ -426,12 +446,17 @@ background-color: transparent;
 color: #656464;
 font-size: smaller;
 }
+
+
+
 .div_mdlcontnt_mid_right{
 background-color: transparent;
 float: left;
 margin-left: 90px;
 align-items: center;
+width: 25%;
 }
+
 
 .headbdy_pnl33{
 background-color: transparent;

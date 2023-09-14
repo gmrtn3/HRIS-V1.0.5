@@ -1,13 +1,5 @@
 <?php 
-include '../../config.php';
-session_start();
-
-// ... (your existing PHP code for processing the form data) ...
-
-// Handle the checkbox value and store it in a session variable
-
-  if (isset($_POST['update_company'])) {
-    // $salary_settings = '';
+   // $salary_settings = '';
     // if(isset($_POST['radio_fixed'])){
 
     //     $salary_settings = 'Fixed Salary';
@@ -16,11 +8,17 @@ session_start();
     //     $salary_settings = 'Days Worked';
     // }
     // $salary_settings = $conn->real_escape_string($_POST["btnradio"]);
+include '../../config.php';
+session_start();
+  if (isset($_POST['update_company'])) {
+ 
     $CompanyPhoto = $_FILES['photo']['tmp_name'] ? addslashes(file_get_contents($_FILES['photo']['tmp_name'])) : '';
     $CompanyName = $_POST['company_name'];
     $CompanyAddress = $_POST['company_address'];
     $CompanyZipcode = $_POST['company_zipcode'];
+    $CompanyDomain = $_POST['company_domain_mail'];
     $salary_settings = $_POST['col_salary_settings'];
+
    
     @$piece_rate_toggle = $_POST['piece_rate_toggle'];
 
@@ -33,7 +31,7 @@ session_start();
 
         // Check if user uploaded a photo
         if (!empty($CompanyPhoto)) {
-            $update_query = "UPDATE settings_company_tb SET `cmpny_logo` = '$CompanyPhoto', `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `col_salary_settings` = '$salary_settings', `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
+            $update_query = "UPDATE settings_company_tb SET `cmpny_logo` = '$CompanyPhoto', `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `email_domain` = '$CompanyDomain' , `col_salary_settings` = '$salary_settings', `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
             $update_run = mysqli_query($conn, $update_query);
 
             if($update_run){
@@ -44,7 +42,7 @@ session_start();
             }
         } else {
             // User did not upload a photo, update other columns only
-            $update_query = "UPDATE settings_company_tb SET `cmpny_name` = '$CompanyName',  `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' ,  `col_salary_settings` = '$salary_settings',  `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
+            $update_query = "UPDATE settings_company_tb SET `cmpny_name` = '$CompanyName',  `cmpny_address` = '$CompanyAddress', `cmpny_zipcode` = '$CompanyZipcode' , `email_domain` = '$CompanyDomain' , `col_salary_settings` = '$salary_settings',  `piece_rate_toggle` = '$piece_rate_toggle' WHERE id = '$id'";
             $update_run = mysqli_query($conn, $update_query);
 
             if($update_run){
@@ -55,8 +53,8 @@ session_start();
             }
         }
     } else {
-        $query = "INSERT INTO settings_company_tb (`cmpny_logo`, `cmpny_name`, `cmpny_address`, `cmpny_zipcode`,  `col_salary_settings`, `piece_rate_toggle`) 
-        VALUES ('$CompanyPhoto', '$CompanyName', '$CompanyAddress', '$CompanyZipcode',  '$salary_settings', 'piece_rate_toggle')";
+        $query = "INSERT INTO settings_company_tb (`cmpny_logo`, `cmpny_name`, `cmpny_address`, `cmpny_zipcode`, `email_domain`,  `col_salary_settings`, `piece_rate_toggle`) 
+        VALUES ('$CompanyPhoto', '$CompanyName', '$CompanyAddress', '$CompanyZipcode', '$CompanyDomain',  '$salary_settings', 'piece_rate_toggle')";
         $query_run = mysqli_query($conn, $query);    
 
         if($query_run){

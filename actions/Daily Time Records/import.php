@@ -20,26 +20,32 @@ if(isset($_POST['importSubmit'])){
         // If the file is uploaded
         if(is_uploaded_file($_FILES['file']['tmp_name'])){
             
-            // Open uploaded CSV file with read-only mode
-            $csvFile = fopen($_FILES['file']['tmp_name'], 'r');
+        // Open uploaded CSV file with read-only mode
+        $csvFile = fopen($_FILES['file']['tmp_name'], 'r');
             
             // Skip the first line
             fgetcsv($csvFile);
             
             // Parse data from CSV file line by line
-            while(($line = fgetcsv($csvFile)) !== FALSE){
-                // Get row data
-                $status   = $line[0];
-                $empid  = $line[1];
+            while (($line = fgetcsv($csvFile)) !== FALSE) {
+                // Get row data for each employee
+                $status = $line[0];
+                $empid = $line[1];
                 $date = $line[2];
                 $time_in = $line[3];
                 $time_out = $line[4];
                 $late = '';
                 $early_out = '';
-                $overtime = '';  
+                $overtime = '';
                 $total_work = '';
+                $total_rest = '';
 
-
+                $CheckEmp = "SELECT * FROM employee_tb WHERE `empid` = '$empid'";
+                $runEmp = mysqli_query($conn, $CheckEmp);
+                if(mysqli_num_rows($runEmp) === 0){
+                    echo "<script>window.location.href = '../../dtRecords?No employee found';</script>";
+                    exit;
+                }else{
                 $result_emp_sched = mysqli_query($conn, "SELECT schedule_name FROM empschedule_tb WHERE empid = '$empid'");
                 if(mysqli_num_rows($result_emp_sched) > 0) {
                 $row_emp_sched = mysqli_fetch_assoc($result_emp_sched);
@@ -64,328 +70,731 @@ if(isset($_POST['importSubmit'])){
                         $col_saturday_timeout =  $row_sched_tb['sat_timeout'];
                         $col_sunday_timeout =  $row_sched_tb['sun_timeout'];
                         $col_grace_period = $row_sched_tb['grace_period'];
-                        
+
                         $day_of_week = date('l', strtotime($date)); // get the day of the week using the "l" format specifier 
 
-                        if($day_of_week === 'Monday'){
-                            if($time_in > $col_monday_timein){
-                                $time_in_datetime = new DateTime($time_in);
-                                $scheduled_time = new DateTime($col_monday_timein);
-                                $interval = $time_in_datetime->diff($scheduled_time);
-                                $tardiness = $interval->format('%h:%i:%s');
+                        
+                        if ($day_of_week === 'Monday') {
+                            $time_in_datetime = new DateTime($time_in);
+                            $time_out_datetime = new DateTime($time_out);
 
-                            }                           
-                            if($time_out < $col_monday_timeout){
-                                $time_out_datetime1 = new DateTime($time_out);
-                                $scheduled_outs = new DateTime($col_monday_timeout);
-                                $early_interval = $scheduled_outs->diff($time_out_datetime1);
-                                $undertime = $early_interval->format('%h:%i:%s');
+                            $actual_timein = new DateTime($col_monday_timein);
+                            $actual_timeout = new DateTime($col_monday_timeout);
 
-                            } else { 
+                            $lunchbreak_start = new DateTime('12:00:00');
+                            $lunchbreak_end = new DateTime('13:00:00');
+
+                            $grace_period_total = new DateTime($col_monday_timein);
+                            $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                            
+                            if ($grace_period_minutes > 0) {
+                                $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                $grace_period_total->add($grace_period_interval);
+                            }
+                            
+                            // Check if $time_in is greater than the sum of $col_monday_timein and grace period
+                            if($time_in_datetime < $lunchbreak_start){
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $late = '00:00:00';
+                                } else {
+                                    $late = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                }
+                            }else{
+                                //subtract 1 hour sa late
+                                $lates = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                $late_datetime = new DateTime($lates);
+                                $late_datetime->sub(new DateInterval('PT1H'));
+                                $late = $late_datetime->format('H:i:s');
+                            }
+                            
+                            //Check if may naapproved na sa undertime table para kung may mag-import ng csv ay hindi automatic mag-undertime
+                            $checkUT = mysqli_query($conn, "SELECT * FROM undertime_tb WHERE `empid` = '$empid' AND `date` = '$date' AND `status` = 'Approved'");
+                            if ($checkUT && mysqli_num_rows($checkUT) > 0) {
+                                $rowOt = $checkUT->fetch_assoc();
+                                $Undertime = $rowOt['total_undertime']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_monday_timeout);
+                                if ($time_out_datetime < $scheduled_timeout) {
+                                    $early_interval = $scheduled_timeout->diff($time_out_datetime);
+                                    $undertime = $early_interval->format('%h:%i:%s');
+                                } else {
+                                    $undertime = '00:00:00';
+                                }
+                            } else {
                                 $undertime = '00:00:00';
                             }
-                            if ($time_out > $col_monday_timeout) {
-                                $time_out_datetime = new DateTime($time_out);
-                                $scheduled_timeout = new DateTime( $col_monday_timeout);
-                                $intervals = $time_out_datetime->diff($scheduled_timeout);
-                                $overtime = $intervals->format('%h:%i:%s');
-                            } else {
-                                $overtime = '00:00:00';
-                            }
 
-                            $lunchbreak_time = strtotime('12:00:00');
-                            $time_in_att = strtotime($time_in);
-                            $include_lunchbreak = ($time_in_att < $lunchbreak_time);
-            
-                            // Calculate the total work time
-                            $total_work = strtotime($time_out) - strtotime($time_in);
-                            if ($include_lunchbreak) {
-                                $total_work -= 7200; // Subtract 1 hour (lunch break)
+                            // check if may naapproved na sa overtime table para kung nag-import ng csv ay hindi automatic mag-overtime
+                            $checkOT = mysqli_query($conn, "SELECT * FROM overtime_tb WHERE `empid` = '$empid' AND `work_schedule` = '$date' AND `status` = 'Approved'");
+                            if ($checkOT && mysqli_num_rows($checkOT) > 0) {
+                                $rowOt = $checkOT->fetch_assoc();
+                                $overtime = $rowOt['total_ot']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_monday_timeout);
+                                $time_out_datetime = new DateTime($time_out);
+                            
+                                if ($time_out_datetime > $scheduled_timeout) {
+                                    $intervals = $scheduled_timeout->diff($time_out_datetime);
+                                    $overtimes = $intervals->format('%H:%I:%S');
+                                } else {
+                                    $overtimes = '00:00:00';
+                                }
+                            } else {
+                                $overtimes = '00:00:00';
                             }
-                            $total_work = date('H:i:s', $total_work);
-                        } //Close bracket Monday
+                            
+                            //para naman sa total work
+                            if($time_in_datetime < $lunchbreak_start && $time_out_datetime > $lunchbreak_start){
+                                $grace_period_total = new DateTime($col_monday_timein);
+                                $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                                
+                                if ($grace_period_minutes > 0) {
+                                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                    $grace_period_total->add($grace_period_interval);
+                                }
+                                // Check if $time_in is less than the sum of $col_monday_timein and grace period
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $total_works = $actual_timeout->diff($actual_timein)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                } else {
+                                    $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                }
+                            }else{
+                                $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                $total_work_datetime = new DateTime($total_works);
+                                $total_work = $total_work_datetime->format('H:i:s');
+                            }
+                        } //Close bracket monday
+                        
 
                         else if($day_of_week === 'Tuesday'){
-                            if($time_in > $col_tuesday_timein){
-                                $time_in_datetime = new DateTime($time_in);
-                                $scheduled_time = new DateTime($col_tuesday_timein);
-                                $interval = $time_in_datetime->diff($scheduled_time);
-                                $tardiness = $interval->format('%h:%i:%s');
+                            $time_in_datetime = new DateTime($time_in);
+                            $time_out_datetime = new DateTime($time_out);
 
-                            }                            
-                            if($time_out < $col_tuesday_timeout){
-                                $time_out_datetime1 = new DateTime($time_out);
-                                $scheduled_outs = new DateTime($col_tuesday_timeout);
-                                $early_interval = $scheduled_outs->diff($time_out_datetime1);
-                                $undertime = $early_interval->format('%h:%i:%s');
+                            $actual_timein = new DateTime($col_tuesday_timein);
+                            $actual_timeout = new DateTime($col_tuesday_timeout);
 
-                            } else { 
+                            $lunchbreak_start = new DateTime('12:00:00');
+                            $lunchbreak_end = new DateTime('13:00:00');
+
+                            $grace_period_total = new DateTime($col_tuesday_timein);
+                            $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                            
+                            if ($grace_period_minutes > 0) {
+                                $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                $grace_period_total->add($grace_period_interval);
+                            }
+                            
+                            // Check if $time_in is greater than the sum of $col_tuesday_timein and grace period
+                            if($time_in_datetime < $lunchbreak_start){
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $late = '00:00:00';
+                                } else {
+                                    $late = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                }
+                            }else{
+                                //subtract 1 hour sa late
+                                $lates = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                $late_datetime = new DateTime($lates);
+                                $late_datetime->sub(new DateInterval('PT1H'));
+                                $late = $late_datetime->format('H:i:s');
+                            }
+                            
+                            //Check if may naapproved na sa undertime table para kung may mag-import ng csv ay hindi automatic mag-undertime
+                            $checkUT = mysqli_query($conn, "SELECT * FROM undertime_tb WHERE `empid` = '$empid' AND `date` = '$date' AND `status` = 'Approved'");
+                            if ($checkUT && mysqli_num_rows($checkUT) > 0) {
+                                $rowOt = $checkUT->fetch_assoc();
+                                $Undertime = $rowOt['total_undertime']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_tuesday_timeout);
+                                if ($time_out_datetime < $scheduled_timeout) {
+                                    $early_interval = $scheduled_timeout->diff($time_out_datetime);
+                                    $undertime = $early_interval->format('%h:%i:%s');
+                                } else {
+                                    $undertime = '00:00:00';
+                                }
+                            } else {
                                 $undertime = '00:00:00';
                             }
-                            if ($time_out > $col_tuesday_timeout) {
+
+                            // check if may naapproved na sa overtime table para kung nag-import ng csv ay hindi automatic mag-overtime
+                            $checkOT = mysqli_query($conn, "SELECT * FROM overtime_tb WHERE `empid` = '$empid' AND `work_schedule` = '$date' AND `status` = 'Approved'");
+                            if ($checkOT && mysqli_num_rows($checkOT) > 0) {
+                                $rowOt = $checkOT->fetch_assoc();
+                                $overtime = $rowOt['total_ot']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_tuesday_timeout);
                                 $time_out_datetime = new DateTime($time_out);
-                                $scheduled_timeout = new DateTime( $col_tuesday_timeout);
-                                $intervals = $time_out_datetime->diff($scheduled_timeout);
-                                $overtime = $intervals->format('%h:%i:%s');
-
+                            
+                                if ($time_out_datetime > $scheduled_timeout) {
+                                    $intervals = $scheduled_timeout->diff($time_out_datetime);
+                                    $overtimes = $intervals->format('%H:%I:%S');
+                                } else {
+                                    $overtimes = '00:00:00';
+                                }
                             } else {
-                                $overtime = '00:00:00';
+                                $overtimes = '00:00:00';
                             }
-
-                            $lunchbreak_time = strtotime('12:00:00');
-                            $time_in_att = strtotime($time_in);
-                            $include_lunchbreak = ($time_in_att < $lunchbreak_time);
-            
-                            // Calculate the total work time
-                            $total_work = strtotime($time_out) - strtotime($time_in);
-                            if ($include_lunchbreak) {
-                                $total_work -= 7200; // Subtract 1 hour (lunch break)
+                            
+                            //para naman sa total work at late
+                            if($time_in_datetime < $lunchbreak_start && $time_out_datetime > $lunchbreak_start){
+                                $grace_period_total = new DateTime($col_tuesday_timein);
+                                $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                                
+                                if ($grace_period_minutes > 0) {
+                                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                    $grace_period_total->add($grace_period_interval);
+                                }
+                                // Check if $time_in is less than the sum of $col_tuesday_timein and grace period
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $total_works = $actual_timeout->diff($actual_timein)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                } else {
+                                    $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                }
+                            }else{
+                                $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                $total_work_datetime = new DateTime($total_works);
+                                $total_work = $total_work_datetime->format('H:i:s');
                             }
-                            $total_work = date('H:i:s', $total_work);
                         } //Close bracket Tuesday
 
-                                else if($day_of_week === 'Wednesday'){
-                                    // Check if the employee is late
-                                    if($time_in > $col_wednesday_timein){
-                                        // Calculate the amount of late
-                                        $time_in_datetime = new DateTime($time_in);
-                                        $scheduled_time = new DateTime($col_wednesday_timein);
-                                        $interval = $time_in_datetime->diff($scheduled_time);
-                                        $tardiness = $interval->format('%h:%i:%s');
 
+                        else if($day_of_week === 'Wednesday'){
+                            $time_in_datetime = new DateTime($time_in);
+                            $time_out_datetime = new DateTime($time_out);
+
+                            $actual_timein = new DateTime($col_wednesday_timein);
+                            $actual_timeout = new DateTime($col_wednesday_timeout);
+
+                            $lunchbreak_start = new DateTime('12:00:00');
+                            $lunchbreak_end = new DateTime('13:00:00');
+
+                            $grace_period_total = new DateTime($col_wednesday_timein);
+                            $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                            
+                            if ($grace_period_minutes > 0) {
+                                $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                $grace_period_total->add($grace_period_interval);
+                            }
+                            
+                            // Check if $time_in is greater than the sum of $col_wednesday_timein and grace period
+                            if($time_in_datetime < $lunchbreak_start){
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $late = '00:00:00';
+                                } else {
+                                    $late = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                }
+                            }else{
+                                //subtract 1 hour sa late
+                                $lates = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                $late_datetime = new DateTime($lates);
+                                $late_datetime->sub(new DateInterval('PT1H'));
+                                $late = $late_datetime->format('H:i:s');
+                            }
+                            
+                            //Check if may naapproved na sa undertime table para kung may mag-import ng csv ay hindi automatic mag-undertime
+                            $checkUT = mysqli_query($conn, "SELECT * FROM undertime_tb WHERE `empid` = '$empid' AND `date` = '$date' AND `status` = 'Approved'");
+                            if ($checkUT && mysqli_num_rows($checkUT) > 0) {
+                                $rowOt = $checkUT->fetch_assoc();
+                                $Undertime = $rowOt['total_undertime']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_wednesday_timeout);
+                                if ($time_out_datetime < $scheduled_timeout) {
+                                    $early_interval = $scheduled_outs->diff($time_out_datetime);
+                                    $undertime = $early_interval->format('%h:%i:%s');
+                                } else {
+                                    $undertime = '00:00:00';
+                                }
+                            } else {
+                                $undertime = '00:00:00';
+                            }
+
+                            // check if may naapproved na sa overtime table para kung nag-import ng csv ay hindi automatic mag-overtime
+                            $checkOT = mysqli_query($conn, "SELECT * FROM overtime_tb WHERE `empid` = '$empid' AND `work_schedule` = '$date' AND `status` = 'Approved'");
+                            if ($checkOT && mysqli_num_rows($checkOT) > 0) {
+                                $rowOt = $checkOT->fetch_assoc();
+                                $overtime = $rowOt['total_ot']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_wednesday_timeout);
+                                $time_out_datetime = new DateTime($time_out);
+                            
+                                if ($time_out_datetime > $scheduled_timeout) {
+                                    $intervals = $time_out_datetime->diff($scheduled_timeout);
+                                    $overtimes = $intervals->format('%H:%I:%S');
+                                } else {
+                                    $overtimes = '00:00:00';
+                                }
+                            } else {
+                                $overtimes = '00:00:00';
+                            }
+                            
+                            //para naman sa total work at late
+                            if($time_in_datetime < $lunchbreak_start && $time_out_datetime > $lunchbreak_start){
+                                $grace_period_total = new DateTime($col_wednesday_timein);
+                                $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                                
+                                if ($grace_period_minutes > 0) {
+                                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                    $grace_period_total->add($grace_period_interval);
+                                }
+                                // Check if $time_in is less than the sum of $col_wednesday_timein and grace period
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $total_works = $actual_timeout->diff($actual_timein)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                } else {
+                                    $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                }
+                            }else{
+                                $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                $total_work_datetime = new DateTime($total_works);
+                                $total_work = $total_work_datetime->format('H:i:s');
+                            }
+                        } //Close bracket Wednesday
+
+
+                        else if($day_of_week === 'Thursday'){
+                            $time_in_datetime = new DateTime($time_in);
+                            $time_out_datetime = new DateTime($time_out);
+
+                            $actual_timein = new DateTime($col_thursday_timein);
+                            $actual_timeout = new DateTime($col_thursday_timeout);
+
+                            $lunchbreak_start = new DateTime('12:00:00');
+                            $lunchbreak_end = new DateTime('13:00:00');
+
+                            $grace_period_total = new DateTime($col_thursday_timein);
+                            $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                            
+                            if ($grace_period_minutes > 0) {
+                                $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                $grace_period_total->add($grace_period_interval);
+                            }
+                            
+                            // Check if $time_in is greater than the sum of $col_thursday_timein and grace period
+                            if($time_in_datetime < $lunchbreak_start){
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $late = '00:00:00';
+                                } else {
+                                    $late = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                }
+                            }else{
+                                //subtract 1 hour sa late
+                                $lates = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                $late_datetime = new DateTime($lates);
+                                $late_datetime->sub(new DateInterval('PT1H'));
+                                $late = $late_datetime->format('H:i:s');
+                            }
+                            
+                            //Check if may naapproved na sa undertime table para kung may mag-import ng csv ay hindi automatic mag-undertime
+                            $checkUT = mysqli_query($conn, "SELECT * FROM undertime_tb WHERE `empid` = '$empid' AND `date` = '$date' AND `status` = 'Approved'");
+                            if ($checkUT && mysqli_num_rows($checkUT) > 0) {
+                                $rowOt = $checkUT->fetch_assoc();
+                                $Undertime = $rowOt['total_undertime']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_thursday_timeout);
+                                if ($time_out_datetime < $scheduled_timeout) {
+                                    $early_interval = $scheduled_outs->diff($time_out_datetime);
+                                    $undertime = $early_interval->format('%h:%i:%s');
+                                } else {
+                                    $undertime = '00:00:00';
+                                }
+                            } else {
+                                $undertime = '00:00:00';
+                            }
+
+                            // check if may naapproved na sa overtime table para kung nag-import ng csv ay hindi automatic mag-overtime
+                            $checkOT = mysqli_query($conn, "SELECT * FROM overtime_tb WHERE `empid` = '$empid' AND `work_schedule` = '$date' AND `status` = 'Approved'");
+                            if ($checkOT && mysqli_num_rows($checkOT) > 0) {
+                                $rowOt = $checkOT->fetch_assoc();
+                                $overtime = $rowOt['total_ot']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_thursday_timeout);
+                                $time_out_datetime = new DateTime($time_out);
+                            
+                                if ($time_out_datetime > $scheduled_timeout) {
+                                    $intervals = $time_out_datetime->diff($scheduled_timeout);
+                                    $overtimes = $intervals->format('%H:%I:%S');
+                                } else {
+                                    $overtimes = '00:00:00';
+                                }
+                            } else {
+                                $overtimes = '00:00:00';
+                            }
+                            
+                            //para naman sa total work at late
+                            if($time_in_datetime < $lunchbreak_start && $time_out_datetime > $lunchbreak_start){
+                                $grace_period_total = new DateTime($col_thursday_timein);
+                                $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                                
+                                if ($grace_period_minutes > 0) {
+                                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                    $grace_period_total->add($grace_period_interval);
+                                }
+                                // Check if $time_in is less than the sum of $col_thursday_timein and grace period
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $total_works = $actual_timeout->diff($actual_timein)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                } else {
+                                    $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                }
+                            }else{
+                                $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                $total_work_datetime = new DateTime($total_works);
+                                $total_work = $total_work_datetime->format('H:i:s');
+                            }
+                        } //Close bracket Thursday
+
+
+                        else if($day_of_week === 'Friday'){
+                            $time_in_datetime = new DateTime($time_in);
+                            $time_out_datetime = new DateTime($time_out);
+
+                            $actual_timein = new DateTime($col_friday_timein);
+                            $actual_timeout = new DateTime($col_friday_timeout);
+
+                            $lunchbreak_start = new DateTime('12:00:00');
+                            $lunchbreak_end = new DateTime('13:00:00');
+
+                            $grace_period_total = new DateTime($col_friday_timein);
+                            $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                            
+                            if ($grace_period_minutes > 0) {
+                                $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                $grace_period_total->add($grace_period_interval);
+                            }
+                            
+                            // Check if $time_in is greater than the sum of $col_friday_timein and grace period
+                            if($time_in_datetime < $lunchbreak_start){
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $late = '00:00:00';
+                                } else {
+                                    $late = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                }
+                            }else{
+                                //subtract 1 hour sa late
+                                $lates = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                $late_datetime = new DateTime($lates);
+                                $late_datetime->sub(new DateInterval('PT1H'));
+                                $late = $late_datetime->format('H:i:s');
+                            }
+                            
+                            //Check if may naapproved na sa undertime table para kung may mag-import ng csv ay hindi automatic mag-undertime
+                            $checkUT = mysqli_query($conn, "SELECT * FROM undertime_tb WHERE `empid` = '$empid' AND `date` = '$date' AND `status` = 'Approved'");
+                            if ($checkUT && mysqli_num_rows($checkUT) > 0) {
+                                $rowOt = $checkUT->fetch_assoc();
+                                $Undertime = $rowOt['total_undertime']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_friday_timeout);
+                                if ($time_out_datetime < $scheduled_timeout) {
+                                    $early_interval = $scheduled_outs->diff($time_out_datetime);
+                                    $undertime = $early_interval->format('%h:%i:%s');
+                                } else {
+                                    $undertime = '00:00:00';
+                                }
+                            } else {
+                                $undertime = '00:00:00';
+                            }
+
+                            // check if may naapproved na sa overtime table para kung nag-import ng csv ay hindi automatic mag-overtime
+                            $checkOT = mysqli_query($conn, "SELECT * FROM overtime_tb WHERE `empid` = '$empid' AND `work_schedule` = '$date' AND `status` = 'Approved'");
+                            if ($checkOT && mysqli_num_rows($checkOT) > 0) {
+                                $rowOt = $checkOT->fetch_assoc();
+                                $overtime = $rowOt['total_ot']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_friday_timeout);
+                                $time_out_datetime = new DateTime($time_out);
+                            
+                                if ($time_out_datetime > $scheduled_timeout) {
+                                    $intervals = $time_out_datetime->diff($scheduled_timeout);
+                                    $overtimes = $intervals->format('%H:%I:%S');
+                                } else {
+                                    $overtimes = '00:00:00';
+                                }
+                            } else {
+                                $overtimes = '00:00:00';
+                            }
+                            
+                            //para naman sa total work at late
+                            if($time_in_datetime < $lunchbreak_start && $time_out_datetime > $lunchbreak_start){
+                                $grace_period_total = new DateTime($col_friday_timein);
+                                $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                                
+                                if ($grace_period_minutes > 0) {
+                                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                    $grace_period_total->add($grace_period_interval);
+                                }
+                                // Check if $time_in is less than the sum of $col_friday_timein and grace period
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $total_works = $actual_timeout->diff($actual_timein)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                } else {
+                                    $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                }
+                            }else{
+                                $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                $total_work_datetime = new DateTime($total_works);
+                                $total_work = $total_work_datetime->format('H:i:s');
+                            }
+                        } //Close bracket Friday
+
+
+                        else if($day_of_week === 'Saturday'){
+                            $time_in_datetime = new DateTime($time_in);
+                            $time_out_datetime = new DateTime($time_out);
+
+                            $actual_timein = new DateTime($col_saturday_timein);
+                            $actual_timeout = new DateTime($col_saturday_timeout);
+
+                            $lunchbreak_start = new DateTime('12:00:00');
+                            $lunchbreak_end = new DateTime('13:00:00');
+
+                            $grace_period_total = new DateTime($col_saturday_timein);
+                            $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                            
+                            if ($grace_period_minutes > 0) {
+                                $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                $grace_period_total->add($grace_period_interval);
+                            }
+                            
+                            // Check if $time_in is greater than the sum of $col_saturday_timein and grace period
+                            if($time_in_datetime < $lunchbreak_start){
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $late = '00:00:00';
+                                } else {
+                                    $late = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                }
+                            }else{
+                                //subtract 1 hour sa late
+                                $lates = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                $late_datetime = new DateTime($lates);
+                                $late_datetime->sub(new DateInterval('PT1H'));
+                                $late = $late_datetime->format('H:i:s');
+                            }
+                            
+                            //Check if may naapproved na sa undertime table para kung may mag-import ng csv ay hindi automatic mag-undertime
+                            $checkUT = mysqli_query($conn, "SELECT * FROM undertime_tb WHERE `empid` = '$empid' AND `date` = '$date' AND `status` = 'Approved'");
+                            if ($checkUT && mysqli_num_rows($checkUT) > 0) {
+                                $rowOt = $checkUT->fetch_assoc();
+                                $Undertime = $rowOt['total_undertime']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_saturday_timeout);
+                                if ($time_out_datetime < $scheduled_timeout) {
+                                    $early_interval = $scheduled_outs->diff($time_out_datetime);
+                                    $undertime = $early_interval->format('%h:%i:%s');
+                                } else {
+                                    $undertime = '00:00:00';
+                                }
+                            } else {
+                                $undertime = '00:00:00';
+                            }
+
+                            // check if may naapproved na sa overtime table para kung nag-import ng csv ay hindi automatic mag-overtime
+                            $checkOT = mysqli_query($conn, "SELECT * FROM overtime_tb WHERE `empid` = '$empid' AND `work_schedule` = '$date' AND `status` = 'Approved'");
+                            if ($checkOT && mysqli_num_rows($checkOT) > 0) {
+                                $rowOt = $checkOT->fetch_assoc();
+                                $overtime = $rowOt['total_ot']; // Ito ang magiging value ng overtime
+                            
+                                $scheduled_timeout = new DateTime($col_saturday_timeout);
+                                $time_out_datetime = new DateTime($time_out);
+                            
+                                if ($time_out_datetime > $scheduled_timeout) {
+                                    $intervals = $time_out_datetime->diff($scheduled_timeout);
+                                    $overtimes = $intervals->format('%H:%I:%S');
+                                } else {
+                                    $overtimes = '00:00:00';
+                                }
+                            } else {
+                                $overtimes = '00:00:00';
+                            }
+                            
+                            //para naman sa total work at late
+                            if($time_in_datetime < $lunchbreak_start && $time_out_datetime > $lunchbreak_start){
+                                $grace_period_total = new DateTime($col_saturday_timein);
+                                $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                                
+                                if ($grace_period_minutes > 0) {
+                                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                    $grace_period_total->add($grace_period_interval);
+                                }
+                                // Check if $time_in is less than the sum of $col_saturday_timein and grace period
+                                if ($time_in_datetime < $grace_period_total) {
+                                    $total_works = $actual_timeout->diff($actual_timein)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                } else {
+                                    $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                    // Subtract 1 hour from total work
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work_datetime->sub(new DateInterval('PT1H'));
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                }
+                            }else{
+                                $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                $total_work_datetime = new DateTime($total_works);
+                                $total_work = $total_work_datetime->format('H:i:s');
+                            }
+                        } //Close bracket Saturday
+
+                            else if($day_of_week === 'Sunday'){
+                                $time_in_datetime = new DateTime($time_in);
+                                $time_out_datetime = new DateTime($time_out);
+    
+                                $actual_timein = new DateTime($col_sunday_timein);
+                                $actual_timeout = new DateTime($col_sunday_timeout);
+    
+                                $lunchbreak_start = new DateTime('12:00:00');
+                                $lunchbreak_end = new DateTime('13:00:00');
+    
+                                $grace_period_total = new DateTime($col_sunday_timein);
+                                $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                                
+                                if ($grace_period_minutes > 0) {
+                                    $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                    $grace_period_total->add($grace_period_interval);
+                                }
+                                
+                                // Check if $time_in is greater than the sum of $col_sunday_timein and grace period
+                                if($time_in_datetime < $lunchbreak_start){
+                                    if ($time_in_datetime < $grace_period_total) {
+                                        $late = '00:00:00';
+                                    } else {
+                                        $late = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
                                     }
-                                    
-                                    if($time_out < $col_wednesday_timeout){
-                                        $time_out_datetime1 = new DateTime($time_out);
-                                        $scheduled_outs = new DateTime($col_wednesday_timeout);
-                                        $early_interval = $scheduled_outs->diff($time_out_datetime1);
+                                }else{
+                                    //subtract 1 hour sa late
+                                    $lates = $time_in_datetime->diff($actual_timein)->format('%H:%I:%S');
+                                    $late_datetime = new DateTime($lates);
+                                    $late_datetime->sub(new DateInterval('PT1H'));
+                                    $late = $late_datetime->format('H:i:s');
+                                }
+                                
+                                //Check if may naapproved na sa undertime table para kung may mag-import ng csv ay hindi automatic mag-undertime
+                                $checkUT = mysqli_query($conn, "SELECT * FROM undertime_tb WHERE `empid` = '$empid' AND `date` = '$date' AND `status` = 'Approved'");
+                                if ($checkUT && mysqli_num_rows($checkUT) > 0) {
+                                    $rowOt = $checkUT->fetch_assoc();
+                                    $Undertime = $rowOt['total_undertime']; // Ito ang magiging value ng overtime
+                                
+                                    $scheduled_timeout = new DateTime($col_sunday_timeout);
+                                    if ($time_out_datetime < $scheduled_timeout) {
+                                        $early_interval = $scheduled_outs->diff($time_out_datetime);
                                         $undertime = $early_interval->format('%h:%i:%s');
-
-                                    } else { 
+                                    } else {
                                         $undertime = '00:00:00';
                                     }
-
-                                    if ($time_out > $col_wednesday_timeout) {
-                                        // Calculate overtime
-                                        $time_out_datetime = new DateTime($time_out);
-                                        $scheduled_timeout = new DateTime( $col_wednesday_timeout);
+                                } else {
+                                    $undertime = '00:00:00';
+                                }
+    
+                                // check if may naapproved na sa overtime table para kung nag-import ng csv ay hindi automatic mag-overtime
+                                $checkOT = mysqli_query($conn, "SELECT * FROM overtime_tb WHERE `empid` = '$empid' AND `work_schedule` = '$date' AND `status` = 'Approved'");
+                                if ($checkOT && mysqli_num_rows($checkOT) > 0) {
+                                    $rowOt = $checkOT->fetch_assoc();
+                                    $overtime = $rowOt['total_ot']; // Ito ang magiging value ng overtime
+                                
+                                    $scheduled_timeout = new DateTime($col_sunday_timeout);
+                                    $time_out_datetime = new DateTime($time_out);
+                                
+                                    if ($time_out_datetime > $scheduled_timeout) {
                                         $intervals = $time_out_datetime->diff($scheduled_timeout);
-                                        $overtime = $intervals->format('%h:%i:%s');
-
+                                        $overtimes = $intervals->format('%H:%I:%S');
                                     } else {
-                                        $overtime = '00:00:00';
+                                        $overtimes = '00:00:00';
                                     }
-                                    $lunchbreak_time = strtotime('12:00:00');
-                                    $time_in_att = strtotime($time_in);
-                                    $include_lunchbreak = ($time_in_att < $lunchbreak_time);
-                    
-                                    // Calculate the total work time
-                                    $total_work = strtotime($time_out) - strtotime($time_in);
-                                    if ($include_lunchbreak) {
-                                        $total_work -= 7200; // Subtract 1 hour (lunch break)
+                                } else {
+                                    $overtimes = '00:00:00';
+                                }
+                                
+                                //para naman sa total work at late
+                                if($time_in_datetime < $lunchbreak_start && $time_out_datetime > $lunchbreak_start){
+                                    $grace_period_total = new DateTime($col_sunday_timein);
+                                    $grace_period_minutes = isset($col_grace_period) ? $col_grace_period : 0; // Retrieve grace period from $time array or set to 0 if not available
+                                    
+                                    if ($grace_period_minutes > 0) {
+                                        $grace_period_interval = new DateInterval('PT' . $grace_period_minutes . 'M');
+                                        $grace_period_total->add($grace_period_interval);
                                     }
-                                    $total_work = date('H:i:s', $total_work);
-                                } //Close bracket Wednesday
-
-                                    else if($day_of_week === 'Thursday'){
-                                        // Check if the employee is late
-                                        if($time_in > $col_thursday_timein){
-                                            // Calculate the amount of late
-                                            $time_in_datetime = new DateTime($time_in);
-                                            $scheduled_time = new DateTime($col_thursday_timein);
-                                            $interval = $time_in_datetime->diff($scheduled_time);
-                                            $tardiness = $interval->format('%h:%i:%s');
-
-                                        }
-                                        
-                                        if($time_out < $col_thursday_timeout){
-                                            $time_out_datetime1 = new DateTime($time_out);
-                                            $scheduled_outs = new DateTime($col_thursday_timeout);
-                                            $early_interval = $scheduled_outs->diff($time_out_datetime1);
-                                            $undertime = $early_interval->format('%h:%i:%s');
-
-                                        } else { 
-                                            $undertime = '00:00:00';
-                                        }
-
-                                        if ($time_out > $col_thursday_timeout) {
-                                            // Calculate overtime
-                                            $time_out_datetime = new DateTime($time_out);
-                                            $scheduled_timeout = new DateTime( $col_thursday_timeout);
-                                            $intervals = $time_out_datetime->diff($scheduled_timeout);
-                                            $overtime = $intervals->format('%h:%i:%s');
-
-                                        } else {
-                                            $overtime = '00:00:00';
-                                        }
-                                        $lunchbreak_time = strtotime('12:00:00');
-                                        $time_in_att = strtotime($time_in);
-                                        $include_lunchbreak = ($time_in_att < $lunchbreak_time);
+                                    // Check if $time_in is less than the sum of $col_sunday_timein and grace period
+                                    if ($time_in_datetime < $grace_period_total) {
+                                        $total_works = $actual_timeout->diff($actual_timein)->format('%H:%I:%S');
+                                        // Subtract 1 hour from total work
+                                        $total_work_datetime = new DateTime($total_works);
+                                        $total_work_datetime->sub(new DateInterval('PT1H'));
+                                        $total_work = $total_work_datetime->format('H:i:s');
+                                    } else {
+                                        $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                        // Subtract 1 hour from total work
+                                        $total_work_datetime = new DateTime($total_works);
+                                        $total_work_datetime->sub(new DateInterval('PT1H'));
+                                        $total_work = $total_work_datetime->format('H:i:s');
+                                    }
+                                }else{
+                                    $total_works = $time_out_datetime->diff($time_in_datetime)->format('%H:%I:%S');
+                                    $total_work_datetime = new DateTime($total_works);
+                                    $total_work = $total_work_datetime->format('H:i:s');
+                                }
+                            } //Close bracket sunday
                         
-                                        // Calculate the total work time
-                                        $total_work = strtotime($time_out) - strtotime($time_in);
-                                        if ($include_lunchbreak) {
-                                            $total_work -= 7200; // Subtract 1 hour (lunch break)
-                                        }
-                                        $total_work = date('H:i:s', $total_work);
-                                    } //Close bracket Thursday
 
-                                    else if($day_of_week === 'Friday'){
-                                        // Check if the employee is late
-                                        if($time_in > $col_friday_timein){
-                                            // Calculate the amount of late
-                                            $time_in_datetime = new DateTime($time_in);
-                                            $scheduled_time = new DateTime($col_friday_timein);
-                                            $interval = $time_in_datetime->diff($scheduled_time);
-                                            $tardiness = $interval->format('%h:%i:%s');
+                    } 
+                }
+            }       
+            
+                    // Check if the employee's attendance record already exists
+                    $prevQuery = "SELECT * FROM attendances WHERE `empid` = '$empid' AND `date` = '$date'";
+                    $prevResult = $conn->query($prevQuery);
 
-                                        }
-                                        
-                                        if($time_out < $col_friday_timeout){
-                                            $time_out_datetime1 = new DateTime($time_out);
-                                            $scheduled_outs = new DateTime($col_friday_timeout);
-                                            $early_interval = $scheduled_outs->diff($time_out_datetime1);
-                                            $undertime = $early_interval->format('%h:%i:%s');
+                    if ($prevResult->num_rows > 0) {
+                        // Update the existing record
+                        $query = "UPDATE attendances SET status = '$status',
+                            time_in = '$time_in', time_out = '$time_out', late = '$late', 
+                            early_out = '$undertime', overtime = '$overtimes', total_work = '$total_work' 
+                            WHERE empid = '$empid' AND date = '$date'";
+                    } else {
+                        // Insert a new record
+                        $query = "INSERT INTO attendances (`status`, `empid`, `date`, `time_in`, `time_out`, `late`, `early_out`, `overtime`, `total_work`) 
+                            VALUES ('$status', '$empid', '$date', '$time_in', '$time_out', '$late', '$undertime', '$overtimes', '$total_work')";
+                    }
 
-                                        } else { 
-                                            $undertime = '00:00:00';
-                                        }
-
-                                        if ($time_out > $col_friday_timeout) {
-                                            // Calculate overtime
-                                            $time_out_datetime = new DateTime($time_out);
-                                            $scheduled_timeout = new DateTime( $col_friday_timeout);
-                                            $intervals = $time_out_datetime->diff($scheduled_timeout);
-                                            $overtime = $intervals->format('%h:%i:%s');
-
-                                        } else {
-                                            $overtime = '00:00:00';
-                                        }
-                                        $lunchbreak_time = strtotime('12:00:00');
-                                        $time_in_att = strtotime($time_in);
-                                        $include_lunchbreak = ($time_in_att < $lunchbreak_time);
-                        
-                                        // Calculate the total work time
-                                        $total_work = strtotime($time_out) - strtotime($time_in);
-                                        if ($include_lunchbreak) {
-                                            $total_work -= 7200; // Subtract 1 hour (lunch break)
-                                        }
-                                        $total_work = date('H:i:s', $total_work);
-                                    } //Close bracket Friday
-
-                                    else if($day_of_week === 'Saturday'){
-                                        // Check if the employee is late
-                                        if($time_in > $col_saturday_timein){
-                                            // Calculate the amount of late
-                                            $time_in_datetime = new DateTime($time_in);
-                                            $scheduled_time = new DateTime($col_saturday_timein);
-                                            $interval = $time_in_datetime->diff($scheduled_time);
-                                            $tardiness = $interval->format('%h:%i:%s');
-
-                                        }
-                                        
-                                        if($time_out < $col_saturday_timeout){
-                                            $time_out_datetime1 = new DateTime($time_out);
-                                            $scheduled_outs = new DateTime($col_saturday_timeout);
-                                            $early_interval = $scheduled_outs->diff($time_out_datetime1);
-                                            $undertime = $early_interval->format('%h:%i:%s');
-
-                                        } else { 
-                                            $undertime = '00:00:00';
-                                        }
-
-                                        if ($time_out > $col_saturday_timeout) {
-                                            // Calculate overtime
-                                            $time_out_datetime = new DateTime($time_out);
-                                            $scheduled_timeout = new DateTime($col_saturday_timeout);
-                                            $intervals = $time_out_datetime->diff($scheduled_timeout);
-                                            $overtime = $intervals->format('%h:%i:%s');
-
-                                        } else {
-                                            $overtime = '00:00:00';
-                                        }
-                                        $lunchbreak_time = strtotime('12:00:00');
-                                        $time_in_att = strtotime($time_in);
-                                        $include_lunchbreak = ($time_in_att < $lunchbreak_time);
-                        
-                                        // Calculate the total work time
-                                        $total_work = strtotime($time_out) - strtotime($time_in);
-                                        if ($include_lunchbreak) {
-                                            $total_work -= 7200; // Subtract 1 hour (lunch break)
-                                        }
-                                        $total_work = date('H:i:s', $total_work);
-                                    } //Close bracket Saturday
-
-                                    else if($day_of_week === 'Sunday'){
-                                        // Check if the employee is late
-                                        if($time_in > $col_sunday_timein){
-                                            // Calculate the amount of late
-                                            $time_in_datetime = new DateTime($time_in);
-                                            $scheduled_time = new DateTime($col_sunday_timein);
-                                            $interval = $time_in_datetime->diff($scheduled_time);
-                                            $tardiness = $interval->format('%h:%i:%s');
-
-                                        }
-                                        
-                                        if($time_out < $col_sunday_timeout){
-                                            $time_out_datetime1 = new DateTime($time_out);
-                                            $scheduled_outs = new DateTime($col_sunday_timeout);
-                                            $early_interval = $scheduled_outs->diff($time_out_datetime1);
-                                            $undertime = $early_interval->format('%h:%i:%s');
-
-                                        } else { 
-                                            $undertime = '00:00:00';
-                                        }
-
-                                        if ($time_out > $col_sunday_timeout) {
-                                            // Calculate overtime
-                                            $time_out_datetime = new DateTime($time_out);
-                                            $scheduled_timeout = new DateTime($col_sunday_timeout);
-                                            $intervals = $time_out_datetime->diff($scheduled_timeout);
-                                            $overtime = $intervals->format('%h:%i:%s');
-
-                                        } else {
-                                            $overtime = '00:00:00';
-                                        }
-                                        $lunchbreak_time = strtotime('12:00:00');
-                                        $time_in_att = strtotime($time_in);
-                                        $include_lunchbreak = ($time_in_att < $lunchbreak_time);
-                        
-                                        // Calculate the total work time
-                                        $total_work = strtotime($time_out) - strtotime($time_in);
-                                        if ($include_lunchbreak) {
-                                            $total_work -= 7200; // Subtract 1 hour (lunch break)
-                                        }
-                                        $total_work = date('H:i:s', $total_work);
-                                    } //Close bracket sunday
-
-
-                        
-			            $result_emp = mysqli_query($conn, "SELECT * FROM employee_tb WHERE empid = '$empid'");
-                        if(mysqli_num_rows($result_emp) == 0){
-                            echo '<script>alert("Error: Unable to insert data for non-existing Employee ID because the Employee ID does not exist in the database.")</script>';
-                            echo "<script>window.location.href = '../../dtRecords.php';</script>";
-                            exit;
-                        }else{
-                            $prevQuery = "SELECT * FROM attendances WHERE empid = '".$line[1]."'";
-                            $prevResult = $conn->query($prevQuery);
-                        }
-                        $query = "";
-                        if($prevResult->num_rows > 0){
-                            // Update member data in the database
-                            $query = "UPDATE attendances SET status = 'Present',
-                            empid = '".$empid."', date = '".$date."', time_in = '".$time_in."', time_out = '".$time_out."', late = '".$tardiness."', 
-                            early_out = '".$undertime."', overtime = '".$overtime."', total_work = '".$total_work."' WHERE empid = '".$empid."' "; 
-                        }else{
-                            $query = "INSERT INTO attendances (`status`, `empid`, `date`, `time_in`, `time_out`, `late`, `early_out`, `overtime`, `total_work`) 
-                             VALUES ('Present', '$empid', '$date', '$time_in', '$time_out', '$tardiness', '$undertime', '$overtime', '$total_work')";
-                        }
-                        //echo $query;
-
-                        $conn->query($query);
-          }
-        }
-      }
+                    $conn->query($query);
+           }
             
             // Close opened CSV file
             fclose($csvFile);
@@ -397,7 +806,7 @@ if(isset($_POST['importSubmit'])){
     }else{
         $qstring = '?status=invalid_file';
     }
-}
+ }
 
 // Redirect to the listing page
 header("Location: ../../dtRecords.php".$qstring);

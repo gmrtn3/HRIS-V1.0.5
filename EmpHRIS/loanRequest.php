@@ -1,6 +1,6 @@
 <?php
     session_start();
-   
+   include 'config.php';
 ?>
 
 <!DOCTYPE html>
@@ -168,11 +168,11 @@
                 </thead>
                 <tbody>
                     <?php 
-
+                        include 'config.php';
                         $empid = $_SESSION['empid'];
                         // echo $empid;
-                       $db = mysqli_connect("localhost", "root", "" , "hris_db");
-                       $result = $db->query("SELECT payroll_loan_tb.id,
+                       
+                       $result = $conn->query("SELECT payroll_loan_tb.id,
                                         payroll_loan_tb.loan_type,
                                         payroll_loan_tb.year,
                                         payroll_loan_tb.month,

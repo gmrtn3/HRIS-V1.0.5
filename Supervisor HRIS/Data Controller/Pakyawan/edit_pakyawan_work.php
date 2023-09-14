@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "hris_db");
+include '../../config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["empid"]) && isset($_POST["piece_rate_id"])) {
   $empid = $_POST["empid"];

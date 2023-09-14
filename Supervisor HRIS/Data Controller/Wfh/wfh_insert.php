@@ -1,11 +1,5 @@
 <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hris_db";
-
-
-    $conn = mysqli_connect($servername, $username,  $password, $dbname);
+include '../../config.php';
 
     if(isset($_POST['add_wfh']))
     {

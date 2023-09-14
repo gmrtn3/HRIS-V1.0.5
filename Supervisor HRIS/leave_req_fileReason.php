@@ -1,5 +1,5 @@
 <?php
-include '../config.php';
+include 'config.php';
 if (isset($_POST['btn_yes_modal'])) {
    $selected_TableID = $_POST["name_ID_tb"];
    $selected_empName = $_POST["name_empID_tb"];

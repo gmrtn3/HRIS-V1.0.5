@@ -426,8 +426,8 @@
                 </div>
         </div> -->
 
-        <script>
-      $(document).ready(function() {
+<script>
+    $(document).ready(function() {
     $('#departmentDropdown').change(function() {
         var selectedValue = $(this).val();
         

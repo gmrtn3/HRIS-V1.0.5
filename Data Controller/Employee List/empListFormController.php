@@ -78,6 +78,7 @@ $empaccess_id = $_POST['empaccess_id'];
 $username = $_POST['username'];
 $role = $_POST['role'];
 $email = $_POST['email'];
+$company_email = $_POST['comp_email'];
 $password = $_POST['password'];
 $cpassword = $_POST['cpassword'];
 $classification = $_POST['classification'];
@@ -210,14 +211,14 @@ $status = 'Active';
 
 $OT_RATE = ($drate / 8) * 1.3;
 
-$stmt = $conn->prepare("INSERT INTO employee_tb (`fname`, `mname`,  `lname`, `company_code`,`empid`, `address`, `contact`, `cstatus`, `gender`, `empdob`, `empsss`, `emptin`, `emppagibig`, `empphilhealth`, `empbranch`, `department_name`, `empposition`, `empbsalary`, `drate`, `empdate_hired`, `emptranspo`, `empmeal`, `empinternet`, `empaccess_id`, `username`, `role`, `email`, `password`, `status`, `otrate`, `classification`)
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$stmt = $conn->prepare("INSERT INTO employee_tb (`fname`, `mname`,  `lname`, `company_code`,`empid`, `address`, `contact`, `cstatus`, `gender`, `empdob`, `empsss`, `emptin`, `emppagibig`, `empphilhealth`, `empbranch`, `department_name`, `empposition`, `empbsalary`, `drate`, `empdate_hired`, `emptranspo`, `empmeal`, `empinternet`, `empaccess_id`, `username`, `role`, `email`, `company_email`, `password`, `status`, `otrate`, `classification`)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 if (!$stmt) {
     die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
 }
 
-$stmt->bind_param("sssssssssssssssssssssssssssssss", $fname,$mname, $lname,$company_code ,$empid, $address, $contact, $cstatus, $gender, $empdob, $empsss, $emptin, $emppagibig, $empphilhealth, $empbranch, $col_deptname, $empposition, $empbsalary, $drate, $empdate_hired, $emptranspo, $empmeal, $empinternet, $empaccess_id, $username, $role, $email, $passwordHash, $status, $OT_RATE, $classification);
+$stmt->bind_param("ssssssssssssssssssssssssssssssss", $fname,$mname, $lname,$company_code ,$empid, $address, $contact, $cstatus, $gender, $empdob, $empsss, $emptin, $emppagibig, $empphilhealth, $empbranch, $col_deptname, $empposition, $empbsalary, $drate, $empdate_hired, $emptranspo, $empmeal, $empinternet, $empaccess_id, $username, $role, $email, $company_email, $passwordHash, $status, $OT_RATE, $classification);
 
 $stmt->execute();
 

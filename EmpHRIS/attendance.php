@@ -176,21 +176,7 @@
                 <button id="applyfilt" onclick="filterDates()">Apply Filter</button> <!--margin-left: 60px;-->
             </div>
 
-<script>
-  function filterDates() {
-    var dateFrom = document.getElementById('start_date').value;
-    var dateTo = document.getElementById('end_date').value;
-    var applyfilt = document.getElementById('applyfilt');
 
-    if(dateFrom == '' && dateTo ==''){
-        var url = 'attendance.php';
-        window.location.href = url;  
-    }else{
-        var url = 'attendance.php?date_from=' + dateFrom + '&date_to=' + dateTo;
-        window.location.href = url;   
-    }
-  }
-</script>
 
             <div class="table-responsive" style="padding: 5px; overflow-x: hidden;">
                 <table id="order-listing" class="table" style="width: 100%; padding-right: 1%;">
@@ -355,7 +341,21 @@
         </div> 
     </div>
 
+    <script>
+  function filterDates() {
+    var dateFrom = document.getElementById('start_date').value;
+    var dateTo = document.getElementById('end_date').value;
+    var applyfilt = document.getElementById('applyfilt');
 
+    if(dateFrom == '' && dateTo ==''){
+        var url = 'attendance.php';
+        window.location.href = url;  
+    }else{
+        var url = 'attendance.php?date_from=' + dateFrom + '&date_to=' + dateTo;
+        window.location.href = url;   
+    }
+  }
+</script>
 
     <script> 
      $('.header-dropdown-btn').click(function(){
