@@ -279,6 +279,7 @@
                                     ?>
                                     <div style="display:flex; flex-direction: row">
                                     <select name="company_code" id=""  style="display: flex; align-items: center; justify-content: center;width: 25%; padding: 0.2em; margin-right: 2%; height: 40px">
+                                        <option value="" selected disabled>Company Code</option>
                                         <?php echo $options; ?>
                                     </select>
 
@@ -461,7 +462,7 @@
                                 <div class="emp-empDetail-dept">
                                       <?php
                                         include 'config.php';
-                                        $sql = "SELECT * FROM dept_tb";
+                                        $sql = "SELECT * FROM dept_tb WHERE `col_ID` != 1";
                                         $result = mysqli_query($conn, $sql);
 
                                         $options = "";
@@ -481,7 +482,7 @@
                                     <?php
                                                     include 'config.php';
 
-                                                     $sql = "SELECT * FROM positionn_tb";
+                                                     $sql = "SELECT * FROM positionn_tb WHERE `id` != 1";
                                                      $results = mysqli_query($conn, $sql);
              
                                                      $options = "";
@@ -658,9 +659,11 @@
                                 <div class="emp-Access-cpassword" style="margin-left: 2%">
                                     <label for="cpassword">Confirm Password</label><br>
                                     <input type="password"  pattern="[a-zA-Z0-9]{5,}" title="Must be at least 5 characters." disabled oninput="matchPass()" oninput="showPasswordIcon(this, 'confirm-eye')" name="cpassword" id="cpass" placeholder="Confirm Password" required>
+                                    <p id="id_pValidate" style="color: red; display: none;" class="mt-2">Passwords don't match!</p>
                                     <i class="fas fa-eye show-pass" aria-hidden="true" id="confirm-eye" style="display: none;" onclick="toggleConfirmPassword()"></i>
+                                     
                                 </div>  
-                                <p  id="id_pValidate" style="margin-top: 5px; margin-right: 825px; color: red; display: none; text-align: right;">Passwords don't match!</p>
+                               
                         </div>
 
                         <!-- <div class="password_sec">

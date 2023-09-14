@@ -126,7 +126,7 @@ $result = mysqli_query($conn, $query);
 
 if(mysqli_num_rows($result) <= 0) {
     // Position does not exist, insert the new record
-    $query = "INSERT INTO dept_tb (`id`,`col_deptname`) VALUES (1,'Pakyawan')";
+    $query = "INSERT INTO dept_tb (`col_ID`,`col_deptname`) VALUES (1,'Pakyawan')";
     $query_run = mysqli_query($conn, $query);    
 } 
 

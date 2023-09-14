@@ -1,5 +1,5 @@
 <?php
-
+// error_reporting();
 include 'config.php';
 
 // Check if there is a file uploaded
@@ -113,8 +113,9 @@ else
         exit();
     } else{
         include 'config.php';
-        $userId = $_SESSION['id'];
-       
+        @$userId = $_SESSION['id'];
+        // echo $userId;
+
         $iconResult = mysqli_query($conn, "SELECT id, emp_img_url FROM employee_tb WHERE id = '$userId'");
         $iconRow = mysqli_fetch_assoc($iconResult);
 
